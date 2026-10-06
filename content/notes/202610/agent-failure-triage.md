@@ -5,8 +5,6 @@ tags: ["Agent"]
 classes: ["concept"]
 ---
 
-# Agent 如何人工确认错例并定位失败原因？
-
 人工依据**当时的任务目标、业务规则和执行证据**确认失败，再定位导致失败的环节，给出该条件下的预期行为。
 
 1. **判断依据**：核对用户意图、允许的操作、工具协议和真实任务状态。[[agent-failure-candidate-selection|候选池]]的触发信号只是线索，需要结合[[agent-trace-requirements|完整 Trace]] 验证；证据不足或需求有歧义时，标记待补充。

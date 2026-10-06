@@ -5,8 +5,6 @@ tags: ["Agent"]
 classes: ["concept"]
 ---
 
-# Agent 如何把线上错例回流到评测集？
-
 把一次线上失败转成**可复现、有明确通过标准、能反复运行的评测用例**，按「[[agent-trace-requirements|线上 Trace]] → [[agent-failure-candidate-selection|错例候选池]] → [[agent-failure-triage|人工确认与归因]] → [[agent-failure-replay-cases|构造评测用例]] → [[agent-evaluation-case-admission|入库]] → [[agent-regression-evaluation|回归验证]]」形成闭环。
 
 1. **线上 Trace**：保留任务输入、上下文、工具调用和结果，为后续判断提供证据。

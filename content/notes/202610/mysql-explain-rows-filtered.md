@@ -5,8 +5,6 @@ tags: ["MySQL"]
 classes: ["concept"]
 ---
 
-# MySQL EXPLAIN rows 与 filtered
-
 `rows` 是当前访问步骤预计检查的候选行数；`filtered` 是这些候选行经过剩余条件后**预计留下的百分比**。两者均为优化器估算，InnoDB 的 rows 尤其不能当作实际读取计数。
 
 ```text

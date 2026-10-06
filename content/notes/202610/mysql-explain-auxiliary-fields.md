@@ -5,8 +5,6 @@ tags: ["MySQL"]
 classes: ["concept"]
 ---
 
-# MySQL EXPLAIN 辅助字段
-
 `table / partitions / ref` 分别说明**访问谁、访问哪些分区、索引等值查找拿什么来匹配**。它们把 [[mysql-explain-type|type]]、[[mysql-explain-index-fields|key]]、[[mysql-explain-rows-filtered|rows]] 等字段对应到具体对象。
 
 1. **table：表、别名或结果集**。`FROM users AS u` 的计划通常显示 u；还可能显示 `<derived2>`、`<subquery2>`、`<union1,2>` 之类的中间结果名称，数字用来关联查询块。

@@ -5,8 +5,6 @@ tags: ["Agent"]
 classes: ["concept"]
 ---
 
-# Agent 与固定工作流、聊天机器人的区别
-
 探索方向：把 Agent 放回它所在的谱系里对比，避免把「带循环的流程」都叫 Agent。
 
 可追问：

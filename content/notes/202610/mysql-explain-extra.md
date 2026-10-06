@@ -5,8 +5,6 @@ tags: ["MySQL"]
 classes: ["concept"]
 ---
 
-# MySQL EXPLAIN Extra
-
 `Extra` 补充当前计划的执行细节，同一行可有多个标记。**把标记当作排查线索，结合候选行数和实际耗时判断代价**。
 
 | 常见值 | 含义 | 下一步看什么 |

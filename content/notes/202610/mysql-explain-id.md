@@ -5,8 +5,6 @@ tags: ["MySQL"]
 classes: ["concept"]
 ---
 
-# MySQL EXPLAIN id
-
 `id` 用来识别 **SELECT 查询块**。同一个查询块访问多张表时，多行执行计划可以具有相同的 id；它不是结果行编号，也不是 SQL 的性能评分。
 
 ```sql

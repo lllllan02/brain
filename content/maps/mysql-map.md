@@ -5,8 +5,6 @@ tags: ["MySQL"]
 classes: ["map"]
 ---
 
-# MySQL 学习地图
-
 从整体解释进入相关问题；以下入口保留旧专题中的有效内容。
 
 - [[mysql-explain|MySQL EXPLAIN]]

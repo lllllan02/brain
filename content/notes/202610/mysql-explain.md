@@ -5,8 +5,6 @@ tags: ["MySQL"]
 classes: ["overview"]
 ---
 
-# MySQL EXPLAIN
-
 `EXPLAIN` 展示 MySQL 为 SQL 选择的**执行计划**：访问哪些表、怎样查找数据、使用哪个索引、预计检查多少行，以及是否需要排序或临时表。以下按传统表格格式说明，可用 `EXPLAIN FORMAT=TRADITIONAL SELECT ...` 查看。
 
 ## 字段总览

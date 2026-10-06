@@ -5,8 +5,6 @@ tags: ["Agent"]
 classes: ["concept"]
 ---
 
-# Agent 主流框架与工程选型考虑
-
 探索方向：在理解了机制之后再谈工具，避免被框架 API 牵着走。
 
 可追问：

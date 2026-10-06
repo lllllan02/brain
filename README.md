@@ -1,4 +1,6 @@
-# brain
+---
+title: "brain"
+---
 
 保存知识、想法、问题、计划和记录的个人大脑。内容以 Markdown 文件保存，Obsidian 与未来图谱看板共享同一份正文。
 

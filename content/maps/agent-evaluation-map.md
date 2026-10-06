@@ -5,8 +5,6 @@ tags: ["Agent"]
 classes: ["map"]
 ---
 
-# Agent 评测地图
-
 从旧专题中的评测分支进入已保存的内容。
 
 - 上级主题：[[agent-map|Agent 学习地图]]

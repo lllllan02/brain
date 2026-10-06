@@ -5,8 +5,6 @@ tags: []
 classes: ["map"]
 ---
 
-# 知识导航
-
 ## 学习主题
 
 - [[agent-map|Agent 学习地图]]
