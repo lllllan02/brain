@@ -2,13 +2,13 @@
 title: "brain"
 ---
 
-保存知识、想法、问题、计划和记录的个人大脑。内容以 Markdown 文件保存，Obsidian 与未来图谱看板共享同一份正文。
+保存知识、想法、问题、计划和记录的个人大脑。内容以 Markdown 文件保存，Obsidian 与图谱阅读页面共享同一份正文。
 
 ## 使用与启动
 
 - Obsidian：打开本项目的 `content/`，从 [[maps/index|知识导航]] 开始阅读。
 - Agent：在 brain 项目中工作，遵守 [[AGENTS|AGENTS.md]]。直接提出「把刚刚讨论的内容整理进知识库」，即可保存并维护链接。
-- 图谱看板：`apps/web/` 尚未初始化，当前没有启动命令。后续二开现有项目，以文档节点、引用连线和重点预览作为阅读入口。
+- 文档阅读页面：`apps/web/` 已提供本地「知识宇宙」，基于原项目场景，以主题星云、文档分支和完整正文作为阅读入口。运行 `npm --prefix apps/web ci`、`npm --prefix apps/web run dev`，打开 `http://127.0.0.1:4173`；使用说明见 [[apps/web/README|看板说明]]。已授权的公开版本发布到 [知识星云](https://lllllan02.github.io/brain/)，由 GitHub Pages 自动构建。
 
 ## 目录
 

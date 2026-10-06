@@ -7,3 +7,4 @@ build/
 !.env.example
 .obsidian/workspace*.json
 .obsidian/cache/
+dist-pages/
