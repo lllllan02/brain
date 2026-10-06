@@ -1,36 +1,51 @@
 import {T} from './theme';
-export const MODULES = [
- {id:'works',title:'Agent',en:'Agents',kind:'agent',folder:'f:works',angle:180,icon:'works'},
- {id:'concepts',title:'RAG',en:'Retrieval',kind:'rag',folder:'f:concepts',angle:-90,icon:'concept'},
- {id:'methods',title:'MySQL',en:'Database',kind:'mysql',folder:'f:methods',angle:0,icon:'methods'},
- {id:'ideas',title:'面试题',en:'Engineering',kind:'interview',folder:'f:ideas',angle:35,icon:'idea'},
- {id:'drafts',title:'阅读地图',en:'Maps',kind:'map',folder:'f:drafts',angle:145,icon:'draft'}
-];
-export const CONTENT = new Set(MODULES.map(m=>m.kind));
-export const KINDS = {core:{label:'知识宇宙',en:'Cosmos',color:T.kinds.core},folder:{label:'主题',en:'Topic',color:T.kinds.folder},ghost:{label:'未解析',en:'Unresolved',color:T.kinds.ghost},tag:{label:'标签',en:'Tag',color:T.kinds.tag},...Object.fromEntries(MODULES.map(m=>[m.kind,{label:m.title,en:m.en,color:T.modules[m.id].color}]))};
-const FOLDERS=MODULES.map(m=>({id:m.folder,title:m.title,angle:m.angle}));
-export const moduleOf = node => MODULES.find(m=>m.kind===node?.kind)||null;
+
+// Every topic comes from the single category property; tags do not determine groups.
+const topicId = category => 'topic:' + encodeURIComponent(category);
+const uncategorizedId = 'topic:uncategorized:';
+export const moduleOf = (graph, node, preferred) => graph.modules.find(m => m.id === preferred && node?.modules?.includes(m.id)) || graph.modules.find(m => m.id === node?.module) || null;
 export function buildGraph(library){
- const nodes=[{id:'core',kind:'core',title:'知识宇宙',body:'',tags:[]},...FOLDERS.map(f=>({...f,kind:'folder',tags:[]}))];
- for(const doc of library.documents){const module=doc.type==='map'?MODULES[4]:doc.id.startsWith('rag-')?MODULES[1]:doc.tags.includes('MySQL')?MODULES[2]:doc.tags.includes('面试题')?MODULES[3]:MODULES[0];nodes.push({...doc,kind:module.kind,module:module.id,folder:module.folder,text:doc.title+' '+doc.body,short:doc.title});}
+ const topics = new Map();
+ const memberships = new Map();
+ for(const doc of library.documents){
+  const category = (doc.category || '').trim();
+  const id = category ? topicId(category) : uncategorizedId;
+  topics.set(id,category || '未分类');
+  const ids = [id];
+  memberships.set(doc.id,ids);
+ }
+ const modules = [...topics].sort((a,b)=>a[1].localeCompare(b[1],'zh-CN')).map(([id,title],i,all)=>{
+  const hue = Math.floor(rng(id)()*360);
+  return {id,title,en:'',kind:id,folder:'folder:'+id,angle:-90+i*360/all.length,icon:'tag',color:hslHex(hue,.55,.8),filter:`hue-rotate(${hue}deg) saturate(1)`,flip:i%2?-1:1};
+ });
+ const styles = Object.fromEntries(modules.map(m=>[m.id,{color:m.color,filter:m.filter,flip:m.flip}]));
+ const kinds = {core:{label:'知识宇宙',en:'Cosmos',color:T.kinds.core},folder:{label:'主题',en:'Topic',color:T.kinds.folder},...Object.fromEntries(modules.map(m=>[m.kind,{label:m.title,en:m.en,color:m.color}]))};
+ const nodes=[{id:'core',kind:'core',title:'知识宇宙',body:'',tags:[]},...modules.map(m=>({id:m.folder,title:m.title,angle:m.angle,kind:'folder',tags:[]}))];
+ for(const doc of library.documents){const ids=memberships.get(doc.id),module=modules.find(m=>m.id===ids[0]);nodes.push({...doc,kind:module.kind,module:module.id,modules:ids,folder:module.folder,text:doc.title+' '+doc.body,short:doc.title});}
  const index=new Map(nodes.map(n=>[n.id,n])),edgeMap=new Map();
- const link=(s,t,kind)=>{if(s===t||!index.has(s)||!index.has(t))return;const [a,b]=s<t?[s,t]:[t,s];const key=a+'|'+b+'|'+kind;const e=edgeMap.get(key)||{a,b,kind,ab:0,ba:0,w:1};if(s===a)e.ab++;else e.ba++;edgeMap.set(key,e);};
- for(const m of MODULES){link('core',m.folder,'contain');for(const n of nodes.filter(n=>n.module===m.id))link(m.folder,n.id,'contain');}
+ const link=(s,t,kind)=>{if(s===t||!index.has(s)||!index.has(t))return;const [a,b]=s<t?[s,t]:[t,s];const key=JSON.stringify([a,b,kind]);const e=edgeMap.get(key)||{a,b,kind,ab:0,ba:0,w:1};if(s===a)e.ab++;else e.ba++;edgeMap.set(key,e);};
+ for(const m of modules){link('core',m.folder,'contain');for(const n of nodes.filter(n=>n.modules?.includes(m.id)))link(m.folder,n.id,'contain');}
  for(const doc of library.documents)for(const ref of doc.references)link(doc.id,ref.id,'wiki');
  const links=[...edgeMap.values()].map(e=>({...e,both:e.ab>0&&e.ba>0,s:e.ab?e.a:e.b,t:e.ab?e.b:e.a}));
  for(const n of nodes){n.in=0;n.out=0;n.deg=0;n.mutual=0;}
  for(const l of links){if(l.kind==='contain')continue;const a=index.get(l.a),b=index.get(l.b);a.deg++;b.deg++;if(l.both){a.mutual++;b.mutual++;a.in++;b.in++;a.out++;b.out++;}else{index.get(l.s).out++;index.get(l.t).in++;}}
- return {nodes,links,index,public:Boolean(library.public)};
+ return {nodes,links,index,modules,kinds,styles,public:Boolean(library.public)};
+}
+function hslHex(h,s,l){
+ const a=s*Math.min(l,1-l);
+ const channel=n=>{const k=(n+h/30)%12;return Math.round(255*(l-a*Math.max(-1,Math.min(k-3,9-k,1)))).toString(16).padStart(2,'0');};
+ return '#'+channel(0)+channel(8)+channel(4);
 }
 function rng(seed) { let s = 0; for (const c of seed) s = (s * 31 + c.charCodeAt(0)) >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
 const rad = d => d * Math.PI / 180;
 
 export function forceLayout(graph) {
   const N = graph.nodes, idx = graph.index;
+  const FOLDERS = graph.modules.map(m=>({id:m.folder,angle:m.angle}));
+  const CONTENT = new Set(graph.modules.map(m=>m.kind));
   const anchor = id => {
     const n = idx.get(id);
-    if (n.kind === 'concept') return [0, -1];
-    const f = FOLDERS.find(f => f.id === (n.folder?.startsWith('f:0') || n.level === 2 ? 'f:methods' : n.folder) || f.id === id);
+    const f = FOLDERS.find(f => f.id === n.folder || f.id === id);
     return f ? [Math.cos(rad(f.angle)), Math.sin(rad(f.angle))] : null;
   };
   for (const n of N) {

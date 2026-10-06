@@ -1,7 +1,8 @@
 ---
 title: "Agent 如何用回流错例做回归验证？"
+category: "Agent"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["Agent", "评测", "回归测试", "评测集", "评分器"]
 classes: ["concept"]
 ---
 

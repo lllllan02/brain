@@ -1,7 +1,8 @@
 ---
 title: "Agent 多轮检索怎样评估，何时应停止？"
+category: "Agent"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["Agent", "评测", "多轮检索", "证据覆盖", "终止条件"]
 classes: ["concept"]
 ---
 

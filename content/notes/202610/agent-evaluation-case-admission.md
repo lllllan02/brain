@@ -1,7 +1,8 @@
 ---
 title: "Agent 评测用例满足什么条件才能入库？"
+category: "Agent"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["Agent", "评测", "评测集", "数据标注", "版本管理"]
 classes: ["concept"]
 ---
 

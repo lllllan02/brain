@@ -1,7 +1,8 @@
 ---
 title: "RAG 召回阶段如何评估证据是否找全？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "检索评测", "召回", "Recall", "Precision"]
 classes: ["concept"]
 ---
 

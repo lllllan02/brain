@@ -1,7 +1,8 @@
 ---
 title: "Agent 如何把确认的错例构造成可重放评测用例？"
+category: "Agent"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["Agent", "错例回流", "用例重放", "Mock", "评分器"]
 classes: ["concept"]
 ---
 

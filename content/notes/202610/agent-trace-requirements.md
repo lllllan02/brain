@@ -1,7 +1,8 @@
 ---
 title: "Agent 线上 Trace 需要记录什么，才能支持错例回流？"
+category: "Agent"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["Agent", "Trace", "可观测性", "错例回流", "数据脱敏"]
 classes: ["concept"]
 ---
 

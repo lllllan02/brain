@@ -1,7 +1,8 @@
 ---
 title: "RAG 如何检查答案中的引用真的支持结论？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "引用校验", "证据支持", "防幻觉"]
 classes: ["concept"]
 ---
 

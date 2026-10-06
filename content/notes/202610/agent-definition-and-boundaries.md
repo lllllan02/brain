@@ -1,7 +1,8 @@
 ---
 title: "Agent 指什么：定义与判断边界"
+category: "Agent"
 updated_at: "2026-10-04"
-tags: ["Agent"]
+tags: ["Agent", "LLM", "自主决策", "反馈循环"]
 classes: ["concept"]
 ---
 

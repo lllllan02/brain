@@ -1,7 +1,8 @@
 ---
 title: "NDCG@K 是什么，怎样判断排序好不好？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "检索评测", "排序指标", "NDCG"]
 classes: ["concept"]
 ---
 

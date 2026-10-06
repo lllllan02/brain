@@ -1,7 +1,8 @@
 ---
 title: "MRR 是什么，和 NDCG 有什么区别？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "检索评测", "排序指标", "MRR"]
 classes: ["concept"]
 ---
 

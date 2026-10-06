@@ -249,3 +249,19 @@ html, body { margin: 0; background: #0d0e0e; }
 @media (prefers-reduced-motion: reduce) {
   .neural *, .neural *::before, .neural *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; transition-duration: .01ms !important; }
 }
+
+/* 总星云与分类共用弹簧场景，收起时保留元素以完成回流。 */
+.nebula:disabled, .nebula-label:disabled { pointer-events: none; }
+.unified-nebula { z-index: 0; }
+.unified-nebula .nebula-inner { filter: saturate(.65) brightness(1.12); }
+.category-toggle { position: absolute; z-index: 5; right: 28px; top: 128px; display: inline-flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 16px; color: var(--text); border: 1px solid rgba(230,207,152,.25); transition: background .3s, border-color .3s, box-shadow .3s; }
+.category-toggle:hover { border-color: rgba(230,207,152,.65); background: rgba(68,60,44,.5); box-shadow: 0 0 28px rgba(230,207,152,.12); }
+.category-toggle:focus-visible { outline: 2px solid #e6cf98; outline-offset: 4px; }
+.category-toggle span { display: grid; gap: 3px; text-align: left; font-size: 13px; }
+.category-toggle em { font-size: 10px; color: var(--text-2); font-style: normal; }
+.category-toggle b { font-size: 11px; font-weight: 500; color: #e6cf98; padding: 4px 7px; border-radius: 8px; background: rgba(230,207,152,.1); }
+.categories-expanded .legend { top: 204px; animation: introFade .5s both; }
+@media (max-width: 760px) {
+  .category-toggle { left: 16px; right: auto; top: 190px; padding: 9px 12px; gap: 9px; }
+  .category-toggle em { display: none; }
+}

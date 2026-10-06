@@ -13,7 +13,8 @@ export function parseDocument(raw, file) {
   const meta = match ? yaml.load(match[1], { schema: yaml.JSON_SCHEMA }) ?? {} : {};
   const body = match ? raw.slice(match[0].length) : raw;
   const id = path.basename(file, '.md');
-  return { id, path: file.replaceAll(path.sep, '/'), title: String(meta.title || id), aliases: list(meta.aliases), tags: list(meta.tags), type: String(meta.type || list(meta.classes)[0] || 'note'), updated: meta.updated_at || null, created: meta.created_at || null, sources: list(meta.source || meta.url), body, summary: String(meta.description || body.split(/\n\s*\n/).find(p => p.trim() && !p.startsWith('#')) || '').replace(/\[\[([^\]|]+)(?:\\?\|([^\]]+))?\]\]/g, (_, target, label) => label || target).replace(/[*`#]/g, '').slice(0, 200) };
+  if (meta.category != null && typeof meta.category !== 'string') throw new Error(`文档 ${file} 的 category 必须是单个文本`);
+  return { id, path: file.replaceAll(path.sep, '/'), title: String(meta.title || id), aliases: list(meta.aliases), tags: list(meta.tags), category: (meta.category || '').trim(), type: String(meta.type || list(meta.classes)[0] || 'note'), updated: meta.updated_at || null, created: meta.created_at || null, sources: list(meta.source || meta.url), body, summary: String(meta.description || body.split(/\n\s*\n/).find(p => p.trim() && !p.startsWith('#')) || '').replace(/\[\[([^\]|]+)(?:\\?\|([^\]]+))?\]\]/g, (_, target, label) => label || target).replace(/[*`#]/g, '').slice(0, 200) };
 }
 async function walk(root, dir) {
   const files = [];
@@ -79,7 +80,7 @@ export function renderDocument(doc, documents) {
   return {...doc, html, toc, references, issues};
 }
 export async function loadLibrary(root) {
-  const files = [...await walk(root, 'notes'), ...await walk(root, 'maps')].sort();
+  const files = (await walk(root, 'notes')).sort();
   const docs = await Promise.all(files.map(async file => parseDocument(await readFile(path.join(root, file), 'utf8'), file)));
   const ids = new Set();
   for (const d of docs) { if (ids.has(d.id)) throw new Error(`文档文件名重复：${d.id}`); ids.add(d.id); }

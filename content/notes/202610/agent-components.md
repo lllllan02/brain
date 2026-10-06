@@ -1,7 +1,8 @@
 ---
 title: "Agent 的几类关键组件：模型、工具、记忆、规划"
+category: "Agent"
 updated_at: "2026-10-04"
-tags: ["Agent"]
+tags: ["Agent", "LLM", "工具调用", "记忆", "规划"]
 classes: ["concept"]
 ---
 

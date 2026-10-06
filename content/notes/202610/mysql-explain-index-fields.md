@@ -1,7 +1,8 @@
 ---
 title: "MySQL EXPLAIN 索引相关字段"
+category: "MySQL"
 updated_at: "2026-10-06"
-tags: ["MySQL"]
+tags: ["MySQL", "执行计划", "索引", "联合索引", "SQL优化"]
 classes: ["concept"]
 ---
 

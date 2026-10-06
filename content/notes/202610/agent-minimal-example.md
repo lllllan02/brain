@@ -1,7 +1,8 @@
 ---
 title: "一个最小可运行 Agent 长什么样"
+category: "Agent"
 updated_at: "2026-10-04"
-tags: ["Agent"]
+tags: ["Agent", "最小示例", "工具调用", "可观测性"]
 classes: ["concept"]
 ---
 

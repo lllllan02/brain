@@ -1,7 +1,8 @@
 ---
 title: "RAG 是什么，一次问答会经过哪些阶段？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "检索增强生成", "召回", "重排", "上下文构建", "答案生成"]
 classes: ["concept"]
 ---
 

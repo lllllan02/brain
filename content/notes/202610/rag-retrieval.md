@@ -1,7 +1,8 @@
 ---
 title: "RAG 召回阶段具体做什么？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "召回", "文档片段", "知识库"]
 classes: ["concept"]
 ---
 

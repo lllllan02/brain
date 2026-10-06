@@ -1,7 +1,8 @@
 ---
 title: "Agent 线上 Trace 凭什么进入错例候选池？"
+category: "Agent"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["Agent", "错例回流", "可观测性", "异常检测", "LLM-Judge"]
 classes: ["concept"]
 ---
 

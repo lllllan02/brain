@@ -1,7 +1,8 @@
 ---
 title: "Agent 与固定工作流、聊天机器人的区别"
+category: "Agent"
 updated_at: "2026-10-04"
-tags: ["Agent"]
+tags: ["Agent", "工作流", "自主决策", "工程选型"]
 classes: ["concept"]
 ---
 

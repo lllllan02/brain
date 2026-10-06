@@ -1,7 +1,8 @@
 ---
 title: "RAG：流程、质量评测与证据不足处理"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "检索增强生成", "评测", "防幻觉"]
 classes: ["overview"]
 ---
 

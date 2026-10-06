@@ -1,7 +1,8 @@
 ---
 title: "Agent 的运行循环：从目标到行动再回到反馈"
+category: "Agent"
 updated_at: "2026-10-04"
-tags: ["Agent"]
+tags: ["Agent", "反馈循环", "工具调用", "规划", "终止条件"]
 classes: ["concept"]
 ---
 

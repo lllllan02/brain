@@ -1,7 +1,8 @@
 ---
 title: "RAG 重排阶段具体做什么？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "重排", "相关性排序"]
 classes: ["concept"]
 ---
 

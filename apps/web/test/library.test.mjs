@@ -16,14 +16,14 @@ test('真实知识库可渲染：双链表格、目录与反链',async()=>{
 });
 test('支持 YAML 列表、别名、双链章节与块，代码不产生关系',()=>{
  const a=doc('---\ntitle: 测试文档\naliases:\n  - 别名\ntags: [主题]\n---\n## 小节\n\n内容 ^block-1');
- const b=doc('[[example#小节|章节]] [[example#^block-1|块]] [[example#不存在]]\n\n```text\n[[missing]]\n```','maps/test.md');
+ const b=doc('[[example#小节|章节]] [[example#^block-1|块]] [[example#不存在]]\n\n```text\n[[missing]]\n```','notes/202610/test.md');
  const result=renderDocument(b,[a,b]);assert.equal(result.references.length,2);assert.equal(result.issues.length,1);assert.match(result.html,/#\/doc\/example/);assert.equal(resolveDocument('别名',[a],b).doc.id,'example');
  assert.match(renderDocument(a,[a]).html,/id="\^block-1"/);
 });
 test('未解析和歧义的链接不跳转；嵌入展示原文摘要',()=>{
  const a=doc('第一篇');const b=doc('第二篇','notes/other/example.md');
  assert.equal(resolveDocument('example',[a,b],a).error,'目标不唯一');
- const c=doc('![[example]] [[missing]]','maps/third.md');
+ const c=doc('![[example]] [[missing]]','notes/202610/third.md');
  const result=renderDocument(c,[a,c]);assert.match(result.html,/embed-card/);assert.equal(result.issues.length,1);assert.match(result.html,/broken-link/);
 });
 test('不执行正文 HTML、危险链接及代码中的脚本',()=>{
@@ -36,5 +36,5 @@ test('附件限于 content 内 assets，拒绝越界和符号链接',async()=>{
 });
 test('原文更新后版本、正文、引用同时重建；inbox 不进入索引',async()=>{
  const root=await mkdtemp(path.join(os.tmpdir(),'brain-library-'));
- try{await Promise.all(['notes','maps','inbox'].map(d=>mkdir(path.join(root,d))));await writeFile(path.join(root,'notes/a.md'),'起点');await writeFile(path.join(root,'maps/b.md'),'终点');await writeFile(path.join(root,'inbox/private.md'),'不收录');const first=await loadLibrary(root);await writeFile(path.join(root,'notes/a.md'),'更新 [[b]]');const second=await loadLibrary(root);assert.notEqual(first.version,second.version);assert.equal(second.documents.length,2);assert.deepEqual(second.documents.find(d=>d.id==='b').backlinks,['a']);assert.match(second.documents.find(d=>d.id==='a').html,/更新/);}finally{await rm(root,{recursive:true,force:true});}
+ try{await Promise.all(['notes/202610','inbox'].map(d=>mkdir(path.join(root,d),{recursive:true})));await writeFile(path.join(root,'notes/202610/a.md'),'起点');await writeFile(path.join(root,'notes/202610/b.md'),'终点');await writeFile(path.join(root,'inbox/private.md'),'不收录');const first=await loadLibrary(root);await writeFile(path.join(root,'notes/202610/a.md'),'更新 [[b]]');const second=await loadLibrary(root);assert.notEqual(first.version,second.version);assert.equal(second.documents.length,2);assert.deepEqual(second.documents.find(d=>d.id==='b').backlinks,['a']);assert.match(second.documents.find(d=>d.id==='a').html,/更新/);}finally{await rm(root,{recursive:true,force:true});}
 });

@@ -1,7 +1,8 @@
 ---
 title: "Agent 主流框架与工程选型考虑"
+category: "Agent"
 updated_at: "2026-10-04"
-tags: ["Agent"]
+tags: ["Agent", "框架选型", "工程架构", "工具调用"]
 classes: ["concept"]
 ---
 

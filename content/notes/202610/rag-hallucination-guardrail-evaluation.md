@@ -1,7 +1,8 @@
 ---
 title: "RAG 如何评测防幻觉策略，避免过度拒答？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "评测", "防幻觉", "拒答", "评分校准"]
 classes: ["concept"]
 ---
 

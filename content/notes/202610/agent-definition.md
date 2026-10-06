@@ -1,7 +1,8 @@
 ---
 title: "Agent 是什么？"
+category: "Agent"
 updated_at: "2026-10-04"
-tags: ["Agent"]
+tags: ["Agent", "LLM", "工具调用", "反馈循环"]
 classes: ["concept"]
 ---
 

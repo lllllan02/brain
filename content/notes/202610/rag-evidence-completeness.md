@@ -1,7 +1,8 @@
 ---
 title: "RAG 怎样检查回答所需的信息是否找齐？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "证据完整性", "证据覆盖", "可答性判断"]
 classes: ["concept"]
 ---
 

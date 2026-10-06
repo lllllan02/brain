@@ -1,7 +1,8 @@
 ---
 title: "RAG 检索不到内容时怎么办？如何防止模型硬凑答案、产生幻觉？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "防幻觉", "证据不足", "拒答", "提示词"]
 classes: ["concept"]
 ---
 

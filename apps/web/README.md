@@ -1,5 +1,7 @@
 ---
 title: "brain 知识星云"
+category: "项目开发"
+tags: ["知识库", "图谱", "Markdown", "服务启动", "GitHub-Pages"]
 ---
 
 基于 [Neural Creator Dashboard](https://github.com/luoluo-121/neural-creator-dashboard) 裁剪的本地文档阅读页面。保留原项目中央光球、入场粒子、弹簧过渡、往返流光、主题列队与扇形展开；水母素材替换为星云，右侧分析面板替换为文档正文。正文直接读取 `content/` 文件，不维护第二份内容。项目介绍见 [[README|README]]。
@@ -9,19 +11,30 @@ title: "brain 知识星云"
 需要 Node.js 22.12 或以上。在项目根目录执行：
 
 ```sh
-npm --prefix apps/web ci
-npm --prefix apps/web run dev
+make install
+make
 ```
 
-打开 `http://127.0.0.1:4173`。服务只监听本机；可用 `PORT=4174 npm --prefix apps/web run dev` 更换端口。开发页面与文档接口由同一个本地服务提供。
+首次启动前用 `make install` 安装依赖，之后直接运行 `make` 或 `make run`。打开 `http://127.0.0.1:4173`。服务只监听本机；可用 `make PORT=4174` 更换端口，按 Ctrl+C 停止服务。开发页面与文档接口由同一个本地服务提供。
 
-- 点击主题星云，光球缩到左侧、星云列队、文档分支逐条展开；每组最多 12 篇，可分页。总览优先展示。
+- 首页默认把所有文档汇聚为一个知识星云；点击「展开分类」或中央星云，各 category 星云从中心依次散开，点击「汇聚星云」回流合并。分类按钮在手机上也可使用。
+- 点击分类星云，光球缩到左侧、星云列队、文档分支逐条展开；每组最多 12 篇，可分页。总览优先展示。
 - 点击文档，打开原场景中的右侧阅读面板；支持正文、代码高亮与复制、表格、目录、出站引用和反向引用。面板右上角可切换专注阅读。
-- 底部搜索标题、别名、标签与正文；按 `/` 或 `⌘/Ctrl + K` 聚焦搜索。顶部「文档」提供完整列表，「阅读地图」提供地图列表。
+- 底部搜索标题、别名、标签与正文；按 `/` 或 `⌘/Ctrl + K` 聚焦搜索。顶部「文档」提供完整列表。
 - 「暂停」控制场景运动，「重播」回到入场动画；Esc、面包屑与返回按钮逐层返回。尊重系统的减少动态效果设置。
 - 每 4 秒检查文件变化，同步正文、搜索与真实引用，页面隐藏时暂停检查。文档地址使用唯一文件名，月份目录变化不改变地址。
 
-当前五片星云为 Agent、RAG、MySQL、面试题、阅读地图。地图归入阅读地图，`rag-` 文件归入 RAG；其他文档按现有标签归组。这里只对页面分组，不修改原文属性或目录。
+展开后的分类星云按文档 YAML 元数据中的单值 `category` 动态生成，名称与数量随分类变化，每篇文档只进入一个分类。未填写或留空时归入「未分类」。分类按名称排列，文件名与目录不决定归属；`tags` 保留为多标签检索，`type`（兼容 `classes`）表达文档类型，总览优先显示。
+
+```yaml
+---
+title: "RAG 检索评测"
+category: "RAG"
+tags: ["Agent", "检索", "评测"]
+---
+```
+
+该文档进入 RAG 星云，标签参与搜索。category 是本项目约定的自定义文本属性，填写一个分类名称；Obsidian 内置属性包括 tags、aliases、cssclasses，其中 cssclasses 用于样式。[官方属性说明](https://obsidian.md/help/properties)
 
 ## 裁剪与来源
 
@@ -40,7 +53,7 @@ npm --prefix apps/web run dev
 
 ## 文档与边界
 
-递归读取 `content/notes/` 和 `content/maps/`，不收录 inbox、sources、项目配置。title 缺省时显示文件名；别名参与检索，type 优先、兼容 classes；摘要缺省取正文开头，未知日期不补造。
+递归读取 `content/notes/`，不收录 inbox、sources、项目配置。title 缺省时显示文件名；别名参与检索，type 优先、兼容 classes；摘要缺省取正文开头，未知日期不补造。
 
 支持 Obsidian 双链的文件名、显示名、显式路径、章节与段落块引用，兼容 Markdown 代码与表格中的链接。文档嵌入显示目标摘要与入口，避免递归复制正文。重复文件名阻止索引生成；歧义、断链和缺失锚点显示提示。列表或表格整块的块引用尚未支持。
 
@@ -52,7 +65,7 @@ npm --prefix apps/web run dev
 
 ## GitHub Pages
 
-用户已授权公开当前全部 `content/notes/` 与 `content/maps/`。获准的 61 个文件逐项记录于 `pages-public.json`；新增文档不会自动加入公开版本，附件清单当前为空。
+用户已授权公开清单中的笔记。移除 5 篇导航文档后，获准的 56 个文件逐项记录于 `pages-public.json`；新增文档不会自动加入公开版本，附件清单当前为空。
 
 ```sh
 npm --prefix apps/web run build:pages

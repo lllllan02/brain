@@ -1,7 +1,8 @@
 ---
 title: "MySQL EXPLAIN rows 与 filtered"
+category: "MySQL"
 updated_at: "2026-10-06"
-tags: ["MySQL"]
+tags: ["MySQL", "执行计划", "行数估算", "统计信息", "JOIN"]
 classes: ["concept"]
 ---
 

@@ -1,7 +1,8 @@
 ---
 title: "RAG 接口和后端怎么实现无依据答案拦截？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "防幻觉", "结构化输出", "后端校验", "引用校验"]
 classes: ["concept"]
 ---
 

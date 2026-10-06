@@ -1,7 +1,8 @@
 ---
 title: "RAG 检索评测集怎么构建，自动评分如何校准？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "评测集", "数据标注", "评分校准", "多跳检索"]
 classes: ["concept"]
 ---
 

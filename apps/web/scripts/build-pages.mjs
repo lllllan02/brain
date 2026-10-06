@@ -8,7 +8,7 @@ const app=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 export async function publicLibrary(root,manifest){
  if(!Array.isArray(manifest.documents)||!Array.isArray(manifest.assets))throw Error('公开清单必须包含 documents 与 assets 数组');
  const rootReal=await realpath(root),approved=new Set(manifest.assets),raw=[];
- for(const file of manifest.documents){if(typeof file!=='string'||! /^(notes|maps)\/.+\.md$/.test(file)||file.split('/').includes('..'))throw Error('无效公开文档路径');const full=await realpath(path.join(root,file));if(!full.startsWith(rootReal+path.sep))throw Error('公开文档路径越界');raw.push(parseDocument(await readFile(full,'utf8'),file));}
+ for(const file of manifest.documents){if(typeof file!=='string'||! /^notes\/.+\.md$/.test(file)||file.split('/').includes('..'))throw Error('无效公开文档路径');const full=await realpath(path.join(root,file));if(!full.startsWith(rootReal+path.sep))throw Error('公开文档路径越界');raw.push(parseDocument(await readFile(full,'utf8'),file));}
  if(new Set(raw.map(d=>d.id)).size!==raw.length)throw Error('公开文档文件名重复');
  // Filter before rendering: a private target never enters the index, search or relationships.
  const filtered=raw.map(doc=>({...doc,body:doc.body.replace(/!?\[\[([^\]\n]+)\]\]/g,(text,value)=>{const target=value.replaceAll('\\|','|').split('|')[0];if(/\.(png|jpe?g|gif|webp|svg|pdf|mp3|mp4)$/i.test(target))return approved.has(target)?text:'未公开附件';return resolveDocument(target,raw,doc).doc?text:'未公开文档';})}));

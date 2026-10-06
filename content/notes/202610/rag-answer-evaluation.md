@@ -1,7 +1,8 @@
 ---
 title: "RAG 生成回答阶段如何评估答案质量？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "评测", "答案生成", "答案正确性", "忠实度", "引用校验"]
 classes: ["concept"]
 ---
 

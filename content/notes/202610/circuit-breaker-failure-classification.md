@@ -1,7 +1,8 @@
 ---
 title: "哪些错误应该计入熔断，哪些不应该？"
+category: "面试题"
 updated_at: "2026-10-05"
-tags: ["面试题"]
+tags: ["面试题", "熔断", "异常分类", "故障统计"]
 classes: ["concept"]
 ---
 

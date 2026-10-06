@@ -1,7 +1,8 @@
 ---
 title: "RAG 程序能判断检索材料是否足以回答吗？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "可答性判断", "证据不足", "规则校验", "结构化输出"]
 classes: ["concept"]
 ---
 

@@ -1,7 +1,8 @@
 ---
 title: "MySQL EXPLAIN 辅助字段"
+category: "MySQL"
 updated_at: "2026-10-06"
-tags: ["MySQL"]
+tags: ["MySQL", "执行计划", "分区裁剪", "索引", "JOIN"]
 classes: ["concept"]
 ---
 

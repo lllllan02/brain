@@ -1,7 +1,8 @@
 ---
 title: "RAG 证据不足时，何时重试、追问或拒答？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "证据不足", "重试", "追问", "拒答"]
 classes: ["concept"]
 ---
 

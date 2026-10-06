@@ -1,7 +1,8 @@
 ---
 title: "Agent 如何把线上错例回流到评测集？"
+category: "Agent"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["Agent", "错例回流", "评测集", "回归测试"]
 classes: ["concept"]
 ---
 

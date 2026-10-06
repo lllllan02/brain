@@ -1,7 +1,8 @@
 ---
 title: "Recall@K、Precision@K 和 K 分别是什么意思？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "检索评测", "Recall", "Precision", "证据完整性"]
 classes: ["concept"]
 ---
 

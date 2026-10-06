@@ -1,7 +1,8 @@
 ---
 title: "MySQL EXPLAIN select_type"
+category: "MySQL"
 updated_at: "2026-10-06"
-tags: ["MySQL"]
+tags: ["MySQL", "执行计划", "查询块", "子查询", "UNION"]
 classes: ["concept"]
 ---
 

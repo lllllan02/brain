@@ -1,7 +1,8 @@
 ---
 title: "RAG 构建上下文阶段如何评估证据是否保留完整？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "评测", "上下文构建", "证据覆盖", "token预算"]
 classes: ["concept"]
 ---
 

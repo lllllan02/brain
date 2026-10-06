@@ -1,5 +1,4 @@
 import React, {useEffect, useRef} from 'react';
-import {KINDS} from './graph';
 import {T} from './theme';
 
 const P = T.canvas;
@@ -32,6 +31,11 @@ export function NetworkCanvas({graph, layout, live, reduced}) {
       n, p: layout[n.id], d: depth.get(n.id) ?? 4, seed: (i * 9301 + 49297) % 233280 / 233280,
       r: n.kind === 'folder' ? 3.2 : n.kind === 'tag' ? 1.6 : n.kind === 'concept' ? 2.4 : n.kind === 'ghost' ? 2 : 2.2 + Math.min(n.deg, 14) * .22
     }));
+    const documents = nodes.filter(x => x.n.module).sort((a, b) => a.n.id.localeCompare(b.n.id));
+    documents.forEach((x, i) => {
+      const angle = i * 2.399963, radius = 370 * Math.sqrt((i + .5) / Math.max(documents.length, 1));
+      x.merged = [Math.cos(angle) * radius, Math.sin(angle) * radius * .72];
+    });
     const byId = new Map(nodes.map(x => [x.n.id, x]));
     const links = graph.links.filter(l => byId.has(l.a) && byId.has(l.b)).map((l, i) => ({l, A: byId.get(l.a), B: byId.get(l.b), seed: (i * 7919 % 997) / 997}));
     const sparks = Array.from({length: 90}, (_, i) => ({a: i / 90 * Math.PI * 2 + Math.sin(i * 12.9) * .3, v: .35 + (i * 37 % 100) / 100, s: 1 + (i * 13 % 7) / 3}));
@@ -43,15 +47,19 @@ export function NetworkCanvas({graph, layout, live, reduced}) {
       ctx.clearRect(0, 0, W, H);
       const cx = L.orb.x, cy = L.orb.y;
       const sc = (L.orb.s / 440) * Math.min(W * .37 / 380, H * .36 / 300) * (L.stage === 'hub' ? 1 : .55);
-      const hover = L.hover;
-      const hl = hover ? new Set(graph.nodes.filter(n => n.kind === hover).map(n => n.id)) : null;
+      const spread = L.spread ?? (L.expanded ? 1 : 0);
+      const hover = L.expanded ? L.hover : null;
+      const hl = hover ? new Set(graph.nodes.filter(n => n.modules?.includes(hover)).map(n => n.id)) : null;
       if (hl) for (const l of graph.links) { if (hl.has(l.a) && l.kind !== 'contain') hl.add(l.b); }
       const grow = reduced ? 1 : Math.min(1, Math.max(0, (t - .35) / 2.2));
       const prog = x => reduced ? 1 : Math.min(1, Math.max(0, (t - .4 - x.d * .32 - x.seed * .35) / .9));
       const pos = x => {
         const p = prog(x), e = 1 - Math.pow(1 - p, 3);
         const sway = reduced || L.paused ? 0 : Math.sin(t * .5 + x.seed * 6.28) * 3;
-        return [cx + x.p[0] * sc * e + sway, cy + x.p[1] * sc * e + Math.cos(t * .4 + x.seed * 9) * (reduced || L.paused ? 0 : 2.5), p];
+        const merged = x.merged || [0, 0];
+        const px = merged[0] * (1 - spread) + x.p[0] * spread;
+        const py = merged[1] * (1 - spread) + x.p[1] * spread;
+        return [cx + px * sc * e + sway, cy + py * sc * e + Math.cos(t * .4 + x.seed * 9) * (reduced || L.paused ? 0 : 2.5), p];
       };
       for (const x of nodes) x.s = pos(x);
 
@@ -75,7 +83,7 @@ export function NetworkCanvas({graph, layout, live, reduced}) {
       // 连线
       for (const k of links) {
         const [x1, y1, p1] = k.A.s, [x2, y2, p2] = k.B.s;
-        const p = Math.min(p1, p2) * grow;
+        const p = Math.min(p1, p2) * grow * (k.l.kind === 'contain' ? spread : 1);
         if (p <= .02) continue;
         const on = !hl || (hl.has(k.l.a) && hl.has(k.l.b));
         let a = (k.l.both ? .32 : k.l.kind === 'wiki' ? .3 : k.l.kind === 'contain' ? .16 : .11) * p * (on ? 1 : .25) * (hl && on ? 2.2 : 1);
@@ -116,8 +124,8 @@ export function NetworkCanvas({graph, layout, live, reduced}) {
         const [px, py, p] = x.s;
         if (p <= 0) continue;
         const on = !hl || hl.has(x.n.id);
-        const color = KINDS[x.n.kind].color;
-        const a = p * (on ? 1 : .22);
+        const color = graph.kinds[x.n.kind].color;
+        const a = p * (on ? 1 : .22) * (x.n.kind === 'folder' ? spread : 1);
         const r = x.r * (hl && on ? 1.35 : 1);
         ctx.globalAlpha = a;
         ctx.globalCompositeOperation = ADD;

@@ -1,7 +1,8 @@
 ---
 title: "RAG 重排阶段如何评估证据排序？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "检索评测", "重排", "NDCG", "MRR"]
 classes: ["concept"]
 ---
 

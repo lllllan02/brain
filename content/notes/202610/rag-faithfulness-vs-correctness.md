@@ -1,7 +1,8 @@
 ---
 title: "Faithfulness / Groundedness 是什么，和答案正确性有什么区别？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "评测", "忠实度", "答案正确性", "Ragas"]
 classes: ["concept"]
 ---
 

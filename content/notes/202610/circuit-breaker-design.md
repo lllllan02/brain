@@ -1,7 +1,8 @@
 ---
 title: "设计一个通用的熔断 / 降级策略"
+category: "面试题"
 updated_at: "2026-10-05"
-tags: ["面试题"]
+tags: ["面试题", "熔断", "降级", "服务治理", "系统设计"]
 classes: ["overview"]
 ---
 

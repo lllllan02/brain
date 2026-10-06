@@ -1,7 +1,8 @@
 ---
 title: "RAG 构建上下文具体做什么，必须回溯原文吗？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "上下文构建", "去重", "文本压缩", "来源追溯"]
 classes: ["concept"]
 ---
 

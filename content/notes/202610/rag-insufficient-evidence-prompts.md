@@ -1,7 +1,8 @@
 ---
 title: "RAG 提示词怎么写，才能让模型在无答案时如实说明？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "提示词", "防幻觉", "证据不足", "拒答"]
 classes: ["concept"]
 ---
 

@@ -1,7 +1,8 @@
 ---
 title: "RAG 去重、压缩和截断后，怎样检查证据覆盖率与原意？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "上下文构建", "证据覆盖", "原意保留", "文本压缩"]
 classes: ["concept"]
 ---
 

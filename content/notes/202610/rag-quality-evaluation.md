@@ -1,7 +1,8 @@
 ---
 title: "如何评估 RAG 的检索与回答质量？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "评测", "检索评测", "答案生成", "证据完整性"]
 classes: ["concept"]
 ---
 

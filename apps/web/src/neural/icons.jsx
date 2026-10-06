@@ -1,6 +1,7 @@
 import React from 'react';
 
 const paths = {
+  tag: 'M3 3h7l11 11-7 7L3 10ZM7 7h.01',
   works: 'M4 5h16v14H4ZM4 9h16M9 13l2 2 4-4',
   concept: 'M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z',
   methods: 'M5 4h10l4 4v12H5ZM15 4v4h4M8 12h8M8 16h5',

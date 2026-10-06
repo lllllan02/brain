@@ -1,54 +1,57 @@
 import React, {useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback} from 'react';
-import {MODULES, KINDS, moduleOf} from './graph';
+import {moduleOf} from './graph';
 import {Icon} from './icons';
 import {NetworkCanvas} from './NetworkCanvas';
 import {DocumentReader} from './DocumentReader';
 import {T} from './theme';
 import {CONFIG} from '../config';
 
-const FLIP = {works: 1, concepts: -1, methods: -1, ideas: -1, drafts: 1};
-export const MOD_STYLE = Object.fromEntries(Object.entries(T.modules).map(([id, m]) => [id, {...m, flip: FLIP[id]}]));
 
 export const split = n => ({out: n.out - n.mutual, back: n.in - n.mutual, both: n.mutual});
 const fmt = v => v == null ? '—' : Number(v).toLocaleString('zh-CN');
 
 export function moduleItems(graph, modId) {
- const m=MODULES.find(x=>x.id===modId);if(!m)return [];
- return graph.nodes.filter(n=>n.kind===m.kind).sort((a,b)=>({map:0,overview:1}[a.type]??2)-({map:0,overview:1}[b.type]??2));
+ const m=graph.modules.find(x=>x.id===modId);if(!m)return [];
+ return graph.nodes.filter(n=>n.modules?.includes(m.id)).sort((a,b)=>(a.type==='overview'?0:1)-(b.type==='overview'?0:1));
 }
-function moduleSummary(graph,m){const items=moduleItems(graph,m.id);return {count:items.length,sub:[items.filter(n=>n.type==='map').length?'阅读地图':'知识文档','','']};}
-function itemMeta(n){return [[n.type==='map'?'阅读地图':'文档','',''],['引用','Links',n.references?.length||0]];}
+function moduleSummary(graph,m){const items=moduleItems(graph,m.id);return {count:items.length,sub:['知识文档','','']};}
+function itemMeta(n){return [['文档','',''],['引用','Links',n.references?.length||0]];}
 // —— 布局目标 ——
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 function targets(L, t) {
+  const MODULES = L.modules;
   const {w: W, h: H} = L.size, st = L.stage, narrow = W < 760;
   const swim = L.reduced ? 0 : 1;
   const res = {orb: {}, jelly: {}, fan: null};
   if (st === 'hub') {
     const s = narrow ? clamp(W * .56, 180, 280) : clamp(Math.min(W, H) * .5, 250, 440);
-    const cy = narrow ? H * .47 : H * .53;
+    const cy = L.expanded ? H * .48 : narrow ? H * .47 : H * .53;
     res.orb = {x: W / 2, y: cy, s};
-    const rx = narrow ? W * .36 : Math.min(W * .36, 540), ry = narrow ? H * .21 : Math.min(H * .32, 262);
+    const rx = narrow ? W * .36 : Math.min(W * .36, 540), ry = narrow ? H * .16 : Math.min(H * .20, 180);
     MODULES.forEach((m, i) => {
       const a = (m.angle + swim * 7 * Math.sin(t * .17 + i * 1.7)) * Math.PI / 180;
       const r = 1 + swim * .04 * Math.sin(t * .23 + i);
+      if (!L.expanded) {
+        res.jelly[m.id] = {x: W / 2, y: cy, s: s * .55, o: 0, tilt: 0};
+        return;
+      }
       res.jelly[m.id] = {x: W / 2 + Math.cos(a) * rx * r, y: cy + Math.sin(a) * ry * r + swim * 9 * Math.sin(t * .9 + i * 2.1), s: narrow ? 92 : clamp(W * .12, 120, 184), o: 1, tilt: swim * 6 * Math.sin(t * .6 + i)};
     });
   } else if (narrow) {
     res.orb = {x: 40, y: 156, s: 86};
     MODULES.forEach((m, i) => {
-      const sel = m.id === L.mod, k = slotOf(L.mod, m.id);
-      res.jelly[m.id] = {x: 104 + k * (W - 136) / 4, y: 152 + swim * 4 * Math.sin(t * .9 + i * 2), s: sel ? 76 : 54, o: sel ? 1 : .55, tilt: swim * 3 * Math.sin(t * .6 + i)};
+      const sel = m.id === L.mod, k = slotOf(MODULES, L.mod, m.id);
+      res.jelly[m.id] = {x: 104 + k * (W - 136) / Math.max(MODULES.length - 1, 1), y: 152 + swim * 4 * Math.sin(t * .9 + i * 2), s: sel ? 76 : 54, o: sel ? 1 : .55, tilt: swim * 3 * Math.sin(t * .6 + i)};
     });
     const n = L.items.length, gap = clamp((H - 330) / Math.max(n - 1, 1), 22, 54);
     res.fan = {x: 34, y0: 286, gap};
   } else {
     const ox = Math.max(124, W * .09), cy = H * .53;
     res.orb = {x: ox, y: cy, s: 178};
-    const colX = ox + 158, gap = Math.min(122, (H - 150) / 5);
+    const colX = ox + 158, gap = Math.min(122, (H - 150) / MODULES.length);
     MODULES.forEach((m, i) => {
-      const sel = m.id === L.mod, k = slotOf(L.mod, m.id);
-      res.jelly[m.id] = {x: colX + (sel ? 16 : 0), y: cy + (k - 2) * gap + swim * 5 * Math.sin(t * .9 + i * 2), s: sel ? 128 : 92, o: sel ? 1 : .6, tilt: swim * 3 * Math.sin(t * .6 + i)};
+      const sel = m.id === L.mod, k = slotOf(MODULES, L.mod, m.id);
+      res.jelly[m.id] = {x: colX + (sel ? 16 : 0), y: cy + (k - (MODULES.length - 1) / 2) * gap + swim * 5 * Math.sin(t * .9 + i * 2), s: sel ? 128 : 92, o: sel ? 1 : .6, tilt: swim * 3 * Math.sin(t * .6 + i)};
     });
     // 伞状条目以右侧分析栏为基准排在它左边约 90px 处（条目最宽约 270px），触须拉长、画面左右均衡；
     // 模块层和打开笔记后位置相同，右侧栏滑入时伞不跳动
@@ -61,15 +64,16 @@ function targets(L, t) {
   return res;
 }
 
-// 选中的模块排在列的正中间（第 2 格），其余模块按原顺序分列上下，触须从中间向上下对称展开。
-function slotOf(selId, id) {
+// 选中的模块排在靠近列中心的位置，其余模块按原顺序分列上下。
+function slotOf(MODULES, selId, id) {
   const others = MODULES.filter(m => m.id !== selId).map(m => m.id);
-  const order = [others[0], others[1], selId, others[2], others[3]];
+  const order = [...others];
+  order.splice(Math.floor(MODULES.length / 2), 0, selId);
   const k = order.indexOf(id);
   return k < 0 ? MODULES.findIndex(m => m.id === id) : k;
 }
 
-function spring(st, target, dt, k = 62) {
+function springStep(st, target, dt, k = 62) {
   const c = 2 * Math.sqrt(k);
   st.v += (-k * (st.x - target) - c * st.v) * dt;
   st.x += st.v * dt;
@@ -113,8 +117,9 @@ function paintNebula(pair,t,color){
 
 const bez = (p0, p1, p2, p3, u) => { const m = 1 - u; return m * m * m * p0 + 3 * m * m * u * p1 + 3 * m * u * u * p2 + u * u * u * p3; };
 
-function Scene({graph, items, onModule, onItem, live, sel}) {
-  const dustRef = useRef(null);
+function Scene({graph, items, onModule, onItem, onExpand, live, sel}) {
+  const MODULES=graph.modules, KINDS=graph.kinds, MOD_STYLE=graph.styles;
+  const dustRef = useRef(null), unifiedRef = useRef(null);
   const orbRef = useRef(null), jellyRefs = useRef({}), innerRefs = useRef({}), labelRefs = useRef({}), threadRefs = useRef({}), pulseRefs = useRef({});
   const itemRefs = useRef([]), fanRefs = useRef([]), fanPulseRefs = useRef([]);
   const vids = useRef({});
@@ -128,17 +133,30 @@ function Scene({graph, items, onModule, onItem, live, sel}) {
     const S = live.current.springs;
     const step = now => {
       const L = live.current;
+      if (L.modules !== MODULES) return;
       // rAF 给的是帧开始时间，可能早于上面记录的 last；负的 dt 会让后续计算出现 NaN，所以限制为 ≥ 0
       const dt = Math.max(0, Math.min(1 / 30, (now - last) / 1000)); last = Math.max(last, now);
       if (!L.paused) L.time += dt;
+      const spring = (st, target, dt, k) => {
+        if (L.reduced) { st.x = target; st.v = 0; return target; }
+        return springStep(st, target, dt, k);
+      };
+      L.spread = clamp(spring(S.spread, L.expanded ? 1 : 0, dt, 24), 0, 1);
+      const merged = L.stage === 'hub' && !L.expanded;
       const t = L.time, since = (now - L.t0) / 1000;
       const T = targets(L, t);
       const intro = L.stage === 'hub' && !L.reduced;
       // 光球
       const orbS = intro && since < .15 ? T.orb.s * .35 : T.orb.s;
-      const ox = spring(S.orb.x, T.orb.x, dt), oy = spring(S.orb.y, T.orb.y, dt), os = spring(S.orb.s, orbS, dt, 40), oo = spring(S.orb.o, intro && since < .1 ? 0 : 1, dt, 30);
+      const ox = spring(S.orb.x, T.orb.x, dt), oy = spring(S.orb.y, T.orb.y, dt), os = spring(S.orb.s, orbS, dt, 40), oo = spring(S.orb.o, merged || (intro && since < .1) ? 0 : 1, dt, 30);
       L.orb = {x: ox, y: oy, s: os};
       if (orbRef.current) { orbRef.current.style.transform = `translate3d(${ox - os / 2}px,${oy - os / 2}px,0) scale(${os / 460})`; orbRef.current.style.opacity = clamp(oo, 0, 1); }
+      const unifiedOpacity = spring(S.unified, merged ? 1 : 0, dt, 24);
+      if (unifiedRef.current) {
+        const us = os * (1.35 - L.spread * .65);
+        unifiedRef.current.style.transform = `translate3d(${ox - us / 2}px,${oy - us * .375}px,0) scale(${us / 200})`;
+        unifiedRef.current.style.opacity = clamp(unifiedOpacity, 0, 1);
+      }
       const dust = dustRef.current;
       if (dust) {
         const di = clamp(spring(S.dust, L.stage === 'hub' ? .3 : 1, dt, 18), 0, 1);
@@ -160,9 +178,9 @@ function Scene({graph, items, onModule, onItem, live, sel}) {
       // 水母
       MODULES.forEach((m, i) => {
         const j = S.jelly[m.id], tg = T.jelly[m.id];
-        const gated = intro && since < 1 + i * .17;
+        const gated = L.expanded && !L.reduced && ((intro && since < 1 + i * .17) || now - L.splitAt < Math.min(i * 65, 520));
         const x = spring(j.x, gated ? ox : tg.x, dt), y = spring(j.y, gated ? oy : tg.y, dt), s = spring(j.s, gated ? 24 : tg.s, dt), o = spring(j.o, gated ? 0 : tg.o, dt, 40);
-        const lo = spring(j.lo, intro && since < 2 + i * .1 ? 0 : tg.o, dt, 40);
+        const lo = spring(j.lo, gated || (intro && since < 2 + i * .1) ? 0 : tg.o, dt, 40);
         j.cur = {x, y, s};
         const el = jellyRefs.current[m.id], inner = innerRefs.current[m.id], lab = labelRefs.current[m.id];
         if (el) { el.style.transform = `translate3d(${x - s / 2}px,${y - s * .375}px,0) scale(${s / 200})`; el.style.opacity = clamp(o, 0, 1); }
@@ -239,14 +257,14 @@ function Scene({graph, items, onModule, onItem, live, sel}) {
         });
       }
       // 光球与水母的视频画面
-      for (const [id,pair] of Object.entries(vids.current)) { if(pair.image) paintNebula(pair,t,MOD_STYLE[id].color);else paintVideo(pair); }
+      for (const [id,pair] of Object.entries(vids.current)) { if(pair.image) pair.canvas && paintNebula(pair,L.reduced ? 0 : t,MOD_STYLE[id]?.color || '#e6cf98');else paintVideo(pair); }
     };
     // 每帧先排好下一帧再执行：某一帧出错也不会让光球和水母停住
     let warned = false;
     const frame = now => { raf = requestAnimationFrame(frame); try { step(now); } catch (err) { if (!warned) { warned = true; console.error(err); } } };
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);
-  }, [items, live, sel]);
+  }, [graph, items, live, sel]);
 
   // 暂停时一并暂停视频
   useEffect(() => {
@@ -264,6 +282,13 @@ function Scene({graph, items, onModule, onItem, live, sel}) {
       <canvas className="vid" ref={vidRef('orb', 'canvas')}/>
       <canvas className="orb-dust" ref={dustRef} width="1012" height="1012"/>
     </div>
+    <button className="nebula unified-nebula" ref={unifiedRef} onClick={onExpand}
+      disabled={live.current.expanded || !MODULES.length} aria-label="展开分类星云" aria-hidden={live.current.expanded}>
+      <div className="nebula-inner">
+        <img className="nebula-source" ref={vidRef('unified','image')} src={T.media.nebulaPoster} alt=""/>
+        <canvas className="vid nebula-vid" ref={vidRef('unified','canvas')}/>
+      </div>
+    </button>
     <svg className="threads" aria-hidden="true">
       <defs>
         <filter id="thread-blur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3.2"/></filter>
@@ -283,7 +308,7 @@ function Scene({graph, items, onModule, onItem, live, sel}) {
     {MODULES.map(m => {
       const sum = summaries[m.id], active = live.current.mod === m.id;
       return <React.Fragment key={m.id}>
-        <button className={`nebula ${active ? 'active' : ''}`} ref={el => { jellyRefs.current[m.id] = el; }} onClick={() => onModule(m.id)}
+        <button className={`nebula ${active ? 'active' : ''}`} ref={el => { jellyRefs.current[m.id] = el; }} onClick={() => onModule(m.id)} disabled={!live.current.expanded} aria-hidden={!live.current.expanded}
           onPointerEnter={() => { live.current.hover = m.kind; }} onPointerLeave={() => { live.current.hover = null; }}
           aria-label={`${m.title} ${m.en}，${sum.count} 条`}>
           <div className="nebula-inner" ref={el => { innerRefs.current[m.id] = el; }} style={{filter: MOD_STYLE[m.id].filter}}>
@@ -291,7 +316,7 @@ function Scene({graph, items, onModule, onItem, live, sel}) {
             <canvas className="vid nebula-vid" ref={vidRef(m.id,'canvas')}/>
           </div>
         </button>
-        <button className={`nebula-label ${active ? 'active' : ''} ${hub ? 'below' : 'side'}`} ref={el => { labelRefs.current[m.id] = el; }} onClick={() => onModule(m.id)} tabIndex={-1}
+        <button className={`nebula-label ${active ? 'active' : ''} ${hub ? 'below' : 'side'}`} ref={el => { labelRefs.current[m.id] = el; }} onClick={() => onModule(m.id)} tabIndex={-1} disabled={!live.current.expanded} aria-hidden={!live.current.expanded}
           onPointerEnter={() => { live.current.hover = m.kind; }} onPointerLeave={() => { live.current.hover = null; }} style={{'--mod': MOD_STYLE[m.id].color}}>
           <span className="jl-icon"><Icon name={m.icon} size={14}/></span>
           <span className="jl-count">{sum.count}</span>
@@ -314,18 +339,24 @@ function Scene({graph, items, onModule, onItem, live, sel}) {
 }
 
 function Dock({graph,onGo}) {
+ const KINDS=graph.kinds;
  const [q,setQ]=useState('');const [open,setOpen]=useState(false);const searchRef=useRef(null);
  useEffect(()=>{const key=e=>{if((e.key==='/'&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName))||((e.metaKey||e.ctrlKey)&&e.key==='k')){e.preventDefault();searchRef.current?.focus();}};window.addEventListener('keydown',key);return()=>window.removeEventListener('keydown',key);},[]);
- const matches=graph.nodes.filter(n=>n.module&&[n.title,...(n.aliases||[]),...(n.tags||[]),n.body].join(' ').toLowerCase().includes(q.toLowerCase()));
- return <div className="dock">{open&&<section className="ask-results glass"><header><span>文档搜索 <em>Search</em></span><small>{matches.length} 篇</small><button className="icon-btn" onClick={()=>setOpen(false)} aria-label="关闭搜索"><Icon name="close" size={14}/></button></header><div className="search-documents">{matches.map(n=><button key={n.id} onClick={()=>onGo(n.id)}><span style={{color:KINDS[n.kind].color}}>{n.title}</span><small>{n.summary}</small></button>)}{!matches.length&&<p className="quiet">没有找到匹配的文档</p>}</div></section>}<div className="dock-panel glass"><form className="ask" onSubmit={e=>{e.preventDefault();setOpen(true);}}><input ref={searchRef} value={q} onChange={e=>{setQ(e.target.value);setOpen(Boolean(e.target.value));}} placeholder="在你的知识宇宙中寻找… Search your notes" aria-label="搜索文档"/><button className="send" aria-label="搜索"><Icon name="send" size={16}/></button></form><div className="dock-chips"><span className="me"><Icon name="agent" size={13}/>{graph.public?'公开知识库':'私人知识库'} <em>{graph.public?'Public library':'Local library'}</em></span><button onClick={()=>{setQ('');setOpen(true);}}>全部文档</button><button onClick={()=>onGo('index')}>知识导航</button><span className="quiet">✦ 沿着链接，继续阅读</span></div></div></div>;
+ const matches=graph.nodes.filter(n=>n.module&&[n.title,n.category,...(n.aliases||[]),...(n.tags||[]),n.body].join(' ').toLowerCase().includes(q.toLowerCase()));
+ return <div className="dock">{open&&<section className="ask-results glass"><header><span>文档搜索 <em>Search</em></span><small>{matches.length} 篇</small><button className="icon-btn" onClick={()=>setOpen(false)} aria-label="关闭搜索"><Icon name="close" size={14}/></button></header><div className="search-documents">{matches.map(n=><button key={n.id} onClick={()=>onGo(n.id)}><span style={{color:KINDS[n.kind].color}}>{n.title}</span><small>{n.summary}</small></button>)}{!matches.length&&<p className="quiet">没有找到匹配的文档</p>}</div></section>}<div className="dock-panel glass"><form className="ask" onSubmit={e=>{e.preventDefault();setOpen(true);}}><input ref={searchRef} value={q} onChange={e=>{setQ(e.target.value);setOpen(Boolean(e.target.value));}} placeholder="在你的知识宇宙中寻找… Search your notes" aria-label="搜索文档"/><button className="send" aria-label="搜索"><Icon name="send" size={16}/></button></form><div className="dock-chips"><span className="me"><Icon name="agent" size={13}/>{graph.public?'公开知识库':'私人知识库'} <em>{graph.public?'Public library':'Local library'}</em></span><button onClick={()=>{setQ('');setOpen(true);}}>全部文档</button><span className="quiet">✦ 沿着链接，继续阅读</span></div></div></div>;
 }
 
 export function Home({graph, layout, focus, setFocus, onAction, onAbout, reduced}) {
+  const MODULES=graph.modules, KINDS=graph.kinds, MOD_STYLE=graph.styles;
   const stageRef = useRef(null);
   const [size, setSize] = useState({w: 1280, h: 760});
   const [paused, setPaused] = useState(false);
-  const {mod, sel} = focus;
+  const [categoriesExpanded, setCategoriesExpanded] = useState(false);
+  const selected = graph.index.get(focus.sel);
+  const sel = selected?.module ? selected.id : null;
+  const mod = sel ? moduleOf(graph,selected,focus.mod).id : MODULES.some(m=>m.id===focus.mod) ? focus.mod : null;
   const stage = sel ? 'note' : mod ? 'module' : 'hub';
+  const expanded = stage !== 'hub' || categoriesExpanded;
   const allItems = useMemo(() => moduleItems(graph, mod), [graph, mod]);
   const [itemPage,setItemPage]=useState(0);
   useEffect(()=>{setItemPage(sel?Math.floor(Math.max(0,allItems.findIndex(n=>n.id===sel))/12):0);},[mod,sel,allItems]);
@@ -334,13 +365,14 @@ export function Home({graph, layout, focus, setFocus, onAction, onAbout, reduced
   if (!live.current) {
     const now = performance.now();
     live.current = {t0: now, time: 0, stage, mod, items, size, reduced, paused: false, hover: null, itemState: [], fanStart: now, orb: {x: 640, y: 380, s: 400},
-      springs: {dust: sp(.3), orb: {x: sp(size.w / 2), y: sp(size.h / 2), s: sp(120), o: sp(0)}, jelly: Object.fromEntries(MODULES.map(m => [m.id, {x: sp(size.w / 2), y: sp(size.h / 2), s: sp(20), o: sp(0), lo: sp(0)}]))}};
+      springs: {spread: sp(expanded ? 1 : 0), unified: sp(0), dust: sp(.3), orb: {x: sp(size.w / 2), y: sp(size.h / 2), s: sp(120), o: sp(0)}, jelly: Object.fromEntries(MODULES.map(m => [m.id, {x: sp(size.w / 2), y: sp(size.h / 2), s: sp(20), o: sp(0), lo: sp(0)}]))}};
     let seen = false;
     try { seen = !!sessionStorage.getItem('neural-intro-seen'); } catch {}
     live.current.introSeen = reduced || seen;
     if (live.current.introSeen) live.current.t0 = now - 6000;
   }
-  Object.assign(live.current, {stage, mod, items, size, reduced, paused});
+  Object.assign(live.current, {stage, mod, items, size, reduced, paused, expanded, modules: MODULES});
+  for(const m of MODULES) live.current.springs.jelly[m.id] ||= {x:sp(live.current.orb.x),y:sp(live.current.orb.y),s:sp(20),o:sp(0),lo:sp(0)};
   useLayoutEffect(() => {
     const el = stageRef.current;
     const measure = () => {
@@ -349,7 +381,7 @@ export function Home({graph, layout, focus, setFocus, onAction, onAbout, reduced
       if (L.stage === 'hub' && performance.now() - L.t0 < 300) {
         const o = targets({...L, size: {w, h}}, 0).orb;
         Object.assign(S.orb, {x: sp(o.x), y: sp(o.y)});
-        for (const m of MODULES) Object.assign(S.jelly[m.id], {x: sp(o.x), y: sp(o.y)});
+        for (const m of L.modules) Object.assign(S.jelly[m.id], {x: sp(o.x), y: sp(o.y)});
         L.orb = {...L.orb, x: o.x, y: o.y};
       }
       setSize({w, h});
@@ -363,40 +395,51 @@ export function Home({graph, layout, focus, setFocus, onAction, onAbout, reduced
   useEffect(() => {
     const key = e => {
       if (e.key !== 'Escape' || e.isComposing || document.querySelector('.veil')) return;
-      if (sel) setFocus({mod, sel: null}); else if (mod) setFocus({mod: null, sel: null});
+      if (sel) setFocus({mod, sel: null}); else if (mod) setFocus({mod: null, sel: null}); else setCategoriesExpanded(false);
     };
     window.addEventListener('keydown', key);
     return () => window.removeEventListener('keydown', key);
   }, [mod, sel, setFocus]);
 
   const go = useCallback(id => {
-    const n = graph.index.get(id), m = moduleOf(n);
+    const n = graph.index.get(id), m = moduleOf(graph,n,mod);
     if (m) setFocus({mod: m.id, sel: id});
-  }, [graph, setFocus]);
+  }, [graph, mod, setFocus]);
   const replay = () => {
     const L = live.current, now = performance.now();
     L.t0 = now; L.time = 0;
     const S = L.springs;
     S.orb.s.x = 120; S.orb.o.x = 0;
     for (const m of MODULES) Object.assign(S.jelly[m.id], {x: sp(L.orb.x), y: sp(L.orb.y), s: sp(20), o: sp(0), lo: sp(0)});
+    setCategoriesExpanded(false);
     setFocus({mod: null, sel: null});
+  };
+  const toggleCategories = () => {
+    live.current.splitAt = performance.now();
+    setCategoriesExpanded(!categoriesExpanded);
   };
   const node = sel ? graph.index.get(sel) : null;
   const m = MODULES.find(x => x.id === mod);
 
 
-  return <section ref={stageRef} className={`home-stage stage-${stage} ${live.current.introSeen ? 'intro-done' : ''}`} aria-label="知识星云图谱">
+  return <section ref={stageRef} className={`home-stage stage-${stage} ${expanded ? 'categories-expanded' : 'categories-merged'} ${live.current.introSeen ? 'intro-done' : ''}`} aria-label="知识星云图谱">
     <div className="stage-bg"/>
     <NetworkCanvas graph={graph} layout={layout} live={live} reduced={reduced}/>
-    <Scene graph={graph} items={stage === 'hub' ? [] : items} sel={sel} live={live} onModule={id => setFocus({mod: id === mod && stage !== 'hub' ? mod : id, sel: null})} onItem={id => setFocus({mod, sel: id})}/>
+    <Scene graph={graph} items={stage === 'hub' ? [] : items} sel={sel} live={live} onExpand={toggleCategories} onModule={id => { setCategoriesExpanded(true); setFocus({mod: id, sel: null}); }} onItem={id => setFocus({mod, sel: id})}/>
 
     <div className="hub-copy" aria-hidden={stage !== 'hub'}>
       <p className="eyebrow">{CONFIG.brand.name} · {CONFIG.brand.sub} <span>{CONFIG.brand.tagline}</span></p>
       <h1>让每一个想法，<br/>在星云中相遇。</h1>
       <p className="hub-en">Every thought finds its constellation.</p>
-      <p className="hub-meta">{MODULES.length} 片星云 <em>nebulae</em> · {graph.nodes.filter(n=>n.module).length} 篇文档 <em>documents</em></p>
-      <p className="hub-hint">点击星云，展开文档 · <em>Tap a nebula to explore</em></p>
+      <p className="hub-meta">{expanded ? `${MODULES.length} 片分类星云` : '1 片知识星云'} <em>{expanded ? 'categories' : 'nebula'}</em> · {graph.nodes.filter(n=>n.module).length} 篇文档 <em>documents</em></p>
+      <p className="hub-hint">{expanded ? '点击分类星云，展开文档' : '所有知识在此汇聚 · 展开分类，探索脉络'}</p>
     </div>
+
+    {stage === 'hub' && <button className="category-toggle glass" onClick={toggleCategories} aria-expanded={categoriesExpanded} disabled={!MODULES.length}>
+      <Icon name={categoriesExpanded ? 'spark' : 'grid'} size={16}/>
+      <span>{categoriesExpanded ? '汇聚星云' : '展开分类'}<em>{categoriesExpanded ? 'Merge nebula' : 'Explore categories'}</em></span>
+      <b>{MODULES.length}</b>
+    </button>}
 
     {stage !== 'hub' && <nav className="crumbs" aria-label="图谱路径">
       <button className="crumb-back" onClick={() => setFocus(sel ? {mod, sel: null} : {mod: null, sel: null})} aria-label="返回上一层"><Icon name="back" size={16}/></button>
@@ -412,9 +455,9 @@ export function Home({graph, layout, focus, setFocus, onAction, onAbout, reduced
       <button onClick={onAbout} title="关于图谱 About"><Icon name="info" size={15}/><span>数据来源 <em>Sources</em></span></button>
     </div>
 
-    {stage === 'hub' && <div className="legend glass" aria-label="图例">
+    {stage === 'hub' && expanded && <div className="legend glass" aria-label="图例">
       <h3>主题星云 <em>Nebulae</em></h3>
-      {MODULES.map(m=>m.kind).map(k => <div key={k}><i style={{'--kc': KINDS[k].color}} className={k === 'ghost' ? 'ghost' : ''}/>{KINDS[k].label} <em>{KINDS[k].en}</em><b>{graph.nodes.filter(n => n.kind === k).length}</b></div>)}
+      {MODULES.map(m=>m.kind).map(k => <div key={k}><i style={{'--kc': KINDS[k].color}} className={k === 'ghost' ? 'ghost' : ''}/>{KINDS[k].label} <em>{KINDS[k].en}</em><b>{graph.nodes.filter(n => n.modules?.includes(k)).length}</b></div>)}
       <div className="legend-lines"><span><i className="ln mutual"/>互引 <em>Mutual</em></span><span><i className="ln one"/>引用 <em>Reference</em></span></div>
     </div>}
     {stage === 'hub' && <Dock graph={graph} onGo={go}/>}

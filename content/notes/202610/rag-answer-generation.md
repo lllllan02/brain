@@ -1,7 +1,8 @@
 ---
 title: "RAG 生成回答阶段具体做什么？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "答案生成", "证据推理", "LLM"]
 classes: ["concept"]
 ---
 

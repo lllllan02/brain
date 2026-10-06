@@ -1,7 +1,8 @@
 ---
 title: "MySQL EXPLAIN Extra"
+category: "MySQL"
 updated_at: "2026-10-06"
-tags: ["MySQL"]
+tags: ["MySQL", "执行计划", "覆盖索引", "索引条件下推", "排序", "临时表"]
 classes: ["concept"]
 ---
 

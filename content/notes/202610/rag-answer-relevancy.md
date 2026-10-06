@@ -1,7 +1,8 @@
 ---
 title: "RAG 回答相关性是什么，为什么答对事实也可能不切题？"
+category: "RAG"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["RAG", "评测", "回答相关性", "Ragas"]
 classes: ["concept"]
 ---
 

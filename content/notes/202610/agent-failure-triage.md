@@ -1,7 +1,8 @@
 ---
 title: "Agent 如何人工确认错例并定位失败原因？"
+category: "Agent"
 updated_at: "2026-10-05"
-tags: ["Agent"]
+tags: ["Agent", "错例回流", "人工审核", "失败归因"]
 classes: ["concept"]
 ---
 

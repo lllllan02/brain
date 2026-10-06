@@ -1,10 +1,5 @@
 {
   "documents": [
-    "maps/agent-evaluation-map.md",
-    "maps/agent-map.md",
-    "maps/index.md",
-    "maps/interview-map.md",
-    "maps/mysql-map.md",
     "notes/202610/agent-components.md",
     "notes/202610/agent-definition-and-boundaries.md",
     "notes/202610/agent-definition.md",
