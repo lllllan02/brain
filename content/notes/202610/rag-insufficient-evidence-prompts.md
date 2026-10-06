@@ -13,10 +13,6 @@ classes: ["concept"]
 >
 > 示例：材料只写「支持退款」，没有到账时间，用户问「几天到账」，应说明无法确认，不能猜三天。
 
-提示词属于软约束，需通过样本验证效果。
+提示词属于软约束，需[[rag-hallucination-guardrail-evaluation|通过样本验证效果]]。
 
 参考：[Claude 官方文档：降低幻觉](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations)。
-
-## 相关内容
-
-- 上级主题：[[rag-insufficient-evidence-handling|RAG 检索不到内容时怎么办？如何防止模型硬凑答案、产生幻觉？]]

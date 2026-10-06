@@ -17,8 +17,4 @@ classes: ["concept"]
 
 **用于定位的键列，与索引能提供的全部作用不同。** 后续列还可能用于索引条件下推、覆盖或排序，不能仅凭 key_len 判断它们完全没用。
 
-`possible_keys=NULL` 也可能出现非空 key：没有适合条件定位的候选索引时，优化器仍可能选择覆盖查询的全索引扫描。反过来，key 非空只说明选了索引，仍需看 type 是否为 index、预计读多少行。
-
-## 相关内容
-
-- 上级主题：[[mysql-explain|MySQL EXPLAIN]]
+`possible_keys=NULL` 也可能出现非空 key：没有适合条件定位的候选索引时，优化器仍可能选择覆盖查询的全索引扫描。反过来，key 非空只说明选了索引，仍需看 [[mysql-explain-type|type 是否为 index]]、预计读多少行。

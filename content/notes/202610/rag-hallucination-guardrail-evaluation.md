@@ -12,7 +12,3 @@ classes: ["concept"]
 > 尤其要测试「返回了内容，但内容没有答案」；只测试空检索，无法验证模型能否识别证据不足。
 
 参考：[RAG 评测](https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/rag-evaluators)。
-
-## 相关内容
-
-- 上级主题：[[rag-quality-evaluation|如何评估 RAG 的检索与回答质量？]]

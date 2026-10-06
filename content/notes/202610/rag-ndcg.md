@@ -16,7 +16,3 @@ classes: ["concept"]
 **NDCG 高不保证回答所需的信息齐全**。它衡量标注相关性的排序表现，不直接检查不同条件或例外是否都被覆盖。
 
 参考：[Microsoft 对 NDCG 的说明](https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/rag-evaluators)。
-
-## 相关内容
-
-- 上级主题：[[rag-reranking-evaluation|RAG 重排阶段如何评估证据排序？]]

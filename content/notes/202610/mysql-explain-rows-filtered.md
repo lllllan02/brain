@@ -21,7 +21,3 @@ classes: ["concept"]
 3. **估算与实际对照**。数据倾斜、统计信息偏差可能造成误估。需要验证时使用 EXPLAIN ANALYZE 查看实际行数、loops 和耗时；这里的乘法不直接适用于所有连接算法，也不等于经过聚合、去重或 LIMIT 后的最终行数。
 
 参考：[MySQL 条件过滤与行数估算](https://dev.mysql.com/doc/refman/8.4/en/condition-filtering.html)。
-
-## 相关内容
-
-- 上级主题：[[mysql-explain|MySQL EXPLAIN]]

@@ -14,7 +14,3 @@ classes: ["concept"]
 Ragas 的 Faithfulness 将回答拆成事实陈述，计算「能由上下文支持的陈述数 / 回答中的陈述总数」。例如两项陈述只有一项有依据，得分为 1/2。该分数不直接衡量必要信息是否全部回答，也不保证材料本身正确；Groundedness 的具体实现应按所用评测工具的定义确定。
 
 参考：[Ragas Faithfulness 的定义与计算方式](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness/)。
-
-## 相关内容
-
-- 上级主题：[[rag-answer-evaluation|RAG 生成回答阶段如何评估答案质量？]]

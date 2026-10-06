@@ -12,7 +12,3 @@ classes: ["concept"]
 记录查询、工具调用、结果和采用的证据，检查每轮新增了哪些必要事实、是否重复查询，以及证据不足时是否继续查找、充分时是否及时停止。任务成功率与延迟、调用成本一起比较，允许不同的合理检索路径。
 
 参考：[Agent 轨迹评估工具与匹配方式](https://github.com/langchain-ai/agentevals)。
-
-## 相关内容
-
-- 上级主题：[[agent-evaluation-map|Agent 评测地图]]

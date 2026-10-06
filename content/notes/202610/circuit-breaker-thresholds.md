@@ -14,7 +14,3 @@ classes: ["concept"]
 - 触发阈值：失败率达到阈值，或耗时超过指定标准的慢调用比例达到阈值，任一条件满足即可触发。慢调用即使最终成功，也可能持续占用资源，因此可以单独作为保护依据。
 
 仅作参考：[Polly 默认配置](https://www.pollydocs.org/strategies/circuit-breaker#defaults)统计最近 30 秒的调用，至少 100 次样本，失败率达到 10% 时触发熔断；具体数值可按业务调整。
-
-## 相关内容
-
-- 上级主题：[[circuit-breaker-design|设计一个通用的熔断 / 降级策略]]

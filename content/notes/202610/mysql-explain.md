@@ -13,18 +13,18 @@ classes: ["overview"]
 
 | 字段 | 简单含义 |
 |---|---|
-| `id` | 查询块编号；同一查询块访问多张表时可有多行相同的 id |
-| `select_type` | 查询块的类型，如 SIMPLE、PRIMARY、SUBQUERY |
-| `table` | 这一行访问的表、别名或中间结果集 |
+| [[mysql-explain-id\|id]] | 查询块编号；同一查询块访问多张表时可有多行相同的 id |
+| [[mysql-explain-select-type\|select_type]] | 查询块的类型，如 SIMPLE、PRIMARY、SUBQUERY |
+| [[mysql-explain-auxiliary-fields\|table]] | 这一行访问的表、别名或中间结果集 |
 | `partitions` | 计划访问的分区；非分区表通常为 NULL |
-| `type` | 当前表的访问方式，如 ref、range、ALL |
-| `possible_keys` | 可能用于查找数据的候选索引 |
+| [[mysql-explain-type\|type]] | 当前表的访问方式，如 ref、range、ALL |
+| [[mysql-explain-index-fields\|possible_keys]] | 可能用于查找数据的候选索引 |
 | `key` | 当前计划选用的索引 |
 | `key_len` | 使用的索引键长度，单位字节 |
 | `ref` | 索引等值查找时用于匹配的常量、列或表达式 |
-| `rows` | 当前访问步骤预计检查的行数 |
+| [[mysql-explain-rows-filtered\|rows]] | 当前访问步骤预计检查的行数 |
 | `filtered` | 预计候选行经过剩余条件后留下的百分比 |
-| `Extra` | 覆盖索引、条件过滤、排序、临时表等补充信息 |
+| [[mysql-explain-extra\|Extra]] | 覆盖索引、条件过滤、排序、临时表等补充信息 |
 
 ## 单表：怎样逐字段读结果
 
@@ -75,14 +75,3 @@ WHERE u.id BETWEEN 100 AND 110;
 普通 EXPLAIN 给出计划，不提供完整执行后的实测统计：`type / key` 是当前计划的策略选择，`rows / filtered` 是估算。估算输出也不等于整个 SQL 的最终返回数，后续 JOIN、聚合、去重、LIMIT 都可能改变它。需要验证耗时、实际行数和循环次数时，可在合适环境使用会真实执行查询的 `EXPLAIN ANALYZE`。
 
 参考：[MySQL EXPLAIN 语法与 ANALYZE](https://dev.mysql.com/doc/refman/8.4/en/explain.html)。
-
-## 相关内容
-
-- 上级主题：[[mysql-map|MySQL 学习地图]]
-- 展开：[[mysql-explain-id|MySQL EXPLAIN id]]
-- 展开：[[mysql-explain-select-type|MySQL EXPLAIN select_type]]
-- 展开：[[mysql-explain-type|MySQL EXPLAIN type]]
-- 展开：[[mysql-explain-index-fields|MySQL EXPLAIN 索引相关字段]]
-- 展开：[[mysql-explain-rows-filtered|MySQL EXPLAIN rows 与 filtered]]
-- 展开：[[mysql-explain-extra|MySQL EXPLAIN Extra]]
-- 展开：[[mysql-explain-auxiliary-fields|MySQL EXPLAIN 辅助字段]]

@@ -14,7 +14,3 @@ classes: ["concept"]
 评测时，对照问题检查回答是否作出了所需判断、回应了各个子问题，以及是否加入大量无关背景。Ragas 的回答相关性指标提供自动评分，用于估计答案与问题的匹配程度；它不验证事实正确性，仍需结合正确性和证据支持情况一起评估。
 
 参考：[Ragas 回答相关性指标](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/answer_relevance/)。
-
-## 相关内容
-
-- 上级主题：[[rag-answer-evaluation|RAG 生成回答阶段如何评估答案质量？]]
