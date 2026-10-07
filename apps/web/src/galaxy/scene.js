@@ -35,6 +35,8 @@ export function createGalaxy(container, graph, hooks, reduced) {
   let expanded = false, transition = null, overview = null, clusters = null, effects = null;
   let display = null, categoryBlend = 0;
   let presetFrom = null;
+  let hoveredCategory = null;
+  let filteredLinks = false;
   const scratch = new Vector3();
 
   function snapshot() {
@@ -48,6 +50,22 @@ export function createGalaxy(container, graph, hooks, reduced) {
     renderer.setLinkOpacity(preset.look.linkOpacity * (1 - blend) + style.linkOpacity * blend);
     renderer.setNodeScale(preset.look.nodeSize * 2 * (1 - blend) + style.nodeScale * blend);
     renderer.setStarfieldIntensity(1 - blend + style.starfield * blend);
+    if (filteredLinks !== (blend > .005)) updateLinkFilter();
+  }
+  function updateLinkFilter() {
+    filteredLinks = categoryBlend > .005;
+    renderer.setLinkFilter(filteredLinks ? i => {
+      const link = data.links[i], a = data.nodes[link.source].folderTop, b = data.nodes[link.target].folderTop;
+      return a === b && (!category || a === category);
+    } : null);
+    // Expanded categories stay visually independent even when a note is open.
+    // The reader still exposes all actual incoming and outgoing references.
+    renderer.setSelectedLinks(filteredLinks
+      ? focus.index >= 0 ? focus.links.filter(i => {
+        const link = data.links[i];
+        return data.nodes[link.source].folderTop === data.nodes[link.target].folderTop;
+      }) : []
+      : focus.links, []);
   }
   function frameDestination(target, instant = false) {
     const center = new Vector3();
@@ -57,14 +75,24 @@ export function createGalaxy(container, graph, hooks, reduced) {
     let r = 30;
     for (let i = 0; i < target.length; i += 3) r = Math.max(r, new Vector3().fromArray(target, i).distanceTo(center));
     camera.cancelMotion();
-    const fit = r * (expanded ? (width < 640 ? .78 : .59) : .76) / Math.min(1, width / height);
+    let fit = r * .76 / Math.min(1, width / height);
+    if (expanded && clusters) {
+      let horizontal = 30, vertical = 30, depth = 0;
+      for (let i = 0; i < target.length; i += 3) {
+        scratch.fromArray(target, i).sub(center);
+        horizontal = Math.max(horizontal, Math.abs(scratch.dot(clusters.right)));
+        vertical = Math.max(vertical, Math.abs(scratch.dot(clusters.up)));
+        depth = Math.max(depth, Math.abs(scratch.dot(clusters.normal)));
+      }
+      fit = Math.max((horizontal + 25) / (width / height), vertical + 45) * .68 + depth * .12;
+    }
     if (instant || reduced) camera.setInitialFraming(center, fit);
     else camera.resetView(center, fit);
   }
   function expand(value, instant = false, morph = false) {
     expanded = value;
     if (!ready || !overview) return;
-    hovered = -1;
+    hovered = -1; hoveredCategory = null;
     const from = snapshot();
     display = new Float32Array(from);
     const to = expanded ? clusters.positions : overview;
@@ -81,7 +109,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     if (transition) {
       transition.elapsed += dt;
       const p = Math.min(1, transition.elapsed / transition.duration);
-      interpolateCategories(transition.from, transition.to, p, transition.expanding && !transition.morph, display);
+      interpolateCategories(transition.from, transition.to, p, transition.expanding && !transition.morph, display, clusters);
       categoryBlend = transition.blendFrom + ((transition.expanding ? 1 : 0) - transition.blendFrom) * categoryEase(p);
       burst = transition.expanding && !transition.morph ? p : -1;
       renderer.updatePositions(); categorySpace(categoryBlend);
@@ -91,7 +119,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
         applyFocus(Boolean(selected || category));
       }
     }
-    effects?.update(burst);
+    effects?.update(burst, display, dt);
   }
 
   function bounds(indices) {
@@ -112,7 +140,8 @@ export function createGalaxy(container, graph, hooks, reduced) {
   function applyFocus(move = false) {
     focus = galaxyFocus(data, selected, category);
     renderer.setFocus(focus.active ? i => focus.bright.has(i) ? 1 : 0.12 : null);
-    renderer.setSelectedLinks(focus.links, []);
+    updateLinkFilter();
+    renderer.setLinkOpacity(expanded && category && focus.index < 0 ? .16 : preset.look.linkOpacity * (1 - categoryBlend) + categoryStyle(preset.id).linkOpacity * categoryBlend);
     if (!ready || !move || transition) return;
     if (focus.index >= 0) {
       camera.cancelMotion();
@@ -175,7 +204,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     if (ready) {
       if (!selected && !category && overview) {
         clusters = categoryLayout(data, overview, {aspect: width / height, elevation: preset.frameElevDeg || 18, preset: preset.id});
-        effects?.dispose(); effects = new CategoryEffects(renderer.scene, clusters.groups);
+        effects?.dispose(); effects = new CategoryEffects(renderer.scene, clusters.groups, data, colors);
         if (expanded) expand(true, true);
         else applyFocus(true);
       }
@@ -191,11 +220,17 @@ export function createGalaxy(container, graph, hooks, reduced) {
       result.push({id: data.nodes[i].id, title: data.nodes[i].name, x: p.x, y: p.y});
     }
     if (expanded && !transition && !selected && clusters) {
-      for (const group of clusters.groups) {
+      const occupied = [];
+      const ordered = [...clusters.groups].sort((a,b) => Number(b.id === (hoveredCategory || category)) - Number(a.id === (hoveredCategory || category)) || b.members.length - a.members.length);
+      for (const group of ordered) {
         const module = graph.modules.find(m => m.id === group.id);
         const p = new Vector3(...group.center).addScaledVector(clusters.up, group.radius + 12).project(renderer.camera);
         const x = (p.x + 1) * width / 2, y = (1 - p.y) * height / 2;
         if (p.z < -1 || p.z > 1 || x < 20 || x > width - 20 || y < 76 || y > height - 88) continue;
+        const half = ((module?.title.length || 3) * (width < 640 ? 11 : 13) + 20) / 2;
+        const box = {left:x-half,right:x+half,top:y-28,bottom:y+4};
+        if (occupied.some(r => box.left < r.right && box.right > r.left && box.top < r.bottom && box.bottom > r.top)) continue;
+        occupied.push(box);
         result.push({id: group.id, title: module?.title || '未分类', x, y, category: true});
       }
     }
@@ -215,7 +250,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
       renderer.updatePositions(); renderer.refreshClusterClouds();
       overview = snapshot();
       clusters = categoryLayout(data, overview, {aspect: width / height, elevation: preset.frameElevDeg || 18, preset: preset.id});
-      effects = new CategoryEffects(renderer.scene, clusters.groups);
+      effects = new CategoryEffects(renderer.scene, clusters.groups, data, colors);
       if (expanded && presetFrom) {
         renderer.setDisplayPositions(presetFrom);
         expand(true, reduced, true);
@@ -270,6 +305,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     pause(value) { if (disposed) return; paused = value; if (value) camera.cancelMotion(); },
     preset(id) { if (!disposed) setPreset(id); },
     expand(value) { if (!disposed) expand(value); },
+    hoverCategory(id) { hoveredCategory = id; },
     reset() { if (!disposed) { if (expanded && clusters) frameDestination(clusters.positions); else frame(); } },
     replay() { if (!disposed && ready) { frame(); if (!reduced) renderer.playReveal(2200); } },
     dispose,

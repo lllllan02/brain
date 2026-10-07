@@ -53,3 +53,39 @@ test('展开和收回保持起止位置准确，途中反向切换不跳帧', ()
     }
   }
 });
+
+test('分类排列由视图维度决定，不受引用数量或输入顺序牵引', () => {
+  const nodes = Array.from({length:24}, (_,i)=>({id:`n${i}`,folderTop:`c${i}`}));
+  const links = nodes.slice(1).map((_,i)=>({source:0,target:i+1}));
+  const source = new Float32Array(nodes.length * 3);
+  const layouts = ['galaxy','nebula','deepfield'].map(preset => {
+    const base = categoryLayout({nodes,links:[]}, source, {preset});
+    assert.deepEqual(categoryLayout({nodes,links}, source, {preset}).positions, base.positions);
+    assert.deepEqual(categoryLayout({nodes:[...nodes].reverse()}, source, {preset}).groups.map(g=>g.center), base.groups.map(g=>g.center));
+    return base;
+  });
+  const projected = layout => layout.groups.map(g=>({
+    x:g.center.reduce((sum,v,i)=>sum+v*layout.right.getComponent(i),0),
+    y:g.center.reduce((sum,v,i)=>sum+v*layout.up.getComponent(i),0),
+    z:g.center.reduce((sum,v,i)=>sum+v*layout.normal.getComponent(i),0),
+  }));
+  const [disk, shell, sphere] = layouts.map(projected);
+  assert.ok(disk.every(p=>Math.abs(p.z)<1e-8));
+  const range = points => Math.max(...points.map(p=>p.z))-Math.min(...points.map(p=>p.z));
+  assert.ok(range(shell)>10 && range(shell)<range(sphere));
+  // A sphere has comparable extents on all axes, unlike a flattened disk.
+  const spans = ['x','y','z'].map(axis=>Math.max(...sphere.map(p=>p[axis]))-Math.min(...sphere.map(p=>p[axis])));
+  assert.ok(Math.min(...spans) / Math.max(...spans) > .85);
+});
+
+test('错峰动画保留原位和终点，快速反向切换仍连续', () => {
+  const from=new Float32Array([12,4,5,-7,2,18]),to=new Float32Array([200,40,0,-150,-10,80]);
+  const motion={delays:new Float32Array([0,.12]),tangents:new Float32Array([10,20,0,-10,-20,0])};
+  const out=new Float32Array(from.length);
+  assert.deepEqual(interpolateCategories(from,to,0,true,out,motion),from);
+  assert.deepEqual(interpolateCategories(from,to,1,true,out,motion),to);
+  const mid=new Float32Array(interpolateCategories(from,to,.07,true,out,motion));
+  assert.deepEqual(mid.slice(3),from.slice(3));
+  assert.notDeepEqual(mid.slice(0,3),from.slice(0,3));
+  assert.deepEqual(interpolateCategories(mid,from,0,false,out,motion),mid);
+});

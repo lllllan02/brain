@@ -75,7 +75,7 @@ export function Home({graph, focus, setFocus, reduced}) {
   return <section className={`galaxy-page ${node ? 'galaxy-reading' : ''}`} aria-label="知识星云">
     <div className={`galaxy-viewport ${!ready || error ? 'is-loading' : ''}`} ref={host}>
       <div className="galaxy-labels">{ready && !error && labels.map(label => label.category ?
-        <button key={label.id} className="galaxy-category-label" style={{left: label.x, top: label.y}} onClick={() => setFocus({mod: label.id, sel: null})} aria-label={`查看${label.title}分类`}>{label.title}</button> :
+        <button key={label.id} className="galaxy-category-label" style={{left: label.x, top: label.y}} onPointerEnter={() => scene.current?.hoverCategory(label.id)} onPointerLeave={() => scene.current?.hoverCategory(null)} onFocus={() => scene.current?.hoverCategory(label.id)} onBlur={() => scene.current?.hoverCategory(null)} onClick={() => setFocus({mod: label.id, sel: null})} aria-label={`查看${label.title}分类`}>{label.title}</button> :
         <span key={label.id} className="galaxy-label" aria-hidden="true" style={{left: label.x, top: label.y}}>{label.title}</span>
       )}</div>
     </div>

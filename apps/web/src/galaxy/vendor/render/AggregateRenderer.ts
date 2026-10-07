@@ -256,6 +256,22 @@ export class AggregateRenderer {
 		this.linkSegments.renderOrder = 0;
 		this.linkSegments.frustumCulled = false;
 		this.scene.add(this.linkSegments);
+		this.setLinkFilter(this.linkFilter);
+	}
+
+	private linkFilter: ((index: number) => boolean) | null = null;
+
+	/** Filter only the base drawing layer; selected references retain full data/indexes. */
+	setLinkFilter(filter: ((index: number) => boolean) | null): void {
+		this.linkFilter = filter;
+		if (!this.linkGeometry) return;
+		if (!filter) { this.linkGeometry.setIndex(null); return; }
+		const indices: number[] = [];
+		for (let i = 0; i < this.data.links.length; i++) {
+			if (!filter(i)) continue;
+			for (let v = 0; v < this.linkK * 2; v++) indices.push(i * this.linkK * 2 + v);
+		}
+		this.linkGeometry.setIndex(indices);
 	}
 
 	/** 幽灵边数据（节点下标 + 强度 0..1）；空数组 = 移除该层 */
