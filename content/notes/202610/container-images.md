@@ -15,6 +15,8 @@ aliases: ["Docker 镜像", "容器"]
 
 Linux 容器通常借助 namespace 隔离进程、网络等视图，用 cgroup 管理资源，并共享宿主机内核。隔离不等于虚拟出独立内核，也不保证任意架构、任意操作系统的镜像都能原样运行；桌面环境可能借助虚拟机运行 Linux 容器。
 
+系统虚拟机则向客户操作系统提供虚拟 CPU、内存与设备，由虚拟机监控器管理执行和资源。客户系统通常有自己的内核，资源仍与其他客户共享物理硬件；隔离不等于性能互不影响，也不保证消除全部安全边界问题。
+
 停止容器通常不会删除它的可写层，删除容器则会丢失该层中的数据。需要跨容器重建保存的数据应使用合适的 volume 或外部存储；共享挂载仍需应用自己处理并发。镜像分发与版本标识见 [[image-registry|镜像仓库]]。
 
 分层说明见 [Docker：Understanding image layers](https://docs.docker.com/get-started/docker-concepts/building-images/understanding-image-layers/)。

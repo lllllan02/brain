@@ -23,6 +23,8 @@ type: "concept"
 
 SIGIO 属于就绪通知，配置还涉及信号接收者和资源标志，不能只安装信号处理函数就认为完成注册。信号合并与处理函数限制也使复杂高并发协议不适合简单照搬通知示例。
 
+[[event-loops|事件循环]] 通过短处理程序衔接就绪或完成事件，需要保存跨步骤状态，并把长时间阻塞工作移出循环。
+
 异步接口区分提交和完成，完成结果可以用回调、队列或轮询取得；等待完成队列也可以阻塞。POSIX AIO、Linux 原生 AIO 与 io_uring 的实现和支持范围不同，不能概括成「Linux 异步 I/O 不支持网络」。[io_uring(7)](https://man7.org/linux/man-pages/man7/io_uring.7.html)
 
 Go 的常见网络调用在 API 层可以等待，运行时则通过非阻塞 FD 和[网络轮询器](https://go.dev/src/runtime/netpoll.go)挂起 goroutine，供线程继续处理其他工作。`SetReadDeadline` 设置等待期限，不是把 FD 切换为非阻塞模式。讨论性能时应明确观察的是 goroutine、线程还是内核操作。

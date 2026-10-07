@@ -1,7 +1,7 @@
 ---
 title: "MySQL EXPLAIN Extra"
 category: "MySQL"
-updated_at: "2026-10-06"
+updated_at: "2026-10-07"
 tags: ["MySQL", "执行计划", "覆盖索引", "索引条件下推", "排序", "临时表"]
 classes: ["concept"]
 ---
@@ -11,7 +11,7 @@ classes: ["concept"]
 | 常见值 | 含义 | 下一步看什么 |
 |---|---|---|
 | `Using where` | 还需要按条件过滤候选记录 | [[mysql-explain-rows-filtered\|rows 是否很大、filtered 是否很低]]，条件能否更早用于定位 |
-| `Using index` | 所需列可从索引取得，通常称为覆盖索引 | 是否仍扫描很多索引条目；不等于仅仅「使用了索引」 |
+| `Using index` | 所需列可从索引取得，通常称为 [[mysql-covering-index\|覆盖索引]] | 是否仍扫描很多索引条目；不等于仅仅「使用了索引」 |
 | `Using index condition` | 使用索引条件下推（ICP），先在索引层检查可用条件，再读取需要的完整记录 | 哪些条件参与定位、哪些被下推，是否减少回表 |
 | `Using filesort` | 需要额外排序，未直接用索引顺序完成所需排序 | ORDER BY 与索引顺序是否匹配，以及待排序的数据量 |
 | `Using temporary` | 使用内部临时表处理中间结果 | GROUP BY、DISTINCT、ORDER BY 等操作和中间结果规模 |

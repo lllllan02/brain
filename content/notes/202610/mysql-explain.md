@@ -8,6 +8,8 @@ classes: ["overview"]
 
 `EXPLAIN` 展示 MySQL 为 SQL 选择的**执行计划**：访问哪些表、怎样查找数据、使用哪个索引、预计检查多少行，以及是否需要排序或临时表。以下按传统表格格式说明，可用 `EXPLAIN FORMAT=TRADITIONAL SELECT ...` 查看。
 
+理解回表成本前，先区分 [[mysql-index-structure|InnoDB 的聚簇索引与二级索引]]：所选索引决定如何定位候选，也影响是否继续读取完整行。
+
 ## 字段总览
 
 | 字段 | 简单含义 |
