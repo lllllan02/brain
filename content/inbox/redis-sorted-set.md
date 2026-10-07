@@ -3,7 +3,6 @@ title: "Redis Sorted Set 为什么同时需要字典和跳表？"
 category: "Redis"
 updated_at: "2026-10-07"
 tags: ["Sorted Set", "跳表", "排名"]
-type: "concept"
 aliases: ["Zset", "跳表"]
 ---
 

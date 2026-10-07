@@ -3,7 +3,6 @@ title: "SSD 的 FTL 为什么需要映射、垃圾回收和磨损均衡？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["SSD", "FTL", "写放大"]
-type: "concept"
 aliases: ["FTL", "闪存转换层"]
 ---
 

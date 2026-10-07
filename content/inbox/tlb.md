@@ -3,7 +3,6 @@ title: "TLB 未命中为什么不等于发生缺页？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["TLB", "地址转换", "缓存"]
-type: "concept"
 aliases: ["快表", "Translation Lookaside Buffer"]
 ---
 

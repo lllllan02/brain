@@ -3,7 +3,6 @@ title: "Netty 如何组织异步网络处理？"
 category: "网络服务"
 updated_at: "2026-10-07"
 tags: ["Netty", "Java", "事件循环"]
-type: "concept"
 ---
 
 Netty 把连接表示为 Channel，由 EventLoop 处理 I/O 事件，再通过 ChannelPipeline 中的 Handler 完成解码、业务处理与编码。它提供网络框架，业务协议与可靠性仍由应用定义。

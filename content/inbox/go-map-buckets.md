@@ -3,7 +3,6 @@ title: "Go 1.21 map 如何用桶定位键值？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "map", "源码"]
-type: "concept"
 ---
 
 Go 1.21 的 map 通过哈希定位主桶，再在主桶和溢出桶中匹配键。这里讨论固定版本的实现；Go 1.24 已切换为基于 Swiss Table 的新实现，不能把 hmap、bmap 套到所有版本。[版本说明](https://go.dev/doc/go1.24#runtime)

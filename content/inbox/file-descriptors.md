@@ -4,7 +4,6 @@ category: "操作系统"
 created_at: "2026-01-19"
 updated_at: "2026-10-07"
 tags: ["Linux", "文件描述符", "Socket", "系统调用"]
-type: "concept"
 aliases: ["FD", "文件描述符"]
 ---
 

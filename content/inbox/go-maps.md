@@ -3,7 +3,6 @@ title: "Go map 的键、零值和遍历有哪些语义边界？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "map", "类型"]
-type: "concept"
 aliases: ["Go map", "nil map"]
 ---
 

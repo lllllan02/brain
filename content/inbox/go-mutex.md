@@ -3,7 +3,6 @@ title: "Go Mutex 怎样在竞争吞吐和等待公平之间取舍？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "Mutex", "并发"]
-type: "concept"
 aliases: ["sync.Mutex", "读写锁"]
 ---
 

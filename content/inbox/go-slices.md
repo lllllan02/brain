@@ -3,7 +3,6 @@ title: "Go 切片怎样共享数组，len 与 cap 各限制什么？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "切片", "内存"]
-type: "concept"
 aliases: ["slice", "Go 切片"]
 ---
 

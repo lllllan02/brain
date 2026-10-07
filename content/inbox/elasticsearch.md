@@ -3,7 +3,6 @@ title: "Elasticsearch 如何把文档变成可检索索引？"
 category: "数据存储"
 updated_at: "2026-10-07"
 tags: ["Elasticsearch", "倒排索引", "搜索"]
-type: "concept"
 ---
 
 Elasticsearch 把文档字段映射成适合检索与聚合的索引结构，再通过分片分散存储和查询。它适合搜索派生视图，写入确认与搜索可见不是同一个时刻。

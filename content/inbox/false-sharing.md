@@ -3,7 +3,6 @@ title: "不同线程修改不同变量，为什么仍可能互相拖慢？"
 category: "并发编程"
 updated_at: "2026-10-07"
 tags: ["伪共享", "CPU缓存", "缓存行"]
-type: "concept"
 aliases: ["伪共享", "False Sharing"]
 ---
 

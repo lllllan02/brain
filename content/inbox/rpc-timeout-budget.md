@@ -3,7 +3,6 @@ title: "RPC 超时如何设置并沿调用链分配？"
 category: "服务治理"
 updated_at: "2026-10-07"
 tags: ["RPC", "超时", "重试"]
-type: "concept"
 aliases: ["RPC Timeout", "Deadline"]
 ---
 

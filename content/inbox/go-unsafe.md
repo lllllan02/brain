@@ -3,7 +3,6 @@ title: "unsafe 为什么不能只凭一个地址整数操作内存？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "unsafe", "内存"]
-type: "concept"
 ---
 
 unsafe 可以绕过部分类型约束，但不会绕过对象生命周期、对齐和 GC 的规则。uintptr 是整数，不是保活指针；把指针转成整数保存，再过一段时间转回，并不是可靠的引用方式。

@@ -3,7 +3,6 @@ title: "MongoDB 的文档模型如何影响读写与分片？"
 category: "数据存储"
 updated_at: "2026-10-07"
 tags: ["MongoDB", "文档数据库", "分片"]
-type: "concept"
 ---
 
 MongoDB 用 BSON 文档保存对象，适合围绕聚合对象读写嵌套结构。文档结构可灵活变化，但字段约定、校验和索引仍需要设计。

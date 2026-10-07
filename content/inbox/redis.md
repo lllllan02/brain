@@ -3,7 +3,6 @@ title: "Redis 为什么快，适合保存什么数据？"
 category: "Redis"
 updated_at: "2026-10-07"
 tags: ["Redis", "缓存", "数据结构"]
-type: "concept"
 aliases: ["Redis 数据类型"]
 ---
 

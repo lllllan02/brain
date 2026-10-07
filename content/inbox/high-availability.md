@@ -4,7 +4,6 @@ category: "分布式系统"
 created_at: "2026-01-23"
 updated_at: "2026-10-07"
 tags: ["高可用", "冗余", "RTO", "RPO"]
-type: "concept"
 aliases: ["高可用", "冷备", "热备", "双活"]
 ---
 

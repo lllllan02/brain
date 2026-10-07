@@ -3,7 +3,6 @@ title: "CPU 调度怎样权衡响应、周转和公平？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["调度", "FCFS", "SJF", "RR"]
-type: "concept"
 aliases: ["进程调度", "时间片轮转"]
 ---
 

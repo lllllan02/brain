@@ -3,7 +3,6 @@ title: "Go channel 应该由谁关闭？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "channel", "并发"]
-type: "concept"
 aliases: ["channel 关闭", "nil channel"]
 ---
 

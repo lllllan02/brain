@@ -3,7 +3,6 @@ title: "fork、exec 和 wait 怎样分工管理子进程？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["Linux", "fork", "exec", "僵尸进程"]
-type: "concept"
 aliases: ["僵尸进程", "孤儿进程"]
 ---
 

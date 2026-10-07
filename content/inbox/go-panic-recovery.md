@@ -4,7 +4,6 @@ category: "Go"
 created_at: "2026-01-17"
 updated_at: "2026-10-07"
 tags: ["Go", "panic", "recover"]
-type: "concept"
 ---
 
 某个 goroutine 的 panic 如果一直没有被恢复，会在展开该 goroutine 的调用栈、执行其 defer 后终止整个程序。其他 goroutine 不会因此获得可靠的清理机会。

@@ -3,7 +3,6 @@ title: "sync.Map 的并发保证覆盖到哪里？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "sync.Map", "并发"]
-type: "concept"
 aliases: ["sync.Map"]
 ---
 

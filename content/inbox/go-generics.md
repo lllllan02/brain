@@ -3,7 +3,6 @@ title: "Go 泛型的类型约束怎样决定可用操作？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "泛型", "类型约束"]
-type: "concept"
 aliases: ["Go 类型参数", "类型约束"]
 ---
 

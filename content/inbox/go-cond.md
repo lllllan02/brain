@@ -3,7 +3,6 @@ title: "sync.Cond 如何等待状态变化而不丢通知？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "sync.Cond", "条件变量"]
-type: "concept"
 ---
 
 sync.Cond 把共享状态的锁与等待通知组合起来，适用于反复等待某个条件并选择唤醒一个或全部 goroutine。其使用约束来自[[condition-variables|条件变量]]：检查与修改状态遵循同一锁协议，等待返回后再次检查。

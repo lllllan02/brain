@@ -3,7 +3,6 @@ title: "页面替换怎样利用局部性，什么时候会失效？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["页面替换", "LRU", "Clock"]
-type: "concept"
 aliases: ["Clock 算法", "Belady 异常", "内存抖动"]
 ---
 

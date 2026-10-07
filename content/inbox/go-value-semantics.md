@@ -3,7 +3,6 @@ title: "Go 按值传递，为什么函数仍能修改外部数据？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "参数传递", "指针"]
-type: "concept"
 aliases: ["Go 值传递", "new 与 make"]
 ---
 

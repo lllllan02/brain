@@ -3,7 +3,6 @@ title: "Redis 字典怎样把 rehash 分摊到多次操作？"
 category: "Redis"
 updated_at: "2026-10-07"
 tags: ["dict", "rehash", "哈希表"]
-type: "concept"
 ---
 
 Redis 字典在 rehash 期间保留新旧两张表，逐步搬迁旧表中的桶。这样可以减少一次性迁移大表造成的长停顿，但仍需要额外内存和迁移工作。

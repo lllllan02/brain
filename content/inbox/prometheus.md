@@ -3,7 +3,6 @@ title: "Prometheus 如何把指标变成可查询的时间序列？"
 category: "可观测性"
 updated_at: "2026-10-07"
 tags: ["Prometheus", "指标", "PromQL"]
-type: "concept"
 ---
 
 Prometheus 定期抓取目标暴露的指标，以指标名和标签集合标识一条时间序列，并用 PromQL 查询随时间变化的数值。它记录聚合后的观测量，不能替代逐条日志或请求追踪。

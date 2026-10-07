@@ -3,7 +3,6 @@ title: "Redis SDS 怎样保存二进制内容并减少追加分配？"
 category: "Redis"
 updated_at: "2026-10-07"
 tags: ["SDS", "字符串", "内存"]
-type: "concept"
 aliases: ["SDS"]
 ---
 

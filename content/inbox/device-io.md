@@ -3,7 +3,6 @@ title: "设备 I/O 中，轮询、中断和 DMA 各省掉什么开销？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["I/O", "中断", "DMA"]
-type: "concept"
 aliases: ["DMA", "设备驱动"]
 ---
 

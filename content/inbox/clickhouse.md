@@ -3,7 +3,6 @@ title: "ClickHouse 为什么适合大范围聚合查询？"
 category: "数据存储"
 updated_at: "2026-10-07"
 tags: ["ClickHouse", "列式存储", "OLAP"]
-type: "concept"
 ---
 
 ClickHouse 通过按列读取、压缩、向量化执行，以及根据排序和索引跳过数据，降低大范围分析的成本。它擅长扫描大量行中的少数列，不意味着所有点查或高频单行修改都合适。

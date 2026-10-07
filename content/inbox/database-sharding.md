@@ -3,7 +3,6 @@ title: "分库分表怎样选择分片键？"
 category: "数据库"
 updated_at: "2026-10-07"
 tags: ["分库分表", "分片键", "ShardingSphere"]
-type: "concept"
 aliases: ["分库分表", "数据分片"]
 ---
 

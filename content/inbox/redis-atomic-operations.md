@@ -3,7 +3,6 @@ title: "Redis 事务、Lua 和流水线有什么区别？"
 category: "Redis"
 updated_at: "2026-10-07"
 tags: ["Redis", "事务", "Lua", "Pipeline"]
-type: "concept"
 ---
 
 流水线减少网络往返，MULTI/EXEC 把一组命令连续执行，Lua 可以把读取、判断和写入放在一次服务器执行中。三者解决的问题不同，不能把“批量发送”视为原子事务。

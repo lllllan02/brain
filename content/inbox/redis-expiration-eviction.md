@@ -3,7 +3,6 @@ title: "Redis 过期删除和内存淘汰有什么不同？"
 category: "Redis"
 updated_at: "2026-10-07"
 tags: ["Redis", "TTL", "内存淘汰"]
-type: "concept"
 ---
 
 过期删除处理已经超过 TTL 的 key，内存淘汰处理达到 maxmemory 后的容量压力。一个 key 没有过期，也可能被淘汰；一个 key 到期后，也不代表内存立即在该时刻全部释放。

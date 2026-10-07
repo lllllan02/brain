@@ -3,7 +3,6 @@ title: "进程的运行状态和退出状态怎样变化？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["进程", "PCB", "调度"]
-type: "concept"
 aliases: ["进程", "PCB", "进程状态"]
 ---
 

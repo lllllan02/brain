@@ -3,7 +3,6 @@ title: "Grafana 在观测系统中负责什么？"
 category: "可观测性"
 updated_at: "2026-10-07"
 tags: ["Grafana", "看板", "告警"]
-type: "concept"
 ---
 
 Grafana 连接不同数据源，把查询结果展示为面板和仪表盘，并提供告警能力。指标、日志和 Trace 通常保存在各自后端，Grafana 自己的配置存储不能代替这些业务观测数据。

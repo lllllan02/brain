@@ -3,7 +3,6 @@ title: "Unicode 码点、编码和用户看到的字符有什么区别？"
 category: "计算机基础"
 updated_at: "2026-10-07"
 tags: ["Unicode", "UTF-8", "编码"]
-type: "concept"
 aliases: ["Unicode", "码点", "字符编码"]
 ---
 

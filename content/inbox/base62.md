@@ -4,7 +4,6 @@ category: "编码"
 created_at: "2026-01-20"
 updated_at: "2026-10-07"
 tags: ["Base62", "短链接", "进制"]
-type: "concept"
 aliases: ["Base62 编码"]
 ---
 

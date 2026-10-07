@@ -3,7 +3,6 @@ title: "缺页发生后，操作系统需要从磁盘读什么？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["缺页", "Swap", "写时复制"]
-type: "concept"
 aliases: ["Page Fault", "缺页异常", "按需分页"]
 ---
 

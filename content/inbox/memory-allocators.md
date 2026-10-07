@@ -3,7 +3,6 @@ title: "malloc 怎样管理空闲空间，free 为什么不一定降低 RSS？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["内存分配", "malloc", "碎片"]
-type: "concept"
 aliases: ["空闲空间管理", "内存碎片", "malloc"]
 ---
 

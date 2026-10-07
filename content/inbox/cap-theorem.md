@@ -4,7 +4,6 @@ category: "分布式系统"
 created_at: "2026-01-23"
 updated_at: "2026-10-07"
 tags: ["CAP", "一致性", "可用性", "网络分区"]
-type: "concept"
 aliases: ["CAP"]
 ---
 

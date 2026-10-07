@@ -3,7 +3,6 @@ title: "多级反馈队列怎样在不知道任务时长时做调度？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["调度", "MLFQ", "公平性"]
-type: "concept"
 aliases: ["多级反馈队列"]
 ---
 

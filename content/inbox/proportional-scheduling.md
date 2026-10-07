@@ -3,7 +3,6 @@ title: "彩票与步长调度怎样按权重分配 CPU？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["调度", "权重", "公平性"]
-type: "concept"
 aliases: ["彩票调度", "步长调度", "Lottery Scheduling", "Stride Scheduling"]
 ---
 

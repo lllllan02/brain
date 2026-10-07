@@ -3,7 +3,6 @@ title: "Go GC 的暂停很短，为什么请求仍可能变慢？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "GC", "延迟", "Mark Assist"]
-type: "concept"
 ---
 
 短 STW 只能说明全局暂停较短，不能证明 GC 对请求没有影响。并发标记会消耗 CPU，分配中的 mark assist 还可能让业务 goroutine 承担扫描或等待工作。

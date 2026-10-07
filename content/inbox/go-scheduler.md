@@ -3,7 +3,6 @@ title: "Go 的 G、M、P 怎样把 goroutine 安排到线程？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "调度", "GMP"]
-type: "concept"
 aliases: ["GMP", "Goroutine 调度"]
 ---
 

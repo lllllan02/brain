@@ -3,7 +3,6 @@ title: "QPS 很高就应该拆微服务吗？"
 category: "架构设计"
 updated_at: "2026-10-07"
 tags: ["微服务", "容量规划", "技术选型"]
-type: "concept"
 aliases: ["单体与微服务"]
 ---
 

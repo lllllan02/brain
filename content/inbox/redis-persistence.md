@@ -3,7 +3,6 @@ title: "Redis 的 RDB 和 AOF 如何恢复数据？"
 category: "Redis"
 updated_at: "2026-10-07"
 tags: ["Redis", "RDB", "AOF"]
-type: "concept"
 ---
 
 RDB 保存某一时刻的数据快照，AOF 记录写入操作以便重放。选择哪种机制，取决于可接受的数据丢失窗口、恢复时间以及运行时 I/O 和内存成本。

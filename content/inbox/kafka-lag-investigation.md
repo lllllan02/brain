@@ -3,7 +3,6 @@ title: "Kafka 积压如何定位到具体瓶颈？"
 category: "Kafka"
 updated_at: "2026-10-07"
 tags: ["Kafka", "Lag", "性能排查"]
-type: "concept"
 ---
 
 Kafka 积压先按分区观察生产速度、完成速度和最老消息年龄，再判断是流量增加、消费变慢还是进度没有正确提交。只看整个消费组的总 Lag 容易掩盖单分区热点。

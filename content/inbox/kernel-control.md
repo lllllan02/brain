@@ -3,7 +3,6 @@ title: "程序直接使用 CPU，内核怎样重新获得控制？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["系统调用", "中断", "上下文切换"]
-type: "concept"
 aliases: ["受限直接执行", "LDE", "上下文切换", "系统调用"]
 ---
 

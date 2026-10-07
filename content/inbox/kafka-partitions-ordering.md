@@ -3,7 +3,6 @@ title: "Kafka 的顺序与扩容边界在哪里？"
 category: "Kafka"
 updated_at: "2026-10-07"
 tags: ["Kafka", "分区", "Rebalance"]
-type: "concept"
 ---
 
 Kafka 保证分区日志内的顺序，不提供跨分区的统一顺序。业务上要求同一订单依次处理，既要让相关事件进入同一分区，也要让消费者按该顺序完成副作用。

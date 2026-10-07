@@ -4,7 +4,6 @@ category: "Go"
 created_at: "2026-01-18"
 updated_at: "2026-10-07"
 tags: ["Go", "GC", "STW", "安全点"]
-type: "concept"
 ---
 
 Go 的标记与清扫大部分可以和业务并发进行，但阶段切换仍需短暂 STW。暂停时间只是 GC 成本的一部分，后台扫描与分配时的辅助工作也会影响请求延迟。

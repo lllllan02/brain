@@ -3,7 +3,6 @@ title: "回表、覆盖索引与索引条件下推怎样配合？"
 category: "MySQL"
 updated_at: "2026-10-07"
 tags: ["回表", "覆盖索引", "ICP"]
-type: "concept"
 aliases: ["覆盖索引", "回表", "索引条件下推"]
 ---
 

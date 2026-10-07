@@ -3,7 +3,6 @@ title: "Paxos 如何选定一个不会被后续提案推翻的值？"
 category: "分布式系统"
 updated_at: "2026-10-07"
 tags: ["Paxos", "共识", "提案"]
-type: "concept"
 aliases: ["Paxos", "Multi-Paxos"]
 ---
 

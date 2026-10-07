@@ -3,7 +3,6 @@ title: "文件名、inode 和打开的文件怎样关联？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["文件系统", "inode", "硬链接"]
-type: "concept"
 aliases: ["inode", "硬链接", "符号链接"]
 ---
 

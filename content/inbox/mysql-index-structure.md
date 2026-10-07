@@ -3,7 +3,6 @@ title: "InnoDB 的 B+ 树与聚簇索引怎样定位一行数据？"
 category: "MySQL"
 updated_at: "2026-10-07"
 tags: ["B+树", "聚簇索引", "二级索引"]
-type: "concept"
 aliases: ["B+树", "聚簇索引", "二级索引"]
 ---
 

@@ -4,7 +4,6 @@ category: "Go"
 created_at: "2026-01-21"
 updated_at: "2026-10-07"
 tags: ["Go", "defer", "返回值"]
-type: "concept"
 ---
 
 `return` 先求值并设置返回结果，再执行已注册的 defer，最后把结果交给调用者。defer 能否改变结果，取决于它修改的是返回变量、普通局部变量，还是返回指针指向的对象。

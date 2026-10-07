@@ -3,7 +3,6 @@ title: "Redis 复制、Sentinel 和 Cluster 分别解决什么问题？"
 category: "Redis"
 updated_at: "2026-10-07"
 tags: ["Redis", "复制", "Sentinel", "Cluster"]
-type: "concept"
 ---
 
 复制提供数据副本，Sentinel 为非分片主从部署监控并协调主节点切换，Cluster 同时提供分片与分片级故障切换。它们提高可用性，但异步复制仍可能丢失已确认写入。

@@ -3,7 +3,6 @@ title: "为什么多数派有交集仍不足以保证一致性？"
 category: "分布式系统"
 updated_at: "2026-10-07"
 tags: ["Quorum", "多数派", "共识"]
-type: "concept"
 aliases: ["Quorum", "多数派"]
 ---
 

@@ -3,7 +3,6 @@ title: "select、poll 与 epoll 怎样等待多个连接？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["Linux", "I/O多路复用", "select", "poll"]
-type: "concept"
 aliases: ["I/O 多路复用"]
 ---
 

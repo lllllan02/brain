@@ -4,7 +4,6 @@ category: "分布式系统"
 created_at: "2026-01-23"
 updated_at: "2026-10-07"
 tags: ["共识", "CFT", "BFT", "拜占庭故障"]
-type: "concept"
 aliases: ["CFT", "BFT", "拜占庭故障"]
 ---
 

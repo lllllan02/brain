@@ -3,7 +3,6 @@ title: "Go 的 string、byte 和 rune 分别表示什么？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "字符串", "Unicode"]
-type: "concept"
 aliases: ["string byte rune"]
 ---
 

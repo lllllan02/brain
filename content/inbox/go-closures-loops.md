@@ -3,7 +3,6 @@ title: "Go 闭包捕获什么，循环变量为何要区分版本？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "闭包", "循环变量"]
-type: "concept"
 aliases: ["closure", "循环变量捕获"]
 ---
 

@@ -4,7 +4,6 @@ category: "Go"
 created_at: "2026-01-18"
 updated_at: "2026-10-07"
 tags: ["Go", "内存", "栈"]
-type: "concept"
 ---
 
 Go 的值可能保存在寄存器、goroutine 栈、堆或静态存储区，也可能被编译器直接消除。声明方式不直接决定位置，`new` 不保证堆分配，取地址也不必然逃逸。

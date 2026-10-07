@@ -3,7 +3,6 @@ title: "进程间通信怎样选择数据通道和同步方式？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["IPC", "管道", "共享内存", "Socket"]
-type: "concept"
 aliases: ["IPC", "进程间通信"]
 ---
 

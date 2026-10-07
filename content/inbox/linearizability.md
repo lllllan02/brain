@@ -3,7 +3,6 @@ title: "线性一致性为什么不要求副本同时更新？"
 category: "分布式系统"
 updated_at: "2026-10-07"
 tags: ["线性一致性", "强一致性", "读取"]
-type: "concept"
 aliases: ["线性一致性", "Linearizability"]
 ---
 

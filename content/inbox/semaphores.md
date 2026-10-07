@@ -3,7 +3,6 @@ title: "信号量怎样表示资源数量与完成通知？"
 category: "并发编程"
 updated_at: "2026-10-07"
 tags: ["信号量", "同步", "有界队列"]
-type: "concept"
 ---
 
 信号量保存可获取的许可数量。wait 获取一个许可，资源不足时等待；post 归还或增加许可，并使等待者有机会继续。与[[condition-variables|条件变量]]不同，先 post 后 wait 的许可可以保留。

@@ -3,7 +3,6 @@ title: "OpenTelemetry 如何串起一次请求的观测数据？"
 category: "可观测性"
 updated_at: "2026-10-07"
 tags: ["OpenTelemetry", "Trace", "Collector"]
-type: "concept"
 ---
 
 OpenTelemetry 统一应用产生与传输 Trace、Metric 和 Log 的方式。它提供埋点 API、SDK、协议与采集组件，本身不等于保存和查询全部观测数据的后端。

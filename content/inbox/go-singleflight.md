@@ -3,7 +3,6 @@ title: "singleflight 怎样合并并发请求，和缓存有什么不同？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "singleflight", "缓存击穿"]
-type: "concept"
 aliases: ["请求合并", "singleflight"]
 ---
 

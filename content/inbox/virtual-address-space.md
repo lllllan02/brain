@@ -3,7 +3,6 @@ title: "虚拟地址空间怎样隔离进程，又怎样共享物理内存？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["虚拟内存", "地址空间", "分段"]
-type: "concept"
 aliases: ["虚拟内存", "地址空间", "Base and Bounds", "分段"]
 ---
 

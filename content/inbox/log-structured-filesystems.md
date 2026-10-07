@@ -3,7 +3,6 @@ title: "日志结构文件系统怎样用顺序写换取性能？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["LFS", "文件系统", "垃圾回收"]
-type: "concept"
 aliases: ["LFS"]
 ---
 

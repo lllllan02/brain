@@ -3,7 +3,6 @@ title: "Debezium 如何表示并恢复数据库变更？"
 category: "数据同步"
 updated_at: "2026-10-07"
 tags: ["Debezium", "CDC", "Kafka Connect"]
-type: "concept"
 ---
 
 Debezium 通过数据库连接器把日志变化转换为带来源位置和操作类型的事件。常见部署使用 Kafka Connect，也可以嵌入其他运行方式；它不是只能从 Kafka 中读取现成数据的消费者。

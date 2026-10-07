@@ -3,7 +3,6 @@ title: "Docker 镜像与容器怎样复用同一份文件？"
 category: "容器"
 updated_at: "2026-10-07"
 tags: ["Docker", "镜像", "容器", "分层"]
-type: "concept"
 aliases: ["Docker 镜像", "容器"]
 ---
 

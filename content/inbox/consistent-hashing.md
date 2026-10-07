@@ -4,7 +4,6 @@ category: "分布式系统"
 created_at: "2026-01-20"
 updated_at: "2026-10-07"
 tags: ["一致性哈希", "分片", "虚拟节点"]
-type: "concept"
 aliases: ["一致性哈希"]
 ---
 

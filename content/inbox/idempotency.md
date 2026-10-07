@@ -3,7 +3,6 @@ title: "重试怎样避免重复产生业务副作用？"
 category: "分布式系统"
 updated_at: "2026-10-07"
 tags: ["幂等", "重试", "去重"]
-type: "concept"
 aliases: ["幂等性"]
 ---
 

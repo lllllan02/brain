@@ -3,7 +3,6 @@ title: "Flink CDC 如何衔接快照、日志与状态恢复？"
 category: "数据同步"
 updated_at: "2026-10-07"
 tags: ["Flink CDC", "Checkpoint", "流处理"]
-type: "concept"
 ---
 
 Flink CDC 把数据库变更接入 Flink 的流处理与状态恢复机制。它可以并行读取存量、持续处理增量，但端到端正确性仍取决于源、算子状态与目标写入是否共同满足语义要求。

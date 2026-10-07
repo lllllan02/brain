@@ -3,7 +3,6 @@ title: "Compose 与 Dockerfile 分别描述什么？"
 category: "容器"
 updated_at: "2026-10-07"
 tags: ["Docker", "Compose", "容器网络"]
-type: "concept"
 ---
 
 Dockerfile 描述镜像的构建过程，Compose 描述一组服务如何使用镜像、网络、挂载和运行参数共同启动。二者可以配合，但 Compose 并不要求所有服务都由本地 Dockerfile 构建。

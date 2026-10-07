@@ -4,7 +4,6 @@ category: "分布式系统"
 created_at: "2026-01-23"
 updated_at: "2026-10-07"
 tags: ["故障切换", "脑裂", "Fencing"]
-type: "concept"
 aliases: ["故障转移", "脑裂"]
 ---
 

@@ -3,7 +3,6 @@ title: "Go GC 如何判断对象是否还在使用？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "GC", "三色标记"]
-type: "concept"
 aliases: ["Go 垃圾回收", "三色标记"]
 ---
 

@@ -3,7 +3,6 @@ title: "Go 接口为什么会出现“不是 nil 的空指针”？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "接口", "nil"]
-type: "concept"
 aliases: ["interface", "typed nil"]
 ---
 

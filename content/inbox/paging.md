@@ -3,7 +3,6 @@ title: "分页怎样转换地址，为什么页表也需要分层？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["分页", "页表", "虚拟内存"]
-type: "concept"
 aliases: ["页表", "Page Table"]
 ---
 

@@ -4,7 +4,6 @@ category: "网络协议"
 created_at: "2026-01-20"
 updated_at: "2026-10-07"
 tags: ["HTTP", "重定向", "缓存"]
-type: "concept"
 aliases: ["HTTP 重定向", "301 与 302"]
 ---
 

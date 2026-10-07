@@ -3,7 +3,6 @@ title: "Go map 怎样保证并发安全？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "并发", "map"]
-type: "concept"
 aliases: ["Go Map 并发安全"]
 ---
 

@@ -3,7 +3,6 @@ title: "分布式 ID 如何兼顾唯一性和本地生成？"
 category: "分布式系统"
 updated_at: "2026-10-07"
 tags: ["ID生成", "Snowflake", "时钟"]
-type: "concept"
 aliases: ["分布式ID", "Snowflake"]
 ---
 

@@ -3,7 +3,6 @@ title: "进程、线程和协程分别在哪一层共享与调度？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["进程", "线程", "协程"]
-type: "concept"
 aliases: ["进程与线程", "协程"]
 ---
 

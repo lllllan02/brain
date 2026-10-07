@@ -3,7 +3,6 @@ title: "sync.Once 怎样保证其他调用看到初始化完成？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "Once", "初始化"]
-type: "concept"
 aliases: ["sync.Once"]
 ---
 

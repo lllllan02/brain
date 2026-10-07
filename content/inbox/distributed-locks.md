@@ -3,7 +3,6 @@ title: "分布式锁如何选型，为什么还需要 fencing？"
 category: "分布式系统"
 updated_at: "2026-10-07"
 tags: ["分布式锁", "Redis", "etcd", "ZooKeeper"]
-type: "concept"
 aliases: ["分布式锁", "Fencing Token"]
 ---
 

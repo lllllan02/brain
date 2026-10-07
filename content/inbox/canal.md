@@ -3,7 +3,6 @@ title: "Canal 如何订阅 MySQL binlog 并确认消费？"
 category: "数据同步"
 updated_at: "2026-10-07"
 tags: ["Canal", "MySQL", "binlog"]
-type: "concept"
 ---
 
 Canal 模拟 MySQL 副本协议读取 binlog，再把变更解析成下游可消费的事件。它提供增量订阅能力，业务如何应用、去重和核对数据仍由消费链路负责。

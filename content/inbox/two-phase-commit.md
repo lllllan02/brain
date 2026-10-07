@@ -4,7 +4,6 @@ category: "分布式系统"
 created_at: "2026-01-23"
 updated_at: "2026-10-07"
 tags: ["事务", "2PC", "原子提交"]
-type: "concept"
 aliases: ["2PC", "两阶段提交"]
 ---
 

@@ -4,7 +4,6 @@ category: "缓存设计"
 created_at: "2026-01-21"
 updated_at: "2026-10-07"
 tags: ["布隆过滤器", "缓存穿透", "概率数据结构"]
-type: "concept"
 aliases: ["Bloom Filter", "布隆过滤器"]
 ---
 

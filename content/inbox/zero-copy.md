@@ -3,7 +3,6 @@ title: "零拷贝具体减少了哪些数据复制？"
 category: "操作系统"
 updated_at: "2026-10-07"
 tags: ["零拷贝", "sendfile", "mmap"]
-type: "concept"
 aliases: ["零拷贝"]
 ---
 

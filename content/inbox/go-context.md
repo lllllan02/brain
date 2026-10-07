@@ -3,7 +3,6 @@ title: "Go context 怎样传递取消，为什么 cancel 不等于任务结束�
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "context", "取消"]
-type: "concept"
 aliases: ["context.Context"]
 ---
 

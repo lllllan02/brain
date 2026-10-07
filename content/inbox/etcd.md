@@ -3,7 +3,6 @@ title: "etcd 怎样保存与通知协调状态？"
 category: "分布式系统"
 updated_at: "2026-10-07"
 tags: ["etcd", "Raft", "MVCC"]
-type: "concept"
 ---
 
 etcd 是面向少量关键协调数据的分布式 KV 存储，提供事务条件比较、版本化读取、Watch 和 Lease。它适合注册、配置和选主，不适合作为大体量业务数据的通用存储。

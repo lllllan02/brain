@@ -3,7 +3,6 @@ title: "OAuth 如何让第三方获得有限权限？"
 category: "身份认证"
 updated_at: "2026-10-07"
 tags: ["OAuth", "PKCE", "令牌"]
-type: "concept"
 ---
 
 OAuth 让资源所有者授权第三方访问指定资源，而不把自己的登录密码交给第三方。它解决委托授权；需要确认登录身份时，应使用 [[sso|OIDC 等身份协议]]。

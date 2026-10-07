@@ -3,7 +3,6 @@ title: "背压怎样让生产速度受下游容量约束？"
 category: "并发编程"
 updated_at: "2026-10-07"
 tags: ["背压", "流量控制", "队列"]
-type: "concept"
 aliases: ["背压"]
 ---
 

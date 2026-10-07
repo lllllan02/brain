@@ -3,7 +3,6 @@ title: "动态数组为什么能让追加具有摊还常数成本？"
 category: "数据结构"
 updated_at: "2026-10-07"
 tags: ["数组", "扩容", "摊还分析"]
-type: "concept"
 aliases: ["动态数组", "摊还分析"]
 ---
 

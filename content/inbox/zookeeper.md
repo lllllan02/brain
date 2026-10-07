@@ -3,7 +3,6 @@ title: "ZooKeeper 如何用节点和会话实现协调？"
 category: "分布式系统"
 updated_at: "2026-10-07"
 tags: ["ZooKeeper", "ZAB", "Watch"]
-type: "concept"
 ---
 
 ZooKeeper 用树形命名空间保存少量协调状态，通过有序更新、会话和通知构建选主、注册与锁等协议。它保存的是协调元数据，不是面向大文件或业务明细的数据库。

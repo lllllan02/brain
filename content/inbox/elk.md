@@ -3,7 +3,6 @@ title: "ELK 如何把原始日志变成检索结果？"
 category: "可观测性"
 updated_at: "2026-10-07"
 tags: ["ELK", "Elasticsearch", "Logstash"]
-type: "concept"
 ---
 
 ELK 通常由 Elasticsearch 存储和检索、Logstash 处理数据、Kibana 查询与展示组成。实际链路也可由 Elastic Agent 或 Beats 采集，按需要跳过 Logstash；三个名字并不要求每次部署都完整串联。

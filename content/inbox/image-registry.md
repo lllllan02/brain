@@ -3,7 +3,6 @@ title: "镜像的 registry、repository、tag 和 digest 如何区分？"
 category: "容器"
 updated_at: "2026-10-07"
 tags: ["Docker", "Registry", "镜像分发"]
-type: "concept"
 ---
 
 Registry 是分发镜像的服务，repository 是其中一组镜像的命名空间，tag 是可变的名称，digest 是按内容计算的标识。发布时需要知道自己固定的是一个名字，还是具体镜像内容。

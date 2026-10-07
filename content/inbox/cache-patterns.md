@@ -3,7 +3,6 @@ title: "Cache Aside、Read Through 与写缓存模式有什么区别？"
 category: "缓存设计"
 updated_at: "2026-10-07"
 tags: ["缓存", "Cache Aside", "Read Through", "Write Back"]
-type: "concept"
 aliases: ["Cache Aside", "Read Through", "Write Through", "Write Back"]
 ---
 

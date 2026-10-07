@@ -3,7 +3,6 @@ title: "事件循环怎样处理并发，又为什么怕阻塞？"
 category: "并发编程"
 updated_at: "2026-10-07"
 tags: ["事件循环", "状态机", "异步I/O"]
-type: "concept"
 aliases: ["事件循环"]
 ---
 

@@ -4,7 +4,6 @@ category: "分布式系统"
 created_at: "2026-01-21"
 updated_at: "2026-10-07"
 tags: ["会话一致性", "读己之写", "单调读"]
-type: "concept"
 aliases: ["会话一致性", "单调读", "读己之写"]
 ---
 

@@ -3,7 +3,6 @@ title: "Kafka 为什么能重放，日志又怎样清理？"
 category: "Kafka"
 updated_at: "2026-10-07"
 tags: ["Kafka", "保留策略", "Compaction"]
-type: "concept"
 ---
 
 Kafka 把分区日志分成多个 Segment，按保留策略清理，而不是按“已经被某个消费者确认”立即删除。因此消费者可以重读尚未清理的数据，但不能无限追溯。

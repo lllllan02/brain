@@ -3,7 +3,6 @@ title: "WaitGroup 怎样等待一组任务，为什么 Add 的位置重要？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "WaitGroup", "并发"]
-type: "concept"
 aliases: ["sync.WaitGroup"]
 ---
 

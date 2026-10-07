@@ -3,7 +3,6 @@ title: "sync.Pool 能复用什么，为什么不能当连接池？"
 category: "Go"
 updated_at: "2026-10-07"
 tags: ["Go", "sync.Pool", "内存复用"]
-type: "concept"
 aliases: ["sync.Pool"]
 ---
 

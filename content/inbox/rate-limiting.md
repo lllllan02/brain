@@ -3,7 +3,6 @@ title: "限流算法怎样选择？"
 category: "服务治理"
 updated_at: "2026-10-07"
 tags: ["限流", "过载保护"]
-type: "concept"
 aliases: ["限流", "令牌桶", "漏桶"]
 ---
 
