@@ -8,7 +8,7 @@ type: "concept"
 
 Netty 把连接表示为 Channel，由 EventLoop 处理 I/O 事件，再通过 ChannelPipeline 中的 Handler 完成解码、业务处理与编码。它提供网络框架，业务协议与可靠性仍由应用定义。
 
-一个 EventLoop 通常服务多个 Channel，因此 Handler 中的阻塞调用会影响同一事件循环负责的其他连接。耗时业务可交给受限的工作线程池，但要继续约束队列长度、连接生命周期与结果顺序，不能只是把无限排队搬到另一个池。
+一个 EventLoop 通常借助 [[io-multiplexing|I/O 多路复用]] 服务多个 Channel，因此 Handler 中的阻塞调用会影响同一事件循环负责的其他连接。耗时业务可交给受限的工作线程池，但要继续约束队列长度、连接生命周期与结果顺序，不能只是把无限排队搬到另一个池。
 
 入站事件沿 Pipeline 向后传播，出站操作沿相反方向经过适用的 Handler。`ctx.write` 从当前上下文向前寻找出站处理器，与从 Channel 发起写操作的起点不同；编码器位置错误可能导致业务响应绕过编码。
 
