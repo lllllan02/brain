@@ -19,3 +19,9 @@ Commit 20d06c9c3a12c0c9a38713a842cafca58a445190 (version 0.1.0) was distributed 
 Dependencies retain their own licenses and notices; this policy does not relicense React, Vite or other third-party works. Media are described in README; this project grants only rights its licensors actually hold, without overriding third-party platform terms or guaranteeing exclusive rights in AI-generated material. User-imported notes remain the user's content and are not relicensed by importing them.
 
 依赖保持各自许可和版权声明，本政策不修改 React、Vite 等第三方作品的授权。媒体来源见 README；项目只授出许可方实际拥有的权利，不覆盖第三方平台条款，也不保证 AI 生成素材存在排他版权。导入的个人笔记不因导入而改变原有权利归属。
+
+## Galaxy View
+
+The three-dimensional renderer, camera, layout and supporting modules in `src/galaxy/vendor/` are adapted from [Longwind1984/galaxy-view](https://github.com/Longwind1984/galaxy-view), commit `b49b60cb04687783153f24ff7f9b0a0af59334af`, under MIT. The complete upstream notice is retained in `licenses/galaxy-view-MIT.txt`; the surrounding application's license does not replace it.
+
+Local adaptations: Vite Worker entry and error callback; standalone palette type; camera-relative distant starfield and enlarged nebula volume; focus fading independent of ambient motion; increased focus camera distance for the web view. The Obsidian plugin entry, graph store and overlays are not included.
