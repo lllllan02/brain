@@ -3,6 +3,7 @@ title: "接口变慢排查"
 category: "性能排查"
 updated_at: "2026-10-07"
 tags: ["延迟", "监控", "链路追踪"]
+aliases: ["慢接口", "Slow API"]
 type: "practice"
 ---
 

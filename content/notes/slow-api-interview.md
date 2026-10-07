@@ -4,6 +4,7 @@ category: "面试题"
 created_at: "2026-10-07"
 updated_at: "2026-10-07"
 tags: ["面试题", "性能排查", "延迟", "链路追踪"]
+aliases: ["慢接口面试", "Slow API Interview"]
 ---
 
 > 生产实践见：[[slow-api-investigation|接口变慢排查]]。
