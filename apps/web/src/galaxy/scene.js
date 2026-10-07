@@ -34,7 +34,8 @@ export function createGalaxy(container, graph, hooks, reduced) {
   let initialFramed = false, workerDeadline = 0;
   let expanded = false, transition = null, overview = null, clusters = null, effects = null;
   let display = null, categoryBlend = 0;
-  let presetFrom = null;
+  let presetFrom = null, pendingOverview = null, currentLook = null;
+  const overviewCache = new Map();
   let hoveredCategory = null;
   let filteredLinks = false;
   const scratch = new Vector3();
@@ -44,12 +45,26 @@ export function createGalaxy(container, graph, hooks, reduced) {
     data.nodes.forEach((_, i) => renderer.nodePosition(i, scratch).toArray(result, i * 3));
     return result;
   }
-  function categorySpace(blend) {
+  function categorySpace(blend, from = null, progress = 1) {
     const style = categoryStyle(preset.id);
-    renderer.setSpace({...preset.space, fieldStars: 0, nebula: preset.space.nebula * (1 - blend) + style.background * blend, clusterClouds: preset.space.clusterClouds * (1 - blend)});
-    renderer.setLinkOpacity(preset.look.linkOpacity * (1 - blend) + style.linkOpacity * blend);
-    renderer.setNodeScale(preset.look.nodeSize * 2 * (1 - blend) + style.nodeScale * blend);
-    renderer.setStarfieldIntensity(1 - blend + style.starfield * blend);
+    const target = {
+      nebula: preset.space.nebula * (1 - blend) + style.background * blend,
+      clouds: preset.space.clusterClouds * (1 - blend),
+      links: preset.look.linkOpacity * (1 - blend) + style.linkOpacity * blend,
+      nodes: preset.look.nodeSize * 2 * (1 - blend) + style.nodeScale * blend,
+      stars: 1 - blend + style.starfield * blend,
+      bloom: preset.bloom.strength, radius: preset.bloom.radius, threshold: preset.bloom.threshold,
+      twinkle: preset.look.twinkle, curve: preset.look.linkCurve,
+    };
+    const look = from ? Object.fromEntries(Object.entries(target).map(([key, value]) => [key, from[key] + (value - from[key]) * categoryEase(progress)])) : target;
+    renderer.setSpace({fieldStars: 0, nebula: look.nebula, clusterClouds: look.clouds});
+    renderer.setLinkOpacity(look.links);
+    renderer.setNodeScale(look.nodes);
+    renderer.setStarfieldIntensity(look.stars);
+    renderer.setBloomParams({strength:look.bloom, radius:look.radius, threshold:look.threshold});
+    renderer.twinkleFreq = look.twinkle;
+    if (look.curve !== currentLook?.curve) renderer.setLinkCurve(look.curve);
+    currentLook = look;
     if (filteredLinks !== (blend > .005)) updateLinkFilter();
   }
   function updateLinkFilter() {
@@ -101,8 +116,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     if (reduced || instant) {
       display.set(to); transition = null; categoryBlend = expanded ? 1 : 0;
       renderer.updatePositions(); categorySpace(categoryBlend);
-      if (!expanded) renderer.setDisplayPositions(null);
-    } else transition = {from, to, elapsed: 0, duration: morph ? 1.4 : expanded ? 3.1 : 1.8, expanding: expanded, blendFrom: categoryBlend, morph};
+    } else transition = {from, to, elapsed: 0, duration: morph ? 1.4 : expanded ? 3.1 : 1.8, expanding: expanded, blendFrom: categoryBlend, morph, lookFrom: {...currentLook}};
   }
   function stepCategories(dt) {
     let burst = -1;
@@ -112,10 +126,10 @@ export function createGalaxy(container, graph, hooks, reduced) {
       interpolateCategories(transition.from, transition.to, p, transition.expanding && !transition.morph, display, clusters);
       categoryBlend = transition.blendFrom + ((transition.expanding ? 1 : 0) - transition.blendFrom) * categoryEase(p);
       burst = transition.expanding && !transition.morph ? p : -1;
-      renderer.updatePositions(); categorySpace(categoryBlend);
+      renderer.updatePositions(); categorySpace(categoryBlend, transition.morph ? transition.lookFrom : null, p);
       if (p === 1) {
         transition = null;
-        if (!expanded) { renderer.setDisplayPositions(null); renderer.refreshClusterClouds(); }
+        if (!expanded) renderer.refreshClusterClouds();
         applyFocus(Boolean(selected || category));
       }
     }
@@ -163,37 +177,36 @@ export function createGalaxy(container, graph, hooks, reduced) {
     return {charge: -preset.physics.repel, ...preset.physics, velocityDecay: 0.4};
   }
   function setPreset(id) {
-    presetFrom = expanded && initialFramed ? snapshot() : null;
-    const previousBlend = categoryBlend;
+    const hadScene = overviewCache.size > 0;
+    presetFrom = hadScene ? snapshot() : null;
     camera.cancelMotion();
-    transition = null; overview = null; categoryBlend = 0;
+    transition = null; overview = null;
     effects?.dispose(); effects = null;
-    renderer.setDisplayPositions(null);
     hovered = -1; hooks.onLabels([]);
     preset = STYLE_PRESETS.find(item => item.id === id) || STYLE_PRESETS[0];
-    renderer.setBloomParams(preset.bloom);
-    renderer.setLinkOpacity(preset.look.linkOpacity);
-    renderer.setLinkCurve(preset.look.linkCurve);
-    renderer.setNodeScale(preset.look.nodeSize * 2);
-    renderer.twinkleFreq = preset.look.twinkle;
-    renderer.setStarfieldEnabled(true);
-    categoryBlend = presetFrom ? previousBlend : 0;
-    categorySpace(categoryBlend);
-    renderer.setNebulaTint('#528ba5', '#9e77b7');
-    renderer.applyTier(width < 640 ? TIERS.mobile : TIERS.high, preset.bloom.strength);
     camera.setFramingElev(preset.frameElevDeg || 18);
     ready = false;
-    if (!presetFrom) hooks.onReady(false);
-    layout?.dispose();
-    try {
-      layout = new WorkerForceLayout();
-      layout.onError = fallback;
-      layout.init(data, positions, physics());
-      workerDeadline = performance.now() + 5000;
-    } catch { fallback(); }
-    // Show a stable seed scene while the worker computes the opening layout.
-    renderer.setData(data, positions);
-    if (presetFrom) renderer.setDisplayPositions(presetFrom);
+    layout?.dispose(); layout = null;
+    workerDeadline = 0;
+    pendingOverview = overviewCache.get(preset.id) || null;
+    // Keep the last frame visible while preparing a preset for the first time.
+    // Later visits reuse its settled coordinates without restarting the worker.
+    if (!hadScene) {
+      hooks.onReady(false);
+      renderer.setStarfieldEnabled(true);
+      renderer.setNebulaTint('#528ba5', '#9e77b7');
+      renderer.applyTier(width < 640 ? TIERS.mobile : TIERS.high, preset.bloom.strength);
+      categorySpace(categoryBlend);
+      renderer.setData(data, positions);
+    } else renderer.setDisplayPositions(presetFrom);
+    if (!pendingOverview) {
+      try {
+        layout = new WorkerForceLayout();
+        layout.onError = fallback;
+        layout.init(data, positions, physics());
+        workerDeadline = performance.now() + 5000;
+      } catch { fallback(); }
+    }
     if (!initialFramed) { frame(true); initialFramed = true; }
   }
   function resize() {
@@ -242,18 +255,24 @@ export function createGalaxy(container, graph, hooks, reduced) {
     if (document.hidden) { previous = 0; return; }
     const dt = previous ? Math.min((now - previous) / 1000, 0.05) : 0;
     previous = now;
-    if (workerDeadline && now > workerDeadline && !layout.isSettled()) fallback();
-    const changed = layout.step();
-    if (!ready && layout.isSettled()) {
+    if (workerDeadline && now > workerDeadline && !layout?.isSettled()) fallback();
+    layout?.step();
+    if (!ready && (pendingOverview || layout?.isSettled())) {
       workerDeadline = 0; ready = true;
-      if (presetFrom) renderer.setDisplayPositions(null);
-      renderer.updatePositions(); renderer.refreshClusterClouds();
-      overview = snapshot();
+      if (pendingOverview) overview = pendingOverview;
+      else {
+        renderer.setDisplayPositions(null);
+        renderer.updatePositions();
+        overview = snapshot();
+        overviewCache.set(preset.id, overview);
+      }
+      pendingOverview = null;
+      renderer.refreshClusterClouds();
       clusters = categoryLayout(data, overview, {aspect: width / height, elevation: preset.frameElevDeg || 18, preset: preset.id});
       effects = new CategoryEffects(renderer.scene, clusters.groups, data, colors);
-      if (expanded && presetFrom) {
+      if (presetFrom) {
         renderer.setDisplayPositions(presetFrom);
-        expand(true, reduced, true);
+        expand(expanded, reduced, true);
       } else if (expanded) expand(true, true);
       else {
         frame(!initialFramed || reduced);
@@ -262,7 +281,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
       presetFrom = null;
       applyFocus(Boolean(selected || category));
       hooks.onReady(true);
-    } else if (changed && ready && !paused && !expanded && !transition) renderer.updatePositions();
+    }
     stepCategories(reduced ? 0 : dt);
     camera.cruiseEnabled = !paused && !reduced && ready && !transition;
     camera.cruiseSpeed = 0.5;

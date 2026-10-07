@@ -15,6 +15,9 @@ export function Home({graph, focus, setFocus, reduced}) {
   const [labels, setLabels] = useState([]), [ready, setReady] = useState(false), [error, setError] = useState('');
   const [preset, setPreset] = useState('nebula');
   const [expanded, setExpanded] = useState(false);
+  const views = [['galaxy', '银河'], ['nebula', '星云'], ['deepfield', '深空']];
+  const viewIndex = views.findIndex(([id]) => id === preset);
+  const nextView = views[(viewIndex + 1) % views.length];
   const [query, setQuery] = useState(''), [searchOpen, setSearchOpen] = useState(false);
   current.current = {focus, setFocus, preset, expanded};
   const documents = useMemo(() => graph.nodes.filter(node => node.module), [graph]);
@@ -104,9 +107,12 @@ export function Home({graph, focus, setFocus, reduced}) {
         const next = !expanded; setExpanded(next); setFocus({mod: null, sel: null});
         scene.current?.focus(null, null); scene.current?.expand(next);
       }}>分类</button>
-      {[['galaxy','银河'],['nebula','星云'],['deepfield','深空']].map(([id, title]) =>
-        <button key={id} aria-pressed={preset === id} disabled={Boolean(error)} onClick={() => {setPreset(id);scene.current?.preset(id);}}>{title}</button>
-      )}
+      <button className="galaxy-view-cycle" disabled={!ready || Boolean(error)}
+        style={{'--view-index': viewIndex}} aria-label={`当前${views[viewIndex][1]}视图，切换到${nextView[1]}`} title={`切换到${nextView[1]}`}
+        onClick={() => {setPreset(nextView[0]);scene.current?.preset(nextView[0]);}}>
+        <span className="galaxy-view-highlight" aria-hidden="true"/>
+        {views.map(([id, title]) => <span key={id} className={preset === id ? 'is-current' : ''} aria-hidden="true">{title}</span>)}
+      </button>
     </nav>
     {node?.module && <div className="analysis-wrap" key={node.id}>
       <DocumentReader graph={graph} node={node} module={moduleOf(graph, node)} onGo={go} onClose={() => setFocus({mod: null, sel: null})}/>

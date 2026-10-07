@@ -1,4 +1,4 @@
-/* A full-screen sky; identity, search, category expansion and three view choices. */
+/* A full-screen sky; identity, search, category expansion and one cycling view control. */
 .galaxy-page{--space:#000003;--starlight:#e5eaf2;--dust:#9eacc1;position:relative;height:100svh;min-height:360px;background:var(--space);overflow:hidden}
 .galaxy-viewport{position:absolute;inset:0;isolation:isolate}
 .galaxy-viewport.is-loading>canvas{opacity:0}
@@ -48,3 +48,9 @@
 .galaxy-category-label:hover,.galaxy-category-label:focus-visible{color:#fff;background:#07111b80;border-radius:5px}
 .galaxy-category-label:focus-visible,.galaxy-views button:focus-visible{outline:1px solid #a8c4df;outline-offset:3px}
 @media(max-width:760px){.galaxy-views .galaxy-category-toggle{margin-right:5px}.galaxy-category-label{font-size:11px;letter-spacing:.05em}.galaxy-views button{padding-inline:7px}}
+
+.galaxy-views .galaxy-view-cycle{position:relative;display:grid;grid-template-columns:repeat(3,48px);align-items:center;padding:3px;border:1px solid #9ab0ca26;border-radius:20px;background:#080e1873;backdrop-filter:blur(12px);isolation:isolate}
+.galaxy-view-cycle>span:not(.galaxy-view-highlight){position:relative;padding:5px 0;color:#8392a9;transition:color .35s;z-index:1}
+.galaxy-view-cycle>span.is-current{color:#e4edf9}
+.galaxy-view-highlight{position:absolute;left:3px;top:3px;bottom:3px;width:48px;border-radius:16px;background:#b5cce824;box-shadow:inset 0 0 0 1px #bed4ee20;transform:translateX(calc(var(--view-index)*100%));transition:transform .5s cubic-bezier(.22,.68,0,1)}
+@media(max-width:760px){.galaxy-views .galaxy-view-cycle{grid-template-columns:repeat(3,39px);padding:3px}.galaxy-view-highlight{width:39px}}
