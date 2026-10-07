@@ -121,6 +121,7 @@ export class AggregateRenderer {
 	private colorFn: NodeColorFn = fallbackColorFn;
 	private tokens: VisualTokens = DEEP_SPACE;
 	private tierBloomAllowed = true;
+	private framingRegion: {width: number; height: number; left: number; top: number} | null = null;
 	private lastW = 2;
 	private lastH = 2;
 	private baseLinkOpacity = 0.16;
@@ -932,16 +933,23 @@ export class AggregateRenderer {
 		}
 	}
 
+	/** Keep a full-page sky while framing the graph in the space beside the reader. */
+	setFramingRegion(width: number, height: number, left: number, top: number): void {
+		this.framingRegion = {width, height, left, top};
+	}
+
 	resize(w: number, h: number): void {
 		if (w < 2 || h < 2) return;
 		this.lastW = w;
 		this.lastH = h;
-		this.camera.aspect = w / h;
+		const region = this.framingRegion;
+		if (region) this.camera.setViewOffset(region.width, region.height, -region.left, -region.top, w, h);
+		else { this.camera.clearViewOffset(); this.camera.aspect = w / h; }
 		this.camera.updateProjectionMatrix();
 		this.renderer.setSize(w, h);
 		this.composer.setSize(w, h);
 		this.bloomPass.resolution.set(w, h);
-		const physH = h * this.renderer.getPixelRatio();
+		const physH = (region?.height ?? h) * this.renderer.getPixelRatio();
 		this.pixelScale = physH / (2 * Math.tan(((this.camera.fov / 2) * Math.PI) / 180));
 		const u = this.nodeMaterial?.uniforms['uPixelScale'];
 		if (u) u.value = this.pixelScale;

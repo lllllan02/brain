@@ -46,3 +46,20 @@ test('三维布局及显示变换对空库、单篇和关联文档产生有限�
     }
   }finally{await server.close();}
 });
+
+test('标签聚焦跨分类匹配全部同名标签，仅保留匹配文档之间的真实引用', () => {
+  const data = {nodes:[
+    {id:'a',folderTop:'one',tags:['索引','MySQL']},
+    {id:'b',folderTop:'two',tags:['索引']},
+    {id:'c',folderTop:'one',tags:['索引优化']},
+    {id:'d',folderTop:'two',tags:[]},
+  ],links:[{source:0,target:1},{source:0,target:2},{source:1,target:3}]};
+  const focus = galaxyFocus(data,null,null,'索引');
+  assert.deepEqual([...focus.bright],[0,1]);
+  assert.deepEqual(focus.links,[0]);
+  assert.equal(focus.index,-1);
+  assert.equal(focus.active,true);
+  assert.deepEqual([...galaxyFocus(data,null,'one').bright],[0,2]);
+  assert.deepEqual([...galaxyFocus(data,null,null,'不存在').bright],[]);
+  assert.equal(galaxyFocus(data,null,null).active,false);
+});

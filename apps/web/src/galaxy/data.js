@@ -14,7 +14,7 @@ export function galaxyData(graph) {
   return {nodes, links};
 }
 
-export function galaxyFocus(data, selected, category) {
+export function galaxyFocus(data, selected, category, tag = null) {
   const index = data.nodes.findIndex(node => node.id === selected);
   const bright = new Set();
   const links = [];
@@ -25,11 +25,11 @@ export function galaxyFocus(data, selected, category) {
         bright.add(link.source); bright.add(link.target); links.push(i);
       }
     });
-  } else if (category) {
-    data.nodes.forEach((node, i) => { if (node.folderTop === category) bright.add(i); });
+  } else if (category || tag) {
+    data.nodes.forEach((node, i) => { if (tag ? node.tags?.includes(tag) : node.folderTop === category) bright.add(i); });
     data.links.forEach((link, i) => {
       if (bright.has(link.source) && bright.has(link.target)) links.push(i);
     });
   }
-  return {index, bright, links, active: index >= 0 || Boolean(category)};
+  return {index, bright, links, active: index >= 0 || Boolean(category || tag)};
 }

@@ -1,7 +1,8 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {moduleOf} from './graph';
 import {CONFIG, asset} from '../config';
 import {DocumentReader} from './DocumentReader';
+import {ClusterList} from './ClusterList';
 import '../galaxy/galaxy.css';
 
 export function moduleItems(graph, modId) {
@@ -15,15 +16,20 @@ export function Home({graph, focus, setFocus, reduced}) {
   const [labels, setLabels] = useState([]), [ready, setReady] = useState(false), [error, setError] = useState('');
   const [preset, setPreset] = useState('nebula');
   const [expanded, setExpanded] = useState(false);
+  const [readerCluster, setReaderCluster] = useState(null);
+  const [clusterVisible, setClusterVisible] = useState(false);
+  const clusterAnchor = useCallback(() => scene.current?.clusterAnchor(), []);
+  const activeCluster = focus.sel ? readerCluster : null;
   const views = [['galaxy', '银河'], ['nebula', '星云'], ['deepfield', '深空']];
   const viewIndex = views.findIndex(([id]) => id === preset);
   const nextView = views[(viewIndex + 1) % views.length];
   const [query, setQuery] = useState(''), [searchOpen, setSearchOpen] = useState(false);
-  current.current = {focus, setFocus, preset, expanded};
+  current.current = {focus, setFocus, preset, expanded, activeCluster};
   const documents = useMemo(() => graph.nodes.filter(node => node.module), [graph]);
   const node = graph.index.get(focus.sel);
-  const go = id => {
+  const go = (id, keepCluster = false) => {
     const target = graph.index.get(id); if (!target?.module) return;
+    if (!keepCluster) setReaderCluster(null);
     setQuery(''); setSearchOpen(false); searchInput.current?.blur();
     setFocus({mod: moduleOf(graph, target).id, sel: id});
   };
@@ -41,14 +47,16 @@ export function Home({graph, focus, setFocus, reduced}) {
         onLabels: next => { if (active) setLabels(next); },
         onReady: value => { if (active) setReady(value); },
         onError: message => { if (active) setError(message); },
-        onReset: () => current.current.setFocus({mod: null, sel: null}),
+        onReset: () => {setReaderCluster(null);current.current.setFocus({mod: null, sel: null});},
         onSelect: id => {
+          setReaderCluster(null);
           const target = graph.index.get(id);
           if (target?.module) current.current.setFocus({mod: target.module, sel: id});
         },
       }, reduced);
       scene.current = instance;
-      instance.focus(current.current.focus.sel, current.current.focus.mod);
+      const cluster = current.current.activeCluster;
+      instance.focus(cluster ? null : current.current.focus.sel, cluster ? cluster.category : current.current.focus.mod, cluster?.tag);
       instance.pause(reduced);
       if (current.current.preset !== 'nebula') instance.preset(current.current.preset);
       instance.expand(current.current.expanded);
@@ -57,7 +65,14 @@ export function Home({graph, focus, setFocus, reduced}) {
     });
     return () => { active = false; instance?.dispose(); scene.current = null; };
   }, [graph, reduced]);
-  useEffect(() => { scene.current?.focus(focus.sel, focus.mod); }, [focus.sel, focus.mod]);
+  useEffect(() => { if (!focus.sel) setReaderCluster(null); }, [focus.sel]);
+  useEffect(() => {
+    scene.current?.focus(activeCluster ? null : focus.sel, activeCluster ? activeCluster.category : focus.mod, activeCluster?.tag);
+  }, [focus.sel, focus.mod, activeCluster]);
+  const showReaderCluster = cluster => {
+    setReaderCluster(cluster);
+    if (expanded) {setExpanded(false);scene.current?.expand(false);}
+  };
   useEffect(() => {
     const key = event => {
       if (document.querySelector('[role="dialog"]')) return;
@@ -75,8 +90,9 @@ export function Home({graph, focus, setFocus, reduced}) {
     window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
   }, [focus, query, setFocus]);
   const reset = () => { setQuery(''); setSearchOpen(false); searchInput.current?.blur(); setFocus({mod: null, sel: null}); scene.current?.reset(); };
-  return <section className={`galaxy-page ${node ? 'galaxy-reading' : ''}`} aria-label="知识星云">
+  return <section className={`galaxy-page ${node ? 'galaxy-reading' : ''} ${activeCluster || clusterVisible ? 'galaxy-browsing' : ''}`} aria-label="知识星云">
     <div className={`galaxy-viewport ${!ready || error ? 'is-loading' : ''}`} ref={host}>
+      <div className="galaxy-frame" aria-hidden="true"/>
       <div className="galaxy-labels">{ready && !error && labels.map(label => label.category ?
         <button key={label.id} className="galaxy-category-label" style={{left: label.x, top: label.y}} onPointerEnter={() => scene.current?.hoverCategory(label.id)} onPointerLeave={() => scene.current?.hoverCategory(null)} onFocus={() => scene.current?.hoverCategory(label.id)} onBlur={() => scene.current?.hoverCategory(null)} onClick={() => setFocus({mod: label.id, sel: null})} aria-label={`查看${label.title}分类`}>{label.title}</button> :
         <span key={label.id} className="galaxy-label" aria-hidden="true" style={{left: label.x, top: label.y}}>{label.title}</span>
@@ -114,8 +130,10 @@ export function Home({graph, focus, setFocus, reduced}) {
         {views.map(([id, title]) => <span key={id} className={preset === id ? 'is-current' : ''} aria-hidden="true">{title}</span>)}
       </button>
     </nav>
+    <ClusterList graph={graph} cluster={activeCluster} selected={node?.id} reduced={reduced} getAnchor={clusterAnchor}
+      onPresenceChange={setClusterVisible} onSelect={id => go(id, true)} onClose={() => setReaderCluster(null)}/>
     {node?.module && <div className="analysis-wrap" key={node.id}>
-      <DocumentReader graph={graph} node={node} module={moduleOf(graph, node)} onGo={go} onClose={() => setFocus({mod: null, sel: null})}/>
+      <DocumentReader graph={graph} node={node} module={moduleOf(graph, node)} cluster={activeCluster} onCluster={showReaderCluster} onGo={go} onClose={() => setFocus({mod: null, sel: null})}/>
     </div>}
   </section>;
 }

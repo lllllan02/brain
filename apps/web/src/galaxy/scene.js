@@ -13,6 +13,7 @@ import {categoryStyle} from './categoryStyles';
 
 export function createGalaxy(container, graph, hooks, reduced) {
   const data = galaxyData(graph);
+  const framingRegion = container.querySelector('.galaxy-frame') || container;
   const radius = Math.max(45, seedRadius(data.nodes.length));
   const positions = new Float32Array(data.nodes.length * 3);
   data.nodes.forEach((node, i) => positions.set(seedPosition(node.id, radius), i * 3));
@@ -27,9 +28,9 @@ export function createGalaxy(container, graph, hooks, reduced) {
     return [module.id, color.setHSL(hsl.h, 0.58, 0.65)];
   }));
   renderer.setColorFn(node => colors.get(node.folderTop) || new Color('#bccbdf'));
-  let layout, preset, width = 1, height = 1, disposed = false;
-  let ready = false, paused = reduced, selected = null, category = null;
-  let focus = galaxyFocus(data, selected, category);
+  let layout, preset, width = 1, height = 1, frameWidth = 1, frameHeight = 1, disposed = false;
+  let ready = false, paused = reduced, selected = null, category = null, tag = null;
+  let focus = galaxyFocus(data, selected, category, tag);
   let raf = 0, previous = 0, labelTime = 0, hovered = -1, down = null;
   let initialFramed = false, workerDeadline = 0;
   let expanded = false, transition = null, overview = null, clusters = null, effects = null;
@@ -90,7 +91,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     let r = 30;
     for (let i = 0; i < target.length; i += 3) r = Math.max(r, new Vector3().fromArray(target, i).distanceTo(center));
     camera.cancelMotion();
-    let fit = r * .76 / Math.min(1, width / height);
+    let fit = r * .76 / Math.min(1, frameWidth / frameHeight);
     if (expanded && clusters) {
       let horizontal = 30, vertical = 30, depth = 0;
       for (let i = 0; i < target.length; i += 3) {
@@ -99,7 +100,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
         vertical = Math.max(vertical, Math.abs(scratch.dot(clusters.up)));
         depth = Math.max(depth, Math.abs(scratch.dot(clusters.normal)));
       }
-      fit = Math.max((horizontal + 25) / (width / height), vertical + 45) * .68 + depth * .12;
+      fit = Math.max((horizontal + 25) / (frameWidth / frameHeight), vertical + 45) * .68 + depth * .12;
     }
     if (instant || reduced) camera.setInitialFraming(center, fit);
     else camera.resetView(center, fit);
@@ -130,7 +131,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
       if (p === 1) {
         transition = null;
         if (!expanded) renderer.refreshClusterClouds();
-        applyFocus(Boolean(selected || category));
+        applyFocus(Boolean(selected || category || tag));
       }
     }
     effects?.update(burst, display, dt);
@@ -143,7 +144,9 @@ export function createGalaxy(container, graph, hooks, reduced) {
     if (points.length) center.divideScalar(points.length);
     let r = 30;
     for (const point of points) r = Math.max(r, point.distanceTo(center));
-    return {center, radius: r * 0.76 / Math.min(1, width / height)};
+    // Small metadata groups need breathing room instead of a document-sized close-up.
+    if (focus.index < 0 && (category || tag)) r = Math.max(r, 140);
+    return {center, radius: r * 0.76 / Math.min(1, frameWidth / frameHeight)};
   }
   function frame(instant = false, indices) {
     const b = bounds(indices);
@@ -152,7 +155,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     else camera.resetView(b.center, b.radius);
   }
   function applyFocus(move = false) {
-    focus = galaxyFocus(data, selected, category);
+    focus = galaxyFocus(data, selected, category, tag);
     renderer.setFocus(focus.active ? i => focus.bright.has(i) ? 1 : 0.12 : null);
     updateLinkFilter();
     renderer.setLinkOpacity(expanded && category && focus.index < 0 ? .16 : preset.look.linkOpacity * (1 - categoryBlend) + categoryStyle(preset.id).linkOpacity * categoryBlend);
@@ -163,8 +166,8 @@ export function createGalaxy(container, graph, hooks, reduced) {
       else camera.flyTo(renderer.nodePosition(focus.index, scratch), Math.max(9, renderer.nodeRadius(focus.index)), () => {
         if (!paused) camera.beginFocusOrbit(null);
       });
-    } else if (expanded && !category && clusters) frameDestination(clusters.positions);
-    else frame(false, category && focus.bright.size ? [...focus.bright] : undefined);
+    } else if (expanded && !category && !tag && clusters) frameDestination(clusters.positions);
+    else frame(false, (category || tag) && focus.bright.size ? [...focus.bright] : undefined);
   }
   function fallback() {
     if (disposed || layout instanceof MainThreadForceLayout) return;
@@ -195,7 +198,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
       hooks.onReady(false);
       renderer.setStarfieldEnabled(true);
       renderer.setNebulaTint('#528ba5', '#9e77b7');
-      renderer.applyTier(width < 640 ? TIERS.mobile : TIERS.high, preset.bloom.strength);
+      renderer.applyTier(frameWidth < 640 ? TIERS.mobile : TIERS.high, preset.bloom.strength);
       categorySpace(categoryBlend);
       renderer.setData(data, positions);
     } else renderer.setDisplayPositions(presetFrom);
@@ -210,13 +213,16 @@ export function createGalaxy(container, graph, hooks, reduced) {
     if (!initialFramed) { frame(true); initialFramed = true; }
   }
   function resize() {
-    const oldMobile = width < 640;
+    const oldMobile = frameWidth < 640;
     width = Math.max(1, container.clientWidth); height = Math.max(1, container.clientHeight);
+    const region = framingRegion.getBoundingClientRect(), viewport = container.getBoundingClientRect();
+    frameWidth = Math.max(1, region.width); frameHeight = Math.max(1, region.height);
+    renderer.setFramingRegion(frameWidth, frameHeight, region.left - viewport.left, region.top - viewport.top);
     renderer.resize(width, height);
-    if (preset && oldMobile !== (width < 640)) renderer.applyTier(width < 640 ? TIERS.mobile : TIERS.high, preset.bloom.strength);
+    if (preset && oldMobile !== (frameWidth < 640)) renderer.applyTier(frameWidth < 640 ? TIERS.mobile : TIERS.high, preset.bloom.strength);
     if (ready) {
-      if (!selected && !category && overview) {
-        clusters = categoryLayout(data, overview, {aspect: width / height, elevation: preset.frameElevDeg || 18, preset: preset.id});
+      if (!selected && !category && !tag && overview) {
+        clusters = categoryLayout(data, overview, {aspect: frameWidth / frameHeight, elevation: preset.frameElevDeg || 18, preset: preset.id});
         effects?.dispose(); effects = new CategoryEffects(renderer.scene, clusters.groups, data, colors);
         if (expanded) expand(true, true);
         else applyFocus(true);
@@ -240,7 +246,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
         const p = new Vector3(...group.center).addScaledVector(clusters.up, group.radius + 12).project(renderer.camera);
         const x = (p.x + 1) * width / 2, y = (1 - p.y) * height / 2;
         if (p.z < -1 || p.z > 1 || x < 20 || x > width - 20 || y < 76 || y > height - 88) continue;
-        const half = ((module?.title.length || 3) * (width < 640 ? 11 : 13) + 20) / 2;
+        const half = ((module?.title.length || 3) * (frameWidth < 640 ? 11 : 13) + 20) / 2;
         const box = {left:x-half,right:x+half,top:y-28,bottom:y+4};
         if (occupied.some(r => box.left < r.right && box.right > r.left && box.top < r.bottom && box.bottom > r.top)) continue;
         occupied.push(box);
@@ -268,7 +274,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
       }
       pendingOverview = null;
       renderer.refreshClusterClouds();
-      clusters = categoryLayout(data, overview, {aspect: width / height, elevation: preset.frameElevDeg || 18, preset: preset.id});
+      clusters = categoryLayout(data, overview, {aspect: frameWidth / frameHeight, elevation: preset.frameElevDeg || 18, preset: preset.id});
       effects = new CategoryEffects(renderer.scene, clusters.groups, data, colors);
       if (presetFrom) {
         renderer.setDisplayPositions(presetFrom);
@@ -276,10 +282,10 @@ export function createGalaxy(container, graph, hooks, reduced) {
       } else if (expanded) expand(true, true);
       else {
         frame(!initialFramed || reduced);
-        if (!reduced && !selected && !category) renderer.playReveal(2200);
+        if (!reduced && !selected && !category && !tag) renderer.playReveal(2200);
       }
       presetFrom = null;
-      applyFocus(Boolean(selected || category));
+      applyFocus(Boolean(selected || category || tag));
       hooks.onReady(true);
     }
     stepCategories(reduced ? 0 : dt);
@@ -309,6 +315,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
   canvas.addEventListener('pointercancel', pointerLeave);
   canvas.addEventListener('webglcontextlost', contextLost);
   const observer = new ResizeObserver(resize); observer.observe(container);
+  if (framingRegion !== container) observer.observe(framingRegion);
   function dispose() {
     if (disposed) return;
     disposed = true; cancelAnimationFrame(raf); observer.disconnect(); layout?.dispose(); camera.dispose(); effects?.dispose();
@@ -320,11 +327,20 @@ export function createGalaxy(container, graph, hooks, reduced) {
   try { resize(); setPreset('nebula'); raf = requestAnimationFrame(tick); }
   catch (error) { dispose(); throw error; }
   return {
-    focus(sel, mod) { if (disposed) return; selected = sel; category = mod; applyFocus(true); },
+    focus(sel, mod, selectedTag = null) { if (disposed) return; selected = sel; category = mod; tag = selectedTag; applyFocus(true); },
     pause(value) { if (disposed) return; paused = value; if (value) camera.cancelMotion(); },
     preset(id) { if (!disposed) setPreset(id); },
     expand(value) { if (!disposed) expand(value); },
     hoverCategory(id) { hoveredCategory = id; },
+    clusterAnchor() {
+      if (disposed || !ready || focus.index >= 0 || !focus.bright.size) return null;
+      const center = new Vector3();
+      for (const i of focus.bright) center.add(renderer.nodePosition(i, scratch));
+      center.divideScalar(focus.bright.size).project(renderer.camera);
+      if (center.z < -1 || center.z > 1) return null;
+      const rect = canvas.getBoundingClientRect();
+      return {x:rect.left + (center.x + 1) * width / 2, y:rect.top + (1 - center.y) * height / 2};
+    },
     reset() { if (!disposed) { if (expanded && clusters) frameDestination(clusters.positions); else frame(); } },
     replay() { if (!disposed && ready) { frame(); if (!reduced) renderer.playReveal(2200); } },
     dispose,

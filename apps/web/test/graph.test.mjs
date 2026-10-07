@@ -42,3 +42,21 @@ test('唯一分类动态生成星云，标签不影响分组，分类更新与�
   assert.throws(()=>parseDocument('---\ncategory: [数据库, 操作系统]\n---\n正文','invalid.md'),/category 必须是单个文本/);
  }finally{await server.close();}
 });
+
+test('分类和标签列表展示全部匹配文档，与星图聚焦集合一致', async () => {
+ const server=await createServer({root:process.cwd(),configFile:false,server:{middlewareMode:true,hmr:false,ws:false},appType:'custom'});
+ try {
+  const {buildGraph}=await server.ssrLoadModule('/src/neural/graph.js');
+  const {clusterDocuments}=await server.ssrLoadModule('/src/neural/ClusterList.jsx');
+  const {galaxyData,galaxyFocus}=await import('../src/galaxy/data.js');
+  const documents=Array.from({length:80},(_,i)=>({id:`note-${i}`,title:`笔记 ${i}`,body:'',category:i<65?'数据库':'系统',tags:i%2?['共享']:['共享扩展'],references:[],backlinks:[]}));
+  const graph=buildGraph({documents}), data=galaxyData(graph);
+  const category=graph.modules.find(m=>m.title==='数据库').id;
+  for (const [cluster,count] of [[{category},65],[{tag:'共享'},40],[{tag:'不存在'},0]]) {
+   const rows=clusterDocuments(graph,cluster), focus=galaxyFocus(data,null,cluster.category,cluster.tag);
+   assert.equal(rows.length,count);
+   assert.deepEqual(new Set(rows.map(n=>n.id)),new Set([...focus.bright].map(i=>data.nodes[i].id)));
+  }
+  assert.equal(documents[0].id,'note-0');
+ } finally {await server.close();}
+});
