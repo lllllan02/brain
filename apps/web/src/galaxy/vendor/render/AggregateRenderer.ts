@@ -60,6 +60,8 @@ export class AggregateRenderer {
 
 	private nodePoints: Points | null = null;
 	private nodeMaterial: ShaderMaterial | null = null;
+	private previewTime = 0;
+	private previewAnimated = false;
 	private nodeGeometry: BufferGeometry | null = null;
 	private linkSegments: LineSegments | null = null;
 	private linkGeometry: BufferGeometry | null = null;
@@ -206,6 +208,7 @@ export class AggregateRenderer {
 		this.nodeGeometry.setAttribute('aGhost', new BufferAttribute(ghost, 1));
 		this.nodeGeometry.setAttribute('aDim', new BufferAttribute(this.dimCurrent, 1));
 		this.nodeGeometry.setAttribute('aActive', new BufferAttribute(new Float32Array(n), 1));
+		this.nodeGeometry.setAttribute('aPreview', new BufferAttribute(new Float32Array(n), 1));
 		this.nodeMaterial = new ShaderMaterial({
 			vertexShader: NODE_VERTEX_SHADER,
 			fragmentShader: NODE_FRAGMENT_SHADER,
@@ -213,6 +216,7 @@ export class AggregateRenderer {
 			transparent: true,
 			depthWrite: false,
 			uniforms: {
+				uPreviewPulse: { value: 0 },
 				uPixelScale: { value: this.pixelScale },
 				uSizeMul: { value: this.nodeScale },
 				uLightMode: { value: this.tokens.lightMode ? 1 : 0 },
@@ -612,6 +616,19 @@ export class AggregateRenderer {
 		attribute.needsUpdate = true;
 	}
 
+	/** Link hover is independent of the selected document and camera focus. */
+	setPreviewNode(index: number, animated = true): void {
+		if (!this.nodeGeometry || !this.nodeMaterial) return;
+		const attribute = this.nodeGeometry.getAttribute('aPreview') as BufferAttribute;
+		const values = attribute.array as Float32Array;
+		values.fill(0);
+		if (index >= 0 && index < values.length) values[index] = 1;
+		attribute.needsUpdate = true;
+		this.previewTime = 0;
+		this.previewAnimated = animated && index >= 0;
+		this.nodeMaterial.uniforms['uPreviewPulse']!.value = animated ? 0 : 0.55;
+	}
+
 	/**
 	 * 聚焦模式：按每节点权重淡出/提亮。weightOf 返回 aDim 目标（1=全亮，0.12=淡出）；
 	 * 分级选中（选中/一度/二度/其余）就是不同的权重值，单 float aDim 足矣。
@@ -826,6 +843,13 @@ export class AggregateRenderer {
 	// ---------- 渲染循环 ----------
 
 	render(deltaS: number, animationDeltaS = deltaS): void {
+		if (this.previewAnimated && this.nodeMaterial) {
+			this.previewTime = (this.previewTime + animationDeltaS) % 1.5;
+			// A strong beat followed by a softer beat, then a quiet interval.
+			const t = this.previewTime;
+			this.nodeMaterial.uniforms['uPreviewPulse']!.value = Math.exp(-Math.pow((t - 0.18) / 0.09, 2))
+				+ 0.6 * Math.exp(-Math.pow((t - 0.43) / 0.12, 2));
+		}
 		// Keep the distant sky around the camera when framing a small graph.
 		this.starfield.position.copy(this.camera.position);
 		this.starfield.rotation.y += STARFIELD_ROTATION_RAD_PER_S * deltaS;

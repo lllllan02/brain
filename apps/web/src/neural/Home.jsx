@@ -19,6 +19,7 @@ export function Home({graph, focus, setFocus, reduced}) {
   const [readerCluster, setReaderCluster] = useState(null);
   const [clusterVisible, setClusterVisible] = useState(false);
   const listAnchor = useCallback(() => scene.current?.nodeAnchor(current.current.focus.sel), []);
+  const previewNode = useCallback(id => scene.current?.previewNode(id), []);
   const activeCluster = focus.sel ? readerCluster : null;
   const views = [['galaxy', '银河'], ['nebula', '星云'], ['deepfield', '深空']];
   const viewIndex = views.findIndex(([id]) => id === preset);
@@ -99,7 +100,7 @@ export function Home({graph, focus, setFocus, reduced}) {
           {label.current && <svg className="galaxy-current-marker" aria-hidden="true" viewBox="-20 -20 40 40" style={{left: label.x, top: label.y}}>
             <path d="M -8 -17 H -17 V -8 M 8 -17 H 17 V -8 M -8 17 H -17 V 8 M 8 17 H 17 V 8"/>
           </svg>}
-          <span className={`galaxy-label${label.current ? ' is-current' : ''}`} aria-hidden="true" style={{left: label.x, top: label.y}}>{label.title}</span>
+          <span className={`galaxy-label${label.current ? ' is-current' : ''}${label.preview ? ' is-preview' : ''}`} aria-hidden="true" style={{left: label.x, top: label.y}}>{label.title}</span>
         </React.Fragment>
       )}</div>
     </div>
@@ -138,7 +139,7 @@ export function Home({graph, focus, setFocus, reduced}) {
     <ClusterList graph={graph} cluster={activeCluster} selected={node?.id} reduced={reduced} getAnchor={listAnchor}
       onPresenceChange={setClusterVisible} onSelect={id => go(id, true)} onClose={() => setReaderCluster(null)}/>
     {node?.module && <div className="analysis-wrap" key={node.id}>
-      <DocumentReader graph={graph} node={node} module={moduleOf(graph, node)} cluster={activeCluster} onCluster={showReaderCluster} onGo={go} onClose={() => setFocus({mod: null, sel: null})}/>
+      <DocumentReader onPreview={previewNode} graph={graph} node={node} module={moduleOf(graph, node)} cluster={activeCluster} onCluster={showReaderCluster} onGo={go} onClose={() => setFocus({mod: null, sel: null})}/>
     </div>}
   </section>;
 }

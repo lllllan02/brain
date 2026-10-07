@@ -8,6 +8,7 @@
 .galaxy-labels{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .galaxy-label{position:absolute;transform:translate(12px,-50%);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:4px 7px;border-radius:4px;background:#060b14bb;color:#dae4f4;font-size:11px;text-shadow:0 1px 6px #000}
 .galaxy-label.is-current{transform:translate(-50%,26px);color:#f0f5ff;text-shadow:0 0 10px #bad3ff88,0 1px 6px #000}
+.galaxy-label.is-preview{color:#eef6ff;background:#152333e8;box-shadow:0 0 14px #94c6ff40;border:1px solid #b7d8ff55}
 .galaxy-current-marker{position:absolute;width:40px;height:40px;transform:translate(-50%,-50%);fill:none;stroke:#cee5ff;stroke-width:1.2;opacity:.85;filter:drop-shadow(0 0 4px #a4caff80)}
 .galaxy-header{position:absolute;top:26px;left:30px;z-index:5}
 .galaxy-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#e2e8f2;font-size:20px;font-family:"Songti SC","Noto Serif CJK SC",serif;letter-spacing:.16em}

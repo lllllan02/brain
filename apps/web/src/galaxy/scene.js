@@ -32,6 +32,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
   let layout, preset, width = 1, height = 1, frameWidth = 1, frameHeight = 1, disposed = false;
   let ready = false, paused = reduced, selected = null, category = null, tag = null;
   let readingIndex = -1;
+  let previewIndex = -1;
   let focus = galaxyFocus(data, selected, category, tag);
   let raf = 0, previous = 0, labelTime = 0, hovered = -1, down = null;
   let initialFramed = false, workerDeadline = 0;
@@ -234,12 +235,12 @@ export function createGalaxy(container, graph, hooks, reduced) {
     }
   }
   function labels() {
-    const chosen = [...new Set([readingIndex, focus.index, hovered])].filter(i => i >= 0);
+    const chosen = [...new Set([readingIndex, focus.index, hovered, previewIndex])].filter(i => i >= 0);
     const result = [];
     for (const i of chosen) {
       const p = renderer.projectNode(i, width, height);
       if (p.behind || p.x < 8 || p.x > width - 40 || p.y < 8 || p.y > height - 28) continue;
-      result.push({id: data.nodes[i].id, title: data.nodes[i].name, x: p.x, y: p.y, current: i === readingIndex});
+      result.push({id: data.nodes[i].id, title: data.nodes[i].name, x: p.x, y: p.y, current: i === readingIndex, preview: i === previewIndex});
     }
     if (expanded && !transition && !selected && clusters) {
       const occupied = [];
@@ -340,6 +341,11 @@ export function createGalaxy(container, graph, hooks, reduced) {
     preset(id) { if (!disposed) setPreset(id); },
     expand(value) { if (!disposed) expand(value); },
     hoverCategory(id) { hoveredCategory = id; },
+    previewNode(id) {
+      if (disposed) return;
+      previewIndex = nodeIndices.get(id) ?? -1;
+      renderer.setPreviewNode(previewIndex, !reduced);
+    },
     nodeAnchor(id) {
       const index = nodeIndices.get(id);
       if (disposed || !ready || index === undefined) return null;
