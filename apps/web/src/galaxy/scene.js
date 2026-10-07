@@ -13,6 +13,7 @@ import {categoryStyle} from './categoryStyles';
 
 export function createGalaxy(container, graph, hooks, reduced) {
   const data = galaxyData(graph);
+  const nodeIndices = new Map(data.nodes.map((node, i) => [node.id, i]));
   const framingRegion = container.querySelector('.galaxy-frame') || container;
   const radius = Math.max(45, seedRadius(data.nodes.length));
   const positions = new Float32Array(data.nodes.length * 3);
@@ -30,6 +31,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
   renderer.setColorFn(node => colors.get(node.folderTop) || new Color('#bccbdf'));
   let layout, preset, width = 1, height = 1, frameWidth = 1, frameHeight = 1, disposed = false;
   let ready = false, paused = reduced, selected = null, category = null, tag = null;
+  let readingIndex = -1;
   let focus = galaxyFocus(data, selected, category, tag);
   let raf = 0, previous = 0, labelTime = 0, hovered = -1, down = null;
   let initialFramed = false, workerDeadline = 0;
@@ -53,7 +55,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
       clouds: preset.space.clusterClouds * (1 - blend),
       links: preset.look.linkOpacity * (1 - blend) + style.linkOpacity * blend,
       nodes: preset.look.nodeSize * 2 * (1 - blend) + style.nodeScale * blend,
-      stars: 1 - blend + style.starfield * blend,
+      stars: .42 * (1 - blend) + style.starfield * blend,
       bloom: preset.bloom.strength, radius: preset.bloom.radius, threshold: preset.bloom.threshold,
       twinkle: preset.look.twinkle, curve: preset.look.linkCurve,
     };
@@ -156,6 +158,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
   }
   function applyFocus(move = false) {
     focus = galaxyFocus(data, selected, category, tag);
+    renderer.setActiveNode(readingIndex);
     renderer.setFocus(focus.active ? i => focus.bright.has(i) ? 1 : 0.28 : null);
     updateLinkFilter();
     renderer.setLinkOpacity(expanded && category && focus.index < 0 ? .16 : preset.look.linkOpacity * (1 - categoryBlend) + categoryStyle(preset.id).linkOpacity * categoryBlend);
@@ -231,12 +234,12 @@ export function createGalaxy(container, graph, hooks, reduced) {
     }
   }
   function labels() {
-    const chosen = [...new Set([focus.index, hovered])].filter(i => i >= 0);
+    const chosen = [...new Set([readingIndex, focus.index, hovered])].filter(i => i >= 0);
     const result = [];
     for (const i of chosen) {
       const p = renderer.projectNode(i, width, height);
       if (p.behind || p.x < 8 || p.x > width - 40 || p.y < 8 || p.y > height - 28) continue;
-      result.push({id: data.nodes[i].id, title: data.nodes[i].name, x: p.x, y: p.y});
+      result.push({id: data.nodes[i].id, title: data.nodes[i].name, x: p.x, y: p.y, current: i === readingIndex});
     }
     if (expanded && !transition && !selected && clusters) {
       const occupied = [];
@@ -327,19 +330,24 @@ export function createGalaxy(container, graph, hooks, reduced) {
   try { resize(); setPreset('nebula'); raf = requestAnimationFrame(tick); }
   catch (error) { dispose(); throw error; }
   return {
-    focus(sel, mod, selectedTag = null) { if (disposed) return; selected = sel; category = mod; tag = selectedTag; applyFocus(true); },
+    focus(sel, mod, selectedTag = null, readingId = sel) {
+      if (disposed) return;
+      selected = sel; category = mod; tag = selectedTag;
+      readingIndex = nodeIndices.get(readingId) ?? -1;
+      applyFocus(true);
+    },
     pause(value) { if (disposed) return; paused = value; if (value) camera.cancelMotion(); },
     preset(id) { if (!disposed) setPreset(id); },
     expand(value) { if (!disposed) expand(value); },
     hoverCategory(id) { hoveredCategory = id; },
-    clusterAnchor() {
-      if (disposed || !ready || focus.index >= 0 || !focus.bright.size) return null;
-      const center = new Vector3();
-      for (const i of focus.bright) center.add(renderer.nodePosition(i, scratch));
-      center.divideScalar(focus.bright.size).project(renderer.camera);
-      if (center.z < -1 || center.z > 1) return null;
+    nodeAnchor(id) {
+      const index = nodeIndices.get(id);
+      if (disposed || !ready || index === undefined) return null;
+      // The reading document remains the origin even while the scene focuses a category/tag.
+      const point = renderer.nodePosition(index, scratch).project(renderer.camera);
+      if (point.z < -1 || point.z > 1) return null;
       const rect = canvas.getBoundingClientRect();
-      return {x:rect.left + (center.x + 1) * width / 2, y:rect.top + (1 - center.y) * height / 2};
+      return {x:rect.left + (point.x + 1) * width / 2, y:rect.top + (1 - point.y) * height / 2};
     },
     reset() { if (!disposed) { if (expanded && clusters) frameDestination(clusters.positions); else frame(); } },
     replay() { if (!disposed && ready) { frame(); if (!reduced) renderer.playReveal(2200); } },

@@ -18,7 +18,7 @@ export function Home({graph, focus, setFocus, reduced}) {
   const [expanded, setExpanded] = useState(false);
   const [readerCluster, setReaderCluster] = useState(null);
   const [clusterVisible, setClusterVisible] = useState(false);
-  const clusterAnchor = useCallback(() => scene.current?.clusterAnchor(), []);
+  const listAnchor = useCallback(() => scene.current?.nodeAnchor(current.current.focus.sel), []);
   const activeCluster = focus.sel ? readerCluster : null;
   const views = [['galaxy', '银河'], ['nebula', '星云'], ['deepfield', '深空']];
   const viewIndex = views.findIndex(([id]) => id === preset);
@@ -56,7 +56,7 @@ export function Home({graph, focus, setFocus, reduced}) {
       }, reduced);
       scene.current = instance;
       const cluster = current.current.activeCluster;
-      instance.focus(cluster ? null : current.current.focus.sel, cluster ? cluster.category : current.current.focus.mod, cluster?.tag);
+      instance.focus(cluster ? null : current.current.focus.sel, cluster ? cluster.category : current.current.focus.mod, cluster?.tag, current.current.focus.sel);
       instance.pause(reduced);
       if (current.current.preset !== 'nebula') instance.preset(current.current.preset);
       instance.expand(current.current.expanded);
@@ -67,7 +67,7 @@ export function Home({graph, focus, setFocus, reduced}) {
   }, [graph, reduced]);
   useEffect(() => { if (!focus.sel) setReaderCluster(null); }, [focus.sel]);
   useEffect(() => {
-    scene.current?.focus(activeCluster ? null : focus.sel, activeCluster ? activeCluster.category : focus.mod, activeCluster?.tag);
+    scene.current?.focus(activeCluster ? null : focus.sel, activeCluster ? activeCluster.category : focus.mod, activeCluster?.tag, focus.sel);
   }, [focus.sel, focus.mod, activeCluster]);
   const showReaderCluster = cluster => {
     setReaderCluster(cluster);
@@ -95,7 +95,12 @@ export function Home({graph, focus, setFocus, reduced}) {
       <div className="galaxy-frame" aria-hidden="true"/>
       <div className="galaxy-labels">{ready && !error && labels.map(label => label.category ?
         <button key={label.id} className="galaxy-category-label" style={{left: label.x, top: label.y}} onPointerEnter={() => scene.current?.hoverCategory(label.id)} onPointerLeave={() => scene.current?.hoverCategory(null)} onFocus={() => scene.current?.hoverCategory(label.id)} onBlur={() => scene.current?.hoverCategory(null)} onClick={() => setFocus({mod: label.id, sel: null})} aria-label={`查看${label.title}分类`}>{label.title}</button> :
-        <span key={label.id} className="galaxy-label" aria-hidden="true" style={{left: label.x, top: label.y}}>{label.title}</span>
+        <React.Fragment key={label.id}>
+          {label.current && <svg className="galaxy-current-marker" aria-hidden="true" viewBox="-20 -20 40 40" style={{left: label.x, top: label.y}}>
+            <path d="M -8 -17 H -17 V -8 M 8 -17 H 17 V -8 M -8 17 H -17 V 8 M 8 17 H 17 V 8"/>
+          </svg>}
+          <span className={`galaxy-label${label.current ? ' is-current' : ''}`} aria-hidden="true" style={{left: label.x, top: label.y}}>{label.title}</span>
+        </React.Fragment>
       )}</div>
     </div>
     <header className="galaxy-header">
@@ -130,7 +135,7 @@ export function Home({graph, focus, setFocus, reduced}) {
         {views.map(([id, title]) => <span key={id} className={preset === id ? 'is-current' : ''} aria-hidden="true">{title}</span>)}
       </button>
     </nav>
-    <ClusterList graph={graph} cluster={activeCluster} selected={node?.id} reduced={reduced} getAnchor={clusterAnchor}
+    <ClusterList graph={graph} cluster={activeCluster} selected={node?.id} reduced={reduced} getAnchor={listAnchor}
       onPresenceChange={setClusterVisible} onSelect={id => go(id, true)} onClose={() => setReaderCluster(null)}/>
     {node?.module && <div className="analysis-wrap" key={node.id}>
       <DocumentReader graph={graph} node={node} module={moduleOf(graph, node)} cluster={activeCluster} onCluster={showReaderCluster} onGo={go} onClose={() => setFocus({mod: null, sel: null})}/>

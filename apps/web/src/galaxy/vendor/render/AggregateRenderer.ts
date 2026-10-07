@@ -205,6 +205,7 @@ export class AggregateRenderer {
 		this.nodeGeometry.setAttribute('aSize', new BufferAttribute(this.sizes, 1));
 		this.nodeGeometry.setAttribute('aGhost', new BufferAttribute(ghost, 1));
 		this.nodeGeometry.setAttribute('aDim', new BufferAttribute(this.dimCurrent, 1));
+		this.nodeGeometry.setAttribute('aActive', new BufferAttribute(new Float32Array(n), 1));
 		this.nodeMaterial = new ShaderMaterial({
 			vertexShader: NODE_VERTEX_SHADER,
 			fragmentShader: NODE_FRAGMENT_SHADER,
@@ -216,6 +217,7 @@ export class AggregateRenderer {
 				uSizeMul: { value: this.nodeScale },
 				uLightMode: { value: this.tokens.lightMode ? 1 : 0 },
 				uMaxPoint: { value: 110 * this.renderer.getPixelRatio() },
+				uMinPoint: { value: 32 * this.renderer.getPixelRatio() },
 				uRevealActive: this.revealActiveUniform,
 				uRevealProgress: this.revealProgressUniform,
 				uRevealMaxRadius: this.revealMaxRadiusUniform,
@@ -600,6 +602,16 @@ export class AggregateRenderer {
 
 	// ---------- 聚焦与选中高亮 ----------
 
+	/** 当前阅读文档独立于分类/标签聚焦，始终保留主星样式。 */
+	setActiveNode(index: number): void {
+		if (!this.nodeGeometry) return;
+		const attribute = this.nodeGeometry.getAttribute('aActive') as BufferAttribute;
+		const values = attribute.array as Float32Array;
+		values.fill(0);
+		if (index >= 0 && index < values.length) values[index] = 1;
+		attribute.needsUpdate = true;
+	}
+
 	/**
 	 * 聚焦模式：按每节点权重淡出/提亮。weightOf 返回 aDim 目标（1=全亮，0.12=淡出）；
 	 * 分级选中（选中/一度/二度/其余）就是不同的权重值，单 float aDim 足矣。
@@ -907,6 +919,8 @@ export class AggregateRenderer {
 		this.resize(this.lastW, this.lastH); // pixelRatio 变化 → 重算 uPixelScale/uMaxPoint 与缓冲尺寸
 		const u = this.nodeMaterial?.uniforms['uMaxPoint'];
 		if (u) u.value = 110 * this.renderer.getPixelRatio();
+		const minPoint = this.nodeMaterial?.uniforms['uMinPoint'];
+		if (minPoint) minPoint.value = 32 * this.renderer.getPixelRatio();
 	}
 
 	setLinkOpacity(v: number): void {

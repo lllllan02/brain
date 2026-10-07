@@ -19,13 +19,16 @@ export const NODE_VERTEX_SHADER = /* glsl */ `
 attribute float aSize;
 attribute float aGhost;
 attribute float aDim;
+attribute float aActive;
 varying vec3 vColor;
 varying float vGhost;
 varying float vDim;
 varying float vPointSize;
+varying float vActive;
 uniform float uPixelScale; // drawingBufferHeight / (2·tan(fov/2))
 uniform float uSizeMul; // 控制面板「节点大小」倍率
 uniform float uMaxPoint; // 设备像素钳制：穿行星团时防满屏大精灵打爆填充率（M3）
+uniform float uMinPoint; // 文档星点最小屏幕尺寸，避免与背景尘埃混淆
 uniform float uLightMode;
 uniform float uRevealActive;
 uniform float uRevealProgress;
@@ -36,10 +39,12 @@ ${REVEAL_POSITION_GLSL}
 void main() {
 	vColor = color;
 	vGhost = aGhost;
-	vDim = aDim;
+	vDim = mix(aDim, 1.0, aActive);
+	vActive = aActive;
 	vec4 mv = modelViewMatrix * vec4(revealPosition(position), 1.0);
 	// 给光晕和星芒留出空间，亮核仍比原来的圆盘小；浅色模式维持原尺寸。
-	vPointSize = min(aSize * uSizeMul * uPixelScale / max(-mv.z, 1.0) * mix(1.6, 1.0, uLightMode), uMaxPoint);
+	float projectedSize = aSize * uSizeMul * uPixelScale / max(-mv.z, 1.0) * mix(1.6, 1.0, uLightMode);
+	vPointSize = min(max(projectedSize, uMinPoint * (1.0 - uLightMode)) * mix(1.0, 1.6, aActive), uMaxPoint);
 	gl_PointSize = vPointSize;
 	gl_Position = projectionMatrix * mv;
 }
@@ -50,6 +55,7 @@ varying vec3 vColor;
 varying float vGhost;
 varying float vDim;
 varying float vPointSize;
+varying float vActive;
 uniform float uLightMode; // 0 = 深空（白热核心），1 = 晨昼（墨水圆盘 + rim）
 
 void main() {
@@ -58,15 +64,17 @@ void main() {
 
 	// 以设备像素为下限，远处的小星点和关闭 bloom 的窄屏也保留可见亮核。
 	float pixel = 1.0 / max(vPointSize, 1.0);
-	float coreWidth = max(0.075, pixel * 1.1);
-	float core = exp(-dot(uv, uv) / (coreWidth * coreWidth));
-	float halo = exp(-dot(uv, uv) * 48.0) * 0.36;
+	// 菱形轮廓专属于可阅读的文档，背景星仍是无轮廓的小光点。
+	float coreWidth = mix(0.11, 0.13, vActive);
+	float core = 1.0 - smoothstep(coreWidth - pixel, coreWidth + pixel, abs(uv.x) + abs(uv.y));
+	float halo = exp(-dot(uv, uv) * mix(48.0, 36.0, vActive)) * mix(0.28, 0.42, vActive);
 	float rayWidth = max(0.011, pixel * 0.65);
 	float rays = exp(-abs(uv.x) / rayWidth - abs(uv.y) * 8.0)
 		+ exp(-abs(uv.y) / rayWidth - abs(uv.x) * 10.0);
 	float edge = 1.0 - smoothstep(0.38, 0.5, d);
-	float starAlpha = (core + halo + rays * 0.65) * edge;
-	vec3 starColor = mix(vColor, vec3(1.0), exp(-d * d * 100.0) * 0.85 * (1.0 - vGhost));
+	float starAlpha = (core + halo + rays * mix(0.65, 0.85, vActive)) * edge;
+	vec3 starTint = mix(vColor, vec3(1.0), vActive * 0.25);
+	vec3 starColor = mix(starTint, vec3(1.0), exp(-d * d * 100.0) * mix(0.85, 0.98, vActive) * (1.0 - vGhost));
 
 	// 晨昼保留纸面圆点；所有 smoothstep 使用递增边界，避免未定义行为。
 	float disk = 1.0 - smoothstep(0.42, 0.5, d);
