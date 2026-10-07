@@ -156,7 +156,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
   }
   function applyFocus(move = false) {
     focus = galaxyFocus(data, selected, category, tag);
-    renderer.setFocus(focus.active ? i => focus.bright.has(i) ? 1 : 0.12 : null);
+    renderer.setFocus(focus.active ? i => focus.bright.has(i) ? 1 : 0.28 : null);
     updateLinkFilter();
     renderer.setLinkOpacity(expanded && category && focus.index < 0 ? .16 : preset.look.linkOpacity * (1 - categoryBlend) + categoryStyle(preset.id).linkOpacity * categoryBlend);
     if (!ready || !move || transition) return;

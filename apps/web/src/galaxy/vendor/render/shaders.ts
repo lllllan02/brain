@@ -1,5 +1,5 @@
-// 节点 = 单次 draw call 的 THREE.Points + 发光球 shader（NASA「luminous orb」配方）
-// 深空模式：白热核心 + 软边缘；浅色「晨昼」模式：实心墨水圆盘 + 深色 rim（bloom 关）
+// 节点 = 单次 draw call 的 THREE.Points + 星光 shader。
+// 暗色：细小亮核、连续衰减的光晕与短星芒；浅色：墨水圆盘 + 深色 rim。
 // aDim: 聚焦模式下非邻居淡出（0.12..1）
 
 import { CURVE_BOW } from './linkCurves';
@@ -22,9 +22,11 @@ attribute float aDim;
 varying vec3 vColor;
 varying float vGhost;
 varying float vDim;
+varying float vPointSize;
 uniform float uPixelScale; // drawingBufferHeight / (2·tan(fov/2))
 uniform float uSizeMul; // 控制面板「节点大小」倍率
 uniform float uMaxPoint; // 设备像素钳制：穿行星团时防满屏大精灵打爆填充率（M3）
+uniform float uLightMode;
 uniform float uRevealActive;
 uniform float uRevealProgress;
 uniform float uRevealMaxRadius;
@@ -36,7 +38,9 @@ void main() {
 	vGhost = aGhost;
 	vDim = aDim;
 	vec4 mv = modelViewMatrix * vec4(revealPosition(position), 1.0);
-	gl_PointSize = min(aSize * uSizeMul * uPixelScale / max(-mv.z, 1.0), uMaxPoint);
+	// 给光晕和星芒留出空间，亮核仍比原来的圆盘小；浅色模式维持原尺寸。
+	vPointSize = min(aSize * uSizeMul * uPixelScale / max(-mv.z, 1.0) * mix(1.6, 1.0, uLightMode), uMaxPoint);
+	gl_PointSize = vPointSize;
 	gl_Position = projectionMatrix * mv;
 }
 `;
@@ -45,21 +49,31 @@ export const NODE_FRAGMENT_SHADER = /* glsl */ `
 varying vec3 vColor;
 varying float vGhost;
 varying float vDim;
+varying float vPointSize;
 uniform float uLightMode; // 0 = 深空（白热核心），1 = 晨昼（墨水圆盘 + rim）
 
 void main() {
 	vec2 uv = gl_PointCoord - 0.5;
 	float d = length(uv);
 
-	float core = smoothstep(0.18, 0.0, d) * 0.55 * (1.0 - vGhost) * (1.0 - uLightMode);
-	vec3 col = mix(vColor, vec3(1.0), core);
+	// 以设备像素为下限，远处的小星点和关闭 bloom 的窄屏也保留可见亮核。
+	float pixel = 1.0 / max(vPointSize, 1.0);
+	float coreWidth = max(0.075, pixel * 1.1);
+	float core = exp(-dot(uv, uv) / (coreWidth * coreWidth));
+	float halo = exp(-dot(uv, uv) * 48.0) * 0.36;
+	float rayWidth = max(0.011, pixel * 0.65);
+	float rays = exp(-abs(uv.x) / rayWidth - abs(uv.y) * 8.0)
+		+ exp(-abs(uv.y) / rayWidth - abs(uv.x) * 10.0);
+	float edge = 1.0 - smoothstep(0.38, 0.5, d);
+	float starAlpha = (core + halo + rays * 0.65) * edge;
+	vec3 starColor = mix(vColor, vec3(1.0), exp(-d * d * 100.0) * 0.85 * (1.0 - vGhost));
 
-	// 晨昼：外缘 1px 深色 rim，让节点「坐在纸上」
-	float rim = smoothstep(0.40, 0.46, d) * smoothstep(0.50, 0.46, d);
-	col = mix(col, col * 0.72, rim * uLightMode);
-
-	float alpha = smoothstep(0.5, 0.42, d) * mix(1.0, 0.45, vGhost) * vDim;
-	if (alpha < 0.01) discard;
+	// 晨昼保留纸面圆点；所有 smoothstep 使用递增边界，避免未定义行为。
+	float disk = 1.0 - smoothstep(0.42, 0.5, d);
+	float rim = smoothstep(0.40, 0.46, d) * (1.0 - smoothstep(0.46, 0.5, d));
+	vec3 col = mix(starColor, vColor * (1.0 - rim * 0.28), uLightMode);
+	float alpha = mix(clamp(starAlpha, 0.0, 1.0), disk, uLightMode) * mix(1.0, 0.45, vGhost) * vDim;
+	if (alpha < 0.002) discard;
 	gl_FragColor = vec4(col, alpha);
 }
 `;

@@ -364,7 +364,8 @@ export class AggregateRenderer {
 			case 'uniform':
 				return NODE_BASE_RADIUS * 1.3;
 			default:
-				return Math.min(NODE_BASE_RADIUS * (1 + 0.5 * Math.sqrt(node.degree)), NODE_MAX_RADIUS);
+				// 提高低关联结点的基础尺寸，仍保留引用数量带来的大小层次。
+				return Math.min(NODE_BASE_RADIUS * (1.3 + 0.5 * Math.sqrt(node.degree)), NODE_MAX_RADIUS);
 		}
 	}
 
