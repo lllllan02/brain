@@ -152,8 +152,9 @@ export class CameraDirector {
 
 	/** 外部（如渲染循环兜底）安全清除进行中的路径/补间，恢复水平地平线；不触发 onDone。 */
 	cancelMotion(): void {
-		this.path = null;
-		this.tween = null;
+		// A new framing must not resume the previous node's close-up orbit.
+		this.markInput();
+		this.pendingDensityDir = null;
 		this.camera.up.set(0, 1, 0);
 	}
 

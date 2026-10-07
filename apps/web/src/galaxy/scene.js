@@ -15,7 +15,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
   data.nodes.forEach((node, i) => positions.set(seedPosition(node.id, radius), i * 3));
   const renderer = new AggregateRenderer(container, radius);
   const canvas = renderer.renderer.domElement;
-  canvas.setAttribute('aria-label', '三维知识星云：拖动旋转，滚轮缩放；文档也可通过搜索和分类列表打开');
+  canvas.setAttribute('aria-label', '三维知识星云：拖动旋转，滚轮缩放；文档也可通过下方搜索打开');
   const camera = new CameraDirector(renderer.camera, canvas, {
     onFlyToSelected: () => applyFocus(true), onResetView: () => hooks.onReset(),
   });
@@ -104,18 +104,12 @@ export function createGalaxy(container, graph, hooks, reduced) {
     if (ready) applyFocus(true);
   }
   function labels() {
-    const priority = [...data.nodes.keys()].filter(i => !focus.active || focus.bright.has(i))
-      .sort((a, b) => data.nodes[b].degree - data.nodes[a].degree).slice(0, width < 640 ? 5 : 10);
-    const chosen = [...new Set([focus.index, hovered, ...priority])].filter(i => i >= 0);
-    const occupied = [];
+    const chosen = [...new Set([focus.index, hovered])].filter(i => i >= 0);
     const result = [];
     for (const i of chosen) {
       const p = renderer.projectNode(i, width, height);
       if (p.behind || p.x < 8 || p.x > width - 40 || p.y < 8 || p.y > height - 28) continue;
-      const important = i === focus.index || i === hovered;
-      if (!important && occupied.some(q => Math.abs(q.x - p.x) < 165 && Math.abs(q.y - p.y) < 30)) continue;
-      occupied.push(p);
-      result.push({id: data.nodes[i].id, title: data.nodes[i].name, x: p.x, y: p.y, active: important});
+      result.push({id: data.nodes[i].id, title: data.nodes[i].name, x: p.x, y: p.y});
     }
     hooks.onLabels(result);
   }
@@ -153,7 +147,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
   };
   const pointerMove = event => { if (!ready || event.buttons) return; hovered = pick(event); canvas.style.cursor = hovered < 0 ? 'grab' : 'pointer'; };
   const pointerLeave = () => { hovered = -1; down = null; };
-  const contextLost = event => { event.preventDefault(); dispose(); hooks.onError('三维画面已中断，请重新加载页面。文档仍可通过搜索和列表阅读。'); };
+  const contextLost = event => { event.preventDefault(); dispose(); hooks.onError('三维画面已中断，请重新加载页面。文档仍可通过下方搜索阅读。'); };
   canvas.addEventListener('pointerdown', pointerDown);
   canvas.addEventListener('pointerup', pointerUp);
   canvas.addEventListener('pointermove', pointerMove);

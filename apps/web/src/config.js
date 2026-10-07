@@ -1,7 +1,7 @@
 // 个性化配置：换成你自己的品牌名、账号和头像，其余代码不用改。
 // Personal settings: swap in your own brand, account and avatar; nothing else needs to change.
 export const CONFIG = {
-  brand: {name: 'BRAIN', sub: 'COSMOS', tagline: '私人知识宇宙', taglineEn: 'A personal knowledge universe'},
+  brand: {name: '星屿', sub: 'COSMOS', tagline: '私人知识宇宙', taglineEn: 'A personal knowledge universe'},
   // 图谱中心节点的名字
   workspace: '知识宇宙',
   // 头像放在 public/ 下，填相对路径
