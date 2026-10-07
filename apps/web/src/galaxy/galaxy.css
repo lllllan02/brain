@@ -14,8 +14,17 @@
 .galaxy-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#e2e8f2;font-size:20px;font-family:"Songti SC","Noto Serif CJK SC",serif;letter-spacing:.16em}
 .galaxy-brand img{display:block;filter:drop-shadow(0 0 7px #98b4df40)}
 .galaxy-brand:hover{color:#fff}
-.galaxy-search-dock{position:absolute;bottom:max(32px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(440px,calc(100% - 40px));z-index:6}
-.galaxy-search{display:flex;align-items:center;gap:12px;padding:0 18px;min-height:48px;border:1px solid #93acc02b;border-radius:28px;background:#080e18a8;backdrop-filter:blur(18px);color:#9eaec3;transition:border-color .2s,background .2s}
+.galaxy-search-dock{position:absolute;bottom:max(32px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(560px,calc(100% - 40px));display:flex;gap:10px;z-index:6}
+.galaxy-search{display:flex;flex:1;min-width:0;align-items:center;gap:12px;padding:0 18px;min-height:48px;border:1px solid #93acc02b;border-radius:28px;background:#080e18a8;backdrop-filter:blur(18px);color:#9eaec3;transition:border-color .2s,background .2s}
+.galaxy-random{display:flex;flex:none;align-items:center;justify-content:center;gap:8px;padding:0 16px;min-height:48px;border:1px solid #93acc02b;border-radius:28px;background:#080e18a8;backdrop-filter:blur(18px);color:#c3d2e6;font-size:12px!important;white-space:nowrap;transition:border-color .2s,background .2s,color .2s}
+.galaxy-random:hover:not(:disabled){border-color:#a4bdda70;background:#152333e8;color:#eef6ff}
+.galaxy-random:focus-visible{outline:1px solid #a8c4df;outline-offset:3px}
+.galaxy-random:disabled{opacity:.4;cursor:default}
+.galaxy-review{display:flex;gap:8px;min-width:0;max-width:55%}
+.galaxy-search-dock.has-review{width:min(760px,calc(100% - 40px));max-width:760px}
+.galaxy-review-title{flex:1;min-width:0;text-align:left}
+.galaxy-review-title span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.galaxy-review-next{width:48px;padding:0}
 .galaxy-search:focus-within{border-color:#a4bdda70;background:#0a111deb}
 .galaxy-search svg{flex:none}
 .galaxy-search input{min-width:0;width:100%;padding:13px 0;border:0;outline:none;background:none;color:#e2e9f4;font-size:12px;letter-spacing:.04em}
@@ -40,12 +49,13 @@
  .galaxy-header{top:max(18px,env(safe-area-inset-top));left:18px}.galaxy-brand{font-size:18px;gap:7px}.galaxy-brand img{width:30px;height:30px}
  .galaxy-views{top:max(18px,env(safe-area-inset-top));right:16px;gap:0}.galaxy-views button{padding:7px 9px;font-size:10px}
  .galaxy-frame,.galaxy-reading .galaxy-frame{inset:0}
- .galaxy-search-dock{bottom:max(22px,env(safe-area-inset-bottom));width:calc(100% - 40px);max-width:440px}
+ .galaxy-search-dock{bottom:max(22px,env(safe-area-inset-bottom));width:calc(100% - 40px);max-width:560px}
  .galaxy-search{min-height:46px}.galaxy-search input{font-size:16px;letter-spacing:0}.galaxy-search input::placeholder{font-size:12px}
  .galaxy-reading .analysis-wrap{left:8px;right:8px;top:auto;bottom:86px;height:calc(78svh - 50px);z-index:5}
  .galaxy-reading .full-reader{width:auto;height:calc(100svh - 158px)}
  .galaxy-label{font-size:10px;max-width:170px}
 }
+@media(max-width:480px){.galaxy-random:not(.galaxy-review-title){width:48px;padding:0}.galaxy-random:not(.galaxy-review-title) span{display:none}.galaxy-review-title{padding-inline:12px}.galaxy-search-dock.has-review .galaxy-search{padding-inline:12px;gap:8px}}
 @media(prefers-reduced-motion:reduce){.galaxy-page *{animation:none!important;transition:none!important}}
 .galaxy-views .galaxy-category-toggle{margin-right:12px}
 .galaxy-category-label{position:absolute;transform:translate(-50%,-100%);pointer-events:auto;border:0;background:transparent;color:#cddbea;font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:13px;letter-spacing:.14em;padding:8px 10px;white-space:nowrap;text-shadow:0 1px 9px #000,0 0 20px #7187ab80}

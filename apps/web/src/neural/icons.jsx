@@ -1,6 +1,7 @@
 import React from 'react';
 
 const paths = {
+  shuffle: 'M3 6h3c5 0 7 12 12 12h3m-4-4 4 4-4 4M3 18h3c1.8 0 3.2-1.5 4.5-3.5M13.5 9.5C14.8 7.5 16.2 6 18 6h3m-4-4 4 4-4 4',
   tag: 'M3 3h7l11 11-7 7L3 10ZM7 7h.01',
   works: 'M4 5h16v14H4ZM4 9h16M9 13l2 2 4-4',
   concept: 'M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z',

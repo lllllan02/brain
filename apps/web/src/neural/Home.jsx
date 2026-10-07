@@ -3,6 +3,7 @@ import {moduleOf} from './graph';
 import {CONFIG, asset} from '../config';
 import {DocumentReader} from './DocumentReader';
 import {ClusterList} from './ClusterList';
+import {Icon} from './icons';
 import '../galaxy/galaxy.css';
 
 export function moduleItems(graph, modId) {
@@ -25,14 +26,24 @@ export function Home({graph, focus, setFocus, reduced}) {
   const viewIndex = views.findIndex(([id]) => id === preset);
   const nextView = views[(viewIndex + 1) % views.length];
   const [query, setQuery] = useState(''), [searchOpen, setSearchOpen] = useState(false);
+  const [reviewId, setReviewId] = useState(null);
   current.current = {focus, setFocus, preset, expanded, activeCluster};
   const documents = useMemo(() => graph.nodes.filter(node => node.module), [graph]);
   const node = graph.index.get(focus.sel);
+  const reviewNode = graph.index.get(reviewId);
   const go = (id, keepCluster = false) => {
     const target = graph.index.get(id); if (!target?.module) return;
     if (!keepCluster) setReaderCluster(null);
     setQuery(''); setSearchOpen(false); searchInput.current?.blur();
     setFocus({mod: moduleOf(graph, target).id, sel: id});
+  };
+  const reviewRandom = () => {
+    const candidates = documents.length > 1 ? documents.filter(n => n.id !== (reviewId || focus.sel)) : documents;
+    const target = candidates[Math.floor(Math.random() * candidates.length)];
+    if (target) {
+      setQuery(''); setSearchOpen(false); searchInput.current?.blur();
+      setReviewId(target.id);
+    }
   };
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -109,7 +120,7 @@ export function Home({graph, focus, setFocus, reduced}) {
         <img src={asset('nebula-logo.svg')} width="34" height="34" alt=""/><span>{CONFIG.brand.name}</span>
       </a>
     </header>
-    <div className="galaxy-search-dock" onBlur={event => {if (!event.currentTarget.contains(event.relatedTarget)) setSearchOpen(false);}}>
+    <div className={`galaxy-search-dock${reviewNode?.module ? ' has-review' : ''}`} onBlur={event => {if (!event.currentTarget.contains(event.relatedTarget)) setSearchOpen(false);}}>
       {searchOpen && query.trim() && <div className="galaxy-results" id="galaxy-search-results" role="region" aria-label="搜索结果">
         <p role="status">{results.length ? `${results.length} 篇文档` : '没有找到相关内容'}</p>
         {results.map(n => <button key={n.id} onClick={() => go(n.id)}><span>{n.title}</span><small>{n.category || '未分类'}</small></button>)}
@@ -121,6 +132,18 @@ export function Home({graph, focus, setFocus, reduced}) {
         }}/>
         {query && <button type="button" className="galaxy-search-clear" aria-label="清空搜索" onClick={() => {setQuery('');searchInput.current?.focus();}}>×</button>}
       </form>
+      <div className="galaxy-review">
+        {reviewNode?.module && <button type="button" className="galaxy-random galaxy-review-title" onClick={() => go(reviewNode.id)}
+          title={reviewNode.title} aria-label={`打开正文：${reviewNode.title}`}>
+          <span aria-live="polite" aria-atomic="true">{reviewNode.title}</span>
+        </button>}
+        <button key="random" type="button" className={`galaxy-random${reviewNode?.module ? ' galaxy-review-next' : ''}`} onClick={reviewRandom}
+          disabled={!documents.length || (Boolean(reviewNode?.module) && documents.length < 2)}
+          aria-label={reviewNode?.module ? '随机换一篇' : '随机复习一篇笔记'}
+          title={!documents.length ? '暂无可复习的笔记' : reviewNode?.module ? documents.length < 2 ? '只有一篇笔记' : '随机换一篇' : '随机抽取标题，先回忆再打开正文'}>
+          <Icon name="shuffle" size={18}/>{!reviewNode?.module && <span>随机复习</span>}
+        </button>
+      </div>
     </div>
     {!ready && !error && documents.length > 0 && <div className="galaxy-status" role="status">正在展开星系…</div>}
     {(error || !documents.length) && <div className="galaxy-status" role="status">{error || '还没有文档。保存笔记后，这里会亮起第一颗星。'}</div>}
