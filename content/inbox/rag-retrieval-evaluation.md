@@ -3,7 +3,6 @@ title: "RAG 召回阶段如何评估证据是否找全？"
 category: "RAG"
 updated_at: "2026-10-05"
 tags: ["RAG", "检索评测", "召回", "Recall", "Precision"]
-classes: ["concept"]
 ---
 
 评估召回，重点是 **库中已有的相关证据能否被检索出来，以及结果中混入了多少无关材料**。主要看两项指标：

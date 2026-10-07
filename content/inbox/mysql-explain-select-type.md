@@ -3,7 +3,6 @@ title: "MySQL EXPLAIN select_type"
 category: "MySQL"
 updated_at: "2026-10-06"
 tags: ["MySQL", "执行计划", "查询块", "子查询", "UNION"]
-classes: ["concept"]
 ---
 
 `select_type` 表示**查询块在整个查询中的角色**。它帮助识别普通查询、外层查询和子查询，与描述表访问方式的 [[mysql-explain-type|type]] 是两个层次。

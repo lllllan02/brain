@@ -3,7 +3,6 @@ title: "RAG 重排阶段如何评估证据排序？"
 category: "RAG"
 updated_at: "2026-10-05"
 tags: ["RAG", "检索评测", "重排", "NDCG", "MRR"]
-classes: ["concept"]
 ---
 
 评估重排，重点是 **在同一批候选材料中，更有价值的证据能否获得更靠前的位置**。主要看三件事：

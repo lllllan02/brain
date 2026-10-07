@@ -3,7 +3,6 @@ title: "Recall@K、Precision@K 和 K 分别是什么意思？"
 category: "RAG"
 updated_at: "2026-10-05"
 tags: ["RAG", "检索评测", "Recall", "Precision", "证据完整性"]
-classes: ["concept"]
 ---
 
 **Recall@K 衡量标注的相关片段找回了多少，Precision@K 衡量返回结果中有多少片段相关**。K 表示只检查检索结果的前 K 条。这两个指标按片段数量计算。

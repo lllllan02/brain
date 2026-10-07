@@ -3,7 +3,6 @@ title: "Faithfulness / Groundedness 是什么，和答案正确性有什么区�
 category: "RAG"
 updated_at: "2026-10-05"
 tags: ["RAG", "评测", "忠实度", "答案正确性", "Ragas"]
-classes: ["concept"]
 ---
 
 **Faithfulness / Groundedness 检查回答是否有给定证据支持，答案正确性检查回答是否符合可信的参考答案**。它们都能发现问题，但对照的依据不同，具体评分口径也可能不同。

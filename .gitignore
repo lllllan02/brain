@@ -5,6 +5,5 @@ build/
 .env
 .env.*
 !.env.example
-.obsidian/workspace*.json
-.obsidian/cache/
+.obsidian/
 dist-pages/

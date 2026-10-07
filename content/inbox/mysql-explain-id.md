@@ -3,7 +3,6 @@ title: "MySQL EXPLAIN id"
 category: "MySQL"
 updated_at: "2026-10-06"
 tags: ["MySQL", "执行计划", "查询块", "JOIN", "子查询"]
-classes: ["concept"]
 ---
 
 `id` 用来识别 **SELECT 查询块**。同一个查询块访问多张表时，多行执行计划可以具有相同的 id；它不是结果行编号，也不是 SQL 的性能评分。

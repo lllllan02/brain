@@ -3,7 +3,6 @@ title: "RAG 检索不到内容时怎么办？如何防止模型硬凑答案、�
 category: "RAG"
 updated_at: "2026-10-05"
 tags: ["RAG", "防幻觉", "证据不足", "拒答", "提示词"]
-classes: ["concept"]
 ---
 
 基础做法分为两个阶段：检索结果为空时，由程序直接兜底；检索返回了内容时，通过[[rag-insufficient-evidence-prompts|提示词]]约束模型判断材料是否支持回答，证据不足就明确说明无法确认。

@@ -3,7 +3,6 @@ title: "MySQL EXPLAIN 索引相关字段"
 category: "MySQL"
 updated_at: "2026-10-06"
 tags: ["MySQL", "执行计划", "索引", "联合索引", "SQL优化"]
-classes: ["concept"]
 ---
 
 `possible_keys / key / key_len` 分别回答**有哪些候选索引、计划选了哪个、使用了多长的索引键**。把三者与查询条件和索引定义一起看，才能判断索引怎样参与访问。

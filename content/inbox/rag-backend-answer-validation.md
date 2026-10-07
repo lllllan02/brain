@@ -3,7 +3,6 @@ title: "RAG 接口和后端怎么实现无依据答案拦截？"
 category: "RAG"
 updated_at: "2026-10-05"
 tags: ["RAG", "防幻觉", "结构化输出", "后端校验", "引用校验"]
-classes: ["concept"]
 ---
 
 用结构化输出约束返回 `answerable` 和 `claims[{text, evidence_id, quote}]`。后端检查字段与状态一致：不可答时结论为空，可答时必须有结论和证据。再验证[[rag-citation-validation|证据真实性及其是否支持结论]]，全部通过后才渲染，引用链接由后端生成。

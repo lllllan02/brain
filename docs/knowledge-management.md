@@ -93,7 +93,7 @@ aliases 有助于链接补全和发现未链接提及。实际双链仍以唯一
 
 ## 链接与合并
 
-内部用 Obsidian 双链，不加 `.md`，笔记直接引用唯一文件名，如 `[[agent-definition|Agent 是什么]]`、`[[mysql-explain|EXPLAIN 总览]]`。不将 inbox 或 notes 目录写进常规笔记链接，不使用 `/Users/...` 等本机绝对路径。中文用于显示名，外部 URL 使用 Markdown 链接。
+内部用 Obsidian 双链，不加 `.md`，笔记直接引用唯一文件名，如 `[[agent-definition-and-boundaries|Agent 是什么]]`、`[[mysql-explain|EXPLAIN 总览]]`。不将 inbox 或 notes 目录写进常规笔记链接，不使用 `/Users/...` 等本机绝对路径。中文用于显示名，外部 URL 使用 Markdown 链接。
 
 解析先匹配 Vault 内的准确路径，再检查路径后缀是否唯一，无法唯一确定则报告歧义，不能随意挑选同名文件。章节用 `[[目标#标题|显示名]]`，块引用用 `[[目标#^block-id]]`，附件用 `![[assets/image.png]]`；目标和锚点必须存在。管理文档位于 Vault 外，跨目录链接使用项目根路径。
 

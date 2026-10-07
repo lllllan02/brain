@@ -3,7 +3,6 @@ title: "RAG 回答相关性是什么，为什么答对事实也可能不切题�
 category: "RAG"
 updated_at: "2026-10-05"
 tags: ["RAG", "评测", "回答相关性", "Ragas"]
-classes: ["concept"]
 ---
 
 **回答相关性（Answer / Response Relevancy）检查答案是否直接回应用户的问题**。陈述的事实正确，仍可能没有完成用户要求。

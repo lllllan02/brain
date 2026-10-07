@@ -3,7 +3,6 @@ title: "MySQL EXPLAIN type"
 category: "MySQL"
 updated_at: "2026-10-06"
 tags: ["MySQL", "执行计划", "访问方式", "索引", "全表扫描"]
-classes: ["concept"]
 ---
 
 `type` 表示 MySQL **访问当前表数据的方式**，回答「数据怎样找到」。索引会影响访问方式；具体选用哪个索引看 [[mysql-explain-index-fields|key]]，查询块的角色看 [[mysql-explain-select-type|select_type]]。

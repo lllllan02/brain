@@ -3,7 +3,6 @@ title: "NDCG@K 是什么，怎样判断排序好不好？"
 category: "RAG"
 updated_at: "2026-10-05"
 tags: ["RAG", "检索评测", "排序指标", "NDCG"]
-classes: ["concept"]
 ---
 
 **NDCG@K 衡量前 K 条结果的排序与理想排序有多接近**。K 表示检查前多少条；理想排序由人工标注的相关性等级决定。

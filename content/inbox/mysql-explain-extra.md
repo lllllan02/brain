@@ -3,7 +3,6 @@ title: "MySQL EXPLAIN Extra"
 category: "MySQL"
 updated_at: "2026-10-07"
 tags: ["MySQL", "执行计划", "覆盖索引", "索引条件下推", "排序", "临时表"]
-classes: ["concept"]
 ---
 
 `Extra` 补充当前计划的执行细节，同一行可有多个标记。**把标记当作排查线索，结合候选行数和实际耗时判断代价**。

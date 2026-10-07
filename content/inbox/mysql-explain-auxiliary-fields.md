@@ -3,7 +3,6 @@ title: "MySQL EXPLAIN 辅助字段"
 category: "MySQL"
 updated_at: "2026-10-06"
 tags: ["MySQL", "执行计划", "分区裁剪", "索引", "JOIN"]
-classes: ["concept"]
 ---
 
 `table / partitions / ref` 分别说明**访问谁、访问哪些分区、索引等值查找拿什么来匹配**。它们把 [[mysql-explain-type|type]]、[[mysql-explain-index-fields|key]]、[[mysql-explain-rows-filtered|rows]] 等字段对应到具体对象。
