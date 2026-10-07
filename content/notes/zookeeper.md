@@ -6,8 +6,8 @@ tags: ["ZooKeeper", "ZAB", "Watch"]
 aliases: ["ZK"]
 ---
 
-**ZooKeeper 是分布式协调服务，用树形命名空间保存少量协调状态，并提供有序更新、会话与通知**，常用来实现选主、注册、配置和分布式锁，保存的是协调元数据而非业务数据库。
+**ZooKeeper 是分布式协调服务，用树形命名空间保存少量协调状态，并提供有序更新、会话（session）与通知**，常用来实现选主、注册、配置和分布式锁，保存的是协调元数据而非业务数据库。
 
 节点（znode）按生命周期与命名分为持久节点（不随客户端离开删除）、临时节点（与会话绑定，过期后删除，短暂断连不等于会话立刻过期）、顺序节点（名字带递增序号，可用于排队）。
 
-写操作由 Leader 通过 ZAB 复制、经法定数量节点确认，具有顺序保证；普通读由连接的服务器直接返回，可能落后于最新提交，不能当作完整的线性一致读。Watch 是一次性通知，只提示「状态可能变化」，客户端要重新读取并重新注册。顺序临时节点可搭出排队锁：最小序号获得资格、其余只监听前驱，具体见 [[distributed-locks|分布式锁]]。规范见 [Programmer's Guide](https://zookeeper.apache.org/doc/current/zookeeperProgrammers.html) 与 [Recipes](https://zookeeper.apache.org/doc/current/recipes.html)。
+写操作由 Leader 通过 ZAB 复制、经法定数量节点确认，具有顺序保证；普通读由连接的服务器直接返回，可能落后于最新提交，不能当作完整的线性一致读（linearizable read）。Watch 是一次性通知，只提示「状态可能变化」，客户端要重新读取并重新注册。顺序临时节点可搭出排队锁：最小序号获得资格、其余只监听前驱，具体见 [[distributed-locks|分布式锁]]。规范见 [Programmer's Guide](https://zookeeper.apache.org/doc/current/zookeeperProgrammers.html) 与 [Recipes](https://zookeeper.apache.org/doc/current/recipes.html)。

@@ -10,7 +10,7 @@ tags: ["知识库", "Obsidian", "项目使用", "服务启动"]
 
 - Obsidian：打开本项目的 `content/`，通过搜索、标签和正文链接阅读。
 - Agent：在 brain 项目中工作，遵守 [[AGENTS|AGENTS.md]]。直接提出「把刚刚讨论的内容整理进知识库」，即可按「批量检索候选 → 阅读相关正文 → 判断更新或新建 → 写回并验收」处理；已完整覆盖的内容不重复保存。执行方式见 [[docs/knowledge-management#检索与候选阅读|检索与写入细则]]。
-- 文档阅读页面：`apps/web/` 已提供本地「知识宇宙」，基于 Galaxy View 三维星空，以文档星点、真实引用和完整正文作为阅读入口。首次运行 `make install` 安装依赖，再运行 `make` 启动，打开 `http://127.0.0.1:4173`；使用说明见 [[apps/web/README|看板说明]]。已授权的公开版本发布到 [知识星云](https://lllllan02.github.io/brain/)，由 GitHub Pages 自动构建。
+- 文档阅读页面：`apps/web/` 已提供本地「星云」，基于 Galaxy View 三维星空，以文档星点、真实引用和完整正文作为阅读入口。首次运行 `make install` 安装依赖，再运行 `make` 启动，打开 `http://127.0.0.1:4173`；使用说明见 [[apps/web/README|看板说明]]。已授权的公开版本发布到 [星云](https://lllllan02.github.io/brain/)，由 GitHub Pages 自动构建。
 
 ## 目录
 

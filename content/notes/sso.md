@@ -1,5 +1,5 @@
 ---
-title: "单点登录"
+title: "单点登录（SSO）"
 category: "身份认证"
 updated_at: "2026-10-07"
 tags: ["SSO", "OIDC", "会话"]
