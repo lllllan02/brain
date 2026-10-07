@@ -1,7 +1,7 @@
 ---
 title: "MySQL EXPLAIN"
 category: "MySQL"
-updated_at: "2026-10-06"
+updated_at: "2026-10-07"
 tags: ["MySQL", "执行计划", "SQL优化", "索引", "JOIN"]
 classes: ["overview"]
 ---
@@ -72,5 +72,7 @@ WHERE u.id BETWEEN 100 AND 110;
 先用 `id / select_type / table / partitions` 确认对象，再按 **type → key → rows 与 filtered → Extra** 判断访问范围、索引选择、候选数据量和额外操作。用 `possible_keys / key_len / ref` 解释为什么这样访问，结合 SQL 和表结构决定是否调整条件或索引。
 
 普通 EXPLAIN 给出计划，不提供完整执行后的实测统计：`type / key` 是当前计划的策略选择，`rows / filtered` 是估算。估算输出也不等于整个 SQL 的最终返回数，后续 JOIN、聚合、去重、LIMIT 都可能改变它。需要验证耗时、实际行数和循环次数时，可在合适环境使用会真实执行查询的 `EXPLAIN ANALYZE`。
+
+接口访问数据库慢，也可能在执行 SQL 之前就发生了[[db-connection-pool|连接池排队]]。先区分获取连接与 SQL 执行的耗时，再用执行计划分析已经定位到的查询。
 
 参考：[MySQL EXPLAIN 语法与 ANALYZE](https://dev.mysql.com/doc/refman/8.4/en/explain.html)。
