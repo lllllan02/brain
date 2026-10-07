@@ -14,8 +14,9 @@ export function Home({graph, focus, setFocus, reduced}) {
   const current = useRef({focus, setFocus});
   const [labels, setLabels] = useState([]), [ready, setReady] = useState(false), [error, setError] = useState('');
   const [preset, setPreset] = useState('nebula');
+  const [expanded, setExpanded] = useState(false);
   const [query, setQuery] = useState(''), [searchOpen, setSearchOpen] = useState(false);
-  current.current = {focus, setFocus, preset};
+  current.current = {focus, setFocus, preset, expanded};
   const documents = useMemo(() => graph.nodes.filter(node => node.module), [graph]);
   const node = graph.index.get(focus.sel);
   const go = id => {
@@ -47,6 +48,7 @@ export function Home({graph, focus, setFocus, reduced}) {
       instance.focus(current.current.focus.sel, current.current.focus.mod);
       instance.pause(reduced);
       if (current.current.preset !== 'nebula') instance.preset(current.current.preset);
+      instance.expand(current.current.expanded);
     }).catch(() => {
       if (active) setError('当前浏览器无法显示三维星云，可通过下方搜索继续阅读。');
     });
@@ -72,8 +74,9 @@ export function Home({graph, focus, setFocus, reduced}) {
   const reset = () => { setQuery(''); setSearchOpen(false); searchInput.current?.blur(); setFocus({mod: null, sel: null}); scene.current?.reset(); };
   return <section className={`galaxy-page ${node ? 'galaxy-reading' : ''}`} aria-label="知识星云">
     <div className={`galaxy-viewport ${!ready || error ? 'is-loading' : ''}`} ref={host}>
-      <div className="galaxy-labels" aria-hidden="true">{ready && !error && labels.map(label =>
-        <span key={label.id} className="galaxy-label" style={{left: label.x, top: label.y}}>{label.title}</span>
+      <div className="galaxy-labels">{ready && !error && labels.map(label => label.category ?
+        <button key={label.id} className="galaxy-category-label" style={{left: label.x, top: label.y}} onClick={() => setFocus({mod: label.id, sel: null})} aria-label={`查看${label.title}分类`}>{label.title}</button> :
+        <span key={label.id} className="galaxy-label" aria-hidden="true" style={{left: label.x, top: label.y}}>{label.title}</span>
       )}</div>
     </div>
     <header className="galaxy-header">
@@ -97,6 +100,10 @@ export function Home({graph, focus, setFocus, reduced}) {
     {!ready && !error && documents.length > 0 && <div className="galaxy-status" role="status">正在展开星系…</div>}
     {(error || !documents.length) && <div className="galaxy-status" role="status">{error || '还没有文档。保存笔记后，这里会亮起第一颗星。'}</div>}
     <nav className="galaxy-views" aria-label="星空视图">
+      <button className="galaxy-category-toggle" aria-pressed={expanded} disabled={!ready || Boolean(error)} title={expanded ? '收回整体星云' : '按分类展开星云'} onClick={() => {
+        const next = !expanded; setExpanded(next); setFocus({mod: null, sel: null});
+        scene.current?.focus(null, null); scene.current?.expand(next);
+      }}>分类</button>
       {[['galaxy','银河'],['nebula','星云'],['deepfield','深空']].map(([id, title]) =>
         <button key={id} aria-pressed={preset === id} disabled={Boolean(error)} onClick={() => {setPreset(id);scene.current?.preset(id);}}>{title}</button>
       )}

@@ -7,6 +7,9 @@ import {seedPosition, seedRadius} from './vendor/data/seed';
 import {STYLE_PRESETS} from './vendor/render/stylePresets';
 import {TIERS} from './vendor/quality/tiers';
 import {galaxyData, galaxyFocus} from './data';
+import {categoryLayout, interpolateCategories, categoryEase} from './categoryLayout';
+import {CategoryEffects} from './categoryEffects';
+import {categoryStyle} from './categoryStyles';
 
 export function createGalaxy(container, graph, hooks, reduced) {
   const data = galaxyData(graph);
@@ -29,7 +32,67 @@ export function createGalaxy(container, graph, hooks, reduced) {
   let focus = galaxyFocus(data, selected, category);
   let raf = 0, previous = 0, labelTime = 0, hovered = -1, down = null;
   let initialFramed = false, workerDeadline = 0;
+  let expanded = false, transition = null, overview = null, clusters = null, effects = null;
+  let display = null, categoryBlend = 0;
+  let presetFrom = null;
   const scratch = new Vector3();
+
+  function snapshot() {
+    const result = new Float32Array(positions.length);
+    data.nodes.forEach((_, i) => renderer.nodePosition(i, scratch).toArray(result, i * 3));
+    return result;
+  }
+  function categorySpace(blend) {
+    const style = categoryStyle(preset.id);
+    renderer.setSpace({...preset.space, fieldStars: 0, nebula: preset.space.nebula * (1 - blend) + style.background * blend, clusterClouds: preset.space.clusterClouds * (1 - blend)});
+    renderer.setLinkOpacity(preset.look.linkOpacity * (1 - blend) + style.linkOpacity * blend);
+    renderer.setNodeScale(preset.look.nodeSize * 2 * (1 - blend) + style.nodeScale * blend);
+    renderer.setStarfieldIntensity(1 - blend + style.starfield * blend);
+  }
+  function frameDestination(target, instant = false) {
+    const center = new Vector3();
+    for (let i = 0; i < target.length; i += 3) center.add(new Vector3().fromArray(target, i));
+    if (target.length) center.multiplyScalar(3 / target.length);
+    if (expanded) center.set(0, 0, 0);
+    let r = 30;
+    for (let i = 0; i < target.length; i += 3) r = Math.max(r, new Vector3().fromArray(target, i).distanceTo(center));
+    camera.cancelMotion();
+    const fit = r * (expanded ? (width < 640 ? .78 : .59) : .76) / Math.min(1, width / height);
+    if (instant || reduced) camera.setInitialFraming(center, fit);
+    else camera.resetView(center, fit);
+  }
+  function expand(value, instant = false, morph = false) {
+    expanded = value;
+    if (!ready || !overview) return;
+    hovered = -1;
+    const from = snapshot();
+    display = new Float32Array(from);
+    const to = expanded ? clusters.positions : overview;
+    renderer.setDisplayPositions(display);
+    frameDestination(to, instant);
+    if (reduced || instant) {
+      display.set(to); transition = null; categoryBlend = expanded ? 1 : 0;
+      renderer.updatePositions(); categorySpace(categoryBlend);
+      if (!expanded) renderer.setDisplayPositions(null);
+    } else transition = {from, to, elapsed: 0, duration: morph ? 1.4 : expanded ? 3.1 : 1.8, expanding: expanded, blendFrom: categoryBlend, morph};
+  }
+  function stepCategories(dt) {
+    let burst = -1;
+    if (transition) {
+      transition.elapsed += dt;
+      const p = Math.min(1, transition.elapsed / transition.duration);
+      interpolateCategories(transition.from, transition.to, p, transition.expanding && !transition.morph, display);
+      categoryBlend = transition.blendFrom + ((transition.expanding ? 1 : 0) - transition.blendFrom) * categoryEase(p);
+      burst = transition.expanding && !transition.morph ? p : -1;
+      renderer.updatePositions(); categorySpace(categoryBlend);
+      if (p === 1) {
+        transition = null;
+        if (!expanded) { renderer.setDisplayPositions(null); renderer.refreshClusterClouds(); }
+        applyFocus(Boolean(selected || category));
+      }
+    }
+    effects?.update(burst);
+  }
 
   function bounds(indices) {
     const points = (indices || data.nodes.map((_, i) => i)).map(i => renderer.nodePosition(i, new Vector3()));
@@ -50,14 +113,15 @@ export function createGalaxy(container, graph, hooks, reduced) {
     focus = galaxyFocus(data, selected, category);
     renderer.setFocus(focus.active ? i => focus.bright.has(i) ? 1 : 0.12 : null);
     renderer.setSelectedLinks(focus.links, []);
-    if (!ready || !move) return;
+    if (!ready || !move || transition) return;
     if (focus.index >= 0) {
       camera.cancelMotion();
       if (reduced) frame(true, [...focus.bright]);
       else camera.flyTo(renderer.nodePosition(focus.index, scratch), Math.max(9, renderer.nodeRadius(focus.index)), () => {
         if (!paused) camera.beginFocusOrbit(null);
       });
-    } else frame(false, category && focus.bright.size ? [...focus.bright] : undefined);
+    } else if (expanded && !category && clusters) frameDestination(clusters.positions);
+    else frame(false, category && focus.bright.size ? [...focus.bright] : undefined);
   }
   function fallback() {
     if (disposed || layout instanceof MainThreadForceLayout) return;
@@ -70,7 +134,12 @@ export function createGalaxy(container, graph, hooks, reduced) {
     return {charge: -preset.physics.repel, ...preset.physics, velocityDecay: 0.4};
   }
   function setPreset(id) {
+    presetFrom = expanded && initialFramed ? snapshot() : null;
+    const previousBlend = categoryBlend;
     camera.cancelMotion();
+    transition = null; overview = null; categoryBlend = 0;
+    effects?.dispose(); effects = null;
+    renderer.setDisplayPositions(null);
     hovered = -1; hooks.onLabels([]);
     preset = STYLE_PRESETS.find(item => item.id === id) || STYLE_PRESETS[0];
     renderer.setBloomParams(preset.bloom);
@@ -79,12 +148,13 @@ export function createGalaxy(container, graph, hooks, reduced) {
     renderer.setNodeScale(preset.look.nodeSize * 2);
     renderer.twinkleFreq = preset.look.twinkle;
     renderer.setStarfieldEnabled(true);
-    renderer.setSpace({...preset.space, fieldStars: 0});
+    categoryBlend = presetFrom ? previousBlend : 0;
+    categorySpace(categoryBlend);
     renderer.setNebulaTint('#528ba5', '#9e77b7');
     renderer.applyTier(width < 640 ? TIERS.mobile : TIERS.high, preset.bloom.strength);
     camera.setFramingElev(preset.frameElevDeg || 18);
     ready = false;
-    hooks.onReady(false);
+    if (!presetFrom) hooks.onReady(false);
     layout?.dispose();
     try {
       layout = new WorkerForceLayout();
@@ -94,6 +164,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     } catch { fallback(); }
     // Show a stable seed scene while the worker computes the opening layout.
     renderer.setData(data, positions);
+    if (presetFrom) renderer.setDisplayPositions(presetFrom);
     if (!initialFramed) { frame(true); initialFramed = true; }
   }
   function resize() {
@@ -101,7 +172,15 @@ export function createGalaxy(container, graph, hooks, reduced) {
     width = Math.max(1, container.clientWidth); height = Math.max(1, container.clientHeight);
     renderer.resize(width, height);
     if (preset && oldMobile !== (width < 640)) renderer.applyTier(width < 640 ? TIERS.mobile : TIERS.high, preset.bloom.strength);
-    if (ready) applyFocus(true);
+    if (ready) {
+      if (!selected && !category && overview) {
+        clusters = categoryLayout(data, overview, {aspect: width / height, elevation: preset.frameElevDeg || 18, preset: preset.id});
+        effects?.dispose(); effects = new CategoryEffects(renderer.scene, clusters.groups);
+        if (expanded) expand(true, true);
+        else applyFocus(true);
+      }
+      else applyFocus(true);
+    }
   }
   function labels() {
     const chosen = [...new Set([focus.index, hovered])].filter(i => i >= 0);
@@ -110,6 +189,15 @@ export function createGalaxy(container, graph, hooks, reduced) {
       const p = renderer.projectNode(i, width, height);
       if (p.behind || p.x < 8 || p.x > width - 40 || p.y < 8 || p.y > height - 28) continue;
       result.push({id: data.nodes[i].id, title: data.nodes[i].name, x: p.x, y: p.y});
+    }
+    if (expanded && !transition && !selected && clusters) {
+      for (const group of clusters.groups) {
+        const module = graph.modules.find(m => m.id === group.id);
+        const p = new Vector3(...group.center).addScaledVector(clusters.up, group.radius + 12).project(renderer.camera);
+        const x = (p.x + 1) * width / 2, y = (1 - p.y) * height / 2;
+        if (p.z < -1 || p.z > 1 || x < 20 || x > width - 20 || y < 76 || y > height - 88) continue;
+        result.push({id: group.id, title: module?.title || '未分类', x, y, category: true});
+      }
     }
     hooks.onLabels(result);
   }
@@ -123,13 +211,25 @@ export function createGalaxy(container, graph, hooks, reduced) {
     const changed = layout.step();
     if (!ready && layout.isSettled()) {
       workerDeadline = 0; ready = true;
+      if (presetFrom) renderer.setDisplayPositions(null);
       renderer.updatePositions(); renderer.refreshClusterClouds();
-      frame(!initialFramed || reduced);
-      if (!reduced && !selected && !category) renderer.playReveal(2200);
+      overview = snapshot();
+      clusters = categoryLayout(data, overview, {aspect: width / height, elevation: preset.frameElevDeg || 18, preset: preset.id});
+      effects = new CategoryEffects(renderer.scene, clusters.groups);
+      if (expanded && presetFrom) {
+        renderer.setDisplayPositions(presetFrom);
+        expand(true, reduced, true);
+      } else if (expanded) expand(true, true);
+      else {
+        frame(!initialFramed || reduced);
+        if (!reduced && !selected && !category) renderer.playReveal(2200);
+      }
+      presetFrom = null;
       applyFocus(Boolean(selected || category));
       hooks.onReady(true);
-    } else if (changed && ready && !paused) renderer.updatePositions();
-    camera.cruiseEnabled = !paused && !reduced && ready;
+    } else if (changed && ready && !paused && !expanded && !transition) renderer.updatePositions();
+    stepCategories(reduced ? 0 : dt);
+    camera.cruiseEnabled = !paused && !reduced && ready && !transition;
     camera.cruiseSpeed = 0.5;
     camera.update(now, dt, paused || reduced ? 0 : dt);
     renderer.render(paused || reduced ? 0 : dt, dt);
@@ -142,7 +242,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
   const pointerDown = event => { down = {x: event.clientX, y: event.clientY, id: event.pointerId, button: event.button}; };
   const pointerUp = event => {
     const start = down; down = null;
-    if (!start || start.id !== event.pointerId || start.button !== 0 || !ready || Math.hypot(event.clientX - start.x, event.clientY - start.y) > 5) return;
+    if (!start || start.id !== event.pointerId || start.button !== 0 || !ready || transition || Math.hypot(event.clientX - start.x, event.clientY - start.y) > 5) return;
     const i = pick(event); if (i >= 0) hooks.onSelect(data.nodes[i].id);
   };
   const pointerMove = event => { if (!ready || event.buttons) return; hovered = pick(event); canvas.style.cursor = hovered < 0 ? 'grab' : 'pointer'; };
@@ -157,7 +257,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
   const observer = new ResizeObserver(resize); observer.observe(container);
   function dispose() {
     if (disposed) return;
-    disposed = true; cancelAnimationFrame(raf); observer.disconnect(); layout?.dispose(); camera.dispose();
+    disposed = true; cancelAnimationFrame(raf); observer.disconnect(); layout?.dispose(); camera.dispose(); effects?.dispose();
     canvas.removeEventListener('pointerdown', pointerDown); canvas.removeEventListener('pointerup', pointerUp);
     canvas.removeEventListener('pointermove', pointerMove); canvas.removeEventListener('pointerleave', pointerLeave);
     canvas.removeEventListener('pointercancel', pointerLeave); canvas.removeEventListener('webglcontextlost', contextLost);
@@ -169,7 +269,8 @@ export function createGalaxy(container, graph, hooks, reduced) {
     focus(sel, mod) { if (disposed) return; selected = sel; category = mod; applyFocus(true); },
     pause(value) { if (disposed) return; paused = value; if (value) camera.cancelMotion(); },
     preset(id) { if (!disposed) setPreset(id); },
-    reset() { if (!disposed) frame(); },
+    expand(value) { if (!disposed) expand(value); },
+    reset() { if (!disposed) { if (expanded && clusters) frameDestination(clusters.positions); else frame(); } },
     replay() { if (!disposed && ready) { frame(); if (!reduced) renderer.playReveal(2200); } },
     dispose,
   };

@@ -81,6 +81,7 @@ export class AggregateRenderer {
 	private starfield: Group;
 	private twinkler: Twinkler;
 	private starfieldEnabled = true;
+	private starfieldIntensity = 1;
 	twinkleFreq = 0.5;
 	private motes: Points | null = null;
 	// —— 曲线连线（v0.4）——
@@ -540,7 +541,20 @@ export class AggregateRenderer {
 	}
 
 	/** 把力学坐标拟合为 CPU 显示坐标；GPU 目标缓冲由 updatePositions 显式同步。 */
+	private displayOverride: Float32Array | null = null;
+
+	/** Standalone category animation supplies display coordinates, not physics coordinates. */
+	setDisplayPositions(positions: Float32Array | null): void {
+		this.resetRevealState();
+		this.displayOverride = positions;
+		this.updatePositions();
+	}
+
 	private fitPositions(): void {
+		if (this.displayOverride) {
+			this.renderPositions.set(this.displayOverride);
+			return;
+		}
 		fitGraphPositions(
 			this.positions,
 			this.renderPositions,
@@ -849,6 +863,7 @@ export class AggregateRenderer {
 		this.starfield = sf.group;
 		this.twinkler = sf.twinkler;
 		this.starfield.visible = visible;
+		this.setStarfieldIntensity(this.starfieldIntensity);
 		this.starfield.rotation.y = rotation;
 		this.scene.add(this.starfield);
 		// 曲线段数换档：几何重建 + 重染 + 高亮层重建（一次性）
@@ -891,6 +906,14 @@ export class AggregateRenderer {
 	setStarfieldEnabled(on: boolean): void {
 		this.starfieldEnabled = on;
 		this.starfield.visible = on && this.tokens.starfield;
+	}
+
+	/** Keep background stars subordinate to document nodes in category views. */
+	setStarfieldIntensity(value: number): void {
+		this.starfieldIntensity = Math.max(0, Math.min(1, value));
+		for (const child of this.starfield.children) {
+			(child as Points<BufferGeometry, PointsMaterial>).material.opacity = .55 * this.starfieldIntensity;
+		}
 	}
 
 	resize(w: number, h: number): void {

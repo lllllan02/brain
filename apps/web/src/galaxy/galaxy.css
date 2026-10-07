@@ -1,4 +1,4 @@
-/* A full-screen sky; only identity, search and three view choices remain. */
+/* A full-screen sky; identity, search, category expansion and three view choices. */
 .galaxy-page{--space:#000003;--starlight:#e5eaf2;--dust:#9eacc1;position:relative;height:100svh;min-height:360px;background:var(--space);overflow:hidden}
 .galaxy-viewport{position:absolute;inset:0;isolation:isolate}
 .galaxy-viewport.is-loading>canvas{opacity:0}
@@ -43,3 +43,8 @@
  .galaxy-label{font-size:10px;max-width:170px}
 }
 @media(prefers-reduced-motion:reduce){.galaxy-page *{animation:none!important;transition:none!important}}
+.galaxy-views .galaxy-category-toggle{margin-right:12px}
+.galaxy-category-label{position:absolute;transform:translate(-50%,-100%);pointer-events:auto;border:0;background:transparent;color:#cddbea;font-family:"Songti SC","Noto Serif CJK SC",serif;font-size:13px;letter-spacing:.14em;padding:8px 10px;white-space:nowrap;text-shadow:0 1px 9px #000,0 0 20px #7187ab80}
+.galaxy-category-label:hover,.galaxy-category-label:focus-visible{color:#fff;background:#07111b80;border-radius:5px}
+.galaxy-category-label:focus-visible,.galaxy-views button:focus-visible{outline:1px solid #a8c4df;outline-offset:3px}
+@media(max-width:760px){.galaxy-views .galaxy-category-toggle{margin-right:5px}.galaxy-category-label{font-size:11px;letter-spacing:.05em}.galaxy-views button{padding-inline:7px}}
