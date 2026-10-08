@@ -14,7 +14,7 @@ export const nebulaLandmarks = /* glsl */ `
     return length(p - base - axis * t) - mix(root, crown, t);
   }
   vec4 pillars(vec3 direction) {
-    vec3 region = skyPatch(direction, vec3(-.97, -.18, .16), vec2(.21, .24));
+    vec3 region = skyPatch(direction, vec3(-.97, -.18, .16), vec2(.145, .17));
     vec2 uv = region.xy;
     if (region.z < .65 || length(uv) > 2.3) return vec4(0.0);
     vec3 p = vec3(uv * 4.0, 5.8);
@@ -36,12 +36,12 @@ export const nebulaLandmarks = /* glsl */ `
     float halo = exp(-max(shape, 0.0) * 3.8) * (1.0 - solid) * (.35 + detail);
     float light = smoothstep(-.5, .8, uv.y - uv.x * .4);
     vec3 color = vec3(.024,.012,.009) * solid * detail;
-    color += vec3(.13,.093,.050) * rim * light;
-    color += vec3(.018,.051,.098) * halo;
+    color += vec3(.087,.076,.064) * rim * light;
+    color += vec3(.015,.036,.071) * halo;
     return vec4(color * envelope, solid * envelope * .92);
   }
   vec4 ringNebula(vec3 direction) {
-    vec3 region = skyPatch(direction, vec3(.33,.22,-.92), vec2(.18,.20));
+    vec3 region = skyPatch(direction, vec3(.33,.22,-.92), vec2(.15,.17));
     vec2 uv = region.xy;
     if (region.z < .7 || length(uv) > 2.0) return vec4(0.0);
     vec3 p = vec3(uv * 5.0, 23.6);
@@ -58,7 +58,7 @@ export const nebulaLandmarks = /* glsl */ `
     return vec4(color, 0.0);
   }
   vec4 spiralGalaxy(vec3 direction) {
-    vec3 region = skyPatch(direction, vec3(.58,-.12,.81), vec2(.28,.28));
+    vec3 region = skyPatch(direction, vec3(.58,-.12,.81), vec2(.24,.24));
     vec2 uv = mat2(.91,-.415,.415,.91) * region.xy;
     uv.y *= 1.7;
     float r = length(uv);

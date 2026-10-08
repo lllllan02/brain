@@ -80,8 +80,8 @@ void main() {
 		+ exp(-abs(uv.y) / rayWidth - abs(uv.x) * 10.0);
 	float edge = 1.0 - smoothstep(0.38, 0.5, d);
 	float starAlpha = (core + halo + rays * mix(0.35, 0.85, vActive)) * edge;
-	vec3 starTint = mix(vColor, vec3(1.0), vActive * 0.25);
-	starTint = mix(starTint, vec3(0.8, 0.91, 1.0), vPreview * 0.4);
+	vec3 starTint = mix(vColor, vec3(0.94, 0.97, 1.0), vActive * 0.65);
+	starTint = mix(starTint, vec3(0.88, 0.94, 1.0), vPreview * 0.55);
 	vec3 starColor = mix(starTint, vec3(1.0), exp(-d * d * 100.0) * mix(0.85, 0.98, vActive) * (1.0 - vGhost));
 
 	// 晨昼保留纸面圆点；所有 smoothstep 使用递增边界，避免未定义行为。

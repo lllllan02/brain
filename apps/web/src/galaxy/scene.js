@@ -33,7 +33,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
   });
   const colors = new Map(graph.modules.map(module => {
     const color = new Color(module.color), hsl = {}; color.getHSL(hsl);
-    return [module.id, color.setHSL(hsl.h, 0.58, 0.65)];
+    return [module.id, color.setHSL(hsl.h, 0.32, 0.70)];
   }));
   renderer.setColorFn(node => colors.get(node.folderTop) || new Color('#bccbdf'));
   let layout, preset, width = 1, height = 1, frameWidth = 1, frameHeight = 1, disposed = false;
@@ -63,7 +63,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
       clouds: preset.space.clusterClouds * (1 - blend),
       links: preset.look.linkOpacity * .35 * (1 - blend) + style.linkOpacity * blend,
       nodes: preset.look.nodeSize * 2 * (1 - blend) + style.nodeScale * blend,
-      stars: .42 * (1 - blend) + style.starfield * blend,
+      stars: .34 * (1 - blend) + style.starfield * blend,
       bloom: preset.bloom.strength * .5, radius: preset.bloom.radius * .75, threshold: Math.max(.3, preset.bloom.threshold),
       twinkle: preset.look.twinkle, curve: preset.look.linkCurve,
     };
@@ -212,7 +212,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     if (!hadScene) {
       hooks.onReady(false);
       renderer.setStarfieldEnabled(true);
-      renderer.setNebulaTint('#528ba5', '#9e77b7');
+      renderer.setNebulaTint('#526878', '#79515b');
       renderer.applyTier(frameWidth < 640 ? TIERS.mobile : TIERS.high, preset.bloom.strength);
       categorySpace(categoryBlend);
       renderer.setData(data, positions);

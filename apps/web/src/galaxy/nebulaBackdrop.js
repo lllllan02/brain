@@ -6,7 +6,7 @@ import {nebulaLandmarks} from './nebulaLandmarks';
 export class NebulaBackdrop {
   constructor(scene) {
     this.scene = scene;
-    this.intensity = .8;
+    this.intensity = .72;
     this.material = new ShaderMaterial({
       side: BackSide, depthTest: false, depthWrite: false, transparent: true,
       uniforms: {uIntensity: {value: this.intensity}},
@@ -60,12 +60,15 @@ export class NebulaBackdrop {
           float filaments = pow(max(detail - .27, 0.0) * 2.5, 2.6);
           float glow = density * extinction * (.25 + filaments * 2.6);
           float warmPocket = smoothstep(.42, .70, noise(q * .65 + 8.0));
-          vec3 gasColor = mix(vec3(.028, .065, .12), vec3(.18, .043, .035), warmPocket);
-          float quietSky = .7 * mix(.35, 1.0, smoothstep(.33, .60, noise(p * .6 + 7.0)));
+          vec3 gasColor = mix(vec3(.026, .055, .11), vec3(.16, .035, .038), warmPocket);
+          // Local emission pockets leave dark space between the colored clouds.
+          // All masks use world directions, so the clouds remain explorable.
+          float quietSky = .64 * mix(.12, 1.0, smoothstep(.43, .68, noise(p * .6 + 7.0)));
+          quietSky = mix(quietSky, max(quietSky, .38), warmPocket);
           vec3 silver = vec3(.13, .17, .22) * density * pow(filaments, 2.0) * extinction;
           vec4 columns = pillars(d);
           vec3 landmarks = columns.rgb + ringNebula(d).rgb + spiralGalaxy(d).rgb;
-          vec3 color = ((gasColor * glow + silver * .45) * quietSky * (1.0 - columns.a) + landmarks) * uIntensity;
+          vec3 color = ((gasColor * glow + silver * .3) * quietSky * (1.0 - columns.a) + landmarks) * uIntensity;
           gl_FragColor = vec4(color, 1.0);
         }
       `,
@@ -78,7 +81,7 @@ export class NebulaBackdrop {
 
   update(camera, preset, categoryBlend, reading, dt, reduced) {
     this.mesh.position.copy(camera.position);
-    const base = {nebula: .8, galaxy: .5, deepfield: .22}[preset] ?? .8;
+    const base = {nebula: .72, galaxy: .44, deepfield: .20}[preset] ?? .72;
     const target = base * (1 - categoryBlend * .4) * (reading ? .65 : 1);
     this.intensity += (target - this.intensity) * (reduced ? 1 : 1 - Math.exp(-dt * 3));
     this.material.uniforms.uIntensity.value = this.intensity;

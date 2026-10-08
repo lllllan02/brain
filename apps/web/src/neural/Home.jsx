@@ -125,7 +125,7 @@ export function Home({graph, focus, setFocus, reduced}) {
     </div>
     <header className="galaxy-header">
       <a className="galaxy-brand" href="#/" aria-label={`${CONFIG.brand.name}，回到全景`} onClick={event => {event.preventDefault();reset();}}>
-        <img src={asset('nebula-logo.svg')} width="34" height="34" alt=""/><span>{CONFIG.brand.name}</span>
+        <img src={asset('black-hole-logo.png')} width="44" height="44" alt=""/><span>{CONFIG.brand.name}</span>
       </a>
     </header>
     <div className={`galaxy-search-dock${reviewNode?.module ? ' has-review' : ''}`} onBlur={event => {if (!event.currentTarget.contains(event.relatedTarget)) setSearchOpen(false);}}>
@@ -135,7 +135,7 @@ export function Home({graph, focus, setFocus, reduced}) {
       </div>}
       <form className="galaxy-search" role="search" onSubmit={event => {event.preventDefault();if(results.length)go(results[0].id);}}>
         <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
-        <input ref={searchInput} value={query} onFocus={() => setSearchOpen(true)} onChange={event => {setQuery(event.target.value);setSearchOpen(true);}} placeholder="搜索星空中的知识" aria-label="搜索标题、别名、标签或正文" aria-controls="galaxy-search-results" autoComplete="off" onKeyDown={event => {
+        <input ref={searchInput} value={query} onFocus={() => setSearchOpen(true)} onChange={event => {setQuery(event.target.value);setSearchOpen(true);}} placeholder="搜索笔记" aria-label="搜索标题、别名、标签或正文" aria-controls="galaxy-search-results" autoComplete="off" onKeyDown={event => {
           if(event.key === 'ArrowDown') {event.preventDefault();event.currentTarget.closest('.galaxy-search-dock').querySelector('.galaxy-results button')?.focus();}
         }}/>
         {query && <button type="button" className="galaxy-search-clear" aria-label="清空搜索" onClick={() => {setQuery('');searchInput.current?.focus();}}>×</button>}

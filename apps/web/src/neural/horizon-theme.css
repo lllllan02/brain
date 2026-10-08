@@ -1,0 +1,67 @@
+/* The preview is portaled to body, so it shares the reader's theme explicitly. */
+.galaxy-page, .neural.link-preview {
+  --surface: #0c1119;
+  --surface-raised: #111821;
+  --control: #090e16d9;
+  --hover: #cad5e310;
+  --line: #b8c5d324;
+  --line-2: #cad5e34d;
+  --text: #e5eaf2;
+  --text-2: #b0bac7;
+  --muted: #8c98a8;
+  --gold: #d0dbe7;
+  --focus: #d5e1ed;
+}
+
+.galaxy-search, .galaxy-random {
+  background: var(--control);
+  border-color: var(--line);
+  color: var(--text-2);
+}
+.galaxy-random:hover:not(:disabled), .galaxy-search:focus-within {
+  background: var(--surface-raised);
+  border-color: var(--line-2);
+  color: var(--text);
+}
+.galaxy-results { background: var(--surface); border-color: var(--line-2); }
+.galaxy-results button:hover, .galaxy-results button:focus-visible { background: var(--hover); }
+.galaxy-results button small { color: var(--muted); }
+.galaxy-views .galaxy-view-cycle { background: var(--control); border-color: var(--line); }
+.galaxy-view-highlight { background: #d3dce51a; box-shadow: inset 0 0 0 1px var(--line); }
+.galaxy-page :focus-visible, .neural.link-preview :focus-visible { outline: 1px solid var(--focus); outline-offset: 3px; }
+.galaxy-search input:focus-visible { outline: none; }
+.galaxy-page .icon-btn:hover, .galaxy-page .icon-btn[aria-pressed="true"] {
+  background: var(--hover); border-color: var(--line-2); color: var(--text);
+}
+
+.galaxy-page .an-float { padding: 0; background: none; border: 0; color: var(--muted); }
+.galaxy-page .read-tag { background: #cad5e308; color: var(--text-2); border-color: var(--line); }
+.galaxy-page .read-tag:hover, .galaxy-page .read-tag[aria-pressed="true"] {
+  background: var(--hover); border-color: var(--line-2); color: var(--text);
+}
+.galaxy-page .read-toc { background: #cad5e304; }
+.galaxy-page .read-toc summary { color: var(--text-2); }
+.galaxy-page .read-toc[open] summary { margin-bottom: 8px; }
+.cluster-fan { --fan-ink: #b9c7d6; --fan-dim: #93a0b1; }
+.cluster-card-port { background: #d0dbe7; box-shadow: 0 0 0 4px #c3d2e216, 0 0 10px #c3d2e233; }
+.cluster-list-item:hover, .cluster-list-item:focus-visible { background: var(--hover); border-color: var(--line); }
+.cluster-list-item[aria-current="page"] { color: var(--text); }
+.cluster-list-item[aria-current="page"] .cluster-card-port { background: #edf2f8; box-shadow: 0 0 0 5px #c3d2e21a, 0 0 14px #c3d2e266; }
+
+/* Neutral article chrome; code syntax colors and broken-link warnings retain meaning. */
+.galaxy-page .document-reader .markdown, .neural.link-preview .markdown { color: #bec7d2; }
+.galaxy-page .markdown > p:first-child, .neural.link-preview .markdown > p:first-child { color: #ced6e0; }
+.galaxy-page .markdown :is(h1,h2,h3,h4,strong), .neural.link-preview .markdown :is(h1,h2,h3,h4,strong) { color: var(--text); }
+.galaxy-page .markdown a, .neural.link-preview .markdown a { color: var(--gold); border-color: #c5d3e24d; }
+.galaxy-page .markdown a:hover, .neural.link-preview .markdown a:hover { color: #fff; border-color: #d5e1ed; }
+.galaxy-page .markdown :not(pre) > code, .neural.link-preview .markdown :not(pre) > code { color: #ced9e5; background: #c5d3e209; border-color: var(--line); }
+.galaxy-page .markdown li::marker, .neural.link-preview .markdown li::marker { color: #8999ad; }
+.galaxy-page .markdown blockquote, .neural.link-preview .markdown blockquote { color: var(--text-2); border-color: #96a8bc; background: #c5d3e207; }
+.galaxy-page .markdown th, .neural.link-preview .markdown th { color: #ced6e0; }
+.galaxy-page .code-block, .neural.link-preview .code-block { background: #080d14; }
+.galaxy-page .copy-code:hover { color: var(--text); }
+.galaxy-page .markdown ::selection, .neural.link-preview .markdown ::selection { background: #b8cbe333; color: #f3f6fa; }
+
+.neural.link-preview { background: var(--surface-raised); border-color: var(--line-2); }
+.link-preview-title:hover, .link-preview-footer a:hover { color: #fff; }
+.neural .link-preview-close:hover { color: #fff; }
