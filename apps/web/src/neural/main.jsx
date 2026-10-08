@@ -9,7 +9,8 @@ import './horizon-theme.css';
 const staticPages=typeof __STATIC_PAGES__!=='undefined'&&__STATIC_PAGES__;
 function App(){
  const [library,setLibrary]=useState(null),[error,setError]=useState(''),[focus,updateFocus]=useState({mod:null,sel:null});
- const reduced=useMemo(()=>matchMedia('(prefers-reduced-motion: reduce)').matches,[]);
+ const [reduced,setReduced]=useState(()=>matchMedia('(prefers-reduced-motion: reduce)').matches);
+ useEffect(()=>{const media=matchMedia('(prefers-reduced-motion: reduce)');const change=()=>setReduced(media.matches);media.addEventListener('change',change);return()=>media.removeEventListener('change',change);},[]);
  useEffect(()=>{let active=true;const load=async()=>{try{const r=await fetch(staticPages?import.meta.env.BASE_URL+'library.json':'/api/library');if(!r.ok)throw Error('无法读取文档');const next=await r.json();if(active)setLibrary(old=>old?.version===next.version?old:next);}catch(e){if(active)setError(e.message);}};load();const timer=staticPages?null:setInterval(()=>{if(!document.hidden)load();},4000);return()=>{active=false;clearInterval(timer);};},[]);
  const graph=useMemo(()=>library?buildGraph(library):null,[library]);
  const setFocus=useCallback(next=>{updateFocus(next);history.pushState(null,'',next.sel?'#/doc/'+encodeURIComponent(next.sel):next.mod?'#/module/'+next.mod:'#/');},[]);

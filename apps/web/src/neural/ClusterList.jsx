@@ -1,4 +1,9 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
+
+import {usePresence} from '../motion/usePresence';
+import {MOTION, damp, smooth, stagger, curveSamples, pointAlongCurve} from '../motion/tokens.js';
+
+const clusterKey = cluster => !cluster ? null : cluster.document ? `document:${cluster.document}:${cluster.direction || 'outgoing'}` : cluster.tag ? `tag:${cluster.tag}` : `category:${cluster.category}`;
 
 export function clusterDocuments(graph, cluster) {
   if (!cluster) return [];
@@ -17,31 +22,14 @@ export function clusterDocuments(graph, cluster) {
 }
 
 export function ClusterList({graph, cluster, selected, onSelect, onClose, getAnchor, reduced, onPresenceChange}) {
-  const scroll = useRef(null), layer = useRef(null), svg = useRef(null);
-  const shownRef = useRef(null);
-  const [shown, setShown] = useState(null), [phase, setPhase] = useState('open');
+  const scroll = useRef(null), svg = useRef(null), origin = useRef(selected);
+  const {shown, ref: layer, closing} = usePresence(cluster, clusterKey(cluster), reduced, 'translateX(-12px)');
+  if (!closing && selected) origin.current = selected;
   const documents = useMemo(() => clusterDocuments(graph, shown), [graph, shown]);
   const kind = shown?.document ? shown.direction === 'incoming' ? '被引用' : '内部链接' : shown?.tag ? '标签' : '分类';
   const title = shown?.document ? graph.index.get(shown.document)?.title || '文档' : shown?.tag || graph.modules.find(item => item.id === shown?.category)?.title || '未分类';
-  const selectionKey = shown?.document ? `document:${shown.document}:${shown.direction || 'outgoing'}` : shown?.tag ? `tag:${shown.tag}` : `category:${shown?.category}`;
-
-  // Keep the outgoing cards mounted long enough to fold back into their origin.
-  // A new click cancels a pending exit so rapid changes always end on the latest choice.
-  useEffect(() => {
-    let timer;
-    const show = () => {
-      shownRef.current = cluster; setShown(cluster); setPhase('open');
-      onPresenceChange(Boolean(cluster));
-    };
-    if (!cluster) {
-      setPhase('closing');
-      timer = setTimeout(show, reduced ? 0 : 380);
-    } else if (shownRef.current && (shownRef.current.category !== cluster.category || shownRef.current.tag !== cluster.tag || shownRef.current.document !== cluster.document || shownRef.current.direction !== cluster.direction)) {
-      setPhase('closing');
-      timer = setTimeout(show, reduced ? 0 : 220);
-    } else show();
-    return () => clearTimeout(timer);
-  }, [cluster?.category, cluster?.tag, cluster?.document, cluster?.direction, reduced, onPresenceChange]);
+  const selectionKey = clusterKey(shown);
+  useEffect(() => { onPresenceChange(Boolean(shown)); }, [Boolean(shown), onPresenceChange]);
 
   useEffect(() => {
     if (!shown || !scroll.current) return;
@@ -52,22 +40,30 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, getAnc
 
   useEffect(() => {
     if (!shown || !layer.current) return;
-    let raf, previous = 0, elapsed = 0;
+    let raf, previous = 0, elapsed = 0, source = null, sourceId = origin.current, sourceTween = null;
+    const visibility = new Map();
     // SVG connects the current reading node to only the currently visible
     // document ports. Scrolling never creates hidden lines outside the list.
     const update = now => {
       raf = requestAnimationFrame(update);
-      if (document.hidden) { previous = now; return; }
-      if (now - previous < 25) return;
-      elapsed += previous ? Math.min(now - previous, 64) : 0;
+      if (document.hidden) { previous = 0; return; }
+      const dt = previous ? Math.min(now - previous, MOTION.maxFrame) : 0;
+      elapsed += dt;
       previous = now;
       const box = layer.current.getBoundingClientRect();
       const viewport = scroll.current.getBoundingClientRect();
-      const anchor = getAnchor?.();
+      const anchor = getAnchor?.(origin.current);
       // Never draw from an invented or stale origin while a node is unavailable.
-      svg.current.style.display = anchor ? '' : 'none';
+      svg.current.style.opacity = anchor ? 1 : 0;
       if (!anchor) return;
-      const startX = anchor.x - box.left, startY = anchor.y - box.top;
+      if (sourceId !== origin.current) { sourceTween = source ? {from: {...source}, elapsed: 0} : null; sourceId = origin.current; }
+      if (sourceTween && !reduced) {
+        sourceTween.elapsed += dt;
+        const p = Math.min(1, sourceTween.elapsed / MOTION.enter), k = smooth(p);
+        source = {x: sourceTween.from.x + (anchor.x - sourceTween.from.x) * k, y: sourceTween.from.y + (anchor.y - sourceTween.from.y) * k};
+        if (p === 1) sourceTween = null;
+      } else source = {...anchor};
+      const startX = source.x - box.left, startY = source.y - box.top;
       const rows = scroll.current.querySelectorAll('.cluster-list-item');
       const paths = svg.current.querySelectorAll('path');
       const sparks = svg.current.querySelectorAll('.cluster-thread-sparks');
@@ -76,28 +72,29 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, getAnc
         const endY = port.top + port.height / 2, visible = endY > viewport.top + 3 && endY < viewport.bottom - 3;
         const path = paths[i];
         if (!path) return;
-        path.style.visibility = visible ? 'visible' : 'hidden';
+        const edge = Math.max(0, Math.min(1, (endY - viewport.top) / 18, (viewport.bottom - endY) / 18));
+        const alpha = reduced ? edge : (visibility.get(i) || 0) + (edge - (visibility.get(i) || 0)) * damp(dt / 1000, .08);
+        visibility.set(i, alpha);
+        path.style.strokeOpacity = alpha * (row.getAttribute('aria-current') ? .9 : .48);
         const glow = sparks[i];
-        if (glow) glow.style.visibility = visible ? 'visible' : 'hidden';
-        if (!visible) return;
+        if (glow) glow.style.opacity = alpha;
+        if (!visible && alpha < .001) return;
         const endX = port.left + port.width / 2 - box.left, targetY = endY - box.top;
         const span = Math.max(28, (endX - startX) * .52);
         path.setAttribute('d', `M ${startX} ${startY} C ${startX + span} ${startY}, ${endX - span * .65} ${targetY}, ${endX} ${targetY}`);
         if (glow) {
-          const reveal = Math.min(1, Math.max(0, (elapsed - 800 - Math.min(i, 8) * 38) / 450));
+          const reveal = smooth((elapsed - MOTION.enter - stagger(i)) / MOTION.enter);
+          const samples = curveSamples({x: startX, y: startY, endX, endY: targetY, bend: span});
           const ripples = glow.querySelectorAll('.cluster-flow-ripple');
           glow.querySelectorAll('.cluster-flow-dot').forEach((dot, j) => {
-            const travel = elapsed / 4200 + (i * .19 + j * .5) % 1;
+            const travel = elapsed / MOTION.flow + (i * .19 + j * .5) % 1;
             const progressAlong = travel % 1;
             const incoming = shown.direction === 'incoming';
-            const t = incoming ? 1 - progressAlong : progressAlong, inverse = 1 - t;
-            // Sample the same cubic as the line, so sparks follow camera and list motion.
-            const x = inverse ** 3 * startX + 3 * inverse ** 2 * t * (startX + span)
-              + 3 * inverse * t ** 2 * (endX - span * .65) + t ** 3 * endX;
-            const y = startY + (targetY - startY) * (3 * t ** 2 - 2 * t ** 3);
+            const t = incoming ? 1 - progressAlong : progressAlong;
+            const {x, y} = pointAlongCurve(samples, t);
             const fade = Math.min(1, t / .12, (1 - t) / .18);
             dot.setAttribute('cx', x); dot.setAttribute('cy', y);
-            dot.setAttribute('opacity', fade * reveal * (j ? .5 : .9));
+            dot.setAttribute('opacity', smooth(fade) * reveal * (j ? .5 : .9));
             // A completed trip emits one soft wave at the actual list endpoint.
             const ripple = ripples[j], progress = Math.min(1, progressAlong / .22);
             ripple.setAttribute('cx', incoming ? startX : endX); ripple.setAttribute('cy', incoming ? startY : targetY);
@@ -109,13 +106,13 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, getAnc
     };
     raf = requestAnimationFrame(update);
     return () => cancelAnimationFrame(raf);
-  }, [shown, documents, getAnchor, reduced]);
+  }, [selectionKey, documents, getAnchor, reduced]);
 
   if (!shown) return null;
-  return <div ref={layer} className={`cluster-fan is-${phase}`} inert={phase === 'closing'}>
+  return <div ref={layer} className={`cluster-fan${closing ? ' is-closing' : ''}`} inert={closing}>
     <svg ref={svg} className="cluster-fan-lines" aria-hidden="true" key={`lines:${selectionKey}`}>
       {documents.map((node, index) => <path key={node.id} pathLength="1" className={node.id === selected ? 'is-current' : ''}
-        style={{'--fan-delay': `${Math.min(index, 8) * 38}ms`}}/>)}
+        style={{'--fan-delay': `${stagger(index)}ms`}}/>)}
       {!reduced && documents.map(node => <g key={`sparks:${node.id}`} className="cluster-thread-sparks">
         <circle className="cluster-flow-ripple" r="4" opacity="0"/><circle className="cluster-flow-ripple" r="4" opacity="0"/>
         <circle className="cluster-flow-dot" r="1.8" opacity="0"/><circle className="cluster-flow-dot" r="1.2" opacity="0"/>
@@ -127,7 +124,7 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, getAnc
       </header>
       <div className="cluster-list-scroll" ref={scroll} tabIndex={0} role="region" aria-label={`${title}文档，可滚动浏览`}>
         {documents.length ? <ul key={selectionKey}>{documents.map((node, index) => <li key={node.id}>
-          <button type="button" className="cluster-list-item" style={{'--fan-delay': `${Math.min(index, 8) * 38}ms`}}
+          <button type="button" className="cluster-list-item" style={{'--fan-delay': `${stagger(index)}ms`}}
             aria-current={node.id === selected ? 'page' : undefined} onClick={() => onSelect(node.id)}>
             <i className="cluster-card-port" aria-hidden="true"/>
             <span><strong>{node.title}</strong></span>

@@ -1,3 +1,4 @@
+import {MOTION, smooth} from '../motion/tokens.js';
 import {Color, Vector3} from 'three';
 import {AggregateRenderer} from './vendor/render/AggregateRenderer';
 import {CameraDirector} from './vendor/interactions/CameraDirector';
@@ -49,6 +50,15 @@ export function createGalaxy(container, graph, hooks, reduced) {
   const overviewCache = new Map();
   let hoveredCategory = null;
   let filteredLinks = false;
+  let framing = null, framingTween = null;
+  const visibleLabels = new Map();
+  const retiringEffects = [];
+  function retireEffects() {
+    if (!effects) return;
+    if (reduced) effects.dispose();
+    else retiringEffects.push({effect: effects, elapsed: 0});
+    effects = null;
+  }
   const scratch = new Vector3();
 
   function snapshot() {
@@ -131,7 +141,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     if (reduced || instant) {
       display.set(to); transition = null; categoryBlend = expanded ? 1 : 0;
       renderer.updatePositions(); categorySpace(categoryBlend);
-    } else transition = {from, to, elapsed: 0, duration: morph ? 1.4 : expanded ? 3.1 : 1.8, expanding: expanded, blendFrom: categoryBlend, morph, lookFrom: {...currentLook}};
+    } else transition = {from, to, elapsed: 0, duration: (morph ? MOTION.morph : expanded ? MOTION.expand : MOTION.collapse) / 1000, expanding: expanded, blendFrom: categoryBlend, morph, lookFrom: {...currentLook}};
   }
   function stepCategories(dt) {
     let burst = -1;
@@ -141,14 +151,19 @@ export function createGalaxy(container, graph, hooks, reduced) {
       interpolateCategories(transition.from, transition.to, p, transition.expanding && !transition.morph, display, clusters);
       categoryBlend = transition.blendFrom + ((transition.expanding ? 1 : 0) - transition.blendFrom) * categoryEase(p);
       burst = transition.expanding && !transition.morph ? p : -1;
-      renderer.updatePositions(); categorySpace(categoryBlend, transition.morph ? transition.lookFrom : null, p);
+      renderer.updatePositions(); categorySpace(categoryBlend, transition.lookFrom, p);
       if (p === 1) {
         transition = null;
         if (!expanded) renderer.refreshClusterClouds();
         applyFocus(Boolean(selected || category || tag));
       }
     }
-    effects?.update(burst, display, dt);
+    effects?.update(burst, display, reduced ? 10 : dt);
+    for (let i = retiringEffects.length - 1; i >= 0; i--) {
+      const old = retiringEffects[i]; old.elapsed += dt;
+      old.effect.update(-1, null, reduced ? 10 : dt);
+      if (reduced || old.elapsed > MOTION.enter / 1000 * 3) {old.effect.dispose(); retiringEffects.splice(i, 1);}
+    }
   }
 
   function bounds(indices) {
@@ -199,8 +214,8 @@ export function createGalaxy(container, graph, hooks, reduced) {
     presetFrom = hadScene ? snapshot() : null;
     camera.cancelMotion();
     transition = null; overview = null;
-    effects?.dispose(); effects = null;
-    hovered = -1; hooks.onLabels([]);
+    retireEffects();
+    hovered = -1;
     preset = STYLE_PRESETS.find(item => item.id === id) || STYLE_PRESETS[0];
     camera.setFramingElev(preset.frameElevDeg || 18);
     ready = false;
@@ -213,7 +228,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
       hooks.onReady(false);
       renderer.setStarfieldEnabled(true);
       renderer.setNebulaTint('#526878', '#79515b');
-      renderer.applyTier(frameWidth < 640 ? TIERS.mobile : TIERS.high, preset.bloom.strength);
+      renderer.applyTier(width < 640 ? TIERS.mobile : TIERS.high, preset.bloom.strength);
       categorySpace(categoryBlend);
       renderer.setData(data, positions);
     } else renderer.setDisplayPositions(presetFrom);
@@ -228,24 +243,27 @@ export function createGalaxy(container, graph, hooks, reduced) {
     if (!initialFramed) { frame(true); initialFramed = true; }
   }
   function resize() {
-    const oldMobile = frameWidth < 640;
+    const oldMobile = width < 640;
     width = Math.max(1, container.clientWidth); height = Math.max(1, container.clientHeight);
     const region = framingRegion.getBoundingClientRect(), viewport = container.getBoundingClientRect();
     frameWidth = Math.max(1, region.width); frameHeight = Math.max(1, region.height);
-    renderer.setFramingRegion(frameWidth, frameHeight, region.left - viewport.left, region.top - viewport.top);
+    const target = {width: frameWidth, height: frameHeight, left: region.left - viewport.left, top: region.top - viewport.top};
+    if (!framing || reduced) {framing = target; framingTween = null;}
+    else framingTween = {from: {...framing}, to: target, elapsed: 0};
+    renderer.setFramingRegion(framing.width, framing.height, framing.left, framing.top);
     renderer.resize(width, height);
-    if (preset && oldMobile !== (frameWidth < 640)) renderer.applyTier(frameWidth < 640 ? TIERS.mobile : TIERS.high, preset.bloom.strength);
+    if (preset && oldMobile !== (width < 640)) renderer.applyTier(width < 640 ? TIERS.mobile : TIERS.high, preset.bloom.strength);
     if (ready) {
       if (!selected && !category && !tag && overview) {
         clusters = categoryLayout(data, overview, {aspect: frameWidth / frameHeight, elevation: preset.frameElevDeg || 18, preset: preset.id});
-        effects?.dispose(); effects = new CategoryEffects(renderer.scene, clusters.groups, data, colors);
-        if (expanded) expand(true, true);
+        retireEffects(); effects = new CategoryEffects(renderer.scene, clusters.groups, data, colors);
+        if (expanded) expand(true, reduced, true);
         else applyFocus(true);
       }
       else applyFocus(true);
     }
   }
-  function labels() {
+  function labels(dt) {
     const chosen = [...new Set([readingIndex, focus.index, hovered, previewIndex])].filter(i => i >= 0);
     const result = [];
     for (const i of chosen) {
@@ -268,13 +286,21 @@ export function createGalaxy(container, graph, hooks, reduced) {
         result.push({id: group.id, title: module?.title || '未分类', x, y, category: true});
       }
     }
-    hooks.onLabels(result);
+    const next = new Map(result.map(label => [label.id, label]));
+    for (const [id, old] of visibleLabels) {
+      if (!next.has(id)) { old.opacity = Math.max(0, old.opacity - dt / (MOTION.exit / 1000)); if (old.opacity === 0 || reduced) visibleLabels.delete(id); }
+    }
+    for (const label of result) {
+      const opacity = reduced ? 1 : Math.min(1, (visibleLabels.get(label.id)?.opacity || 0) + dt / (MOTION.enter / 1000));
+      visibleLabels.set(label.id, {...label, opacity});
+    }
+    hooks.onLabels([...visibleLabels.values()].map(label => ({...label, exiting: !next.has(label.id)})));
   }
   function tick(now) {
     if (disposed) return;
     raf = requestAnimationFrame(tick);
     if (document.hidden) { previous = 0; return; }
-    const dt = previous ? Math.min((now - previous) / 1000, 0.05) : 0;
+    const dt = previous ? Math.min((now - previous) / 1000, MOTION.maxFrame / 1000) : 0;
     previous = now;
     if (workerDeadline && now > workerDeadline && !layout?.isSettled()) fallback();
     layout?.step();
@@ -294,14 +320,21 @@ export function createGalaxy(container, graph, hooks, reduced) {
       if (presetFrom) {
         renderer.setDisplayPositions(presetFrom);
         expand(expanded, reduced, true);
-      } else if (expanded) expand(true, true);
+      } else if (expanded) expand(true, reduced, true);
       else {
         frame(!initialFramed || reduced);
-        if (!reduced && !selected && !category && !tag) renderer.playReveal(2200);
+        if (!reduced && !selected && !category && !tag) renderer.playReveal(MOTION.expand);
       }
       presetFrom = null;
       applyFocus(Boolean(selected || category || tag));
       hooks.onReady(true);
+    }
+    if (framingTween) {
+      framingTween.elapsed += dt * 1000;
+      const p = Math.min(1, framingTween.elapsed / MOTION.layout), k = smooth(p);
+      for (const key of Object.keys(framing)) framing[key] = framingTween.from[key] + (framingTween.to[key] - framingTween.from[key]) * k;
+      renderer.setFramingRegion(framing.width, framing.height, framing.left, framing.top);
+      if (p === 1) framingTween = null;
     }
     stepCategories(reduced ? 0 : dt);
     camera.cruiseEnabled = !paused && !reduced && ready && !transition;
@@ -309,7 +342,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     camera.update(now, dt, paused || reduced ? 0 : dt);
     backdrop.update(renderer.camera, preset.id, categoryBlend, readingIndex >= 0, dt, reduced);
     renderer.render(paused || reduced ? 0 : dt, dt);
-    if (ready && now - labelTime > 60) { labels(); labelTime = now; }
+    if (now - labelTime > 32) { labels(Math.min((now - labelTime) / 1000, .05)); labelTime = now; }
   }
   const pick = event => {
     const rect = canvas.getBoundingClientRect();
@@ -350,8 +383,10 @@ export function createGalaxy(container, graph, hooks, reduced) {
     canvas.removeEventListener('pointerdown', pointerDown); canvas.removeEventListener('pointerup', pointerUp);
     canvas.removeEventListener('pointermove', pointerMove); canvas.removeEventListener('pointerleave', pointerLeave);
     canvas.removeEventListener('pointercancel', pointerLeave); canvas.removeEventListener('webglcontextlost', contextLost);
+    retiringEffects.forEach(({effect}) => effect.dispose());
     backdrop.dispose(); renderer.dispose(); canvas.remove();
   }
+  camera.setReducedMotion(reduced); renderer.setReducedMotion(reduced);
   try { resize(); setPreset('nebula'); raf = requestAnimationFrame(tick); }
   catch (error) { dispose(); throw error; }
   return {
@@ -360,6 +395,16 @@ export function createGalaxy(container, graph, hooks, reduced) {
       selected = sel; category = mod; tag = selectedTag;
       readingIndex = nodeIndices.get(readingId) ?? -1;
       applyFocus(true);
+    },
+    setReducedMotion(value) {
+      if (disposed || reduced === value) return;
+      reduced = value; paused = value;
+      camera.setReducedMotion(value); renderer.setReducedMotion(value);
+      if (value) {
+        if (ready && overview) expand(expanded, true);
+        resize(); applyFocus(true);
+      }
+      renderer.setPreviewNode(previewIndex, !value);
     },
     pause(value) { if (disposed) return; paused = value; if (value) camera.cancelMotion(); },
     preset(id) { if (!disposed) setPreset(id); },
@@ -372,7 +417,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     },
     nodeAnchor(id) {
       const index = nodeIndices.get(id);
-      if (disposed || !ready || index === undefined) return null;
+      if (disposed || !initialFramed || index === undefined) return null;
       // The reading document remains the origin even while the scene focuses a category/tag.
       const point = renderer.nodePosition(index, scratch).project(renderer.camera);
       if (point.z < -1 || point.z > 1) return null;
@@ -380,7 +425,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
       return {x:rect.left + (point.x + 1) * width / 2, y:rect.top + (1 - point.y) * height / 2};
     },
     reset() { if (!disposed) { if (expanded && clusters) frameDestination(clusters.positions); else frame(); } },
-    replay() { if (!disposed && ready) { frame(); if (!reduced) renderer.playReveal(2200); } },
+    replay() { if (!disposed && ready) { frame(); if (!reduced) renderer.playReveal(MOTION.expand); } },
     dispose,
   };
 }

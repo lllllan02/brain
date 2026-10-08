@@ -77,7 +77,6 @@
 .cluster-fan-lines path.is-current{stroke:#e2e4ff;stroke-width:1.5;stroke-opacity:.9}
 .cluster-thread-sparks{fill:#ecf3ff;filter:drop-shadow(0 0 3px #b5cfff) drop-shadow(0 0 7px #9ebaff99);transition:opacity .2s}
 .cluster-flow-ripple{fill:none;stroke:#c8ddff;stroke-width:1;vector-effect:non-scaling-stroke}
-.cluster-fan.is-closing .cluster-thread-sparks{opacity:0}
 @media(prefers-reduced-motion:reduce){.cluster-thread-sparks{display:none}}
 .cluster-list{position:absolute;top:96px;bottom:110px;right:calc(clamp(380px,33vw,470px) + 42px);width:250px;display:flex;flex-direction:column;min-height:0;pointer-events:auto}
 .cluster-list-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 6px 12px 28px;flex-shrink:0}
@@ -98,12 +97,8 @@
 .cluster-list-header button:focus-visible,.cluster-list-item:focus-visible,.cluster-list-scroll:focus-visible{outline:1px solid #a8c4df;outline-offset:-2px}
 .cluster-list-empty{padding:12px;color:#94a5be;font-size:12px}
 .cluster-fan.is-closing .cluster-list{pointer-events:none}
-.cluster-fan.is-closing .cluster-list-item{animation:clusterCardOut .3s ease-in both}
-.cluster-fan.is-closing .cluster-fan-lines path{animation:clusterThreadOut .3s ease-in both}
 @keyframes clusterThreadIn{from{stroke-dashoffset:1;opacity:0}to{stroke-dashoffset:0;opacity:1}}
-@keyframes clusterThreadOut{from{stroke-dashoffset:0;opacity:1}to{stroke-dashoffset:1;opacity:0}}
 @keyframes clusterCardIn{from{opacity:0;transform:translateX(-25px) scale(.94)}to{opacity:1;transform:translateX(0) scale(1)}}
-@keyframes clusterCardOut{to{opacity:0;transform:translateX(-22px) scale(.96)}}
 @media(min-width:901px) and (max-width:1050px){.cluster-list{width:210px}.galaxy-browsing .galaxy-frame{right:calc(clamp(380px,33vw,470px) + 265px)}}
 @media(max-width:900px){
  .galaxy-browsing .galaxy-frame{left:0;top:76px;right:calc(100% - 138px);bottom:calc(100% - 76px - clamp(180px,30svh,280px))}

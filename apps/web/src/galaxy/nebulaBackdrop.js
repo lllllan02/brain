@@ -1,3 +1,4 @@
+import {MOTION, damp} from '../motion/tokens.js';
 import {BackSide, Mesh, ShaderMaterial, SphereGeometry} from 'three';
 import {nebulaLandmarks} from './nebulaLandmarks';
 
@@ -83,7 +84,7 @@ export class NebulaBackdrop {
     this.mesh.position.copy(camera.position);
     const base = {nebula: .72, galaxy: .44, deepfield: .20}[preset] ?? .72;
     const target = base * (1 - categoryBlend * .4) * (reading ? .65 : 1);
-    this.intensity += (target - this.intensity) * (reduced ? 1 : 1 - Math.exp(-dt * 3));
+    this.intensity += (target - this.intensity) * (reduced ? 1 : damp(dt, MOTION.enter / 1000));
     this.material.uniforms.uIntensity.value = this.intensity;
   }
 

@@ -1,0 +1,32 @@
+/* Shared timings are supplied by motionVariables; portals receive the same tokens. */
+.galaxy-page .analysis-wrap{animation:none;transition:width var(--motion-layout) var(--motion-ease),top var(--motion-layout) var(--motion-ease),height var(--motion-layout) var(--motion-ease),bottom var(--motion-layout) var(--motion-ease)}
+.galaxy-page .an-title-row{animation:none}
+.galaxy-page .an-scroll{transition:padding var(--motion-layout) var(--motion-ease)}
+.galaxy-page .galaxy-search-dock{transition:width var(--motion-layout) var(--motion-ease)}
+.galaxy-page .galaxy-view-highlight{transition:transform var(--motion-layout) var(--motion-ease)}
+.galaxy-page .galaxy-view-cycle>span:not(.galaxy-view-highlight){transition:color var(--motion-feedback) ease}
+.galaxy-page .galaxy-viewport>canvas{transition:opacity var(--motion-enter) var(--motion-ease)}
+.galaxy-page .cluster-fan-lines{transition:opacity var(--motion-feedback) ease}
+.galaxy-page .cluster-fan-lines path{animation:clusterThreadIn var(--motion-enter) var(--motion-ease) var(--fan-delay) both}
+.galaxy-page .cluster-list-item{animation:clusterCardIn var(--motion-enter) var(--motion-ease) var(--fan-delay) both}
+.galaxy-page .cluster-thread-sparks{transition:none}
+.galaxy-page button,.galaxy-page a{transition:color var(--motion-feedback) ease,background-color var(--motion-feedback) ease,border-color var(--motion-feedback) ease,box-shadow var(--motion-feedback) ease}
+.galaxy-page .cluster-card-port{transition:background-color var(--motion-feedback) ease,box-shadow var(--motion-feedback) ease}
+.galaxy-page .read-toc-content{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows var(--motion-enter) var(--motion-ease),opacity var(--motion-enter) var(--motion-ease)}
+.galaxy-page .read-toc-content>div{overflow:hidden;min-height:0}
+.galaxy-page .read-toc.is-open .read-toc-content{grid-template-rows:1fr;opacity:1}
+.read-toc-toggle{display:flex;align-items:center;gap:8px;width:100%;border:0;padding:0;background:none;text-align:left;color:inherit;font:inherit}
+.read-toc-toggle::before{content:'›';display:inline-block;transform:rotate(0);transition:transform var(--motion-enter) var(--motion-ease)}
+.read-toc.is-open .read-toc-toggle::before{transform:rotate(90deg)}
+.neural.link-preview{animation:none}
+@media(prefers-reduced-motion:reduce){
+ .galaxy-page *, .galaxy-page *::before, .galaxy-page *::after, .neural.link-preview{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+
+/* Use numeric edges so narrow layouts can interpolate as the list opens. */
+@media(max-width:760px){
+ .galaxy-reading .analysis-wrap{top:calc(22svh - 36px);height:auto}
+ .galaxy-reading .analysis-wrap.full-reader{top:72px;height:auto}
+ .galaxy-browsing .analysis-wrap{top:calc(88px + clamp(180px,30svh,280px))}
+ .galaxy-browsing .analysis-wrap.full-reader{top:76px}
+}

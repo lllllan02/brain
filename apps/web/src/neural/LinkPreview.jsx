@@ -1,6 +1,8 @@
 import React, {memo, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import './link-preview.css';
+import {usePresence} from '../motion/usePresence';
+import {motionVariables} from '../motion/tokens.js';
 
 // Only use the already-filtered library, including in the public Pages build.
 function resolvePreview(element, graph) {
@@ -13,9 +15,9 @@ function resolvePreview(element, graph) {
   } catch { return null; }
 }
 
-export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPreview}) {
-  const [preview, setPreview] = useState(null);
-  const cardRef = useRef(null);
+export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPreview, reduced}) {
+  const [requested, setPreview] = useState(null);
+  const {shown: preview, ref: cardRef, closing} = usePresence(requested, requested?.href || null, reduced);
   const scrollRef = useRef(null);
   const [position, setPosition] = useState(null);
   const html = useMemo(() => {
@@ -45,7 +47,6 @@ export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPrevie
       active = null;
       onPreview?.(null);
       setPreview(null);
-      setPosition(null);
     };
     const scheduleClose = (delay = 180) => {
       clearTimeout(openTimer);
@@ -188,7 +189,7 @@ export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPrevie
 
   if (!preview) return null;
   return createPortal(
-    <aside ref={cardRef} className="neural link-preview" role="dialog" aria-label={`预览：${preview.node.title}`} style={position || {visibility: 'hidden'}}>
+    <aside ref={cardRef} className="neural link-preview" inert={closing} role="dialog" aria-label={`预览：${preview.node.title}`} style={{...motionVariables, ...(position || {visibility: 'hidden'})}}>
       <header className="link-preview-header">
         <div><span className="link-preview-label">文档预览 · {preview.node.category || '未分类'}</span><a className="link-preview-title" href={preview.href}>{preview.node.title}</a></div>
         <button type="button" className="link-preview-close" aria-label="关闭预览">×</button>

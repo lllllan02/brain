@@ -4,6 +4,9 @@ import {CONFIG, asset} from '../config';
 import {DocumentReader} from './DocumentReader';
 import {ClusterList, clusterDocuments} from './ClusterList';
 import {Icon} from './icons';
+import {usePresence} from '../motion/usePresence';
+import {motionVariables} from '../motion/tokens.js';
+import '../motion/motion.css';
 import '../galaxy/galaxy.css';
 
 export function moduleItems(graph, modId) {
@@ -19,7 +22,7 @@ export function Home({graph, focus, setFocus, reduced}) {
   const [expanded, setExpanded] = useState(false);
   const [readerCluster, setReaderCluster] = useState(null);
   const [clusterVisible, setClusterVisible] = useState(false);
-  const listAnchor = useCallback(() => scene.current?.nodeAnchor(current.current.focus.sel), []);
+  const listAnchor = useCallback(id => scene.current?.nodeAnchor(id), []);
   const previewNode = useCallback(id => scene.current?.previewNode(id), []);
   // An explicit list (or dismissal) belongs to the document where it was chosen.
   // All other document navigation starts with that document's outgoing links.
@@ -35,10 +38,13 @@ export function Home({graph, focus, setFocus, reduced}) {
   const nextView = views[(viewIndex + 1) % views.length];
   const [query, setQuery] = useState(''), [searchOpen, setSearchOpen] = useState(false);
   const [reviewId, setReviewId] = useState(null);
-  current.current = {focus, setFocus, preset, expanded, groupCluster};
+  current.current = {focus, setFocus, preset, expanded, groupCluster, reduced};
   const documents = useMemo(() => graph.nodes.filter(node => node.module), [graph]);
   const node = graph.index.get(focus.sel);
   const reviewNode = graph.index.get(reviewId);
+  const reader = usePresence(node?.module ? node : null, node?.module ? node.id : null, reduced, 'translateX(16px)');
+  const shownNode = reader.shown;
+  const review = usePresence(reviewNode?.module ? reviewNode : null, reviewNode?.module ? reviewNode.id : null, reduced);
   const go = (id, keepCluster = false) => {
     const target = graph.index.get(id); if (!target?.module) return;
     setReaderCluster(keepCluster && groupCluster ? {owner: id, value: groupCluster} : null);
@@ -58,6 +64,9 @@ export function Home({graph, focus, setFocus, reduced}) {
     if (q) return documents.filter(n => [n.title, n.category, ...n.aliases, ...n.tags, n.body].join(' ').toLowerCase().includes(q));
     return [];
   }, [query, documents]);
+  const search = usePresence(searchOpen && query.trim() ? {results} : null, searchOpen && query.trim() ? query.trim() : null, reduced);
+  const statusText = error || (!documents.length ? '还没有文档。保存笔记后，这里会亮起第一颗星。' : !ready ? '正在展开星系…' : null);
+  const status = usePresence(statusText, statusText, reduced, 'none');
   useEffect(() => {
     let active = true, instance;
     setError(''); setReady(false); setLabels([]);
@@ -73,18 +82,19 @@ export function Home({graph, focus, setFocus, reduced}) {
           const target = graph.index.get(id);
           if (target?.module) current.current.setFocus({mod: target.module, sel: id});
         },
-      }, reduced);
+      }, current.current.reduced);
       scene.current = instance;
       const cluster = current.current.groupCluster;
       instance.focus(cluster ? null : current.current.focus.sel, cluster ? cluster.category : current.current.focus.mod, cluster?.tag, current.current.focus.sel);
-      instance.pause(reduced);
+      instance.pause(current.current.reduced);
       if (current.current.preset !== 'nebula') instance.preset(current.current.preset);
       instance.expand(current.current.expanded);
     }).catch(() => {
       if (active) setError('当前浏览器无法显示三维星云，可通过下方搜索继续阅读。');
     });
     return () => { active = false; instance?.dispose(); scene.current = null; };
-  }, [graph, reduced]);
+  }, [graph]);
+  useEffect(() => scene.current?.setReducedMotion(reduced), [reduced]);
   useEffect(() => { if (!focus.sel) setReaderCluster(null); }, [focus.sel]);
   useEffect(() => {
     scene.current?.focus(groupCluster ? null : focus.sel, groupCluster ? groupCluster.category : focus.mod, groupCluster?.tag, focus.sel);
@@ -110,16 +120,16 @@ export function Home({graph, focus, setFocus, reduced}) {
     window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
   }, [focus, query, setFocus]);
   const reset = () => { setQuery(''); setSearchOpen(false); searchInput.current?.blur(); setFocus({mod: null, sel: null}); scene.current?.reset(); };
-  return <section className={`galaxy-page ${node ? 'galaxy-reading' : ''} ${activeCluster || clusterVisible ? 'galaxy-browsing' : ''}`} aria-label={CONFIG.brand.name}>
+  return <section className={`galaxy-page ${node || shownNode ? 'galaxy-reading' : ''} ${activeCluster || clusterVisible ? 'galaxy-browsing' : ''}`} aria-label={CONFIG.brand.name} style={motionVariables}>
     <div className={`galaxy-viewport ${!ready || error ? 'is-loading' : ''}`} ref={host}>
       <div className="galaxy-frame" aria-hidden="true"/>
       <div className="galaxy-labels">{ready && !error && labels.map(label => label.category ?
-        <button key={label.id} className="galaxy-category-label" style={{left: label.x, top: label.y}} onPointerEnter={() => scene.current?.hoverCategory(label.id)} onPointerLeave={() => scene.current?.hoverCategory(null)} onFocus={() => scene.current?.hoverCategory(label.id)} onBlur={() => scene.current?.hoverCategory(null)} onClick={() => setFocus({mod: label.id, sel: null})} aria-label={`查看${label.title}分类`}>{label.title}</button> :
+        <button key={label.id} className="galaxy-category-label" style={{left: label.x, top: label.y, opacity: label.opacity, pointerEvents: label.exiting ? 'none' : undefined}} onPointerEnter={() => scene.current?.hoverCategory(label.id)} onPointerLeave={() => scene.current?.hoverCategory(null)} onFocus={() => scene.current?.hoverCategory(label.id)} onBlur={() => scene.current?.hoverCategory(null)} onClick={() => setFocus({mod: label.id, sel: null})} aria-label={`查看${label.title}分类`}>{label.title}</button> :
         <React.Fragment key={label.id}>
-          {label.current && <svg className="galaxy-current-marker" aria-hidden="true" viewBox="-20 -20 40 40" style={{left: label.x, top: label.y}}>
+          {label.current && <svg className="galaxy-current-marker" aria-hidden="true" viewBox="-20 -20 40 40" style={{left: label.x, top: label.y, opacity: label.opacity, pointerEvents: label.exiting ? 'none' : undefined}}>
             <path d="M -8 -17 H -17 V -8 M 8 -17 H 17 V -8 M -8 17 H -17 V 8 M 8 17 H 17 V 8"/>
           </svg>}
-          <span className={`galaxy-label${label.current ? ' is-current' : ''}${label.preview ? ' is-preview' : ''}`} aria-hidden="true" style={{left: label.x, top: label.y}}>{label.title}</span>
+          <span className={`galaxy-label${label.current ? ' is-current' : ''}${label.preview ? ' is-preview' : ''}`} aria-hidden="true" style={{left: label.x, top: label.y, opacity: label.opacity, pointerEvents: label.exiting ? 'none' : undefined}}>{label.title}</span>
         </React.Fragment>
       )}</div>
     </div>
@@ -129,9 +139,9 @@ export function Home({graph, focus, setFocus, reduced}) {
       </a>
     </header>
     <div className={`galaxy-search-dock${reviewNode?.module ? ' has-review' : ''}`} onBlur={event => {if (!event.currentTarget.contains(event.relatedTarget)) setSearchOpen(false);}}>
-      {searchOpen && query.trim() && <div className="galaxy-results" id="galaxy-search-results" role="region" aria-label="搜索结果">
-        <p role="status">{results.length ? `${results.length} 篇文档` : '没有找到相关内容'}</p>
-        {results.map(n => <button key={n.id} onClick={() => go(n.id)}><span>{n.title}</span><small>{n.category || '未分类'}</small></button>)}
+      {search.shown && <div ref={search.ref} inert={search.closing} className="galaxy-results" id="galaxy-search-results" role="region" aria-label="搜索结果">
+        <p role="status">{search.shown.results.length ? `${search.shown.results.length} 篇文档` : '没有找到相关内容'}</p>
+        {search.shown.results.map(n => <button key={n.id} onClick={() => go(n.id)}><span>{n.title}</span><small>{n.category || '未分类'}</small></button>)}
       </div>}
       <form className="galaxy-search" role="search" onSubmit={event => {event.preventDefault();if(results.length)go(results[0].id);}}>
         <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
@@ -141,9 +151,9 @@ export function Home({graph, focus, setFocus, reduced}) {
         {query && <button type="button" className="galaxy-search-clear" aria-label="清空搜索" onClick={() => {setQuery('');searchInput.current?.focus();}}>×</button>}
       </form>
       <div className="galaxy-review">
-        {reviewNode?.module && <button type="button" className="galaxy-random galaxy-review-title" onClick={() => go(reviewNode.id)}
-          title={reviewNode.title} aria-label={`打开正文：${reviewNode.title}`}>
-          <span aria-live="polite" aria-atomic="true">{reviewNode.title}</span>
+        {review.shown && <button ref={review.ref} inert={review.closing} type="button" className="galaxy-random galaxy-review-title" onClick={() => go(review.shown.id)}
+          title={review.shown.title} aria-label={`打开正文：${review.shown.title}`}>
+          <span aria-live="polite" aria-atomic="true">{review.shown.title}</span>
         </button>}
         <button key="random" type="button" className={`galaxy-random${reviewNode?.module ? ' galaxy-review-next' : ''}`} onClick={reviewRandom}
           disabled={!documents.length || (Boolean(reviewNode?.module) && documents.length < 2)}
@@ -153,8 +163,7 @@ export function Home({graph, focus, setFocus, reduced}) {
         </button>
       </div>
     </div>
-    {!ready && !error && documents.length > 0 && <div className="galaxy-status" role="status">正在展开星系…</div>}
-    {(error || !documents.length) && <div className="galaxy-status" role="status">{error || '还没有文档。保存笔记后，这里会亮起第一颗星。'}</div>}
+    {status.shown && <div className="galaxy-status" role="status"><span ref={status.ref}>{status.shown}</span></div>}
     <nav className="galaxy-views" aria-label="星空视图">
       <button className="galaxy-category-toggle" aria-pressed={expanded} disabled={!ready || Boolean(error)} title={expanded ? '收回整体星云' : '按分类展开星云'} onClick={() => {
         const next = !expanded; setExpanded(next); setFocus({mod: null, sel: null});
@@ -169,8 +178,8 @@ export function Home({graph, focus, setFocus, reduced}) {
     </nav>
     <ClusterList graph={graph} cluster={activeCluster} selected={node?.id} reduced={reduced} getAnchor={listAnchor}
       onPresenceChange={setClusterVisible} onSelect={id => go(id, true)} onClose={() => setReaderCluster({owner: focus.sel, value: null})}/>
-    {node?.module && <div className="analysis-wrap" key={node.id}>
-      <DocumentReader onPreview={previewNode} graph={graph} node={node} module={moduleOf(graph, node)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>
+    {shownNode && <div ref={reader.ref} inert={reader.closing} className="analysis-wrap">
+      <DocumentReader key={shownNode.id} reduced={reduced} onPreview={previewNode} graph={graph} node={shownNode} module={moduleOf(graph, shownNode)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>
     </div>}
   </section>;
 }

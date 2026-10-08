@@ -2,8 +2,8 @@ import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {Icon} from './icons';
 import {LinkPreview} from './LinkPreview';
 import {ReaderRelations} from './ReaderRelations';
-export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview}){
- const ref=useRef(null);const [full,setFull]=useState(false);const [copy,setCopy]=useState('');
+export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,reduced}){
+ const ref=useRef(null);const [full,setFull]=useState(false);const [copy,setCopy]=useState('');const [tocOpen,setTocOpen]=useState(false);
  useEffect(()=>{const scroll=()=>{const part=location.hash.split('/')[3];if(!part)return;requestAnimationFrame(()=>{const id=decodeURIComponent(part);const target=[...ref.current.querySelectorAll('[id]')].find(el=>el.id===id);target?.scrollIntoView({block:'start'});});};scroll();window.addEventListener('hashchange',scroll);return()=>window.removeEventListener('hashchange',scroll);},[node.id,node.html]);
  useEffect(()=>{const wrap=ref.current.closest('.analysis-wrap');wrap.classList.toggle('full-reader',full);return()=>wrap.classList.remove('full-reader');},[full]);
  const article=useMemo(()=><article className="markdown" dangerouslySetInnerHTML={{__html:node.html}}/>,[node.html]);
@@ -35,7 +35,7 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
    </div>
    <ReaderRelations graph={graph} node={node} module={module} cluster={cluster} onChoose={next=>{setFull(false);onCluster(next);}}/>
    <p className="read-meta">{node.updated?'更新于 '+node.updated+' · ':''}知识笔记 · {Math.max(1,Math.ceil(node.body.length/500))} 分钟阅读</p>
-   {node.toc.length>0&&<details className="read-toc"><summary>本页目录</summary>{node.toc.map(h=><a key={h.id} href={`#/doc/${encodeURIComponent(node.id)}/${encodeURIComponent(h.id)}`}>{h.title}</a>)}</details>}{article}{copy&&<p role="status">{copy}</p>}
+   {node.toc.length>0&&<div className={`read-toc${tocOpen?' is-open':''}`}><button type="button" className="read-toc-toggle" aria-expanded={tocOpen} onClick={()=>setTocOpen(v=>!v)}>本页目录</button><div className="read-toc-content" inert={!tocOpen}><div>{node.toc.map(h=><a key={h.id} href={`#/doc/${encodeURIComponent(node.id)}/${encodeURIComponent(h.id)}`}>{h.title}</a>)}</div></div></div>}{article}{copy&&<p role="status">{copy}</p>}
    {externalLinks.length>0&&<section className="read-connections" aria-label="外部链接">
     <h3>外部链接</h3>
     {externalLinks.map(link=><a key={link.href} className="read-relation read-external-link" href={link.href} target="_blank" rel="noopener noreferrer" title={link.href}>
@@ -43,5 +43,5 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
     </a>)}
    </section>}
    {node.issues.length>0&&<p className="quiet read-link-issues">未解析引用：{node.issues.map(i=>i.target+'（'+i.reason+'）').join('、')}</p>}
-   <p className="read-path">{node.path}</p></div><LinkPreview readerRef={ref} graph={graph} onPreview={onPreview}/></section>;
+   <p className="read-path">{node.path}</p></div><LinkPreview reduced={reduced} readerRef={ref} graph={graph} onPreview={onPreview}/></section>;
 }

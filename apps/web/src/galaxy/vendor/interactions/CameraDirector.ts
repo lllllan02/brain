@@ -1,3 +1,4 @@
+import {MOTION} from '../../../motion/tokens.js';
 import { CatmullRomCurve3, MOUSE, PerspectiveCamera, Spherical, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { CRUISE, FLY_TO } from '../constants';
@@ -70,6 +71,7 @@ export class CameraDirector {
 	private framingElevDeg = 18;
 
 	private controls: OrbitControls;
+	private reducedMotion = false;
 	private tween: Tween | null = null;
 	private path: PathTween | null = null;
 	private pathPos = new Vector3();
@@ -101,6 +103,12 @@ export class CameraDirector {
 		dom.tabIndex = 0; // 画布可聚焦 → 键盘飞行不影响 Obsidian 其他快捷键
 		this.bindPointer();
 		this.bindKeys();
+	}
+
+	setReducedMotion(value: boolean): void {
+		this.reducedMotion = value;
+		this.controls.enableDamping = !value;
+		if (value) this.cancelMotion();
 	}
 
 	get target(): Vector3 {
@@ -155,7 +163,15 @@ export class CameraDirector {
 		// A new framing must not resume the previous node's close-up orbit.
 		this.markInput();
 		this.pendingDensityDir = null;
+		// Clear residual drag/zoom damping before a scripted flight takes over.
+		// Restore the sampled pose so flushing controls itself cannot jump the camera.
+		const position = this.camera.position.clone(), target = this.controls.target.clone();
+		this.controls.enableDamping = false;
+		this.controls.update();
+		this.camera.position.copy(position); this.controls.target.copy(target);
 		this.camera.up.set(0, 1, 0);
+		this.controls.update();
+		this.controls.enableDamping = !this.reducedMotion;
 	}
 
 	private bindPointer(): void {
@@ -175,8 +191,8 @@ export class CameraDirector {
 			// 注意：此处不 markInput——等移动超阈值才算拖动
 		};
 		const onMove = (e: PointerEvent) => {
-			if (dragging || e.buttons === 0) return; // 未按住不算拖动
-			if (Math.hypot(e.clientX - downX, e.clientY - downY) > DRAG_THRESHOLD_PX) {
+			if (e.buttons === 0) return; // 未按住不算拖动
+			if (dragging || Math.hypot(e.clientX - downX, e.clientY - downY) > DRAG_THRESHOLD_PX) {
 				dragging = true;
 				this.markInput(); // 拖动确立 → 接管相机、停环绕（OrbitControls 每帧读当前机位，无跳变）
 			}
@@ -275,7 +291,7 @@ export class CameraDirector {
 
 	/** R/回中心：平滑回总览（绕质心 center，居中不偏） */
 	resetView(center: Vector3, fitRadius: number, onDone?: () => void): void {
-		this.startTween(this.framingPosition(center, fitRadius), center.clone(), 1200, onDone);
+		this.startTween(this.framingPosition(center, fitRadius), center.clone(), MOTION.camera, onDone);
 	}
 
 	/**
@@ -322,6 +338,9 @@ export class CameraDirector {
 		const frameS = safeFrameSeconds(animationDeltaS);
 		const motionFrameS = safeFrameSeconds(motionDeltaS);
 		const frameMs = frameS * 1000;
+		// OrbitControls' damping factor is per update; normalize it to elapsed time.
+		this.controls.dampingFactor = 1 - Math.pow(1 - .08, frameS * 60);
+		this.controls.enableDamping = !this.reducedMotion;
 		if (this.path) {
 			const pt = this.path;
 			pt.elapsedMs += frameMs;

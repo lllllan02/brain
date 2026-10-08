@@ -1,3 +1,4 @@
+import {damp, smooth, MOTION} from '../motion/tokens.js';
 import {AdditiveBlending, BufferAttribute, BufferGeometry, Group, LineBasicMaterial, LineSegments} from 'three';
 
 // Only the transient explosion is decorative. Settled categories consist of real note nodes.
@@ -29,7 +30,7 @@ export class CategoryEffects {
   }
   update(burstProgress, positions, dt) {
     const active=burstProgress>.18&&burstProgress<.94&&positions;
-    this.trails.visible=Boolean(active);
+    this.trails.visible=Boolean(active) || this.trails.material.opacity > .001;
     if(active) {
       if(!this.trailActive)this.previous.set(positions);
       const attr=this.trails.geometry.attributes.position;
@@ -39,12 +40,14 @@ export class CategoryEffects {
         for(let a=0;a<3;a++) {attr.array[i*2+a]=positions[i+a];attr.array[i*2+3+a]=positions[i+a]-delta[a]*scale;}
       }
       attr.needsUpdate=true;this.previous.set(positions);
-      this.trails.material.opacity=.3*Math.sin(burstProgress*Math.PI);
+      const envelope = smooth((burstProgress - .18) / .12) * smooth((.94 - burstProgress) / .18);
+      this.trails.material.opacity=.3*envelope;
     }
+    if (!active) this.trails.material.opacity *= 1 - damp(dt, MOTION.feedback / 1000);
     this.trailActive=Boolean(active);
     const p = (burstProgress - .16) / .65;
-    this.burst.visible = p > 0 && p < 1;
-    if (this.burst.visible) {
+    this.burst.visible = (p > 0 && p < 1) || this.burst.material.opacity > .001;
+    if (p > 0 && p < 1) {
       const extent = Math.max(180, ...this.groups.map(g => Math.hypot(...g.center) + g.radius));
       const radius = extent * 1.5 * (1 - Math.pow(1-p, 2));
       const tail = radius - extent * .12 * Math.sin(p * Math.PI);
@@ -54,8 +57,8 @@ export class CategoryEffects {
         points.array[i*6+3+a] = this.directions[i*3+a]*tail;
       }
       points.needsUpdate = true;
-      this.burst.material.opacity = .65 * Math.pow(1-p, 2);
-    }
+      this.burst.material.opacity = .65 * smooth(p / .16) * Math.pow(1-p, 2);
+    } else this.burst.material.opacity *= 1 - damp(dt, MOTION.feedback / 1000);
   }
   dispose() {
     this.object.removeFromParent();

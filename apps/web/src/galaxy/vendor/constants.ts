@@ -1,3 +1,4 @@
+import {MOTION} from '../../motion/tokens.js';
 export const VIEW_TYPE_GALAXY = 'galaxy-view';
 // 力学/辉光/外观的默认值与持久化见 src/settings.ts
 
@@ -25,8 +26,8 @@ export const FLY_TO = {
 	minDistance: 150,
 	maxDistance: 420,
 	azimuthOffsetRad: (15 * Math.PI) / 180,
-	minMs: 800,
-	maxMs: 1800,
+	minMs: MOTION.camera * .8,
+	maxMs: MOTION.camera * 1.8,
 	msPerWorldUnit: 0.45,
 };
 

@@ -1,3 +1,4 @@
+import {MOTION, damp} from '../../../motion/tokens.js';
 import {
 	ACESFilmicToneMapping,
 	BufferAttribute,
@@ -41,7 +42,7 @@ import { effectivePixelRatio, type QualityTier } from '../quality/tiers';
 import { DEEP_SPACE } from './presets';
 import { maxPositionRadius, revealScale } from './reveal';
 
-const FOCUS_FADE_S = 0.28;
+const FOCUS_FADE_S = MOTION.feedback / 1000;
 
 /**
  * 聚合渲染器：全部节点 1×Points、全部链接 1×LineSegments、星空 3×Points、
@@ -62,6 +63,9 @@ export class AggregateRenderer {
 	private nodeMaterial: ShaderMaterial | null = null;
 	private previewTime = 0;
 	private previewAnimated = false;
+	private reducedMotion = false;
+	private activeIndex = -1;
+	private previewIndex = -1;
 	private nodeGeometry: BufferGeometry | null = null;
 	private linkSegments: LineSegments | null = null;
 	private linkGeometry: BufferGeometry | null = null;
@@ -252,7 +256,7 @@ export class AggregateRenderer {
 		this.linkK = segsFor(this.linkCurvature, this.tierLinkSegs);
 		this.linkGeometry = new BufferGeometry();
 		this.linkGeometry.setAttribute('position', new BufferAttribute(new Float32Array(m * this.linkK * 2 * 3), 3));
-		this.linkGeometry.setAttribute('color', new BufferAttribute(new Float32Array(m * this.linkK * 2 * 3), 3));
+		this.linkGeometry.setAttribute('color', new BufferAttribute(new Float32Array(m * this.linkK * 2 * 4), 4));
 		this.linkMaterial = new LineBasicMaterial({
 			vertexColors: true,
 			transparent: true,
@@ -267,18 +271,16 @@ export class AggregateRenderer {
 	}
 
 	private linkFilter: ((index: number) => boolean) | null = null;
+	private linkWeights = new Float32Array(0);
+	private linkColorsDirty = true;
+	private selectionColorsDirty = true;
+	private selectionWeights = new Map<number, number>();
+	private selectionTargets = new Set<number>();
 
 	/** Filter only the base drawing layer; selected references retain full data/indexes. */
 	setLinkFilter(filter: ((index: number) => boolean) | null): void {
 		this.linkFilter = filter;
-		if (!this.linkGeometry) return;
-		if (!filter) { this.linkGeometry.setIndex(null); return; }
-		const indices: number[] = [];
-		for (let i = 0; i < this.data.links.length; i++) {
-			if (!filter(i)) continue;
-			for (let v = 0; v < this.linkK * 2; v++) indices.push(i * this.linkK * 2 + v);
-		}
-		this.linkGeometry.setIndex(indices);
+		if (this.linkWeights.length !== this.data.links.length) this.linkWeights = new Float32Array(this.data.links.length).fill(1);
 	}
 
 	/** 幽灵边数据（节点下标 + 强度 0..1）；空数组 = 移除该层 */
@@ -551,11 +553,13 @@ export class AggregateRenderer {
 			if (!l) continue;
 			const c = ink ?? linkColor(resolved[l.source] ?? fallback, resolved[l.target] ?? fallback);
 			for (let v = 0; v < vertsPerLink; v++) {
-				linkCol[(li * vertsPerLink + v) * 3] = c.r;
-				linkCol[(li * vertsPerLink + v) * 3 + 1] = c.g;
-				linkCol[(li * vertsPerLink + v) * 3 + 2] = c.b;
+				linkCol[(li * vertsPerLink + v) * 4] = c.r;
+				linkCol[(li * vertsPerLink + v) * 4 + 1] = c.g;
+				linkCol[(li * vertsPerLink + v) * 4 + 2] = c.b;
+				linkCol[(li * vertsPerLink + v) * 4 + 3] = this.linkWeights[li] ?? 1;
 			}
 		}
+		this.linkColorsDirty = true;
 		linkColAttr.needsUpdate = true;
 		// 集群云雾跟随节点色（换主题/聚焦重染时同步）
 		this.clouds?.recolor((i) => {
@@ -607,26 +611,34 @@ export class AggregateRenderer {
 	// ---------- 聚焦与选中高亮 ----------
 
 	/** 当前阅读文档独立于分类/标签聚焦，始终保留主星样式。 */
-	setActiveNode(index: number): void {
-		if (!this.nodeGeometry) return;
-		const attribute = this.nodeGeometry.getAttribute('aActive') as BufferAttribute;
-		const values = attribute.array as Float32Array;
-		values.fill(0);
-		if (index >= 0 && index < values.length) values[index] = 1;
-		attribute.needsUpdate = true;
+	setReducedMotion(value: boolean): void { this.reducedMotion = value; }
+
+	setActiveNode(index: number): void { this.activeIndex = index; }
+
+	/** Keep fading the previous highlight while the next one appears. */
+	setPreviewNode(index: number, animated = true): void {
+		if (this.previewIndex !== index && index >= 0) this.previewTime = 0;
+		this.previewIndex = index;
+		this.previewAnimated = animated;
+		if (!animated && this.nodeMaterial) this.nodeMaterial.uniforms['uPreviewPulse']!.value = .55;
 	}
 
-	/** Link hover is independent of the selected document and camera focus. */
-	setPreviewNode(index: number, animated = true): void {
-		if (!this.nodeGeometry || !this.nodeMaterial) return;
-		const attribute = this.nodeGeometry.getAttribute('aPreview') as BufferAttribute;
-		const values = attribute.array as Float32Array;
-		values.fill(0);
-		if (index >= 0 && index < values.length) values[index] = 1;
-		attribute.needsUpdate = true;
-		this.previewTime = 0;
-		this.previewAnimated = animated && index >= 0;
-		this.nodeMaterial.uniforms['uPreviewPulse']!.value = animated ? 0 : 0.55;
+	private stepHighlights(deltaS: number): void {
+		if (!this.nodeGeometry) return;
+		const k = this.reducedMotion ? 1 : damp(deltaS, MOTION.feedback / 1000);
+		for (const [name, selected] of [['aActive', this.activeIndex], ['aPreview', this.previewIndex]] as const) {
+			const attribute = this.nodeGeometry.getAttribute(name) as BufferAttribute;
+			const values = attribute.array as Float32Array;
+			let changed = false;
+			for (let i = 0; i < values.length; i++) {
+				const target = i === selected ? 1 : 0;
+				if (values[i] === target) continue;
+				changed = true;
+				values[i] += (target - values[i]) * k;
+				if (Math.abs(values[i] - target) < .001) values[i] = target;
+			}
+			if (changed) attribute.needsUpdate = true;
+		}
 	}
 
 	/**
@@ -645,8 +657,12 @@ export class AggregateRenderer {
 
 	/** 选中链接高亮：tier1=一度（全饱和），tier2=二度（降亮度）；复用同一层，零新增 draw call */
 	setSelectedLinks(tier1: number[], tier2: number[]): void {
-		this.selTier1 = tier1;
-		this.selTier2 = tier2;
+		const target = new Set([...tier1, ...tier2]);
+		if (target.size === this.selectionTargets.size && [...target].every(i => this.selectionTargets.has(i))) return;
+		this.selectionTargets = target;
+		// Keep old links in this layer while their brightness falls to zero.
+		this.selTier1 = [...new Set([...tier1, ...[...this.selectionWeights].filter(([, weight]) => weight > .001).map(([i]) => i)])];
+		this.selTier2 = tier2.filter(i => !this.selTier1.includes(i));
 		this.buildSelLayer();
 	}
 
@@ -667,7 +683,7 @@ export class AggregateRenderer {
 		const K = this.linkK; // 高亮层与主链接层同曲率同段数：弧线严格重合
 		const vertsPerLink = K * 2;
 		const pos = new Float32Array(m * vertsPerLink * 3);
-		const col = new Float32Array(m * vertsPerLink * 3);
+		const col = new Float32Array(m * vertsPerLink * 4);
 		const hsl = { h: 0, s: 0, l: 0 };
 		for (let k = 0; k < m; k++) {
 			const l = this.data.links[this.selLinkIdx[k] ?? -1];
@@ -681,14 +697,15 @@ export class AggregateRenderer {
 			c.setHSL(hsl.h, sat, light);
 			const dim = isT2 ? 0.55 : 1; // 二度进一步压暗，读作外层壳
 			for (let v = 0; v < vertsPerLink; v++) {
-				col[(k * vertsPerLink + v) * 3] = c.r * dim;
-				col[(k * vertsPerLink + v) * 3 + 1] = c.g * dim;
-				col[(k * vertsPerLink + v) * 3 + 2] = c.b * dim;
+				col[(k * vertsPerLink + v) * 4] = c.r * dim;
+				col[(k * vertsPerLink + v) * 4 + 1] = c.g * dim;
+				col[(k * vertsPerLink + v) * 4 + 2] = c.b * dim;
 			}
 		}
 		this.selGeometry = new BufferGeometry();
 		this.selGeometry.setAttribute('position', new BufferAttribute(pos, 3));
-		this.selGeometry.setAttribute('color', new BufferAttribute(col, 3));
+		this.selectionColorsDirty = true;
+		this.selGeometry.setAttribute('color', new BufferAttribute(col, 4));
 		this.selMaterial = new LineBasicMaterial({
 			vertexColors: true,
 			transparent: true,
@@ -717,7 +734,7 @@ export class AggregateRenderer {
 
 	private syncLinkOpacity(): void {
 		const opacity = this.effectiveLinkOpacity();
-		if (this.linkMaterial) this.linkMaterial.opacity = opacity;
+		if (this.linkMaterial && this.reducedMotion) this.linkMaterial.opacity = opacity;
 		if (this.reveal) this.syncRevealLinkOpacity(this.revealProgressUniform.value);
 		else if (this.revealLinkMaterial) this.revealLinkMaterial.opacity = opacity;
 	}
@@ -843,8 +860,10 @@ export class AggregateRenderer {
 	// ---------- 渲染循环 ----------
 
 	render(deltaS: number, animationDeltaS = deltaS): void {
-		if (this.previewAnimated && this.nodeMaterial) {
-			this.previewTime = (this.previewTime + animationDeltaS) % 1.5;
+		this.stepHighlights(animationDeltaS);
+		this.stepLinkWeights(animationDeltaS);
+		if (!this.reducedMotion && this.previewAnimated && this.nodeMaterial) {
+			this.previewTime = (this.previewTime + animationDeltaS) % (MOTION.pulse / 1000);
 			// A strong beat followed by a softer beat, then a quiet interval.
 			const t = this.previewTime;
 			this.nodeMaterial.uniforms['uPreviewPulse']!.value = Math.exp(-Math.pow((t - 0.18) / 0.09, 2))
@@ -863,8 +882,47 @@ export class AggregateRenderer {
 		this.composer.render();
 	}
 
+	private stepLinkWeights(deltaS: number): void {
+		const k = this.reducedMotion ? 1 : damp(deltaS, MOTION.feedback / 1000);
+		const vertices = this.linkK * 2;
+		if (this.linkGeometry) {
+			const attribute = this.linkGeometry.getAttribute('color') as BufferAttribute;
+			const values = attribute.array as Float32Array;
+			let changed = this.linkColorsDirty;
+			for (let i = 0; i < this.linkWeights.length; i++) {
+				const target = !this.linkFilter || this.linkFilter(i) ? 1 : 0, before = this.linkWeights[i];
+				const next = before + (target - before) * k;
+				this.linkWeights[i] = Math.abs(target - next) < .001 ? target : next;
+				if (before === this.linkWeights[i] && !this.linkColorsDirty) continue;
+				changed = true;
+				for (let j = 0; j < vertices; j++) values[(i * vertices + j) * 4 + 3] = this.linkWeights[i];
+			}
+			if (changed) attribute.needsUpdate = true;
+			this.linkColorsDirty = false;
+		}
+		if (this.selGeometry) {
+			const attribute = this.selGeometry.getAttribute('color') as BufferAttribute;
+			const values = attribute.array as Float32Array;
+			let changed = this.selectionColorsDirty;
+			this.selLinkIdx.forEach((id, i) => {
+				const current = this.selectionWeights.get(id) || 0;
+				const target = this.selectionTargets.has(id) ? 1 : 0;
+				const next = current + (target - current) * k;
+				const weight = Math.abs(target - next) < .001 ? target : next;
+				if (weight < .001 && !this.selectionTargets.has(id)) this.selectionWeights.delete(id);
+				else this.selectionWeights.set(id, weight);
+				if (current === weight && !this.selectionColorsDirty) return;
+				changed = true;
+				for (let j = 0; j < vertices; j++) values[(i * vertices + j) * 4 + 3] = weight;
+			});
+			if (changed) attribute.needsUpdate = true;
+			this.selectionColorsDirty = false;
+		}
+		if (this.linkMaterial && !this.reveal) this.linkMaterial.opacity += (this.effectiveLinkOpacity() - this.linkMaterial.opacity) * k;
+	}
+
 	private stepDim(deltaS: number): void {
-		const k = Math.min(deltaS / FOCUS_FADE_S, 1);
+		const k = this.reducedMotion ? 1 : damp(deltaS, FOCUS_FADE_S);
 		let active = false;
 		for (let i = 0; i < this.dimCurrent.length; i++) {
 			const cur = this.dimCurrent[i] ?? 1;
@@ -975,19 +1033,25 @@ export class AggregateRenderer {
 	/** Keep a full-page sky while framing the graph in the space beside the reader. */
 	setFramingRegion(width: number, height: number, left: number, top: number): void {
 		this.framingRegion = {width, height, left, top};
+		this.updateProjection();
 	}
 
 	resize(w: number, h: number): void {
 		if (w < 2 || h < 2) return;
 		this.lastW = w;
 		this.lastH = h;
-		const region = this.framingRegion;
-		if (region) this.camera.setViewOffset(region.width, region.height, -region.left, -region.top, w, h);
-		else { this.camera.clearViewOffset(); this.camera.aspect = w / h; }
-		this.camera.updateProjectionMatrix();
+		this.updateProjection();
 		this.renderer.setSize(w, h);
 		this.composer.setSize(w, h);
 		this.bloomPass.resolution.set(w, h);
+	}
+
+	private updateProjection(): void {
+		const region = this.framingRegion, w = this.lastW, h = this.lastH;
+		if (w < 2 || h < 2) return;
+		if (region) this.camera.setViewOffset(region.width, region.height, -region.left, -region.top, w, h);
+		else { this.camera.clearViewOffset(); this.camera.aspect = w / h; }
+		this.camera.updateProjectionMatrix();
 		const physH = (region?.height ?? h) * this.renderer.getPixelRatio();
 		this.pixelScale = physH / (2 * Math.tan(((this.camera.fov / 2) * Math.PI) / 180));
 		const u = this.nodeMaterial?.uniforms['uPixelScale'];
