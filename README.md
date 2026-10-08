@@ -15,7 +15,7 @@ tags: ["知识库", "Obsidian", "项目使用", "服务启动"]
 ## 目录
 
 ```text
-content/       个人内容：inbox 暂存、notes 正文
+content/       个人内容：notes 正文、inbox 暂存、trash 归档
 apps/web/      图谱看板代码
 AGENTS.md      Agent 工作约束
 docs/         管理规则的详细展开
