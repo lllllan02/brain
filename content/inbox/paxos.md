@@ -24,4 +24,4 @@ Proposer 发起提案，Acceptor 保存承诺和接受记录，Learner 得知已
 
 多个 Proposer 可以用更大 ballot 不断打断对方；Prepare 不像互斥锁那样独占整个过程。实际系统通常引入稳定领导者改善进展。Multi-Paxos 将单值实例扩展为日志，在正确完成覆盖相应实例的准备后，稳定领导者可复用该准备结果；换主时仍要恢复已接受的历史。
 
-Paxos 的「两个阶段」与 [[two-phase-commit|两阶段提交]] 的准备、事务决定不同，不能混为一个协议。上述模型对应 [Paxos Made Simple](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf)；它不覆盖 [[consensus-fault-models|任意撒谎的节点]]。
+Paxos 的「两个阶段」与两阶段提交的准备、事务决定不同，不能混为一个协议。上述模型对应 [Paxos Made Simple](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf)；它不覆盖 [[consensus-fault-models|任意撒谎的节点]]。

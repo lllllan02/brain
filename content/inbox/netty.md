@@ -15,4 +15,4 @@ TCP 只提供字节流，应用协议需要用固定长度、分隔符或长度�
 
 ByteBuf 可以使用池化与直接内存，引用计数帮助控制释放。异步转交缓冲区时，需要明确谁持有和释放引用，避免提前释放、重复释放或泄漏；不能只依赖 Java 堆 GC。
 
-写操作返回的 Future 表示异步操作进度，成功并不等于对端业务已经执行。需要业务确认时仍需请求 ID、响应与 [[rpc-timeout-budget|超时]]。事件传播规则见 [ChannelPipeline 文档](https://netty.io/4.1/api/io/netty/channel/ChannelPipeline.html)，入门见 [Netty User Guide](https://netty.io/wiki/user-guide-for-4.x.html)。
+写操作返回的 Future 表示异步操作进度，成功并不等于对端业务已经执行。需要业务确认时仍需请求 ID、响应与超时。事件传播规则见 [ChannelPipeline 文档](https://netty.io/4.1/api/io/netty/channel/ChannelPipeline.html)，入门见 [Netty User Guide](https://netty.io/wiki/user-guide-for-4.x.html)。

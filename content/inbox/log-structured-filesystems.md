@@ -20,4 +20,4 @@ inode map 把稳定的 inode 编号映射到最新 inode 地址，目录仍引�
 
 若定位时间为 T、传输速率为 R、段数据量为 D，简化写入时间为 `T + D/R`。增大 D 能摊销 T，却增加缓冲内存和等待时间；模型不含清理与同步开销，不能直接当作实测吞吐。
 
-类似的异地更新与回收也出现在 [[ssd-ftl|SSD 的 FTL]] 中。依据 [OSTEP 第 43 章](https://pages.cs.wisc.edu/~remzi/OSTEP/Chinese/43.pdf)。
+类似的异地更新与回收也出现在 SSD 的 FTL 中。依据 [OSTEP 第 43 章](https://pages.cs.wisc.edu/~remzi/OSTEP/Chinese/43.pdf)。

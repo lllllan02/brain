@@ -10,7 +10,7 @@ context 沿调用链传递截止时间、取消信号和请求范围的数据。
 
 子 context 的截止时间不会超过父 context。WithCancel、WithTimeout 等返回的 cancel 应及时调用，以释放计时器和父子引用；通常在创建后 defer cancel。Background、TODO 的 Done 可以为 nil，读取 nil channel 会一直等待。
 
-[[rpc-timeout-budget|RPC 预算]] 需要同时覆盖业务处理、重试和返回。将 context 作为函数参数传递，不意味着它会自动穿过网络，框架仍需编码 deadline 和追踪信息，远端也必须协作处理。
+RPC 预算需要同时覆盖业务处理、重试和返回。将 context 作为函数参数传递，不意味着它会自动穿过网络，框架仍需编码 deadline 和追踪信息，远端也必须协作处理。
 
 Value 适合请求 ID 等跨边界元数据，不适合隐藏必需参数或把所有配置放进一个袋子。key 必须可比较，通常用包内自定义类型避免冲突；context 的并发安全也不自动保护 Value 中保存的可变对象。
 
