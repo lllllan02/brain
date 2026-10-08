@@ -102,7 +102,7 @@ export function Home({graph, focus, setFocus, reduced}) {
     window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
   }, [focus, query, setFocus]);
   const reset = () => { setQuery(''); setSearchOpen(false); searchInput.current?.blur(); setFocus({mod: null, sel: null}); scene.current?.reset(); };
-  return <section className={`galaxy-page ${node ? 'galaxy-reading' : ''} ${activeCluster || clusterVisible ? 'galaxy-browsing' : ''}`} aria-label="知识星云">
+  return <section className={`galaxy-page ${node ? 'galaxy-reading' : ''} ${activeCluster || clusterVisible ? 'galaxy-browsing' : ''}`} aria-label={CONFIG.brand.name}>
     <div className={`galaxy-viewport ${!ready || error ? 'is-loading' : ''}`} ref={host}>
       <div className="galaxy-frame" aria-hidden="true"/>
       <div className="galaxy-labels">{ready && !error && labels.map(label => label.category ?

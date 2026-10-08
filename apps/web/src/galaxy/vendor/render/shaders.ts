@@ -73,13 +73,13 @@ void main() {
 	// 菱形轮廓专属于可阅读的文档，背景星仍是无轮廓的小光点。
 	float coreWidth = mix(0.11, 0.13, vActive);
 	float core = 1.0 - smoothstep(coreWidth - pixel, coreWidth + pixel, abs(uv.x) + abs(uv.y));
-	float halo = exp(-dot(uv, uv) * mix(48.0, 36.0, vActive)) * mix(0.28, 0.42, vActive);
+	float halo = exp(-dot(uv, uv) * mix(80.0, 36.0, vActive)) * mix(0.10, 0.42, vActive);
 	halo += vPreview * exp(-dot(uv, uv) * 25.0) * (0.3 + uPreviewPulse * 0.65);
 	float rayWidth = max(0.011, pixel * 0.65);
 	float rays = exp(-abs(uv.x) / rayWidth - abs(uv.y) * 8.0)
 		+ exp(-abs(uv.y) / rayWidth - abs(uv.x) * 10.0);
 	float edge = 1.0 - smoothstep(0.38, 0.5, d);
-	float starAlpha = (core + halo + rays * mix(0.65, 0.85, vActive)) * edge;
+	float starAlpha = (core + halo + rays * mix(0.35, 0.85, vActive)) * edge;
 	vec3 starTint = mix(vColor, vec3(1.0), vActive * 0.25);
 	starTint = mix(starTint, vec3(0.8, 0.91, 1.0), vPreview * 0.4);
 	vec3 starColor = mix(starTint, vec3(1.0), exp(-d * d * 100.0) * mix(0.85, 0.98, vActive) * (1.0 - vGhost));

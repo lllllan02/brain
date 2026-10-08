@@ -10,15 +10,22 @@ import {galaxyData, galaxyFocus} from './data';
 import {categoryLayout, interpolateCategories, categoryEase} from './categoryLayout';
 import {CategoryEffects} from './categoryEffects';
 import {categoryStyle} from './categoryStyles';
+import {NebulaBackdrop} from './nebulaBackdrop';
 
 export function createGalaxy(container, graph, hooks, reduced) {
   const data = galaxyData(graph);
   const nodeIndices = new Map(data.nodes.map((node, i) => [node.id, i]));
+  const incidentLinks = data.nodes.map(() => []);
+  data.links.forEach((link, i) => {
+    incidentLinks[link.source].push(i);
+    if (link.target !== link.source) incidentLinks[link.target].push(i);
+  });
   const framingRegion = container.querySelector('.galaxy-frame') || container;
   const radius = Math.max(45, seedRadius(data.nodes.length));
   const positions = new Float32Array(data.nodes.length * 3);
   data.nodes.forEach((node, i) => positions.set(seedPosition(node.id, radius), i * 3));
   const renderer = new AggregateRenderer(container, radius);
+  const backdrop = new NebulaBackdrop(renderer.scene);
   const canvas = renderer.renderer.domElement;
   canvas.setAttribute('aria-label', '三维知识星云：拖动旋转，滚轮缩放；文档也可通过下方搜索打开');
   const camera = new CameraDirector(renderer.camera, canvas, {
@@ -54,14 +61,14 @@ export function createGalaxy(container, graph, hooks, reduced) {
     const target = {
       nebula: preset.space.nebula * (1 - blend) + style.background * blend,
       clouds: preset.space.clusterClouds * (1 - blend),
-      links: preset.look.linkOpacity * (1 - blend) + style.linkOpacity * blend,
+      links: preset.look.linkOpacity * .35 * (1 - blend) + style.linkOpacity * blend,
       nodes: preset.look.nodeSize * 2 * (1 - blend) + style.nodeScale * blend,
       stars: .42 * (1 - blend) + style.starfield * blend,
-      bloom: preset.bloom.strength, radius: preset.bloom.radius, threshold: preset.bloom.threshold,
+      bloom: preset.bloom.strength * .5, radius: preset.bloom.radius * .75, threshold: Math.max(.3, preset.bloom.threshold),
       twinkle: preset.look.twinkle, curve: preset.look.linkCurve,
     };
     const look = from ? Object.fromEntries(Object.entries(target).map(([key, value]) => [key, from[key] + (value - from[key]) * categoryEase(progress)])) : target;
-    renderer.setSpace({fieldStars: 0, nebula: look.nebula, clusterClouds: look.clouds});
+    renderer.setSpace({fieldStars: 0, nebula: look.nebula * .05, clusterClouds: look.clouds * .08});
     renderer.setLinkOpacity(look.links);
     renderer.setNodeScale(look.nodes);
     renderer.setStarfieldIntensity(look.stars);
@@ -77,14 +84,18 @@ export function createGalaxy(container, graph, hooks, reduced) {
       const link = data.links[i], a = data.nodes[link.source].folderTop, b = data.nodes[link.target].folderTop;
       return a === b && (!category || a === category);
     } : null);
+    updateSelectedLinks();
+  }
+  function updateSelectedLinks() {
     // Expanded categories stay visually independent even when a note is open.
     // The reader still exposes all actual incoming and outgoing references.
+    const links = !focus.active && hovered >= 0 ? incidentLinks[hovered] : focus.links;
     renderer.setSelectedLinks(filteredLinks
-      ? focus.index >= 0 ? focus.links.filter(i => {
+      ? focus.index >= 0 || (!focus.active && hovered >= 0) ? links.filter(i => {
         const link = data.links[i];
         return data.nodes[link.source].folderTop === data.nodes[link.target].folderTop;
       }) : []
-      : focus.links, []);
+      : links, []);
   }
   function frameDestination(target, instant = false) {
     const center = new Vector3();
@@ -162,7 +173,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     renderer.setActiveNode(readingIndex);
     renderer.setFocus(focus.active ? i => focus.bright.has(i) ? 1 : 0.28 : null);
     updateLinkFilter();
-    renderer.setLinkOpacity(expanded && category && focus.index < 0 ? .16 : preset.look.linkOpacity * (1 - categoryBlend) + categoryStyle(preset.id).linkOpacity * categoryBlend);
+    renderer.setLinkOpacity(expanded && category && focus.index < 0 ? .16 : preset.look.linkOpacity * .35 * (1 - categoryBlend) + categoryStyle(preset.id).linkOpacity * categoryBlend);
     if (!ready || !move || transition) return;
     if (focus.index >= 0) {
       camera.cancelMotion();
@@ -296,6 +307,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     camera.cruiseEnabled = !paused && !reduced && ready && !transition;
     camera.cruiseSpeed = 0.5;
     camera.update(now, dt, paused || reduced ? 0 : dt);
+    backdrop.update(renderer.camera, preset.id, categoryBlend, readingIndex >= 0, dt, reduced);
     renderer.render(paused || reduced ? 0 : dt, dt);
     if (ready && now - labelTime > 60) { labels(); labelTime = now; }
   }
@@ -303,14 +315,26 @@ export function createGalaxy(container, graph, hooks, reduced) {
     const rect = canvas.getBoundingClientRect();
     return renderer.pickNearest(event.clientX - rect.left, event.clientY - rect.top, width, height, event.pointerType === 'touch' ? 24 : 15);
   };
-  const pointerDown = event => { down = {x: event.clientX, y: event.clientY, id: event.pointerId, button: event.button}; };
+  const pointerDown = event => {
+    down = {x: event.clientX, y: event.clientY, id: event.pointerId, button: event.button};
+    if (hovered >= 0) { hovered = -1; updateSelectedLinks(); }
+  };
   const pointerUp = event => {
     const start = down; down = null;
     if (!start || start.id !== event.pointerId || start.button !== 0 || !ready || transition || Math.hypot(event.clientX - start.x, event.clientY - start.y) > 5) return;
     const i = pick(event); if (i >= 0) hooks.onSelect(data.nodes[i].id);
   };
-  const pointerMove = event => { if (!ready || event.buttons) return; hovered = pick(event); canvas.style.cursor = hovered < 0 ? 'grab' : 'pointer'; };
-  const pointerLeave = () => { hovered = -1; down = null; };
+  const pointerMove = event => {
+    if (!ready || transition || event.buttons) return;
+    const next = pick(event);
+    if (next !== hovered) { hovered = next; updateSelectedLinks(); }
+    canvas.style.cursor = hovered < 0 ? 'grab' : 'pointer';
+  };
+  const pointerLeave = () => {
+    const hadHover = hovered >= 0;
+    hovered = -1; down = null;
+    if (hadHover) updateSelectedLinks();
+  };
   const contextLost = event => { event.preventDefault(); dispose(); hooks.onError('三维画面已中断，请重新加载页面。文档仍可通过下方搜索阅读。'); };
   canvas.addEventListener('pointerdown', pointerDown);
   canvas.addEventListener('pointerup', pointerUp);
@@ -326,7 +350,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     canvas.removeEventListener('pointerdown', pointerDown); canvas.removeEventListener('pointerup', pointerUp);
     canvas.removeEventListener('pointermove', pointerMove); canvas.removeEventListener('pointerleave', pointerLeave);
     canvas.removeEventListener('pointercancel', pointerLeave); canvas.removeEventListener('webglcontextlost', contextLost);
-    renderer.dispose(); canvas.remove();
+    backdrop.dispose(); renderer.dispose(); canvas.remove();
   }
   try { resize(); setPreset('nebula'); raf = requestAnimationFrame(tick); }
   catch (error) { dispose(); throw error; }
