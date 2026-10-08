@@ -70,7 +70,7 @@ Galaxy View 源码固定到提交 `b49b60cb04687783153f24ff7f9b0a0af59334af`，�
 
 ## 文档与边界
 
-正式笔记按约定直接平铺在 `content/notes/`；读取器兼容递归读取，不收录 inbox、sources、项目配置。notes 为空时，本地看板没有正式文档可展示。title 缺省时显示文件名；别名参与检索，type 优先、兼容 classes；摘要缺省取正文开头，未知日期不补造。
+正式笔记按约定直接平铺在 `content/notes/`；读取器兼容递归读取，不收录 inbox、sources、项目配置。notes 为空时，本地看板没有正式文档可展示。title 缺省时显示文件名；别名参与检索，type 优先、兼容 classes；摘要缺省取正文开头，未知日期不补造。Agent 用的只读检索层 `scripts/retrieve.mjs` 复用本目录 `library.mjs` 的解析逻辑，额外覆盖 inbox，实时生成不落盘；网页与 Pages 仍只收录 notes。
 
 支持 Obsidian 双链的文件名、显示名、显式路径、章节与段落块引用，兼容 Markdown 代码与表格中的链接。文档嵌入显示目标摘要与入口，避免递归复制正文。重复文件名阻止索引生成；歧义、断链和缺失锚点显示提示。列表或表格整块的块引用尚未支持。
 
