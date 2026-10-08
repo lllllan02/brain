@@ -12,7 +12,7 @@ tags: ["知识库", "元数据", "命名", "链接维护"]
 
 新建正式笔记或从 inbox 整理入库时，直接保存到 `content/notes/<filename>.md`，不建立月份子目录。更新、补充旧文保持路径稳定，不随日期、分类或标签变化搬家；日期通过元数据表达。inbox 中已有内容先更新原文件，完成用户要求的整理后再移入 notes，保留有效正文、出处与原有日期，并维护受影响的引用。
 
-文件名使用简短英文与短横线，如 `agent-definition.md`、`mysql-explain-type.md`。在 content 内的笔记中保持唯一，包括 inbox 与 notes；只在实际冲突时加必要的限定词，不把完整分类层级拼进名称。README.md、AGENTS.md 等项目约定名称保留。
+文件名使用简短英文与短横线，如 `agent-definition.md`、`mysql-explain-type.md`。在 content 内的笔记中保持唯一，包括 inbox 与 notes；只在实际冲突时加必要的限定词，不把完整分类层级拼进名称。文件名按内容适当收敛：主题能被更短、更上位的词涵盖时就用它，避免「主题 + 动作/限定」的冗余（如 OAuth 授权 → `oauth`）。README.md、AGENTS.md 等项目约定名称保留。
 
 ## 元数据
 
