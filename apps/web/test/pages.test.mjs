@@ -6,23 +6,28 @@ import {mkdtemp,mkdir,writeFile,rm,symlink} from 'node:fs/promises';
 import {pagesLibrary} from '../scripts/build-pages.mjs';
 import {loadLibrary} from '../src/library.mjs';
 
-test('Pages 与本地读取相同的 notes 正文、属性、搜索和引用，不收录其他目录',async()=>{
+test('Pages 与本地共同收录 notes 和 inbox，跨目录引用有效，排除归档及原始资料',async()=>{
  const root=await mkdtemp(path.join(os.tmpdir(),'brain-pages-'));
  try{
   for(const dir of ['notes/nested','inbox','trash','sources'])await mkdir(path.join(root,dir),{recursive:true});
   await writeFile(path.join(root,'notes/a.md'),'---\ntitle: 第一篇\naliases: [别名]\ntags: [测试]\n---\n起点 [[b]] [[draft]]');
   await writeFile(path.join(root,'notes/nested/b.md'),'---\ntitle: 第二篇\n---\n终点 [[a]]');
-  for(const dir of ['inbox','trash','sources'])await writeFile(path.join(root,dir,'draft.md'),'不收录的正文');
+  await writeFile(path.join(root,'inbox/draft.md'),'待学习正文 [[a]]');
+  for(const dir of ['trash','sources'])await writeFile(path.join(root,dir,'draft.md'),'不收录的正文');
   const {library,assets}=await pagesLibrary(root);
   assert.deepEqual(library,await loadLibrary(root));
-  assert.equal(library.documents.length,2);
+  assert.equal(library.documents.length,3);
   assert.equal(assets.size,0);
   assert.doesNotMatch(JSON.stringify(library),/不收录的正文/);
-  assert.deepEqual(library.documents.find(d=>d.id==='a').backlinks,['b']);
+  assert.deepEqual(library.documents.find(d=>d.id==='a').backlinks,['draft','b']);
+  assert.equal(library.documents.find(d=>d.id==='draft').collection,'inbox');
+  assert.equal(library.documents.find(d=>d.id==='a').collection,'notes');
+  assert.equal(library.documents.find(d=>d.id==='a').references[1].id,'draft');
+  assert.deepEqual(library.documents.find(d=>d.id==='draft').backlinks,['a']);
   assert.equal(library.documents.find(d=>d.id==='a').references[0].id,'b');
   await writeFile(path.join(root,'notes/new.md'),'新增文章 [[a]]');
   const next=await pagesLibrary(root);
-  assert.equal(next.library.documents.length,3);
+  assert.equal(next.library.documents.length,4);
   assert.deepEqual(next.library,await loadLibrary(root));
  }finally{await rm(root,{recursive:true,force:true});}
 });

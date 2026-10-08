@@ -63,3 +63,9 @@ test('标签聚焦跨分类匹配全部同名标签，仅保留匹配文档之�
   assert.deepEqual([...galaxyFocus(data,null,null,'不存在').bright],[]);
   assert.equal(galaxyFocus(data,null,null).active,false);
 });
+
+test('目录状态传入星图，inbox 保留目录标记且不改变真实引用',()=>{
+ const data=galaxyData({nodes:[{...note('a','one'),collection:'notes'},{...note('b','one'),collection:'inbox'}],links:[{a:'a',b:'b',kind:'wiki'}]});
+ assert.deepEqual(data.nodes.map(n=>n.inbox),[false,true]);
+ assert.deepEqual(data.links,[{source:0,target:1}]);
+});

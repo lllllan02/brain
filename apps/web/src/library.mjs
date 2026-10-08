@@ -13,12 +13,16 @@ export function parseDocument(raw, file) {
   const meta = match ? yaml.load(match[1], { schema: yaml.JSON_SCHEMA }) ?? {} : {};
   const body = match ? raw.slice(match[0].length) : raw;
   const id = path.basename(file, '.md');
+  const collection = file.replaceAll(path.sep, '/').replace(/^content\//, '').split('/')[0];
   if (meta.category != null && typeof meta.category !== 'string') throw new Error(`文档 ${file} 的 category 必须是单个文本`);
-  return { id, path: file.replaceAll(path.sep, '/'), title: String(meta.title || id), aliases: list(meta.aliases), tags: list(meta.tags), category: (meta.category || '').trim(), type: String(meta.type || list(meta.classes)[0] || 'note'), updated: meta.updated_at || null, created: meta.created_at || null, sources: list(meta.source || meta.url), body, summary: String(meta.description || body.split(/\n\s*\n/).find(p => p.trim() && !p.startsWith('#')) || '').replace(/\[\[([^\]|]+)(?:\\?\|([^\]]+))?\]\]/g, (_, target, label) => label || target).replace(/[*`#]/g, '').slice(0, 200) };
+  return { id, collection, path: file.replaceAll(path.sep, '/'), title: String(meta.title || id), aliases: list(meta.aliases), tags: list(meta.tags), category: (meta.category || '').trim(), type: String(meta.type || list(meta.classes)[0] || 'note'), updated: meta.updated_at || null, created: meta.created_at || null, sources: list(meta.source || meta.url), body, summary: String(meta.description || body.split(/\n\s*\n/).find(p => p.trim() && !p.startsWith('#')) || '').replace(/\[\[([^\]|]+)(?:\\?\|([^\]]+))?\]\]/g, (_, target, label) => label || target).replace(/[*`#]/g, '').slice(0, 200) };
 }
 async function walk(root, dir) {
   const files = [];
-  for (const entry of await readdir(path.join(root, dir), { withFileTypes: true })) {
+  let entries;
+  try { entries = await readdir(path.join(root, dir), { withFileTypes: true }); }
+  catch (error) { if (error.code === 'ENOENT') return files; throw error; }
+  for (const entry of entries) {
     const file = path.join(dir, entry.name);
     if (entry.isDirectory()) files.push(...await walk(root, file));
     else if (entry.isFile() && entry.name.endsWith('.md')) files.push(file);
@@ -80,7 +84,7 @@ export function renderDocument(doc, documents) {
   return {...doc, html, toc, references, issues};
 }
 export async function loadLibrary(root) {
-  const files = (await walk(root, 'notes')).sort();
+  const files = (await Promise.all(['notes', 'inbox'].map(dir => walk(root, dir)))).flat().sort();
   const docs = await Promise.all(files.map(async file => parseDocument(await readFile(path.join(root, file), 'utf8'), file)));
   const ids = new Set();
   for (const d of docs) { if (ids.has(d.id)) throw new Error(`文档文件名重复：${d.id}`); ids.add(d.id); }

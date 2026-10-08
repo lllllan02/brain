@@ -111,3 +111,6 @@
 }
 
 .neural.loading-screen{background:#000003;color:#adb9c9}
+
+/* Folder provenance is a quiet shape cue, independent of focus brightness. */
+.cluster-card-port.is-inbox,.cluster-list-item[aria-current="page"] .cluster-card-port.is-inbox{background:transparent;border:1.5px solid #c2cbef}

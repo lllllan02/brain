@@ -126,7 +126,7 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, getAnc
         {documents.length ? <ul key={selectionKey}>{documents.map((node, index) => <li key={node.id}>
           <button type="button" className="cluster-list-item" style={{'--fan-delay': `${stagger(index)}ms`}}
             aria-current={node.id === selected ? 'page' : undefined} onClick={() => onSelect(node.id)}>
-            <i className="cluster-card-port" aria-hidden="true"/>
+            <i className={`cluster-card-port${node.collection === 'inbox' ? ' is-inbox' : ''}`} aria-hidden="true"/>
             <span><strong>{node.title}</strong></span>
           </button>
         </li>)}</ul> : <p className="cluster-list-empty">{shown.document ? shown.direction === 'incoming' ? '还没有其他文档引用这篇文章' : '这篇文章没有可打开的内部链接' : '暂时没有匹配的文档'}</p>}

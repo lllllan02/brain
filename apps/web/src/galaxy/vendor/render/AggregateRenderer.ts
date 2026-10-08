@@ -190,6 +190,7 @@ export class AggregateRenderer {
 		this.nodeTargetPositions = new Float32Array(n * 3);
 		this.fitWeights = new Float32Array(n);
 		const ghost = new Float32Array(n);
+		const inbox = new Float32Array(n);
 		this.sizes = new Float32Array(n);
 		this.dimCurrent = new Float32Array(n).fill(1);
 		this.dimTarget = new Float32Array(n).fill(1);
@@ -197,6 +198,7 @@ export class AggregateRenderer {
 			const node = data.nodes[i];
 			if (!node) continue;
 			ghost[i] = node.unresolved ? 1 : 0;
+			inbox[i] = node.inbox ? 1 : 0;
 			this.fitWeights[i] = node.degree;
 			this.sizes[i] = this.computeSize(node);
 		}
@@ -210,6 +212,7 @@ export class AggregateRenderer {
 		this.nodeGeometry.setAttribute('color', new BufferAttribute(new Float32Array(n * 3), 3));
 		this.nodeGeometry.setAttribute('aSize', new BufferAttribute(this.sizes, 1));
 		this.nodeGeometry.setAttribute('aGhost', new BufferAttribute(ghost, 1));
+		this.nodeGeometry.setAttribute('aInbox', new BufferAttribute(inbox, 1));
 		this.nodeGeometry.setAttribute('aDim', new BufferAttribute(this.dimCurrent, 1));
 		this.nodeGeometry.setAttribute('aActive', new BufferAttribute(new Float32Array(n), 1));
 		this.nodeGeometry.setAttribute('aPreview', new BufferAttribute(new Float32Array(n), 1));

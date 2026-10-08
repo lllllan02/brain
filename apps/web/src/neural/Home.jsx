@@ -141,7 +141,7 @@ export function Home({graph, focus, setFocus, reduced}) {
     <div className={`galaxy-search-dock${reviewNode?.module ? ' has-review' : ''}`} onBlur={event => {if (!event.currentTarget.contains(event.relatedTarget)) setSearchOpen(false);}}>
       {search.shown && <div ref={search.ref} inert={search.closing} className="galaxy-results" id="galaxy-search-results" role="region" aria-label="搜索结果">
         <p role="status">{search.shown.results.length ? `${search.shown.results.length} 篇文档` : '没有找到相关内容'}</p>
-        {search.shown.results.map(n => <button key={n.id} onClick={() => go(n.id)}><span>{n.title}</span><small>{n.category || '未分类'}</small></button>)}
+        {search.shown.results.map(n => <button key={n.id} onClick={() => go(n.id)}><span>{n.title}</span><small>{n.category || '未分类'} · {n.collection === 'inbox' ? 'Inbox' : 'Notes'}</small></button>)}
       </div>}
       <form className="galaxy-search" role="search" onSubmit={event => {event.preventDefault();if(results.length)go(results[0].id);}}>
         <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>

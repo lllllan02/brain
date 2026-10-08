@@ -18,11 +18,13 @@ vec3 revealPosition(vec3 targetPosition) {
 export const NODE_VERTEX_SHADER = /* glsl */ `
 attribute float aSize;
 attribute float aGhost;
+attribute float aInbox;
 attribute float aDim;
 attribute float aActive;
 attribute float aPreview;
 varying vec3 vColor;
 varying float vGhost;
+varying float vInbox;
 varying float vDim;
 varying float vPointSize;
 varying float vActive;
@@ -42,13 +44,14 @@ ${REVEAL_POSITION_GLSL}
 void main() {
 	vColor = color;
 	vGhost = aGhost;
+	vInbox = aInbox;
 	vDim = mix(aDim, 1.0, max(aActive, aPreview));
 	vActive = aActive;
 	vPreview = aPreview;
 	vec4 mv = modelViewMatrix * vec4(revealPosition(position), 1.0);
 	// 给光晕和星芒留出空间，亮核仍比原来的圆盘小；浅色模式维持原尺寸。
 	float projectedSize = aSize * uSizeMul * uPixelScale / max(-mv.z, 1.0) * mix(1.6, 1.0, uLightMode);
-	vPointSize = min(max(projectedSize, uMinPoint * (1.0 - uLightMode)) * max(mix(1.0, 1.6, aActive), 1.0 + aPreview * (0.55 + uPreviewPulse * 0.65)), uMaxPoint);
+	vPointSize = min(max(projectedSize, uMinPoint * (1.0 - uLightMode)) * mix(1.0, 0.90, aInbox) * max(mix(1.0, 1.6, aActive), 1.0 + aPreview * (0.55 + uPreviewPulse * 0.65)), uMaxPoint);
 	gl_PointSize = vPointSize;
 	gl_Position = projectionMatrix * mv;
 }
@@ -57,6 +60,7 @@ void main() {
 export const NODE_FRAGMENT_SHADER = /* glsl */ `
 varying vec3 vColor;
 varying float vGhost;
+varying float vInbox;
 varying float vDim;
 varying float vPointSize;
 varying float vActive;
@@ -71,7 +75,7 @@ void main() {
 	// 以设备像素为下限，远处的小星点和关闭 bloom 的窄屏也保留可见亮核。
 	float pixel = 1.0 / max(vPointSize, 1.0);
 	// 菱形轮廓专属于可阅读的文档，背景星仍是无轮廓的小光点。
-	float coreWidth = mix(0.11, 0.13, vActive);
+	float coreWidth = mix(0.11, 0.13, vActive) * mix(1.0, 0.90, vInbox);
 	float core = 1.0 - smoothstep(coreWidth - pixel, coreWidth + pixel, abs(uv.x) + abs(uv.y));
 	float halo = exp(-dot(uv, uv) * mix(80.0, 36.0, vActive)) * mix(0.10, 0.42, vActive);
 	halo += vPreview * exp(-dot(uv, uv) * 25.0) * (0.3 + uPreviewPulse * 0.65);
@@ -79,7 +83,8 @@ void main() {
 	float rays = exp(-abs(uv.x) / rayWidth - abs(uv.y) * 8.0)
 		+ exp(-abs(uv.y) / rayWidth - abs(uv.x) * 10.0);
 	float edge = 1.0 - smoothstep(0.38, 0.5, d);
-	float starAlpha = (core + halo + rays * mix(0.35, 0.85, vActive)) * edge;
+	float starAlpha = (core + halo * mix(1.0, 0.55, vInbox)
+		+ rays * mix(0.35, 0.85, vActive) * mix(1.0, 0.40, vInbox)) * edge;
 	vec3 starTint = mix(vColor, vec3(0.94, 0.97, 1.0), vActive * 0.65);
 	starTint = mix(starTint, vec3(0.88, 0.94, 1.0), vPreview * 0.55);
 	vec3 starColor = mix(starTint, vec3(1.0), exp(-d * d * 100.0) * mix(0.85, 0.98, vActive) * (1.0 - vGhost));

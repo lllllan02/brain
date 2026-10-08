@@ -8,6 +8,8 @@ export interface GraphNode {
 	fileSize: number; // 字节；未解析/标签为 0（「质量」可选依据）
 	/** 笔记的 metadata 标签；标签 hub 自身只含它代表的一个标签。 */
 	tags: string[];
+	/** Inbox retains the normal star shape with slightly smaller size and weaker rays. */
+	inbox?: boolean;
 	unresolved: boolean;
 	tag: boolean; // true=有界标签 hub（非文件），与 unresolved 并列的判别位
 }

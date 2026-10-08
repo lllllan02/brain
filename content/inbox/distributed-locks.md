@@ -1,34 +1,19 @@
 ---
-title: "分布式锁"
+title: "分布式锁（Distributed Lock）"
 category: "分布式系统"
-updated_at: "2026-10-08"
+updated_at: "2026-10-09"
 tags: ["分布式锁", "Redis", "etcd", "ZooKeeper"]
-aliases: ["Fencing Token", "Redlock"]
+aliases: ["Distributed Lock", "Fencing Token"]
 ---
 
-**分布式锁协调多个执行者对同一资源的访问。** 选型先看锁保护什么、能不能和事务合并，以及失去锁后旧执行者继续运行会有什么后果——关键数据仍要靠唯一约束、状态条件或资源端版本校验兜底。
+**分布式锁（Distributed Lock）是一种通过共享锁状态协调多个进程访问同一资源的互斥机制，目标是让同一时刻只有一个执行者执行受保护操作。** 例如，多台机器上的任务都可能处理同一订单，就需要共同竞争处理资格，避免重复执行或并发覆盖。
 
-| 方案 | 工作方式 | 主要边界 |
-|---|---|---|
-| 数据库行锁 | 事务中锁住待修改记录 | 连接与锁持续占用，适合保护同库数据 |
-| 唯一键锁记录 | 靠唯一插入竞争资格 | 要处理释放、过期和旧持有者 |
-| Advisory Lock | 用数据库提供的命名锁 | 连接级或事务级生命周期依产品而异 |
-| Redis | `SET key owner NX PX ttl` | 延迟较低；租约过期、复制切换可能破坏互斥 |
-| ZooKeeper | 临时顺序节点，最小编号持锁 | Session 到期后释放；断线不等于立即过期 |
-| etcd | 原子竞争 + Lease + Revision + Watch | 依赖多数派与客户端正确处理租约失效 |
-| Consul | Session + KV acquire/release | 要理解会话失效、锁延迟与一致性配置 |
+单个进程里的锁只能约束该进程内的线程。跨机器的执行者需要访问同一份锁状态，才能判断谁获得了执行资格；这份状态可以由 Redis、数据库，或 [[distributed-coordination-service|分布式协调服务]]维护。
 
-如果只是为了同一订单串行处理，也可以评估按 Key 的队列分区或数据库条件更新，减少跨系统持锁。
+基本过程是 **「竞争锁 → 获得资格后执行 → 释放锁」**。竞争必须具有原子性，不能让多个执行者同时判断锁为空并各自成功。[[etcd|etcd]] 的普通 Put 加租约只会写入可过期的键，需要配合事务竞争或锁协议；[[zookeeper|ZooKeeper]] 可用临时顺序节点排队，等待者监听前驱节点并重新检查持锁资格。
 
-**加锁、续期、释放分别保证什么**：
+锁还需要处理持有者故障。租约允许锁在未续期时过期，但旧持有者可能只是暂停，并未停止：A 的租约过期后，B 获得锁；A 恢复后继续操作，仍会发生并发写入。
 
-- Redis 获取锁必须把「不存在才创建」和 TTL 放进同一条原子命令；owner 用本次加锁的唯一值，续期和释放都要原子核对 owner，防止旧任务删掉新持有者的锁。看门狗只缓解正常长任务到期，消除不了网络中断和进程暂停。
-- [[zookeeper|ZooKeeper]] 让等待者监听前驱节点，避免全体同时惊醒；收到变化仍要重新检查资格。
-- [[etcd|etcd]] 的普通 Put 绑 Lease 只是写入可过期键，**并不构成互斥锁**，要用事务竞争或官方 concurrency.Mutex。
-- [[consul|Consul]] 的 Session 也要配合 acquire 的原子结果。
+因此，**「获得锁」的保证范围取决于锁协议和故障条件**。严格保护外部资源时，可用 fencing token（隔离令牌）：每次持锁资格带有递增编号，资源端拒绝旧编号的操作。只有资源端实际检查编号才有效；数据正确性还可能需要事务、唯一约束或幂等处理。
 
-**为什么租约过期还会并发写**：A 持锁后长暂停、租约过期；B 拿到新锁并写入；A 恢复后仍可能继续把旧操作发给数据库——锁服务撤不回 A 已经或将要发出的请求。**Fencing** 为每次持锁资格分配单调递增 token，由资源端记住已接受的最高值、拒绝更旧的 token；资源端不检查 token，fencing 就没有效果。
-
-Redlock 用多个独立 Redis 节点降低单点影响，但依赖时间与故障假设，不能据此宣称任意暂停或分区下业务都正确。严格场景要资源端校验、幂等和事务约束一起成立。
-
-参考：[Redis 分布式锁](https://redis.io/docs/latest/develop/clients/patterns/distributed-locks/)、[etcd 并发 API](https://etcd.io/docs/v3.6/dev-guide/api_concurrency_reference_v3/)，以及 [Martin Kleppmann 对锁正确性的分析](https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html)（其对 Redlock 的评价应连同故障模型一起读）。
+来源：[解释服务注册](chatgpt-conversation://6ac7c299-62bc-83e8-9d0e-565a1f3a8f45)。故障边界保留自原笔记，参考 [Redis 分布式锁文档](https://redis.io/docs/latest/develop/clients/patterns/distributed-locks/)、[etcd 并发 API](https://etcd.io/docs/v3.6/dev-guide/api_concurrency_reference_v3/) 和 [Martin Kleppmann 对锁正确性的分析](https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html)。

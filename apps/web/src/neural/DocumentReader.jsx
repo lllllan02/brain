@@ -34,7 +34,7 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
     </div>
    </div>
    <ReaderRelations graph={graph} node={node} module={module} cluster={cluster} onChoose={next=>{setFull(false);onCluster(next);}}/>
-   <p className="read-meta">{node.updated?'更新于 '+node.updated+' · ':''}知识笔记 · {Math.max(1,Math.ceil(node.body.length/500))} 分钟阅读</p>
+   <p className="read-meta">{node.updated?'更新于 '+node.updated+' · ':''}{Math.max(1,Math.ceil(node.body.length/500))} 分钟阅读</p>
    {node.toc.length>0&&<div className={`read-toc${tocOpen?' is-open':''}`}><button type="button" className="read-toc-toggle" aria-expanded={tocOpen} onClick={()=>setTocOpen(v=>!v)}>本页目录</button><div className="read-toc-content" inert={!tocOpen}><div>{node.toc.map(h=><a key={h.id} href={`#/doc/${encodeURIComponent(node.id)}/${encodeURIComponent(h.id)}`}>{h.title}</a>)}</div></div></div>}{article}{copy&&<p role="status">{copy}</p>}
    {externalLinks.length>0&&<section className="read-connections" aria-label="外部链接">
     <h3>外部链接</h3>
