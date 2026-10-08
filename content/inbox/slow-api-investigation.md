@@ -32,6 +32,6 @@ flowchart TD
 ```
 
 3. **逐段取证**。用 [[opentelemetry|链路追踪]] 定位慢调用所在的服务与阶段；父 Span 的耗时包含子调用，不能把嵌套时间全部相加，并行子调用的关键路径也不等于各分支之和。缺少排队或连接获取埋点时，「业务函数很快」仍可能对应端到端很慢。
-4. **按现象选工具**。CPU 高时用 [[go-cpu-investigation|性能采样]] 找热点；CPU 不高时重点观察锁、连接、磁盘和网络等待，[[linux-load-investigation|系统负载]]可提供任务排队与阻塞线索。数据库侧区分 [[db-connection-pool|连接池排队]] 与 SQL 执行，SQL 已定位后再读 [[mysql-explain|执行计划]]；Redis 需要同时检查客户端与 [[redis-troubleshooting|服务端延迟]]。
+4. **按现象选工具**。CPU 高时用 [[go-cpu-investigation|性能采样]] 找热点；CPU 不高时重点观察锁、连接、磁盘和网络等待，系统负载可提供任务排队与阻塞线索。数据库侧区分 [[db-connection-pool|连接池排队]] 与 SQL 执行，SQL 已定位后再读 [[mysql-explain|执行计划]]；Redis 需要同时检查客户端与 [[redis-troubleshooting|服务端延迟]]。
 
 止损可采用限流、回滚或隔离故障依赖，但要保留关键指标和现场；修复后用同类流量验证延迟、吞吐及错误率，避免通过拒绝更多请求换来表面的「变快」。

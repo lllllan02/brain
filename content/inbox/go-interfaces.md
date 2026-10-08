@@ -16,6 +16,6 @@ aliases: ["interface", "typed nil"]
 
 slice、map、函数只允许和 nil 比较，不能用 `==` 比内容。选 `slices.Equal`、`maps.Equal` 还是 `reflect.DeepEqual` 之前，要先明确业务等价关系：nil 和空集合是否相同、NaN 怎么处理、指针按身份还是按内容比较。DeepEqual 不是通用的业务相等定义。
 
-接口通过方法集合约束行为，具体类型不需显式声明 implements。值接收者和指针接收者影响方法集合；结构体嵌入的方法提升属于 [[composition-and-polymorphism|组合机制]]，不等同于类继承。
+接口通过方法集合约束行为，具体类型不需显式声明 implements。值接收者和指针接收者影响方法集合；结构体嵌入的方法提升属于组合机制，不等同于类继承。
 
 依据：[Go FAQ：nil error](https://go.dev/doc/faq#nil_error)、[Go 规范的比较运算](https://go.dev/ref/spec#Comparison_operators)。

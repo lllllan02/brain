@@ -14,4 +14,4 @@ aliases: ["Paxos"]
 
 **为什么可能没有进展**：多个 Proposer 会用更大的 ballot 不断打断对方（活锁），Prepare 也不像互斥锁那样独占整个过程；实际系统通常引入稳定领导者，Multi-Paxos 复用 Prepare 结果，但换主时仍要恢复已接受的历史。
 
-Paxos 的「两个阶段」与两阶段提交不同，不能混为一谈。模型对应 [Paxos Made Simple](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf)；它不覆盖[[consensus-fault-models|任意撒谎的节点]]。
+Paxos 的「两个阶段」与两阶段提交不同，不能混为一谈。模型对应 [Paxos Made Simple](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf)；它不覆盖任意撒谎的节点。

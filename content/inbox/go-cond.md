@@ -6,7 +6,7 @@ tags: ["Go", "sync.Cond", "条件变量"]
 aliases: ["Cond", "sync.Cond"]
 ---
 
-**Cond（sync.Cond）是条件变量，让 goroutine 在某个共享条件成立前挂起等待、条件变化时被唤醒。** 它把共享状态的锁和等待通知组合在一起，使用约束来自[[condition-variables|条件变量]]。
+**Cond（sync.Cond）是条件变量，让 goroutine 在某个共享条件成立前挂起等待、条件变化时被唤醒。** 它把共享状态的锁和等待通知组合在一起，使用约束来自条件变量。
 
 ## 怎么用
 
