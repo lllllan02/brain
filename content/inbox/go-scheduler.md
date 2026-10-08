@@ -18,4 +18,4 @@ G 表示 goroutine，M 表示操作系统线程，P 保存执行 Go 代码所需
 
 Go 支持异步抢占，降低某些长循环长期霸占执行资源的风险，但仍有安全点与不可抢占区域。时间阈值不是调度延迟 SLA。[[go-gc-cycle|GC 阶段切换]] 也需要运行时协调。
 
-goroutine 与传统协程模型的区别，应结合 [[processes-threads-coroutines|调度层次与并行能力]] 理解。源码入口：[runtime/proc.go](https://go.dev/src/runtime/proc.go)、[runtime/netpoll.go](https://go.dev/src/runtime/netpoll.go)。
+goroutine 与传统协程模型的区别，应结合调度层次与并行能力理解。源码入口：[runtime/proc.go](https://go.dev/src/runtime/proc.go)、[runtime/netpoll.go](https://go.dev/src/runtime/netpoll.go)。
