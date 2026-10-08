@@ -2,12 +2,48 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import os from 'node:os';
-import {mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
-import {publicLibrary} from '../scripts/build-pages.mjs';
-test('Pages 先按公开清单过滤，再生成正文、摘要、搜索与关系',async()=>{
- const root=await mkdtemp(path.join(os.tmpdir(),'brain-public-'));
- try{await mkdir(path.join(root,'notes/202610'),{recursive:true});await writeFile(path.join(root,'notes/202610/allowed.md'),'---\ntitle: 公开文章\n---\n开头 [[secret|隐藏标题]]\n\n[[other|下一篇]]');await writeFile(path.join(root,'notes/202610/secret.md'),'---\ntitle: 隐藏标题\naliases: [私人别名]\n---\n绝密正文');await writeFile(path.join(root,'notes/202610/other.md'),'---\ntitle: 公开文章二\n---\n[[allowed]]');
- const {library}=await publicLibrary(root,{documents:['notes/202610/allowed.md','notes/202610/other.md'],assets:[]});const text=JSON.stringify(library);assert.equal(library.documents.length,2);assert.doesNotMatch(text,/secret|隐藏标题|私人别名|绝密正文/);assert.ok(library.documents.find(d=>d.id==='allowed').backlinks.includes('other'));assert.ok(library.documents.find(d=>d.id==='allowed').references.some(r=>r.id==='other'));
- const empty=await publicLibrary(root,{documents:[],assets:[]});assert.equal(empty.library.documents.length,0);await assert.rejects(publicLibrary(root,{documents:['../secret.md'],assets:[]}));
+import {mkdtemp,mkdir,writeFile,rm,symlink} from 'node:fs/promises';
+import {pagesLibrary} from '../scripts/build-pages.mjs';
+import {loadLibrary} from '../src/library.mjs';
+
+test('Pages 与本地读取相同的 notes 正文、属性、搜索和引用，不收录其他目录',async()=>{
+ const root=await mkdtemp(path.join(os.tmpdir(),'brain-pages-'));
+ try{
+  for(const dir of ['notes/nested','inbox','trash','sources'])await mkdir(path.join(root,dir),{recursive:true});
+  await writeFile(path.join(root,'notes/a.md'),'---\ntitle: 第一篇\naliases: [别名]\ntags: [测试]\n---\n起点 [[b]] [[draft]]');
+  await writeFile(path.join(root,'notes/nested/b.md'),'---\ntitle: 第二篇\n---\n终点 [[a]]');
+  for(const dir of ['inbox','trash','sources'])await writeFile(path.join(root,dir,'draft.md'),'不收录的正文');
+  const {library,assets}=await pagesLibrary(root);
+  assert.deepEqual(library,await loadLibrary(root));
+  assert.equal(library.documents.length,2);
+  assert.equal(assets.size,0);
+  assert.doesNotMatch(JSON.stringify(library),/不收录的正文/);
+  assert.deepEqual(library.documents.find(d=>d.id==='a').backlinks,['b']);
+  assert.equal(library.documents.find(d=>d.id==='a').references[0].id,'b');
+  await writeFile(path.join(root,'notes/new.md'),'新增文章 [[a]]');
+  const next=await pagesLibrary(root);
+  assert.equal(next.library.documents.length,3);
+  assert.deepEqual(next.library,await loadLibrary(root));
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('Pages 导出正文引用的本地附件并改写地址，保留本地附件边界',async()=>{
+ const root=await mkdtemp(path.join(os.tmpdir(),'brain-pages-assets-'));
+ try{
+  await mkdir(path.join(root,'notes/assets'),{recursive:true});
+  await writeFile(path.join(root,'notes/assets/图片.png'),'image');
+  await writeFile(path.join(root,'notes/assets/file.pdf'),'pdf');
+  await writeFile(path.join(root,'notes/assets/unused.png'),'unused');
+  await writeFile(path.join(root,'notes/assets/unsupported.svg'),'<svg/>');
+  await writeFile(path.join(root,'outside.png'),'outside');
+  await symlink(path.join(root,'outside.png'),path.join(root,'notes/assets/escape.png'));
+  await writeFile(path.join(root,'notes/a.md'),'![[assets/图片.png]]\n\n[附件](assets/file.pdf)\n\n![[assets/escape.png]]\n\n![[assets/missing.png]]\n\n![[assets/unsupported.svg]]');
+  const {library,assets}=await pagesLibrary(root);
+  assert.deepEqual([...assets.keys()].sort(),['notes/assets/file.pdf','notes/assets/图片.png']);
+  const doc=library.documents[0];
+  assert.match(doc.html,/src="\.\/documents\/notes\/assets\/%E5%9B%BE%E7%89%87.png"/);
+  assert.match(doc.html,/href="\.\/documents\/notes\/assets\/file.pdf"/);
+  assert.doesNotMatch(doc.html,/\/api\/asset|(?:src|href)="\.\/documents\/[^"\s]*(?:escape|missing|unsupported)/);
+  assert.equal(doc.body,(await loadLibrary(root)).documents[0].body);
  }finally{await rm(root,{recursive:true,force:true});}
 });
