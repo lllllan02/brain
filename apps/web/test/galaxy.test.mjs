@@ -28,7 +28,7 @@ test('文档聚焦只高亮一度邻居，分类聚焦不伪造关系', () => {
 });
 
 test('三维布局及显示变换对空库、单篇和关联文档产生有限坐标',async()=>{
-  const server=await createServer({configFile:false,server:{middlewareMode:true,hmr:false,ws:false}});
+  const server=await createServer({configFile:false,optimizeDeps:{noDiscovery:true},server:{middlewareMode:true,hmr:false,ws:false}});
   try{
     const {MainThreadForceLayout}=await server.ssrLoadModule('/src/galaxy/vendor/layout/MainThreadForceLayout.ts');
     const {seedPosition}=await server.ssrLoadModule('/src/galaxy/vendor/data/seed.ts');

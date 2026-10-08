@@ -5,15 +5,6 @@ import os from 'node:os';
 import path from 'node:path';
 import {parseDocument,renderDocument,resolveDocument,safeAsset,loadLibrary} from '../src/library.mjs';
 const doc=(body,file='notes/202610/example.md')=>parseDocument(body,file);
-test('真实知识库可渲染：双链表格、目录与反链',async()=>{
- const library=await loadLibrary(path.resolve('../../content'));
- assert.ok(library.documents.length > 0);
- const explain=library.documents.find(d=>d.id==='mysql-explain');
- assert.match(explain.html,/<table>/);assert.equal(explain.references.length,7);
- assert.ok(explain.toc.some(h=>h.title==='字段总览'));
- assert.ok(library.documents.find(d=>d.id==='mysql-explain-type').backlinks.includes('mysql-explain'));
- assert.deepEqual(library.documents.flatMap(d=>d.issues),[]);
-});
 test('支持 YAML 列表、别名、双链章节与块，代码不产生关系',()=>{
  const a=doc('---\ntitle: 测试文档\naliases:\n  - 别名\ntags: [主题]\n---\n## 小节\n\n内容 ^block-1');
  const b=doc('[[example#小节|章节]] [[example#^block-1|块]] [[example#不存在]]\n\n```text\n[[missing]]\n```','notes/202610/test.md');

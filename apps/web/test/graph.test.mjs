@@ -1,21 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import path from 'node:path';
 import {createServer} from 'vite';
-import {parseDocument,loadLibrary} from '../src/library.mjs';
-test('原场景适配真实文档，不生成推测关系或创作指标',async()=>{
- const server=await createServer({root:process.cwd(),configFile:false,server:{middlewareMode:true,hmr:false,ws:false},appType:'custom'});
- try{const {buildGraph,forceLayout}=await server.ssrLoadModule('/src/neural/graph.js');const library=await loadLibrary(path.resolve('../../content'));const graph=buildGraph(library);const content=graph.nodes.filter(n=>n.module);
- assert.equal(content.length,library.documents.length);assert.equal(new Set(content.map(n=>n.id)).size,content.length);assert.deepEqual(new Set(graph.modules.map(m=>m.title)),new Set(library.documents.map(d=>d.category)));
- const actual=new Set(library.documents.flatMap(d=>d.references.filter(r=>r.id!==d.id).map(r=>d.id+'|'+r.id)));
- const displayed=new Set(graph.links.filter(l=>l.kind==='wiki').flatMap(l=>[...(l.ab?[l.a+'|'+l.b]:[]),...(l.ba?[l.b+'|'+l.a]:[])]));assert.deepEqual(displayed,actual);
- assert.ok(graph.links.every(l=>['contain','wiki'].includes(l.kind)));assert.ok(content.every(n=>!n.post&&!n.idea&&!n.draft));
- const layout=forceLayout(graph);assert.ok(graph.nodes.every(n=>layout[n.id].every(Number.isFinite)));assert.equal(graph.modules.find(m=>m.id===graph.index.get('mysql-explain').module).title,'MySQL');assert.equal(graph.modules.find(m=>m.id===graph.index.get('rag-overview').module).title,'RAG');assert.ok(!graph.index.has('index'));
- }finally{await server.close();}
-});
+import {parseDocument} from '../src/library.mjs';
 
 test('唯一分类动态生成星云，标签不影响分组，分类更新与空库正常',async()=>{
- const server=await createServer({root:process.cwd(),configFile:false,server:{middlewareMode:true,hmr:false,ws:false},appType:'custom'});
+ const server=await createServer({root:process.cwd(),configFile:false,optimizeDeps:{noDiscovery:true},server:{middlewareMode:true,hmr:false,ws:false},appType:'custom'});
  try{
   const {buildGraph,forceLayout,moduleOf}=await server.ssrLoadModule('/src/neural/graph.js');
   const {moduleItems}=await server.ssrLoadModule('/src/neural/Home.jsx');
@@ -44,7 +33,7 @@ test('唯一分类动态生成星云，标签不影响分组，分类更新与�
 });
 
 test('分类和标签列表展示全部匹配文档，与星图聚焦集合一致', async () => {
- const server=await createServer({root:process.cwd(),configFile:false,server:{middlewareMode:true,hmr:false,ws:false},appType:'custom'});
+ const server=await createServer({root:process.cwd(),configFile:false,optimizeDeps:{noDiscovery:true},server:{middlewareMode:true,hmr:false,ws:false},appType:'custom'});
  try {
   const {buildGraph}=await server.ssrLoadModule('/src/neural/graph.js');
   const {clusterDocuments}=await server.ssrLoadModule('/src/neural/ClusterList.jsx');

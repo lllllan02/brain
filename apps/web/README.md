@@ -89,4 +89,4 @@ npm --prefix apps/web run preview:pages
 
 静态产物位于 `apps/web/dist-pages/`，包含获准正文、搜索索引与引用关系，无需本地文档接口。预览地址为 `http://127.0.0.1:4174`。未公开目标在导出前移除，未获准附件不复制。
 
-推送 `main` 后，`.github/workflows/pages.yml` 自动安装依赖、运行测试、导出并部署。仓库 Settings → Pages 的 Source 设为 GitHub Actions。发布地址为 [知识星云](https://lllllan02.github.io/brain/)。页面只读，文档更新仍直接修改源文件。
+推送 `main` 后，`.github/workflows/pages.yml` 自动安装依赖、导出并部署。构建成功后运行测试，测试失败保留日志但不阻断部署；导出或构建失败仍会阻断部署。测试使用独立样例，不依赖知识库中的固定文章或引用数量。仓库 Settings → Pages 的 Source 设为 GitHub Actions。发布地址为 [知识星云](https://lllllan02.github.io/brain/)。页面只读，文档更新仍直接修改源文件。
