@@ -2,6 +2,14 @@ import React, {useEffect, useMemo, useRef, useState} from 'react';
 
 export function clusterDocuments(graph, cluster) {
   if (!cluster) return [];
+  if (cluster.document) {
+    const source = graph.index.get(cluster.document);
+    const ids = cluster.direction === 'incoming' ? source?.backlinks : source?.references?.map(reference => reference.id);
+    return [...new Set(ids || [])]
+      .filter(id => id !== source?.id)
+      .map(id => graph.index.get(id))
+      .filter(node => node?.module);
+  }
   return graph.nodes.filter(node => node.module && (cluster.tag
     ? node.tags?.includes(cluster.tag)
     : node.module === cluster.category))
@@ -13,9 +21,9 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, getAnc
   const shownRef = useRef(null);
   const [shown, setShown] = useState(null), [phase, setPhase] = useState('open');
   const documents = useMemo(() => clusterDocuments(graph, shown), [graph, shown]);
-  const kind = shown?.tag ? '标签' : '分类';
-  const title = shown?.tag || graph.modules.find(item => item.id === shown?.category)?.title || '未分类';
-  const selectionKey = shown?.tag ? `tag:${shown.tag}` : `category:${shown?.category}`;
+  const kind = shown?.document ? shown.direction === 'incoming' ? '被引用' : '内部链接' : shown?.tag ? '标签' : '分类';
+  const title = shown?.document ? graph.index.get(shown.document)?.title || '文档' : shown?.tag || graph.modules.find(item => item.id === shown?.category)?.title || '未分类';
+  const selectionKey = shown?.document ? `document:${shown.document}:${shown.direction || 'outgoing'}` : shown?.tag ? `tag:${shown.tag}` : `category:${shown?.category}`;
 
   // Keep the outgoing cards mounted long enough to fold back into their origin.
   // A new click cancels a pending exit so rapid changes always end on the latest choice.
@@ -28,17 +36,18 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, getAnc
     if (!cluster) {
       setPhase('closing');
       timer = setTimeout(show, reduced ? 0 : 380);
-    } else if (shownRef.current && (shownRef.current.category !== cluster.category || shownRef.current.tag !== cluster.tag)) {
+    } else if (shownRef.current && (shownRef.current.category !== cluster.category || shownRef.current.tag !== cluster.tag || shownRef.current.document !== cluster.document || shownRef.current.direction !== cluster.direction)) {
       setPhase('closing');
       timer = setTimeout(show, reduced ? 0 : 220);
     } else show();
     return () => clearTimeout(timer);
-  }, [cluster?.category, cluster?.tag, reduced, onPresenceChange]);
+  }, [cluster?.category, cluster?.tag, cluster?.document, cluster?.direction, reduced, onPresenceChange]);
 
   useEffect(() => {
     if (!shown || !scroll.current) return;
     scroll.current.scrollTop = 0;
-    scroll.current.focus({preventScroll: true});
+    // Automatically opened references should not move focus away from the reader.
+    if (!shown.document) scroll.current.focus({preventScroll: true});
   }, [selectionKey]);
 
   useEffect(() => {
@@ -79,7 +88,9 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, getAnc
           const ripples = glow.querySelectorAll('.cluster-flow-ripple');
           glow.querySelectorAll('.cluster-flow-dot').forEach((dot, j) => {
             const travel = elapsed / 4200 + (i * .19 + j * .5) % 1;
-            const t = travel % 1, inverse = 1 - t;
+            const progressAlong = travel % 1;
+            const incoming = shown.direction === 'incoming';
+            const t = incoming ? 1 - progressAlong : progressAlong, inverse = 1 - t;
             // Sample the same cubic as the line, so sparks follow camera and list motion.
             const x = inverse ** 3 * startX + 3 * inverse ** 2 * t * (startX + span)
               + 3 * inverse * t ** 2 * (endX - span * .65) + t ** 3 * endX;
@@ -88,8 +99,8 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, getAnc
             dot.setAttribute('cx', x); dot.setAttribute('cy', y);
             dot.setAttribute('opacity', fade * reveal * (j ? .5 : .9));
             // A completed trip emits one soft wave at the actual list endpoint.
-            const ripple = ripples[j], progress = Math.min(1, t / .22);
-            ripple.setAttribute('cx', endX); ripple.setAttribute('cy', targetY);
+            const ripple = ripples[j], progress = Math.min(1, progressAlong / .22);
+            ripple.setAttribute('cx', incoming ? startX : endX); ripple.setAttribute('cy', incoming ? startY : targetY);
             ripple.setAttribute('r', 4 + progress * 14);
             ripple.setAttribute('opacity', travel >= 1 ? (1 - progress) ** 2 * reveal * .5 : 0);
           });
@@ -121,7 +132,7 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, getAnc
             <i className="cluster-card-port" aria-hidden="true"/>
             <span><strong>{node.title}</strong></span>
           </button>
-        </li>)}</ul> : <p className="cluster-list-empty">暂时没有匹配的文档</p>}
+        </li>)}</ul> : <p className="cluster-list-empty">{shown.document ? shown.direction === 'incoming' ? '还没有其他文档引用这篇文章' : '这篇文章没有可打开的内部链接' : '暂时没有匹配的文档'}</p>}
       </div>
     </aside>
   </div>;

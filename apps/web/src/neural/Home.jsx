@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {moduleOf} from './graph';
 import {CONFIG, asset} from '../config';
 import {DocumentReader} from './DocumentReader';
-import {ClusterList} from './ClusterList';
+import {ClusterList, clusterDocuments} from './ClusterList';
 import {Icon} from './icons';
 import '../galaxy/galaxy.css';
 
@@ -21,19 +21,27 @@ export function Home({graph, focus, setFocus, reduced}) {
   const [clusterVisible, setClusterVisible] = useState(false);
   const listAnchor = useCallback(() => scene.current?.nodeAnchor(current.current.focus.sel), []);
   const previewNode = useCallback(id => scene.current?.previewNode(id), []);
-  const activeCluster = focus.sel ? readerCluster : null;
+  // An explicit list (or dismissal) belongs to the document where it was chosen.
+  // All other document navigation starts with that document's outgoing links.
+  const activeCluster = useMemo(() => {
+    if (!focus.sel) return null;
+    if (readerCluster?.owner === focus.sel) return readerCluster.value;
+    const references = {document: focus.sel};
+    return clusterDocuments(graph, references).length ? references : null;
+  }, [graph, focus.sel, readerCluster]);
+  const groupCluster = activeCluster?.document ? null : activeCluster;
   const views = [['galaxy', '银河'], ['nebula', '星云'], ['deepfield', '深空']];
   const viewIndex = views.findIndex(([id]) => id === preset);
   const nextView = views[(viewIndex + 1) % views.length];
   const [query, setQuery] = useState(''), [searchOpen, setSearchOpen] = useState(false);
   const [reviewId, setReviewId] = useState(null);
-  current.current = {focus, setFocus, preset, expanded, activeCluster};
+  current.current = {focus, setFocus, preset, expanded, groupCluster};
   const documents = useMemo(() => graph.nodes.filter(node => node.module), [graph]);
   const node = graph.index.get(focus.sel);
   const reviewNode = graph.index.get(reviewId);
   const go = (id, keepCluster = false) => {
     const target = graph.index.get(id); if (!target?.module) return;
-    if (!keepCluster) setReaderCluster(null);
+    setReaderCluster(keepCluster && groupCluster ? {owner: id, value: groupCluster} : null);
     setQuery(''); setSearchOpen(false); searchInput.current?.blur();
     setFocus({mod: moduleOf(graph, target).id, sel: id});
   };
@@ -67,7 +75,7 @@ export function Home({graph, focus, setFocus, reduced}) {
         },
       }, reduced);
       scene.current = instance;
-      const cluster = current.current.activeCluster;
+      const cluster = current.current.groupCluster;
       instance.focus(cluster ? null : current.current.focus.sel, cluster ? cluster.category : current.current.focus.mod, cluster?.tag, current.current.focus.sel);
       instance.pause(reduced);
       if (current.current.preset !== 'nebula') instance.preset(current.current.preset);
@@ -79,10 +87,10 @@ export function Home({graph, focus, setFocus, reduced}) {
   }, [graph, reduced]);
   useEffect(() => { if (!focus.sel) setReaderCluster(null); }, [focus.sel]);
   useEffect(() => {
-    scene.current?.focus(activeCluster ? null : focus.sel, activeCluster ? activeCluster.category : focus.mod, activeCluster?.tag, focus.sel);
-  }, [focus.sel, focus.mod, activeCluster]);
+    scene.current?.focus(groupCluster ? null : focus.sel, groupCluster ? groupCluster.category : focus.mod, groupCluster?.tag, focus.sel);
+  }, [focus.sel, focus.mod, groupCluster]);
   const showReaderCluster = cluster => {
-    setReaderCluster(cluster);
+    setReaderCluster({owner: focus.sel, value: cluster});
     if (expanded) {setExpanded(false);scene.current?.expand(false);}
   };
   useEffect(() => {
@@ -160,9 +168,9 @@ export function Home({graph, focus, setFocus, reduced}) {
       </button>
     </nav>
     <ClusterList graph={graph} cluster={activeCluster} selected={node?.id} reduced={reduced} getAnchor={listAnchor}
-      onPresenceChange={setClusterVisible} onSelect={id => go(id, true)} onClose={() => setReaderCluster(null)}/>
+      onPresenceChange={setClusterVisible} onSelect={id => go(id, true)} onClose={() => setReaderCluster({owner: focus.sel, value: null})}/>
     {node?.module && <div className="analysis-wrap" key={node.id}>
-      <DocumentReader onPreview={previewNode} graph={graph} node={node} module={moduleOf(graph, node)} cluster={activeCluster} onCluster={showReaderCluster} onGo={go} onClose={() => setFocus({mod: null, sel: null})}/>
+      <DocumentReader onPreview={previewNode} graph={graph} node={node} module={moduleOf(graph, node)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>
     </div>}
   </section>;
 }

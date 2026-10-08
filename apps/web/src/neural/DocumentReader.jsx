@@ -1,12 +1,27 @@
 import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {Icon} from './icons';
 import {LinkPreview} from './LinkPreview';
-export function DocumentReader({graph,node,module,cluster,onCluster,onGo,onClose,onPreview}){
+import {ReaderRelations} from './ReaderRelations';
+export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview}){
  const ref=useRef(null);const [full,setFull]=useState(false);const [copy,setCopy]=useState('');
  useEffect(()=>{const scroll=()=>{const part=location.hash.split('/')[3];if(!part)return;requestAnimationFrame(()=>{const id=decodeURIComponent(part);const target=[...ref.current.querySelectorAll('[id]')].find(el=>el.id===id);target?.scrollIntoView({block:'start'});});};scroll();window.addEventListener('hashchange',scroll);return()=>window.removeEventListener('hashchange',scroll);},[node.id,node.html]);
  useEffect(()=>{const wrap=ref.current.closest('.analysis-wrap');wrap.classList.toggle('full-reader',full);return()=>wrap.classList.remove('full-reader');},[full]);
  const article=useMemo(()=><article className="markdown" dangerouslySetInnerHTML={{__html:node.html}}/>,[node.html]);
- const follow=ids=>[...new Set(ids)].map(id=>graph.index.get(id)).filter(n=>n&&n.id!==node.id).map(n=><button key={n.id} className="read-relation" data-preview-href={`#/doc/${encodeURIComponent(n.id)}`} onClick={()=>onGo(n.id)}><i style={{background:graph.kinds[n.kind].color}}/>{n.title}<Icon name="arrow" size={12}/></button>);
+ const externalLinks=useMemo(()=>{
+  // Read rendered anchors, so code samples, internal references and attachments
+  // cannot accidentally become external links. Template content stays inert.
+  const template=document.createElement('template');template.innerHTML=node.html;
+  const links=new Map();
+  for(const anchor of template.content.querySelectorAll('a[href]')){
+   try{
+    const url=new URL(anchor.getAttribute('href'));
+    if(!['http:','https:','mailto:'].includes(url.protocol)||links.has(url.href))continue;
+    const title=anchor.textContent.replace(/\s*↗\s*$/,'').trim()||url.href;
+    links.set(url.href,{href:url.href,title});
+   }catch{/* Relative document links and local attachments stay in the article. */}
+  }
+  return [...links.values()];
+ },[node.html]);
  const handleClick=async e=>{const button=e.target.closest('.copy-code');if(!button)return;try{await navigator.clipboard.writeText(button.closest('.code-block').querySelector('code').textContent);button.textContent='已复制';setTimeout(()=>button.textContent='复制',1800);}catch{setCopy('请手动选择代码进行复制。');}};
  return <section className="analysis glass document-reader" ref={ref}>
   <div className="an-float">文档阅读 <em>Read document</em></div>
@@ -18,16 +33,15 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onGo,onClose
      <button className="icon-btn" aria-label="关闭文档" onClick={onClose}><Icon name="close" size={14}/></button>
     </div>
    </div>
-   <dl className="read-properties">
-    <div>
-     <dt>分类</dt>
-     <dd><button className="read-category-link" aria-label={`查看分类 ${node.category || '未分类'} 的集群`} aria-pressed={cluster?.category === module.id} onClick={()=>{setFull(false);onCluster({category:module.id});}}>{node.category || '未分类'}</button></dd>
-    </div>
-    {node.tags?.length>0&&<div>
-     <dt>标签</dt>
-     <dd>{node.tags.map(tag=><button className="read-tag" key={tag} aria-label={`查看标签 ${tag} 的集群`} aria-pressed={cluster?.tag === tag} onClick={()=>{setFull(false);onCluster({tag});}}>{tag}</button>)}</dd>
-    </div>}
-   </dl>
+   <ReaderRelations graph={graph} node={node} module={module} cluster={cluster} onChoose={next=>{setFull(false);onCluster(next);}}/>
    <p className="read-meta">{node.updated?'更新于 '+node.updated+' · ':''}知识笔记 · {Math.max(1,Math.ceil(node.body.length/500))} 分钟阅读</p>
-   {node.toc.length>0&&<details className="read-toc"><summary>本页目录 <em>Contents</em></summary>{node.toc.map(h=><a key={h.id} href={`#/doc/${encodeURIComponent(node.id)}/${encodeURIComponent(h.id)}`}>{h.title}</a>)}</details>}{article}{copy&&<p role="status">{copy}</p>}<div className="read-connections"><h3>文档引用 <em>References</em></h3>{follow(node.references.map(r=>r.id))}<h3>反向引用 <em>Backlinks</em></h3>{follow(node.backlinks)}{node.issues.length>0&&<p className="quiet">未解析引用：{node.issues.map(i=>i.target+'（'+i.reason+'）').join('、')}</p>}</div><p className="read-path">{node.path}</p></div><LinkPreview readerRef={ref} graph={graph} onPreview={onPreview}/></section>;
+   {node.toc.length>0&&<details className="read-toc"><summary>本页目录 <em>Contents</em></summary>{node.toc.map(h=><a key={h.id} href={`#/doc/${encodeURIComponent(node.id)}/${encodeURIComponent(h.id)}`}>{h.title}</a>)}</details>}{article}{copy&&<p role="status">{copy}</p>}
+   {externalLinks.length>0&&<section className="read-connections" aria-label="外部链接">
+    <h3>外部链接 <em>External links</em></h3>
+    {externalLinks.map(link=><a key={link.href} className="read-relation read-external-link" href={link.href} target="_blank" rel="noopener noreferrer" title={link.href}>
+     <span><strong>{link.title}</strong><small>{link.href}</small></span><Icon name="outlink" size={13}/>
+    </a>)}
+   </section>}
+   {node.issues.length>0&&<p className="quiet read-link-issues">未解析引用：{node.issues.map(i=>i.target+'（'+i.reason+'）').join('、')}</p>}
+   <p className="read-path">{node.path}</p></div><LinkPreview readerRef={ref} graph={graph} onPreview={onPreview}/></section>;
 }

@@ -49,3 +49,22 @@ test('分类和标签列表展示全部匹配文档，与星图聚焦集合一�
   assert.equal(documents[0].id,'note-0');
  } finally {await server.close();}
 });
+
+test('内部链接列表按引用顺序去重，排除自身、断链和仅反向引用的文档', async () => {
+ const server=await createServer({root:process.cwd(),configFile:false,optimizeDeps:{noDiscovery:true},server:{middlewareMode:true,hmr:false,ws:false},appType:'custom'});
+ try {
+  const {buildGraph}=await server.ssrLoadModule('/src/neural/graph.js');
+  const {clusterDocuments}=await server.ssrLoadModule('/src/neural/ClusterList.jsx');
+  const note=(id,references=[])=>({id,title:id,body:'',category:'示例',tags:[],references:references.map(id=>({id})),backlinks:[]});
+  const graph=buildGraph({documents:[note('a',['c','b','c','a','missing','core']),note('b'),note('c',['b']),note('incoming',['a'])]});
+  graph.index.get('a').backlinks=['incoming','incoming','a','missing','core'];
+  assert.deepEqual(clusterDocuments(graph,{document:'a'}).map(n=>n.id),['c','b']);
+  assert.deepEqual(clusterDocuments(graph,{document:'c'}).map(n=>n.id),['b']);
+  assert.deepEqual(clusterDocuments(graph,{document:'b'}),[]);
+  assert.deepEqual(clusterDocuments(graph,{document:'missing'}),[]);
+  assert.deepEqual(clusterDocuments(graph,{document:'a',direction:'incoming'}).map(n=>n.id),['incoming']);
+  assert.deepEqual(clusterDocuments(graph,{document:'b',direction:'incoming'}),[]);
+  assert.deepEqual(clusterDocuments(graph,{document:'missing',direction:'incoming'}),[]);
+  assert.deepEqual(clusterDocuments(graph,null),[]);
+ } finally {await server.close();}
+});

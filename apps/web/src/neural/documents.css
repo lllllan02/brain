@@ -16,3 +16,22 @@
 button.read-tag{cursor:pointer;font-family:inherit;text-align:left;transition:color .2s,border-color .2s,background .2s}
 .read-tag:hover,.read-tag[aria-pressed="true"]{color:#e4edf9;border-color:#b2cce579;background:#91aecb20}
 .read-category-link:focus-visible,.read-tag:focus-visible{outline:1px solid #c0d8ed;outline-offset:3px}
+
+/* Article properties and quiet relationship links sit directly below the title. */
+.document-reader .an-scroll{min-height:0}
+.reader-relations{margin:10px 0 0}
+.reader-property-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px}
+.reader-category{flex:1 1 auto;margin:0;min-width:0}
+.reader-tags{margin:6px 0 0}
+.reader-inline-relations{display:flex;align-items:baseline;gap:7px;margin-left:auto;flex:none}
+.reader-inline-relations button{padding:5px 1px;border:0;border-bottom:1px solid transparent;background:transparent;color:#9eacc1;font:inherit;font-size:11px;line-height:1.7;white-space:nowrap;cursor:pointer}
+.reader-inline-relations button span{font-variant-numeric:tabular-nums}
+.reader-inline-relations button:hover,.reader-inline-relations button[aria-pressed="true"]{color:#e4edf9;border-bottom-color:#a7bfd066}
+.reader-inline-relations button:focus-visible{outline:1px solid #c0d8ed;outline-offset:3px}
+.reader-relation-divider{color:#69768b;font-size:11px}
+.read-external-link{text-decoration:none}
+.read-external-link>span{min-width:0;overflow-wrap:anywhere}
+.read-external-link strong{display:block;font-size:12px;font-weight:400}
+.read-external-link small{display:block;margin-top:3px;color:#8997ab;font-size:10px;line-height:1.6}
+.read-external-link:focus-visible{outline:1px solid #c0d8ed;outline-offset:3px}
+.read-link-issues{font-size:11px;line-height:1.7;margin-top:24px}
