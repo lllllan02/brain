@@ -1,7 +1,8 @@
 import React, {useMemo} from 'react';
+import {ReadingHistoryToggle} from './ReadingHistory';
 import {clusterDocuments} from './ClusterList';
 
-export function ReaderRelations({graph, node, module, cluster, onChoose}) {
+export function ReaderRelations({graph, node, module, cluster, onChoose, historyControl}) {
   const counts = useMemo(() => ({
     outgoing: clusterDocuments(graph, {document: node.id}).length,
     incoming: clusterDocuments(graph, {document: node.id, direction: 'incoming'}).length,
@@ -25,6 +26,7 @@ export function ReaderRelations({graph, node, module, cluster, onChoose}) {
         <span className="reader-relation-divider" aria-hidden="true">·</span>
         <button type="button" aria-label={`被引用，${counts.incoming} 篇`} title="引用这篇文章的文档" aria-pressed={incoming}
           onClick={() => choose({document: node.id, direction: 'incoming'}, incoming)}>被引 <span>{counts.incoming}</span></button>
+        {historyControl && <><span className="reader-relation-divider" aria-hidden="true">·</span><ReadingHistoryToggle {...historyControl}/></>}
       </nav>
     </div>
     {tags.length > 0 && <dl className="read-properties reader-tags">

@@ -1,16 +1,21 @@
-import React,{useEffect,useMemo,useRef,useState} from 'react';
+import React,{useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {Icon} from './icons';
 import {LinkPreview} from './LinkPreview';
 import {ReaderRelations} from './ReaderRelations';
 import {MarkdownArticle} from './MarkdownArticle';
 import {ExternalLinkPreview} from './ExternalLinkPreview';
 import {useReaderResize} from './useReaderResize';
-export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,onResize,reduced}){
+export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,onResize,reduced,readingLocation,onReadingScroll,navigation,historyControl}){
  const ref=useRef(null);const [full,setFull]=useState(false);const [copy,setCopy]=useState('');const [tocOpen,setTocOpen]=useState(false);
  const [copying,setCopying]=useState(false);
  const resizeHandlers=useReaderResize(ref,full,onResize);
  useEffect(()=>{if(!copy)return;const timer=setTimeout(()=>setCopy(''),4000);return()=>clearTimeout(timer);},[copy]);
- useEffect(()=>{const scroll=()=>{const part=location.hash.split('/')[3];if(!part)return;requestAnimationFrame(()=>{const id=decodeURIComponent(part);const target=[...ref.current.querySelectorAll('[id]')].find(el=>el.id===id);target?.scrollIntoView({block:'start'});});};scroll();window.addEventListener('hashchange',scroll);return()=>window.removeEventListener('hashchange',scroll);},[node.id,node.html]);
+ useLayoutEffect(()=>{
+  const scroller=ref.current.querySelector('.an-scroll');
+  const target=readingLocation?.anchor?[...scroller.querySelectorAll('[id]')].find(el=>el.id===readingLocation.anchor):null;
+  const top=readingLocation?.scroll??(target?target.getBoundingClientRect().top-scroller.getBoundingClientRect().top+scroller.scrollTop:0);
+  scroller.scrollTo({top,behavior:'instant'});
+ },[node.id,readingLocation?.key]);
  useEffect(()=>{const wrap=ref.current.closest('.analysis-wrap');wrap.classList.toggle('full-reader',full);return()=>wrap.classList.remove('full-reader');},[full]);
  const article=<MarkdownArticle html={node.html}/>;
  const externalLinks=useMemo(()=>{
@@ -37,18 +42,20 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
   finally{setCopying(false);}
  };
  const handleClick=async e=>{const button=e.target.closest('.copy-code');if(!button)return;const label=button.closest('.diagram-block')?'复制源码':'复制';try{await navigator.clipboard.writeText(button.closest('.code-block').querySelector(button.closest('.diagram-block')?'.diagram-source code':'pre code').textContent);button.textContent='已复制';setTimeout(()=>button.textContent=label,1800);}catch{setCopy('请手动选择代码进行复制。');}};
- return <section className="analysis glass document-reader" ref={ref}>
-  <div className="an-float">文档阅读</div>
+ return <section className="analysis glass document-reader" data-document-id={node.id} ref={ref}>
+  <div className="reader-toolbar"><div className="an-float">文档阅读</div>
+   <div className="read-actions">
+    <button className="icon-btn" aria-label="切换专注阅读" aria-pressed={full} title={full?'退出专注阅读':'专注阅读'} onClick={()=>setFull(v=>!v)}><Icon name="expand" size={14}/></button>
+    <button className="icon-btn" aria-label="关闭文档" title="关闭文档（Esc）" onClick={onClose}><Icon name="close" size={16}/></button>
+   </div>
+  </div>
   <button type="button" className="reader-resize-handle" aria-label="调整阅读卡片大小" title="拖动调整大小，也可聚焦后使用方向键" {...resizeHandlers}><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4v4a5 5 0 0 0 5 5h4M7 4v3a2 2 0 0 0 2 2h3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></button>
-  <div className="an-scroll" onClick={handleClick}>
+  <div className="an-scroll" onClick={handleClick} onScroll={event=>onReadingScroll?.(readingLocation?.key,event.currentTarget.scrollTop)}>
    <div className="an-title-row">
     <h2>{node.title}</h2>
-    <div className="read-actions">
-     <button className="icon-btn" aria-label="切换专注阅读" aria-pressed={full} title={full?'退出专注阅读':'专注阅读'} onClick={()=>setFull(v=>!v)}><Icon name="expand" size={14}/></button>
-     <button className="icon-btn" aria-label="关闭文档" onClick={onClose}><Icon name="close" size={14}/></button>
-    </div>
+    {navigation}
    </div>
-   <ReaderRelations graph={graph} node={node} module={module} cluster={cluster} onChoose={next=>{setFull(false);onCluster(next);}}/>
+   <ReaderRelations graph={graph} node={node} module={module} cluster={cluster} historyControl={{...historyControl,onToggle:()=>{setFull(false);historyControl.onToggle();}}} onChoose={next=>{setFull(false);onCluster(next);}}/>
    <div className="read-meta-row">
     <p className="read-meta">{node.updated?'更新于 '+node.updated+' · ':''}{Math.max(1,Math.ceil(node.body.length/500))} 分钟阅读</p>
     <div className="read-copy-actions" role="group" aria-label="复制文档">
