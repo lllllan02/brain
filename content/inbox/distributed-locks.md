@@ -16,4 +16,4 @@ aliases: ["Distributed Lock", "Fencing Token"]
 
 因此，**「获得锁」的保证范围取决于锁协议和故障条件**。严格保护外部资源时，可用 fencing token（隔离令牌）：每次持锁资格带有递增编号，资源端拒绝旧编号的操作。只有资源端实际检查编号才有效；数据正确性还可能需要事务、唯一约束或幂等处理。
 
-来源：[解释服务注册](chatgpt-conversation://6ac7c299-62bc-83e8-9d0e-565a1f3a8f45)。故障边界保留自原笔记，参考 [Redis 分布式锁文档](https://redis.io/docs/latest/develop/clients/patterns/distributed-locks/)、[etcd 并发 API](https://etcd.io/docs/v3.6/dev-guide/api_concurrency_reference_v3/) 和 [Martin Kleppmann 对锁正确性的分析](https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html)。
+参考：[Redis 分布式锁文档](https://redis.io/docs/latest/develop/clients/patterns/distributed-locks/)、[etcd 并发 API](https://etcd.io/docs/v3.6/dev-guide/api_concurrency_reference_v3/) 和 [Martin Kleppmann 对锁正确性的分析](https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html)。

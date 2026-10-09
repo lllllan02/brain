@@ -25,4 +25,4 @@ func Sum[T Integer](xs []T) T {
 
 泛型适合容器和与具体类型无关的算法；面向行为的多种实现可以用接口，只有运行时才知道结构时才需要 [[go-reflection|反射]]。`[]T` 也不会自动变成 `[]any`，因为两种切片的元素表示不同。
 
-原笔记里的 2019 年泛型草案保留设计动机，但其历史语法不作为用法。参考 [Why Generics?](https://go.dev/blog/why-generics) 与 [Go 泛型入门](https://go.dev/doc/tutorial/generics)。
+2019 年泛型草案可用于了解设计动机，其历史语法不作为当前用法。参考 [Why Generics?](https://go.dev/blog/why-generics) 与 [Go 泛型入门](https://go.dev/doc/tutorial/generics)。
