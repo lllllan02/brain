@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {moduleOf} from './graph';
+import {createSearchIndex, searchDocuments} from './search.js';
 import {CONFIG, asset} from '../config';
 import {DocumentReader} from './DocumentReader';
 import {ClusterList, clusterDocuments} from './ClusterList';
@@ -16,6 +17,7 @@ export function moduleItems(graph, modId) {
 
 export function Home({graph, focus, setFocus, reduced}) {
   const host = useRef(null), scene = useRef(null), searchInput = useRef(null);
+  const composing = useRef(false);
   const current = useRef({focus, setFocus});
   const [labels, setLabels] = useState([]), [ready, setReady] = useState(false), [error, setError] = useState('');
   const [preset, setPreset] = useState('nebula');
@@ -59,12 +61,10 @@ export function Home({graph, focus, setFocus, reduced}) {
       setReviewId(target.id);
     }
   };
-  const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (q) return documents.filter(n => [n.title, n.category, ...n.aliases, ...n.tags, n.body].join(' ').toLowerCase().includes(q));
-    return [];
-  }, [query, documents]);
-  const search = usePresence(searchOpen && query.trim() ? {results} : null, searchOpen && query.trim() ? query.trim() : null, reduced);
+  const searchIndex = useMemo(() => createSearchIndex(documents), [documents]);
+  const results = useMemo(() => searchDocuments(searchIndex, query), [query, searchIndex]);
+  // Animate opening/closing only; changing the query must update rows immediately.
+  const search = usePresence(searchOpen && query.trim() ? {results} : null, searchOpen && query.trim() ? 'search' : null, reduced);
   const statusText = error || (!documents.length ? '还没有文档。保存笔记后，这里会亮起第一颗星。' : !ready ? '正在展开星系…' : null);
   const status = usePresence(statusText, statusText, reduced, 'none');
   useEffect(() => {
@@ -143,9 +143,14 @@ export function Home({graph, focus, setFocus, reduced}) {
         <p role="status">{search.shown.results.length ? `${search.shown.results.length} 篇文档` : '没有找到相关内容'}</p>
         {search.shown.results.map(n => <button key={n.id} onClick={() => go(n.id)}><span>{n.title}</span><small>{n.category || '未分类'} · {n.collection === 'inbox' ? 'Inbox' : 'Notes'}</small></button>)}
       </div>}
-      <form className="galaxy-search" role="search" onSubmit={event => {event.preventDefault();if(results.length)go(results[0].id);}}>
+      <form className="galaxy-search" role="search" onSubmit={event => {event.preventDefault();if(!composing.current && results.length)go(results[0].id);}}>
         <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
-        <input ref={searchInput} value={query} onFocus={() => setSearchOpen(true)} onChange={event => {setQuery(event.target.value);setSearchOpen(true);}} placeholder="搜索笔记" aria-label="搜索标题、别名、标签或正文" aria-controls="galaxy-search-results" autoComplete="off" onKeyDown={event => {
+        <input ref={searchInput} value={query} onFocus={() => setSearchOpen(true)} onChange={event => {setQuery(event.target.value);setSearchOpen(true);}} placeholder="搜索笔记" aria-label="搜索标题、别名、标签或正文" aria-controls="galaxy-search-results" autoComplete="off"
+          onCompositionStart={() => {composing.current = true;}} onCompositionEnd={() => {composing.current = false;}} onKeyDown={event => {
+          if(composing.current || event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229) {
+            if(event.key === 'Enter') event.preventDefault();
+            return;
+          }
           if(event.key === 'ArrowDown') {event.preventDefault();event.currentTarget.closest('.galaxy-search-dock').querySelector('.galaxy-results button')?.focus();}
         }}/>
         {query && <button type="button" className="galaxy-search-clear" aria-label="清空搜索" onClick={() => {setQuery('');searchInput.current?.focus();}}>×</button>}
