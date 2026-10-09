@@ -15,7 +15,7 @@ updated_at: "2026-10-09"
 
 - 执行循环与编排：驱动 [[agent-loop|Agent Loop]]，按需组织[[agent-planning|规划与重新规划]]，调度动作，支持暂停、继续、[[agent-human-in-the-loop|人工介入]]和多 Agent 交接。
 - 工具与能力接入：注册、发现、加载工具及 Skill 等可复用指令，具体展开在[[tool-calling-harness|工具调用链路的 Harness 能力]]。
-- 上下文、记忆与状态：通过[[agent-context|上下文管理]]组织模型输入与压缩历史，读取[[agent-memory|记忆]]，通过[[agent-state|状态管理]]保存执行进度、支持恢复。
+- 上下文、记忆与状态：通过[[agent-context|上下文管理]]组织模型输入与压缩历史，读取[[agent-memory|记忆]]，通过[[agent-task-state|任务状态管理]]单独维护目标、计划、进度与关键结果。会话关联、工具执行、审批与错误等运行数据也按业务需要记录，参与调度和恢复。[持久化与恢复](https://docs.langchain.com/oss/python/langgraph/persistence)
 - 执行环境与资源：准备工作区、文件与依赖，连接或创建沙箱，协调环境生命周期。
 - 约束与可靠性：通过[[agent-guardrails|行为约束]]执行权限、审批、隔离和预算规则，按反馈进行[[agent-self-correction|自我纠正]]，处理超时、[[agent-retry|重试]]、幂等与故障恢复。
 - 观测与验证：通过 [[agent-trace-requirements|Trace]] 记录执行过程，检查实际结果是否满足任务完成条件。

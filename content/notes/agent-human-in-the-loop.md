@@ -23,6 +23,6 @@ updated_at: "2026-10-09"
 
 ## 如何暂停与恢复？
 
-**触发介入 → 暂停相关执行 → 保存状态与待处理事项 → 展示问题或操作 → 接收人的决定 → 校验后继续、修改或终止。** Runtime 负责暂停与恢复，所需数据通过[[agent-state|状态管理]]维护；跨进程等待需要[[agent-checkpoint-recovery|持久化与检查点]]。[HITL 中断与恢复示例](https://docs.langchain.com/oss/python/langchain/human-in-the-loop)
+**触发介入 → 暂停相关执行 → 保存状态与待处理事项 → 展示问题或操作 → 接收人的决定 → 校验后继续、修改或终止。** Runtime 负责暂停与恢复，等待原因和待回答问题写入[[agent-task-state|任务状态]]，审批请求及决定另按具体操作记录；跨进程等待需要[[agent-checkpoint-recovery|持久化与检查点]]。[HITL 中断与恢复示例](https://docs.langchain.com/oss/python/langchain/human-in-the-loop)
 
 审批应对应具体操作与参数；参数变化后重新判断是否需审批。拒绝或未回复不能当作同意，恢复前仍须校验权限和操作条件。

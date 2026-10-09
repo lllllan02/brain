@@ -15,4 +15,3 @@ updated_at: "2026-10-09"
 - [[long-term-memory|长期记忆（Long-term Memory）]]：独立于单个会话管理，在授权范围内跨会话复用偏好、事实和经验；可以更新或过期，不意味着永久保存。
 
 两者主要区别在于「会话内延续」与「跨会话复用」，不能只看保存时间或是否写入数据库。[记忆作用范围的定义](https://docs.langchain.com/oss/python/concepts/memory#short-term-memory)
-
