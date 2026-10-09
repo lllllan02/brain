@@ -3,6 +3,7 @@ import {Icon} from './icons';
 import {LinkPreview} from './LinkPreview';
 import {ReaderRelations} from './ReaderRelations';
 import {MarkdownArticle} from './MarkdownArticle';
+import {ExternalLinkPreview} from './ExternalLinkPreview';
 export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,reduced}){
  const ref=useRef(null);const [full,setFull]=useState(false);const [copy,setCopy]=useState('');const [tocOpen,setTocOpen]=useState(false);
  const [copying,setCopying]=useState(false);
@@ -56,10 +57,10 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
    {node.toc.length>0&&<div className={`read-toc${tocOpen?' is-open':''}`}><button type="button" className="read-toc-toggle" aria-expanded={tocOpen} onClick={()=>setTocOpen(v=>!v)}>本页目录</button><div className="read-toc-content" inert={!tocOpen}><div>{node.toc.map(h=><a key={h.id} href={`#/doc/${encodeURIComponent(node.id)}/${encodeURIComponent(h.id)}`}>{h.title}</a>)}</div></div></div>}{article}
    {externalLinks.length>0&&<section className="read-connections" aria-label="外部链接">
     <h3>外部链接</h3>
-    {externalLinks.map(link=><a key={link.href} className="read-relation read-external-link" href={link.href} target="_blank" rel="noopener noreferrer" title={link.href}>
+    {externalLinks.map(link=><a key={link.href} className="read-relation read-external-link" href={link.href} target="_blank" rel="noopener noreferrer">
      <span><strong>{link.title}</strong><small>{link.href}</small></span><Icon name="outlink" size={13}/>
     </a>)}
    </section>}
    {node.issues.length>0&&<p className="quiet read-link-issues">未解析引用：{node.issues.map(i=>i.target+'（'+i.reason+'）').join('、')}</p>}
-   <p className="read-path">{node.path}</p></div><LinkPreview reduced={reduced} readerRef={ref} graph={graph} onPreview={onPreview}/></section>;
+   <p className="read-path">{node.path}</p></div><ExternalLinkPreview readerRef={ref} html={node.html}/><LinkPreview reduced={reduced} readerRef={ref} graph={graph} onPreview={onPreview}/></section>;
 }

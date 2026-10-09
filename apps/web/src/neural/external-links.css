@@ -1,0 +1,17 @@
+.markdown img.external-site-icon, .external-site-icon {
+  display: inline-block; width: 14px; height: 14px; max-width: none;
+  margin: 0 5px 0 0; vertical-align: -2px; object-fit: contain;
+  padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none;
+  flex-shrink: 0;
+}
+.external-address-preview {
+  position: fixed; z-index: 120; box-sizing: border-box;
+  width: max-content; max-width: min(460px, calc(100vw - 24px));
+  max-height: min(260px, calc(100vh - 24px)); overflow: auto;
+  padding: 10px 12px; border: 1px solid #a7bfd033; border-radius: 8px;
+  background: #171c23; box-shadow: 0 8px 28px #0006;
+  color: #bec7d2; font-size: 12px; line-height: 1.65; overflow-wrap: anywhere;
+  user-select: text;
+}
+.external-address-preview strong { display: block; margin-bottom: 3px; color: #e3e8ef; font-weight: 500; }
+.external-address-preview span { display: block; white-space: normal; }
