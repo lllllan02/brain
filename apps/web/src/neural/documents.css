@@ -44,3 +44,13 @@ button.read-tag{cursor:pointer;font-family:inherit;text-align:left;transition:co
 .read-external-link small{display:block;margin-top:3px;color:#8997ab;font-size:10px;line-height:1.6}
 .read-external-link:focus-visible{outline:1px solid #c0d8ed;outline-offset:3px}
 .read-link-issues{font-size:11px;line-height:1.7;margin-top:24px}
+
+/* The reader stays anchored at its top-right corner while its lower-left grip moves. */
+.galaxy-page .reader-resize-handle{display:none}
+@media(min-width:901px){
+ .galaxy-page .analysis-wrap.reader-resized{width:var(--reader-width);height:var(--reader-height);bottom:auto;transition:none}
+ .galaxy-page .analysis-wrap.reader-resizing{transition:none;user-select:none}
+ .galaxy-page .reader-resize-handle{display:grid;place-items:center;position:absolute;left:5px;bottom:5px;z-index:2;width:30px;height:30px;padding:0;border:1px solid transparent;border-radius:50%;background:transparent;color:#8796aa;cursor:nesw-resize;touch-action:none}
+ .galaxy-page .reader-resize-handle:hover,.galaxy-page .reader-resize-handle:focus-visible{color:#e4edf9;background:#cad5e310;border-color:#cad5e324}
+ .galaxy-page .reader-resize-handle:focus-visible{outline:1px solid #c0d8ed;outline-offset:1px}
+}

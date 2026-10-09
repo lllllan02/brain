@@ -50,7 +50,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
   const overviewCache = new Map();
   let hoveredCategory = null;
   let filteredLinks = false;
-  let framing = null, framingTween = null;
+  let framing = null, framingTween = null, readerLayoutDirty = false;
   const visibleLabels = new Map();
   const retiringEffects = [];
   function retireEffects() {
@@ -242,17 +242,23 @@ export function createGalaxy(container, graph, hooks, reduced) {
     }
     if (!initialFramed) { frame(true); initialFramed = true; }
   }
-  function resize() {
+  function resize(direct = false) {
     const oldMobile = width < 640;
+    const canvasChanged = width !== container.clientWidth || height !== container.clientHeight;
     width = Math.max(1, container.clientWidth); height = Math.max(1, container.clientHeight);
     const region = framingRegion.getBoundingClientRect(), viewport = container.getBoundingClientRect();
     frameWidth = Math.max(1, region.width); frameHeight = Math.max(1, region.height);
     const target = {width: frameWidth, height: frameHeight, left: region.left - viewport.left, top: region.top - viewport.top};
-    if (!framing || reduced) {framing = target; framingTween = null;}
+    const destination = framingTween?.to || framing;
+    if (!canvasChanged && destination && Object.keys(target).every(key => target[key] === destination[key]) && (!(direct || reduced) || !framingTween)) return;
+    if (!framing || reduced || direct) {framing = target; framingTween = null;}
     else framingTween = {from: {...framing}, to: target, elapsed: 0};
     renderer.setFramingRegion(framing.width, framing.height, framing.left, framing.top);
-    renderer.resize(width, height);
+    // Moving a reader edge changes the projection, not the canvas resolution.
+    // Avoid reallocating render targets and restarting the focus flight per move.
+    if (canvasChanged) renderer.resize(width, height);
     if (preset && oldMobile !== (width < 640)) renderer.applyTier(width < 640 ? TIERS.mobile : TIERS.high, preset.bloom.strength);
+    if (direct && !canvasChanged) {readerLayoutDirty = true; return;}
     if (ready) {
       if (!selected && !category && !tag && overview) {
         clusters = categoryLayout(data, overview, {aspect: frameWidth / frameHeight, elevation: preset.frameElevDeg || 18, preset: preset.id});
@@ -342,7 +348,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     camera.update(now, dt, paused || reduced ? 0 : dt);
     backdrop.update(renderer.camera, preset.id, categoryBlend, readingIndex >= 0, dt, reduced);
     renderer.render(paused || reduced ? 0 : dt, dt);
-    if (now - labelTime > 32) { labels(Math.min((now - labelTime) / 1000, .05)); labelTime = now; }
+    if (readerLayoutDirty || now - labelTime > 32) { labels(Math.min((now - labelTime) / 1000, .05)); labelTime = now; readerLayoutDirty = false; }
   }
   const pick = event => {
     const rect = canvas.getBoundingClientRect();
@@ -375,7 +381,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
   canvas.addEventListener('pointerleave', pointerLeave);
   canvas.addEventListener('pointercancel', pointerLeave);
   canvas.addEventListener('webglcontextlost', contextLost);
-  const observer = new ResizeObserver(resize); observer.observe(container);
+  const observer = new ResizeObserver(() => resize()); observer.observe(container);
   if (framingRegion !== container) observer.observe(framingRegion);
   function dispose() {
     if (disposed) return;
@@ -390,6 +396,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
   try { resize(); setPreset('nebula'); raf = requestAnimationFrame(tick); }
   catch (error) { dispose(); throw error; }
   return {
+    resizeReader() { if (!disposed) resize(true); },
     focus(sel, mod, selectedTag = null, readingId = sel) {
       if (disposed) return;
       selected = sel; category = mod; tag = selectedTag;

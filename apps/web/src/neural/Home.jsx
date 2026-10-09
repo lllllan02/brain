@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import {moduleOf} from './graph';
 import {createSearchIndex, searchDocuments} from './search.js';
 import {CONFIG, asset} from '../config';
@@ -47,6 +47,31 @@ export function Home({graph, focus, setFocus, reduced}) {
   const reviewNode = graph.index.get(reviewId);
   const reader = usePresence(node?.module ? node : null, node?.module ? node.id : null, reduced, 'translateX(16px)');
   const shownNode = reader.shown;
+  const syncReaderLayout = useCallback(() => {
+    const panel = reader.ref.current;
+    if (!panel) return;
+    const page = panel.closest('.galaxy-page');
+    page.style.setProperty('--reader-left', `${panel.offsetLeft}px`);
+    page.style.setProperty('--reader-top', `${panel.offsetTop}px`);
+    page.style.setProperty('--reader-height', `${panel.offsetHeight}px`);
+    // A pointer-driven layout already supplies each intermediate size. Publish
+    // the list position and camera projection together, without another tween.
+    if (panel.matches('.reader-resized, .reader-resizing')) scene.current?.resizeReader();
+  }, [reader.ref]);
+  useLayoutEffect(() => {
+    const panel = reader.ref.current;
+    if (!panel) return;
+    const page = panel.closest('.galaxy-page');
+    syncReaderLayout();
+    const observer = new ResizeObserver(syncReaderLayout);
+    observer.observe(panel);
+    window.addEventListener('resize', syncReaderLayout);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', syncReaderLayout);
+      ['--reader-left', '--reader-top', '--reader-height'].forEach(name => page.style.removeProperty(name));
+    };
+  }, [shownNode?.id, syncReaderLayout]);
   const review = usePresence(reviewNode?.module ? reviewNode : null, reviewNode?.module ? reviewNode.id : null, reduced);
   const go = (id, keepCluster = false) => {
     const target = graph.index.get(id); if (!target?.module) return;
@@ -206,7 +231,7 @@ export function Home({graph, focus, setFocus, reduced}) {
     <ClusterList graph={graph} cluster={activeCluster} selected={node?.id} reduced={reduced} getAnchor={listAnchor}
       onPresenceChange={setClusterVisible} onSelect={id => go(id, true)} onClose={() => setReaderCluster({owner: focus.sel, value: null})}/>
     {shownNode && <div ref={reader.ref} inert={reader.closing} className="analysis-wrap">
-      <DocumentReader key={shownNode.id} reduced={reduced} onPreview={previewNode} graph={graph} node={shownNode} module={moduleOf(graph, shownNode)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>
+      <DocumentReader onResize={syncReaderLayout} key={shownNode.id} reduced={reduced} onPreview={previewNode} graph={graph} node={shownNode} module={moduleOf(graph, shownNode)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>
     </div>}
   </section>;
 }

@@ -4,9 +4,11 @@ import {LinkPreview} from './LinkPreview';
 import {ReaderRelations} from './ReaderRelations';
 import {MarkdownArticle} from './MarkdownArticle';
 import {ExternalLinkPreview} from './ExternalLinkPreview';
-export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,reduced}){
+import {useReaderResize} from './useReaderResize';
+export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,onResize,reduced}){
  const ref=useRef(null);const [full,setFull]=useState(false);const [copy,setCopy]=useState('');const [tocOpen,setTocOpen]=useState(false);
  const [copying,setCopying]=useState(false);
+ const resizeHandlers=useReaderResize(ref,full,onResize);
  useEffect(()=>{if(!copy)return;const timer=setTimeout(()=>setCopy(''),4000);return()=>clearTimeout(timer);},[copy]);
  useEffect(()=>{const scroll=()=>{const part=location.hash.split('/')[3];if(!part)return;requestAnimationFrame(()=>{const id=decodeURIComponent(part);const target=[...ref.current.querySelectorAll('[id]')].find(el=>el.id===id);target?.scrollIntoView({block:'start'});});};scroll();window.addEventListener('hashchange',scroll);return()=>window.removeEventListener('hashchange',scroll);},[node.id,node.html]);
  useEffect(()=>{const wrap=ref.current.closest('.analysis-wrap');wrap.classList.toggle('full-reader',full);return()=>wrap.classList.remove('full-reader');},[full]);
@@ -37,6 +39,7 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
  const handleClick=async e=>{const button=e.target.closest('.copy-code');if(!button)return;const label=button.closest('.diagram-block')?'复制源码':'复制';try{await navigator.clipboard.writeText(button.closest('.code-block').querySelector(button.closest('.diagram-block')?'.diagram-source code':'pre code').textContent);button.textContent='已复制';setTimeout(()=>button.textContent=label,1800);}catch{setCopy('请手动选择代码进行复制。');}};
  return <section className="analysis glass document-reader" ref={ref}>
   <div className="an-float">文档阅读</div>
+  <button type="button" className="reader-resize-handle" aria-label="调整阅读卡片大小" title="拖动调整大小，也可聚焦后使用方向键" {...resizeHandlers}><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4v4a5 5 0 0 0 5 5h4M7 4v3a2 2 0 0 0 2 2h3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></button>
   <div className="an-scroll" onClick={handleClick}>
    <div className="an-title-row">
     <h2>{node.title}</h2>

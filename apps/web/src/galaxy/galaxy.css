@@ -114,3 +114,14 @@
 
 /* Folder provenance is a quiet shape cue, independent of focus brightness. */
 .cluster-card-port.is-inbox,.cluster-list-item[aria-current="page"] .cluster-card-port.is-inbox{background:transparent;border:1.5px solid #c2cbef}
+
+/* Keep the title column beside the real reading edge rather than its default width. */
+@media(min-width:901px){
+ .galaxy-page{--reader-left:calc(100% - clamp(380px,33vw,470px) - 24px);--reader-list-width:min(250px,calc(var(--reader-left) - 34px))}
+ .galaxy-browsing .analysis-wrap{max-width:calc(100% - 260px)}
+ .galaxy-browsing .cluster-list{left:auto;right:calc(100% - var(--reader-left) + 18px);width:var(--reader-list-width);top:calc(var(--reader-top,85px) + 11px);bottom:auto;height:calc(var(--reader-height,calc(100svh - 185px)) - 21px)}
+ .galaxy-reading .galaxy-frame{right:calc(100% - var(--reader-left) + 24px)}
+ .galaxy-browsing .galaxy-frame{right:min(calc(100% - 120px),calc(100% - var(--reader-left) + var(--reader-list-width) + 36px))}
+ .cluster-list-header h2{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .cluster-list-header small{flex-shrink:0}
+}
