@@ -4,6 +4,8 @@ import {LinkPreview} from './LinkPreview';
 import {ReaderRelations} from './ReaderRelations';
 export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,reduced}){
  const ref=useRef(null);const [full,setFull]=useState(false);const [copy,setCopy]=useState('');const [tocOpen,setTocOpen]=useState(false);
+ const [copying,setCopying]=useState(false);
+ useEffect(()=>{if(!copy)return;const timer=setTimeout(()=>setCopy(''),4000);return()=>clearTimeout(timer);},[copy]);
  useEffect(()=>{const scroll=()=>{const part=location.hash.split('/')[3];if(!part)return;requestAnimationFrame(()=>{const id=decodeURIComponent(part);const target=[...ref.current.querySelectorAll('[id]')].find(el=>el.id===id);target?.scrollIntoView({block:'start'});});};scroll();window.addEventListener('hashchange',scroll);return()=>window.removeEventListener('hashchange',scroll);},[node.id,node.html]);
  useEffect(()=>{const wrap=ref.current.closest('.analysis-wrap');wrap.classList.toggle('full-reader',full);return()=>wrap.classList.remove('full-reader');},[full]);
  const article=useMemo(()=><article className="markdown" dangerouslySetInnerHTML={{__html:node.html}}/>,[node.html]);
@@ -22,6 +24,14 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
   }
   return [...links.values()];
  },[node.html]);
+ const copyDocument=async titleOnly=>{
+  setCopy('');setCopying(true);
+  try{
+   await navigator.clipboard.writeText(titleOnly?node.title:`# ${node.title}\n\n${node.body}`);
+   setCopy(titleOnly?'标题已复制':'全文已复制');
+  }catch{setCopy('复制失败，请手动选择内容复制。');}
+  finally{setCopying(false);}
+ };
  const handleClick=async e=>{const button=e.target.closest('.copy-code');if(!button)return;try{await navigator.clipboard.writeText(button.closest('.code-block').querySelector('code').textContent);button.textContent='已复制';setTimeout(()=>button.textContent='复制',1800);}catch{setCopy('请手动选择代码进行复制。');}};
  return <section className="analysis glass document-reader" ref={ref}>
   <div className="an-float">文档阅读</div>
@@ -34,8 +44,15 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
     </div>
    </div>
    <ReaderRelations graph={graph} node={node} module={module} cluster={cluster} onChoose={next=>{setFull(false);onCluster(next);}}/>
-   <p className="read-meta">{node.updated?'更新于 '+node.updated+' · ':''}{Math.max(1,Math.ceil(node.body.length/500))} 分钟阅读</p>
-   {node.toc.length>0&&<div className={`read-toc${tocOpen?' is-open':''}`}><button type="button" className="read-toc-toggle" aria-expanded={tocOpen} onClick={()=>setTocOpen(v=>!v)}>本页目录</button><div className="read-toc-content" inert={!tocOpen}><div>{node.toc.map(h=><a key={h.id} href={`#/doc/${encodeURIComponent(node.id)}/${encodeURIComponent(h.id)}`}>{h.title}</a>)}</div></div></div>}{article}{copy&&<p role="status">{copy}</p>}
+   <div className="read-meta-row">
+    <p className="read-meta">{node.updated?'更新于 '+node.updated+' · ':''}{Math.max(1,Math.ceil(node.body.length/500))} 分钟阅读</p>
+    <div className="read-copy-actions" role="group" aria-label="复制文档">
+     <button type="button" disabled={copying} onClick={()=>copyDocument(true)}>复制标题</button>
+     <button type="button" disabled={copying} title="复制标题和 Markdown 正文" onClick={()=>copyDocument(false)}>复制全文</button>
+    </div>
+    <span className="read-copy-status" role="status" aria-atomic="true">{copy}</span>
+   </div>
+   {node.toc.length>0&&<div className={`read-toc${tocOpen?' is-open':''}`}><button type="button" className="read-toc-toggle" aria-expanded={tocOpen} onClick={()=>setTocOpen(v=>!v)}>本页目录</button><div className="read-toc-content" inert={!tocOpen}><div>{node.toc.map(h=><a key={h.id} href={`#/doc/${encodeURIComponent(node.id)}/${encodeURIComponent(h.id)}`}>{h.title}</a>)}</div></div></div>}{article}
    {externalLinks.length>0&&<section className="read-connections" aria-label="外部链接">
     <h3>外部链接</h3>
     {externalLinks.map(link=><a key={link.href} className="read-relation read-external-link" href={link.href} target="_blank" rel="noopener noreferrer" title={link.href}>

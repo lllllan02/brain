@@ -5,6 +5,15 @@
 
 .document-reader .an-title-row h2{min-width:0;flex:1}
 .document-reader .read-actions{flex-shrink:0;padding-top:3px}
+.read-meta-row{display:flex;flex-wrap:wrap;align-items:center;gap:0 16px;margin:8px 0 20px}
+.read-meta-row .read-meta{margin:0}
+.read-copy-actions{display:flex;gap:12px;margin-left:auto}
+.read-copy-actions button{padding:5px 0;border:0;border-bottom:1px solid transparent;background:transparent;color:#9eacc1;font:inherit;font-size:11px;line-height:1.7;white-space:nowrap;cursor:pointer}
+.read-copy-actions button:hover{color:#e4edf9;border-bottom-color:#a7bfd066}
+.read-copy-actions button:focus-visible{outline:1px solid #c0d8ed;outline-offset:3px}
+.read-copy-actions button:disabled{opacity:.5;cursor:wait}
+.read-copy-status{flex-basis:100%;font-size:11px;line-height:1.7;color:var(--text-2)}
+.read-copy-status:not(:empty){padding-top:4px}
 .read-properties{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;margin:10px 0 0}
 .read-properties>div{display:flex;align-items:baseline;gap:7px;min-width:0;max-width:100%}
 .read-properties dt{font-size:10px;color:var(--muted);font-weight:400;flex-shrink:0}
