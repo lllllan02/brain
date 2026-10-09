@@ -31,4 +31,6 @@ updated_at: "2026-10-09"
 
 一种输入组合是「当前有效指令与任务状态 + 历史摘要 + 尚未压缩的交互 + 必要的外部信息」，当前用户输入只加入一次。**每轮调用前检查容量、工具请求与结果的配对关系，以及关键约束是否保留。** 压缩可以按预算触发，也可在阶段结束后提前完成。[上下文管理实践](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 
+[[long-term-memory|长期记忆]]将跨会话信息按需带入模型输入，召回内容仍需参与筛选、去重与预算管理。
+
 完整历史的[[agent-storage|存储]]与模型输入分别管理；压缩或裁剪本轮输入不要求删除原始记录。[会话记录与上下文的区别](https://www.anthropic.com/engineering/managed-agents)
