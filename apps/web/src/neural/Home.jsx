@@ -39,6 +39,7 @@ export function Home({graph, focus, setFocus, reduced}) {
   const viewIndex = views.findIndex(([id]) => id === preset);
   const nextView = views[(viewIndex + 1) % views.length];
   const [query, setQuery] = useState(''), [searchOpen, setSearchOpen] = useState(false);
+  const [searchSelection, setSearchSelection] = useState(null);
   const [reviewId, setReviewId] = useState(null);
   current.current = {focus, setFocus, preset, expanded, groupCluster, reduced};
   const documents = useMemo(() => graph.nodes.filter(node => node.module), [graph]);
@@ -63,8 +64,16 @@ export function Home({graph, focus, setFocus, reduced}) {
   };
   const searchIndex = useMemo(() => createSearchIndex(documents), [documents]);
   const results = useMemo(() => searchDocuments(searchIndex, query), [query, searchIndex]);
+  // A new query or refreshed index always starts at the first result.
+  const activeResultIndex = searchSelection?.results === results ? searchSelection.index : 0;
+  const searchVisible = Boolean(searchOpen && query.trim());
   // Animate opening/closing only; changing the query must update rows immediately.
-  const search = usePresence(searchOpen && query.trim() ? {results} : null, searchOpen && query.trim() ? 'search' : null, reduced);
+  const search = usePresence(searchVisible ? {results, activeResultIndex} : null, searchVisible ? 'search' : null, reduced);
+  useEffect(() => {
+    if (searchVisible && !search.closing) {
+      search.ref.current?.querySelector('[aria-selected="true"]')?.scrollIntoView({block: 'nearest', behavior: 'instant'});
+    }
+  }, [search.shown?.results, activeResultIndex, searchVisible, search.closing]);
   const statusText = error || (!documents.length ? '还没有文档。保存笔记后，这里会亮起第一颗星。' : !ready ? '正在展开星系…' : null);
   const status = usePresence(statusText, statusText, reduced, 'none');
   useEffect(() => {
@@ -139,19 +148,32 @@ export function Home({graph, focus, setFocus, reduced}) {
       </a>
     </header>
     <div className={`galaxy-search-dock${reviewNode?.module ? ' has-review' : ''}`} onBlur={event => {if (!event.currentTarget.contains(event.relatedTarget)) setSearchOpen(false);}}>
-      {search.shown && <div ref={search.ref} inert={search.closing} className="galaxy-results" id="galaxy-search-results" role="region" aria-label="搜索结果">
+      {search.shown && <div ref={search.ref} inert={search.closing} className="galaxy-results" role="region" aria-label="搜索结果">
         <p role="status">{search.shown.results.length ? `${search.shown.results.length} 篇文档` : '没有找到相关内容'}</p>
-        {search.shown.results.map(n => <button key={n.id} onClick={() => go(n.id)}><span>{n.title}</span><small>{n.category || '未分类'} · {n.collection === 'inbox' ? 'Inbox' : 'Notes'}</small></button>)}
+        <div id="galaxy-search-results" role="listbox" aria-label="搜索笔记结果">
+          {search.shown.results.map((n, index) => <button key={n.id} id={`galaxy-search-result-${index}`} type="button" role="option" tabIndex={-1}
+            aria-selected={index === search.shown.activeResultIndex}
+            onPointerMove={() => setSearchSelection({results, index})}
+            onMouseDown={event => event.preventDefault()} onClick={() => go(n.id)}>
+            <span>{n.title}</span><small>{n.category || '未分类'} · {n.collection === 'inbox' ? 'Inbox' : 'Notes'}</small>
+          </button>)}
+        </div>
       </div>}
-      <form className="galaxy-search" role="search" onSubmit={event => {event.preventDefault();if(!composing.current && results.length)go(results[0].id);}}>
+      <form className="galaxy-search" role="search" onSubmit={event => {event.preventDefault();if(!composing.current && searchVisible && results[activeResultIndex])go(results[activeResultIndex].id);}}>
         <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
-        <input ref={searchInput} value={query} onFocus={() => setSearchOpen(true)} onChange={event => {setQuery(event.target.value);setSearchOpen(true);}} placeholder="搜索笔记" aria-label="搜索标题、别名、标签或正文" aria-controls="galaxy-search-results" autoComplete="off"
+        <input ref={searchInput} value={query} onFocus={() => setSearchOpen(true)} onChange={event => {setQuery(event.target.value);setSearchOpen(true);}} placeholder="搜索笔记" aria-label="搜索标题、别名、标签或正文"
+          role="combobox" aria-autocomplete="list" aria-expanded={searchVisible} aria-controls={searchVisible ? 'galaxy-search-results' : undefined}
+          aria-activedescendant={searchVisible && results.length ? `galaxy-search-result-${activeResultIndex}` : undefined} autoComplete="off"
           onCompositionStart={() => {composing.current = true;}} onCompositionEnd={() => {composing.current = false;}} onKeyDown={event => {
           if(composing.current || event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229) {
             if(event.key === 'Enter') event.preventDefault();
             return;
           }
-          if(event.key === 'ArrowDown') {event.preventDefault();event.currentTarget.closest('.galaxy-search-dock').querySelector('.galaxy-results button')?.focus();}
+          if(event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+            event.preventDefault();
+            setSearchOpen(true);
+            if(results.length) setSearchSelection({results, index: Math.max(0, Math.min(results.length - 1, activeResultIndex + (event.key === 'ArrowDown' ? 1 : -1)))});
+          }
         }}/>
         {query && <button type="button" className="galaxy-search-clear" aria-label="清空搜索" onClick={() => {setQuery('');searchInput.current?.focus();}}>×</button>}
       </form>
