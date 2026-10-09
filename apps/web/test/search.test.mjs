@@ -46,6 +46,36 @@ test('多关键词要求全部命中，支持跨字段和不同词序，连续�
   assert.deepEqual(results(documents, '一致性 ZooKeeper ZooKeeper'), ['phrase', 'title', 'cross-field', 'body']);
 });
 
+test('中英文标题按中文主标题排序，同时保留英文和完整标题的检索', () => {
+  const documents = [
+    note('storage', '长期记忆如何存储'),
+    note('types', '长期记忆的内容分类'),
+    note('overview', '长期记忆（Long-term Memory）'),
+    note('alias', '其他名称', {aliases: ['长期记忆']}),
+  ];
+  for (const query of ['长期', '长期记忆', '记忆 长期']) {
+    assert.equal(results(documents, query)[0], 'overview');
+    assert.equal(results([...documents].reverse(), query)[0], 'overview');
+  }
+  for (const query of ['Long-term Memory', '长期记忆（Long-term Memory）', '长期 Memory']) {
+    assert.deepEqual(results(documents, query), ['overview']);
+  }
+  assert.deepEqual(results(documents, '长期记忆如何存储'), ['storage']);
+});
+
+test('只简化中文标题的末尾英文注释，不去掉中文限定或英文标题中的括号', () => {
+  const documents = [
+    note('qualified', '长期记忆（进阶）'),
+    note('english', 'Memory (Advanced)'),
+    note('plain', '长期记忆'),
+    note('translated', '长期记忆 (Long-term Memory)'),
+    note('suffix', '长期记忆（Long-term Memory）的存储'),
+  ];
+  assert.deepEqual(results(documents, '长期'), ['plain', 'translated', 'qualified', 'suffix']);
+  assert.deepEqual(results(documents, '进阶'), ['qualified']);
+  assert.deepEqual(results(documents, 'Advanced'), ['english']);
+});
+
 test('忽略大小写、全半角和多余空白，保留 C++ 等技术词的标点', () => {
   const documents = [note('cpp', 'C++'), note('c', 'C'), note('sc', 'Sequential Consistency')];
   assert.deepEqual(results(documents, '  ＳＥＱＵＥＮＴＩＡＬ\t consistency  '), ['sc']);
