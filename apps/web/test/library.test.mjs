@@ -21,6 +21,32 @@ test('不执行正文 HTML、危险链接及代码中的脚本',()=>{
  const a=doc('<script>alert(1)</script>\n\n[x](javascript:alert%281%29)\n\n```html\n<img src=x onerror=alert(1)>\n```');
  const html=renderDocument(a,[a]).html;assert.doesNotMatch(html,/<script>|href="javascript:|<img src=x/);assert.match(html,/&lt;script&gt;/);
 });
+test('Mermaid 保留原始源码并标记图表，图内文本不产生链接或执行 HTML',()=>{
+ const source='flowchart LR\n A["[[missing]] & <img src=x onerror=alert(1)>"] --> B[完成]';
+ const a=doc('```mermaid\n'+source+'\n```\n\n```js\nconst x = 1;\n```');
+ const result=renderDocument(a,[a]);
+ assert.equal(result.references.length,0);
+ assert.equal(result.issues.length,0);
+ assert.equal((result.html.match(/class="code-block diagram-block"/g)||[]).length,1);
+ assert.match(result.html,/<details class="diagram-source" open>/);
+ assert.match(result.html,/\[\[missing\]\] &amp; &lt;img/);
+ assert.doesNotMatch(result.html,/<img|<svg/);
+ assert.match(result.html,/hljs-keyword/);
+ assert.equal(result.body,a.body);
+});
+test('Mermaid 时序图、多图及大小写围栏在本地与 Pages 中保持一致',async()=>{
+ const root=await mkdtemp(path.join(os.tmpdir(),'brain-diagrams-'));
+ try{
+  await mkdir(path.join(root,'inbox'));
+  await writeFile(path.join(root,'inbox/chart.md'),'```mermaid\nsequenceDiagram\n A->>B: 请求<br/>下一行\n```\n\n```Mermaid title\nflowchart TD\n A --> B\n```');
+  const {pagesLibrary}=await import('../scripts/build-pages.mjs');
+  const local=await loadLibrary(root);
+  const {library}=await pagesLibrary(root);
+  assert.deepEqual(library,local);
+  assert.equal((library.documents[0].html.match(/class="code-block diagram-block"/g)||[]).length,2);
+  assert.match(library.documents[0].html,/请求&lt;br\/&gt;下一行/);
+ }finally{await rm(root,{recursive:true,force:true});}
+});
 test('附件限于 content 内 assets，拒绝越界和符号链接',async()=>{
  const root=await mkdtemp(path.join(os.tmpdir(),'brain-assets-'));
  try{await mkdir(path.join(root,'assets'));await writeFile(path.join(root,'assets/a.png'),'x');await symlink('/etc/passwd',path.join(root,'assets/escape.png'));assert.ok(await safeAsset(root,'assets/a.png'));assert.equal(await safeAsset(root,'../../etc/passwd'),null);assert.equal(await safeAsset(root,'assets/escape.png'),null);}finally{await rm(root,{recursive:true,force:true});}

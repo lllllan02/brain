@@ -72,7 +72,14 @@ export function renderDocument(doc, documents) {
     html: text => escape(text),
     heading(text, level, raw) { const id = headingId(raw); toc.push({id, title: raw.replace(/[*`]/g,''), level}); return `<h${level} id="${escape(id)}">${text}</h${level}>`; },
     paragraph(text) { const block = text.match(/\s*\^([\w-]+)\s*$/); return `<p${block ? ` id="^${escape(block[1])}"` : ''}>${block ? text.slice(0, block.index) : text}</p>`; },
-    code(code, language) { const lang = (language || '').split(/\s/)[0]; const value = lang && hljs.getLanguage(lang) ? hljs.highlight(code, {language:lang}).value : escape(code); return `<div class="code-block"><div class="code-header"><span>${escape(lang || 'text')}</span><button type="button" class="copy-code">复制</button></div><pre><code>${value}</code></pre></div>`; },
+    code(code, language) {
+      const lang = (language || '').trim().split(/\s/)[0];
+      if (lang.toLowerCase() === 'mermaid') {
+        return `<div class="code-block diagram-block"><div class="code-header"><span>Mermaid</span><button type="button" class="copy-code">复制源码</button></div><p class="diagram-status" role="status">正在绘制图表…</p><div class="diagram-canvas" hidden tabindex="0" role="region" aria-label="图表，可横向滚动"></div><details class="diagram-source" open><summary>查看源码</summary><pre><code>${escape(code)}</code></pre></details></div>`;
+      }
+      const value = lang && hljs.getLanguage(lang) ? hljs.highlight(code, {language:lang}).value : escape(code);
+      return `<div class="code-block"><div class="code-header"><span>${escape(lang || 'text')}</span><button type="button" class="copy-code">复制</button></div><pre><code>${value}</code></pre></div>`;
+    },
     link(href, title, text) { if (/^(https?:|mailto:)/i.test(href)) return `<a href="${escape(href)}" target="_blank" rel="noopener noreferrer">${text} ↗</a>`; if (href.startsWith('#')) return `<a href="#/doc/${encodeURIComponent(doc.id)}/${encodeURIComponent(slug(decodeURIComponent(href.slice(1))))}">${text}</a>`; if (/^[a-z][a-z0-9+.-]*:/i.test(href) || href.startsWith('//')) return `<span>${text}</span>`; if (/\.(png|jpe?g|gif|webp|pdf|mp3|mp4)(?:#|$)/i.test(href)) return `<a href="/api/asset?path=${encodeURIComponent(href)}&from=${encodeURIComponent(doc.path)}" target="_blank" rel="noopener">${text} ↗</a>`; return wiki(decodeURIComponent(href), text.replace(/<[^>]*>/g,''), false); },
     image(href, title, text) { if (/^(https?:|data:|javascript:)/i.test(href)) return `<span class="broken-link">外部图片：${escape(text)}</span>`; return `<img loading="lazy" src="/api/asset?path=${encodeURIComponent(href)}&from=${encodeURIComponent(doc.path)}" alt="${escape(text)}">`; },
     table(header, body) { return `<div class="table-wrap"><table><thead>${header}</thead><tbody>${body}</tbody></table></div>`; }

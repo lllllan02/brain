@@ -1,0 +1,10 @@
+.diagram-block { min-width: 0; }
+.diagram-block .copy-code { border: 0; background: none; padding: 0; cursor: pointer; }
+.markdown .diagram-status { margin: 0; padding: 16px; color: #9daabd; font-size: 12px; }
+.diagram-canvas { overflow: auto; max-width: 100%; padding: 16px; scrollbar-width: thin; }
+.diagram-canvas svg { display: block; height: auto; margin: 0 auto; }
+.diagram-canvas:focus-visible, .diagram-source summary:focus-visible { outline: 1px solid #9daabd; outline-offset: -2px; }
+.diagram-source { border-top: 1px solid #ffffff0d; }
+.diagram-source summary { padding: 9px 12px; color: #9daabd; font-size: 11px; cursor: pointer; }
+.diagram-source pre { border-top: 1px solid #ffffff08; }
+.diagram-render-host { position: fixed; left: -100000px; top: 0; width: 1200px; visibility: hidden; pointer-events: none; }

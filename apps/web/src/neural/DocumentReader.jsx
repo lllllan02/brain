@@ -2,13 +2,14 @@ import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {Icon} from './icons';
 import {LinkPreview} from './LinkPreview';
 import {ReaderRelations} from './ReaderRelations';
+import {MarkdownArticle} from './MarkdownArticle';
 export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,reduced}){
  const ref=useRef(null);const [full,setFull]=useState(false);const [copy,setCopy]=useState('');const [tocOpen,setTocOpen]=useState(false);
  const [copying,setCopying]=useState(false);
  useEffect(()=>{if(!copy)return;const timer=setTimeout(()=>setCopy(''),4000);return()=>clearTimeout(timer);},[copy]);
  useEffect(()=>{const scroll=()=>{const part=location.hash.split('/')[3];if(!part)return;requestAnimationFrame(()=>{const id=decodeURIComponent(part);const target=[...ref.current.querySelectorAll('[id]')].find(el=>el.id===id);target?.scrollIntoView({block:'start'});});};scroll();window.addEventListener('hashchange',scroll);return()=>window.removeEventListener('hashchange',scroll);},[node.id,node.html]);
  useEffect(()=>{const wrap=ref.current.closest('.analysis-wrap');wrap.classList.toggle('full-reader',full);return()=>wrap.classList.remove('full-reader');},[full]);
- const article=useMemo(()=><article className="markdown" dangerouslySetInnerHTML={{__html:node.html}}/>,[node.html]);
+ const article=<MarkdownArticle html={node.html}/>;
  const externalLinks=useMemo(()=>{
   // Read rendered anchors, so code samples, internal references and attachments
   // cannot accidentally become external links. Template content stays inert.
@@ -32,7 +33,7 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
   }catch{setCopy('复制失败，请手动选择内容复制。');}
   finally{setCopying(false);}
  };
- const handleClick=async e=>{const button=e.target.closest('.copy-code');if(!button)return;try{await navigator.clipboard.writeText(button.closest('.code-block').querySelector('code').textContent);button.textContent='已复制';setTimeout(()=>button.textContent='复制',1800);}catch{setCopy('请手动选择代码进行复制。');}};
+ const handleClick=async e=>{const button=e.target.closest('.copy-code');if(!button)return;const label=button.closest('.diagram-block')?'复制源码':'复制';try{await navigator.clipboard.writeText(button.closest('.code-block').querySelector(button.closest('.diagram-block')?'.diagram-source code':'pre code').textContent);button.textContent='已复制';setTimeout(()=>button.textContent=label,1800);}catch{setCopy('请手动选择代码进行复制。');}};
  return <section className="analysis glass document-reader" ref={ref}>
   <div className="an-float">文档阅读</div>
   <div className="an-scroll" onClick={handleClick}>

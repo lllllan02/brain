@@ -16,6 +16,7 @@
     "highlight.js": "11.9.0",
     "js-yaml": "4.1.0",
     "marked": "4.3.0",
+    "mermaid": "12.1.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "three": "0.184.0",

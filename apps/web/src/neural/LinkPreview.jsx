@@ -3,6 +3,7 @@ import {createPortal} from 'react-dom';
 import './link-preview.css';
 import {usePresence} from '../motion/usePresence';
 import {motionVariables} from '../motion/tokens.js';
+import {MarkdownArticle} from './MarkdownArticle';
 
 // Only use the already-filtered library, including in the public Pages build.
 function resolvePreview(element, graph) {
@@ -194,7 +195,7 @@ export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPrevie
         <div><span className="link-preview-label">文档预览 · {preview.node.category || '未分类'}</span><a className="link-preview-title" href={preview.href}>{preview.node.title}</a></div>
         <button type="button" className="link-preview-close" aria-label="关闭预览">×</button>
       </header>
-      <div className="link-preview-scroll" ref={scrollRef} tabIndex={0} aria-label="预览正文"><article className="markdown" dangerouslySetInnerHTML={{__html: html}}/></div>
+      <div className="link-preview-scroll" ref={scrollRef} tabIndex={0} aria-label="预览正文"><MarkdownArticle html={html}/></div>
       <footer className="link-preview-footer"><span>滚动预览</span><a href={preview.href}>打开文档 ↗</a></footer>
     </aside>, document.body
   );
