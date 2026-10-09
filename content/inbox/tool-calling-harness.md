@@ -18,6 +18,6 @@ updated_at: "2026-10-09"
 
 程序侧发现与注册解决工具接入，模型侧按需加载决定本轮提供哪些定义。工具少时可以全部加载，工具多时再引入搜索等选择机制。[工具搜索与加载参考](https://developers.openai.com/api/docs/guides/tools-tool-search)
 
-贯穿全程的能力包括执行隔离，以及记录工具选择、参数、耗时、结果和错误的 [[agent-trace-requirements|Trace]]，用于排查与评测。工具可见不代表调用已获授权，执行时仍需检查权限。[权限与约束参考](https://developers.openai.com/api/docs/guides/agents/guardrails-approvals)
+贯穿全程的能力包括通过[[agent-sandbox|沙箱]]限制程序执行，以及记录工具选择、参数、耗时、结果和错误的 [[agent-trace-requirements|Trace]]，用于排查与评测。工具可见不代表调用已获授权，执行时仍需检查权限。[权限与约束参考](https://developers.openai.com/api/docs/guides/agents/guardrails-approvals)
 
 重试前需判断操作是否可重复；超时不代表操作未发生，应通过状态查询或幂等机制避免重复副作用。[执行与重试参考](https://developers.openai.com/api/docs/guides/tools-programmatic-tool-calling)
