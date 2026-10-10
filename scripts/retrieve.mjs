@@ -13,13 +13,13 @@ import path from 'node:path';
 import { readdir, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { parseDocument, renderDocument } from '../apps/web/src/library.mjs';
+import { documentTime } from '../apps/web/src/document-dates.js';
 
 import { CONTENT_COLLECTIONS } from '../apps/web/src/collections.js';
 const DEFAULT_DIRS = CONTENT_COLLECTIONS.map(dir => `content/${dir}`);
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const NAME_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 async function walk(dir) {
   const out = [];
@@ -222,9 +222,9 @@ function doLint(lib, options) {
     if (!fm) findings.frontmatter.push(`${doc.path} 缺少 frontmatter`);
     else if (!/^title\s*:/m.test(fm[1])) findings.title.push(`${doc.path} 缺少 title`);
     for (const [field, value] of [['created_at', doc.created], ['updated_at', doc.updated]]) {
-      if (value != null && !DATE_RE.test(String(value))) findings.date.push(`${doc.id} ${field}=${value} 非 YYYY-MM-DD`);
+      if (value != null && !Number.isFinite(documentTime(value))) findings.date.push(`${doc.id} ${field}=${value} 不是有效日期或带时区、精确到秒的时间`);
     }
-    if (doc.created && doc.updated && DATE_RE.test(String(doc.created)) && DATE_RE.test(String(doc.updated)) && doc.updated < doc.created) {
+    if (documentTime(doc.updated) < documentTime(doc.created)) {
       findings.date.push(`${doc.id} updated_at 早于 created_at`);
     }
     if (!NAME_RE.test(doc.id)) findings.name.push(`${doc.id}.md 不符合小写英文短横线命名`);
