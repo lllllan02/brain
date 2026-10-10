@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import {useViewState} from './useViewState';
+import React from 'react';
 import {Icon} from './icons';
 import {documentSources} from './document-sources.js';
 
-export function ReaderSources({sources}) {
-  const [expanded, setExpanded] = useState(false);
+export function ReaderSources({sources, documentId}) {
+  const [expanded, setExpanded] = useViewState(`sources:${documentId}`, false);
   const items = documentSources(sources);
   if (!items.length) return null;
   return <div className={`reader-sources${expanded ? ' is-expanded' : ''}`} aria-label="文档来源">

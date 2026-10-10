@@ -1,3 +1,4 @@
+import {readViewState, writeViewState} from './view-state';
 import {Icon} from './icons';
 import {collectionLabel} from '../collections.js';
 import React, {useEffect, useLayoutEffect, useMemo, useRef} from 'react';
@@ -41,7 +42,8 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
 
   useEffect(() => {
     if (!shown || !scroll.current) return;
-    scroll.current.scrollTop = 0;
+    // The track height is established in the layout effect below.
+    scroll.current.scrollTop = readViewState(`listScroll:${selectionKey}`, 0, value => Number.isFinite(value) && value >= 0);
     // Automatically opened references should not move focus away from the reader.
     if (!shown.document && !timeline) scroll.current.focus({preventScroll: true});
   }, [selectionKey]);
@@ -59,6 +61,7 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
       scroller.style.setProperty('--cluster-viewport-height', `${scroller.clientHeight}px`);
     };
     size();
+    scroller.scrollTop = readViewState(`listScroll:${selectionKey}`, 0, value => Number.isFinite(value) && value >= 0);
     const paths = svg.current.querySelectorAll('.cluster-thread');
     const sparks = svg.current.querySelectorAll('.cluster-thread-sparks');
     const rows = Array.from(scroller.querySelectorAll('.cluster-list-item'), (row, i) => ({
@@ -158,7 +161,10 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
     };
     // Scroll events run before animation-frame callbacks. Update immediately so
     // scrollbar dragging and wheel/touch scrolling share the same geometry.
-    const onScroll = () => update(performance.now());
+    const onScroll = () => {
+      writeViewState(`listScroll:${selectionKey}`, scroller.scrollTop);
+      update(performance.now());
+    };
     const resize = new ResizeObserver(() => { size(); update(performance.now()); });
     resize.observe(scroller);
     resize.observe(content);

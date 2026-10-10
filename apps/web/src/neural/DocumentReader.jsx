@@ -1,3 +1,4 @@
+import {useViewState} from './useViewState';
 import {CollectionIcon} from './CollectionIcon';
 import React,{useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {Icon} from './icons';
@@ -11,10 +12,11 @@ import {copyDocumentMarkdown} from './document-sources.js';
 import {useToolbarTitle} from './useToolbarTitle';
 import {useReaderResize} from './useReaderResize';
 export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,onResize,reduced,readingLocation,onReadingScroll,navigation,collectionAction}){
- const ref=useRef(null);const [full,setFull]=useState(false);const [copy,setCopy]=useState('');const [tocOpen,setTocOpen]=useState(false);
- const [detailsOpen,setDetailsOpen]=useState(false);
+ const ref=useRef(null);const [full,setFull]=useViewState('readerFull',false);const [copy,setCopy]=useState('');const [tocOpen,setTocOpen]=useViewState(`toc:${node.id}`,false);
+ const [detailsOpen,setDetailsOpen]=useViewState(`details:${node.id}`,false);
  const [copying,setCopying]=useState(false);
  const titleRef=useRef(null);
+ useLayoutEffect(()=>{const wrap=ref.current.closest('.analysis-wrap');wrap.classList.toggle('full-reader',full);return()=>wrap.classList.remove('full-reader');},[full]);
  const resizeHandlers=useReaderResize(ref,full,onResize);
  useEffect(()=>{if(!copy)return;const timer=setTimeout(()=>setCopy(''),4000);return()=>clearTimeout(timer);},[copy]);
  useLayoutEffect(()=>{
@@ -23,8 +25,7 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
   const top=readingLocation?.scroll??(target?target.getBoundingClientRect().top-scroller.getBoundingClientRect().top+scroller.scrollTop:0);
   scroller.scrollTo({top,behavior:'instant'});
  },[node.id,readingLocation?.key]);
- useEffect(()=>{const wrap=ref.current.closest('.analysis-wrap');wrap.classList.toggle('full-reader',full);return()=>wrap.classList.remove('full-reader');},[full]);
- useEffect(()=>{setTocOpen(false);setDetailsOpen(false);setCopy('');},[node.id]);
+
  const toolbarTitle=useToolbarTitle(ref,titleRef,node.id,readingLocation?.key);
  const canMove=collectionAction&&['inbox','notes'].includes(node.collection);
  const moveLabel=node.collection==='inbox'?'已理解，移入 Notes':'重新学习，移回 Inbox';
@@ -72,7 +73,7 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
     <h2 ref={titleRef}>{titleIcon}{node.title}</h2>
     {navigation}
    </div>
-   <ReaderSources key={node.id} sources={node.sources}/>
+   <ReaderSources documentId={node.id} key={node.id} sources={node.sources}/>
    </header>
    <div className="reader-navigation-row">
     <ReaderRelations {...relations} section="tags"/>

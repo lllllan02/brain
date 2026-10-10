@@ -1,28 +1,28 @@
-import {useEffect, useRef} from 'react';
+import {useLayoutEffect, useRef} from 'react';
+import {readViewState, writeViewState, validSize} from './view-state';
 
 export function useReaderResize(readerRef, full, onResize) {
  const drag = useRef(null);
- const previousFull = useRef(full);
- useEffect(() => {
+ const sizeKey = full ? 'readerSize:full' : 'readerSize:side';
+ useLayoutEffect(() => {
   const wrap = readerRef.current.closest('.analysis-wrap');
-  const clear = () => {
+  const restore = () => {
    drag.current = null;
    wrap.classList.remove('reader-resized', 'reader-resizing');
    wrap.style.removeProperty('--reader-width');
    wrap.style.removeProperty('--reader-height');
+   const saved = readViewState(sizeKey, null, validSize);
+   if (saved && window.matchMedia('(min-width: 901px)').matches) apply(saved.width, saved.height, false);
   };
-  // Let the responsive layout take over when the viewport or reading mode changes.
-  if (previousFull.current !== full) clear();
-  previousFull.current = full;
-  window.addEventListener('resize', clear);
+  restore();
+  window.addEventListener('resize', restore);
   return () => {
-   window.removeEventListener('resize', clear);
+   window.removeEventListener('resize', restore);
    drag.current = null;
-   // Documents remount inside the same window; its size belongs to the wrapper.
    wrap.classList.remove('reader-resizing');
   };
  }, [readerRef, full]);
- const apply = (width, height) => {
+ const apply = (width, height, persist = true) => {
   const wrap = readerRef.current.closest('.analysis-wrap');
   const rect = wrap.getBoundingClientRect();
   const page = wrap.closest('.galaxy-page');
@@ -32,6 +32,7 @@ export function useReaderResize(readerRef, full, onResize) {
   wrap.style.setProperty('--reader-width', `${Math.min(maxWidth, Math.max(320, width))}px`);
   wrap.style.setProperty('--reader-height', `${Math.min(maxHeight, Math.max(240, height))}px`);
   wrap.classList.add('reader-resized');
+  if (persist) writeViewState(sizeKey, {width: Math.max(320, Math.min(maxWidth, width)), height: Math.max(240, Math.min(maxHeight, height))});
   onResize?.();
  };
  const end = e => {

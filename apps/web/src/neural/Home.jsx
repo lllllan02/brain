@@ -1,4 +1,6 @@
 import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
+import {useViewState} from './useViewState';
+import {validCluster} from './view-state';
 import {collectionLabel} from '../collections.js';
 import {moduleOf} from './graph';
 import {createSearchIndex, searchDocuments} from './search.js';
@@ -27,13 +29,13 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   const current = useRef({focus, setFocus});
   const [labels, setLabels] = useState([]), [ready, setReady] = useState(false), [error, setError] = useState('');
   const preset = graph.index.get(focus.sel)?.module ? 'nebula' : 'deepfield';
-  const [expanded, setExpanded] = useState(false);
-  const [grouping, setGrouping] = useState('category');
-  const [readerCluster, setReaderCluster] = useState(null);
+  const [expanded, setExpanded] = useViewState('expanded', false);
+  const [grouping, setGrouping] = useViewState('grouping', 'category', value => ['category', 'collection'].includes(value));
+  const [readerCluster, setReaderCluster] = useViewState('readerCluster', null, validCluster);
   const [clusterVisible, setClusterVisible] = useState(false);
-  const [historyOpen, setHistoryOpen] = useState(false);
+  const [historyOpen, setHistoryOpen] = useViewState('historyOpen', false);
   const historyToggle = useRef(null), latestToggle = useRef(null);
-  const [latestOpen, setLatestOpen] = useState(false);
+  const [latestOpen, setLatestOpen] = useViewState('latestOpen', false);
   const timelineOpen = historyOpen || latestOpen;
   const latest = useMemo(() => latestDocuments(graph.nodes.filter(node => node.module)), [graph]);
   const closeLatest = () => {setLatestOpen(false);latestToggle.current?.focus({preventScroll: true});};
@@ -52,9 +54,9 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   }, [graph, focus.sel, readerCluster, timelineOpen]);
   const displayedCluster = useMemo(() => latestOpen ? {latest} : historyOpen ? {recent: reading.recent} : activeCluster, [latestOpen, latest, historyOpen, reading.recent, activeCluster]);
   const groupCluster = activeCluster?.document ? null : activeCluster;
-  const [query, setQuery] = useState(''), [searchOpen, setSearchOpen] = useState(false);
+  const [query, setQuery] = useViewState('query', ''), [searchOpen, setSearchOpen] = useViewState('searchOpen', false);
   const [searchSelection, setSearchSelection] = useState(null);
-  const [reviewId, setReviewId] = useState(null);
+  const [reviewId, setReviewId] = useViewState('reviewId', null, value => value === null || typeof value === 'string');
   current.current = {focus, setFocus, preset, expanded, grouping, groupCluster, reduced, trail, reading};
   const documents = useMemo(() => graph.nodes.filter(node => node.module), [graph]);
   const node = graph.index.get(focus.sel);
