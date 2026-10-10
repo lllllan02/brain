@@ -60,3 +60,6 @@ button.read-tag{cursor:pointer;font-family:inherit;text-align:left;transition:co
 .reader-parent-target{min-width:0;overflow-wrap:anywhere}
 .reader-parent a{text-decoration:none}
 .reader-parent a:focus-visible{outline:1px solid currentColor;outline-offset:3px;border-radius:2px}
+
+/* Inline SVG inherits the marker color and leaves long link text free to wrap. */
+.markdown .internal-link-icon{display:inline-block;width:1em;height:1em;margin-right:.28em;vertical-align:-.14em;opacity:.85;pointer-events:none}

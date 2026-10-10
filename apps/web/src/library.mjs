@@ -6,6 +6,13 @@ import { Lexer, Parser, Renderer } from 'marked';
 import hljs from 'highlight.js';
 import { CONTENT_COLLECTIONS } from './collections.js';
 
+// Trusted, monochrome line icons; provenance comes from the resolved target's path.
+const internalLinkCollections = {
+  inbox: {label: 'Inbox · 待整理', path: '<path d="M4 4h16l2 10v6H2v-6L4 4Z M2 14h6l2 3h4l2-3h6"/>'},
+  notes: {label: 'Notes · 整理好的笔记', path: '<path d="M14 2H5v20h14V7l-5-5Z M14 2v5h5 M8 14l3 3 5-6"/>'},
+  readings: {label: 'Readings · 外部资料导读', path: '<path d="M12 5C9 3 5 3 2 4v16c3-1 7-1 10 1 3-2 7-2 10-1V4c-3-1-7-1-10 1Z M12 5v16"/>'},
+};
+
 export const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const slug = text => text.replace(/<[^>]*>/g, '').replace(/[*`_]/g, '').trim().toLowerCase().replace(/\s+/g, '-');
 const list = value => value == null ? [] : Array.isArray(value) ? value.map(String) : [String(value)];
@@ -89,7 +96,12 @@ export function renderDocument(doc, documents) {
     const referenceId = 'reference-' + references.length;
     references.push({id: dest.id, anchor, target, referenceId});
     const href = `#/doc/${encodeURIComponent(dest.id)}${anchor ? '/' + encodeURIComponent(block ? anchor : slug(anchor)) : ''}`;
-    return embed ? `<span class="embed-card"><a id="${referenceId}" href="${href}">${escape(label || dest.title)} ↗</a><span>${escape(dest.summary)}</span></span>` : `<a class="wiki-link" id="${referenceId}" href="${href}">${escape(label || dest.title)}</a>`;
+    const collection = internalLinkCollections[dest.collection];
+    const text = escape(label || dest.title);
+    const icon = collection ? `<svg class="internal-link-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${collection.path}</svg>` : '';
+    const provenance = collection ? ` data-collection="${dest.collection}" title="${collection.label}" aria-label="${text}（${collection.label}）"` : '';
+    const link = `<a class="wiki-link" id="${referenceId}" href="${href}"${provenance}>${icon}${text}</a>`;
+    return embed ? `<span class="embed-card">${link}<span>${escape(dest.summary)}</span></span>` : link;
   };
   const config = {extensions:[{name:'wiki', level:'inline', start: src => src.indexOf('[['), tokenizer(src) { const m = /^(!?)\[\[([^\]\n]+)\]\]/.exec(src); if (m) return {type:'wiki', raw:m[0], value:m[2], embed:Boolean(m[1])}; }, renderer(token) { const [target, label] = token.value.replaceAll('\\|','|').split('|'); if (/\.(png|jpe?g|gif|webp|svg|pdf|mp3|mp4)$/i.test(target)) { const url = `/api/asset?path=${encodeURIComponent(target)}&from=${encodeURIComponent(doc.path)}`; return token.embed && /\.(png|jpe?g|gif|webp)$/i.test(target) ? `<img loading="lazy" src="${url}" alt="${escape(label || target)}">` : `<a href="${url}" target="_blank" rel="noopener">${escape(label || target)} ↗</a>`; } return wiki(target, label, token.embed); }}], renderer:{
     html: text => escape(text),
