@@ -15,4 +15,4 @@ aliases: ["sync.Map", "并发安全 map"]
 - 存进去的指针或 slice 不会自动获得内部并发保护。
 - `Range` 不提供同一时刻的快照，遍历中看到的键值可能来自不同时间；要一致快照得自己协调写入或发布不可变副本。
 
-接口：[sync.Map](https://pkg.go.dev/sync#Map)。旧版 read/dirty 双表的实现见 [[go-sync-map-internals|sync.Map 的实现（Go 1.21）]]。
+接口：[sync.Map](https://pkg.go.dev/sync#Map)。旧版 read/dirty 双表的实现见 [[victoriametrics-sync-map-summary|sync.Map 的实现（Go 1.21）]]。

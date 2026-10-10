@@ -28,4 +28,4 @@ c.L.Unlock()
 - Cond 首次使用后不能复制。
 - 需要传递数据或组合取消时，[[go-channel-lifecycle|channel]]通常更易表达；Cond 本身没有带 Context 的 Wait。
 
-接口约定：[sync.Cond](https://pkg.go.dev/sync#Cond)。`Wait` 为什么不丢通知见 [[go-cond-notify|Cond 的等待队列]]。
+接口约定：[sync.Cond](https://pkg.go.dev/sync#Cond)。`Wait` 为什么不丢通知见 [[victoriametrics-cond-summary|Cond 的等待队列]]。

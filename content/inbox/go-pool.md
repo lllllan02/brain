@@ -16,4 +16,4 @@ aliases: ["sync.Pool", "对象池"]
 - Pool 本身并发安全，不表示借出的对象可以无同步共享。
 - 接口里装着一个类型化的 nil 指针还涉及 [[go-interfaces|typed nil]]。
 
-接口：[sync.Pool](https://pkg.go.dev/sync#Pool)。本地池与 victim 的实现见 [[go-pool-internals|sync.Pool 的实现（Go 1.21）]]。
+接口：[sync.Pool](https://pkg.go.dev/sync#Pool)。本地池与 victim 的实现见 [[victoriametrics-pool-summary|sync.Pool 的实现（Go 1.21）]]。

@@ -32,4 +32,4 @@ wg.Wait()
 - 要取消还没完成的任务，得另传 [[go-context|context]]；等到取消信号也不等于已经回收全部 goroutine。
 - Go 1.25 起可用 `WaitGroup.Go` 把启动和计数合并，传入的函数不能 panic，使用时要确认项目版本。
 
-计数与唤醒的内部衔接见 [[go-waitgroup-internals|WaitGroup 的实现细节]]。接口约定：[sync.WaitGroup](https://pkg.go.dev/sync#WaitGroup)。
+计数与唤醒的内部衔接见 [[victoriametrics-waitgroup-summary|WaitGroup 的实现细节]]。接口约定：[sync.WaitGroup](https://pkg.go.dev/sync#WaitGroup)。

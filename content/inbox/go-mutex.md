@@ -23,4 +23,4 @@ mu.Unlock()
 - 锁可以由另一个 goroutine 解锁，但程序要自己保证交接协议清楚。RWMutex 也不能把读锁直接升级成写锁；读多是否更快需要实测。
 - 持锁期间别做慢 I/O 或不受控的工作，否则会拉长所有等待者的延迟，应尽量缩小临界区。
 
-竞争激烈时的调度策略见 [[go-mutex-contention|Mutex 的竞争处理]]。参考：[sync.Mutex](https://pkg.go.dev/sync#Mutex)。
+竞争激烈时的调度策略见 [[victoriametrics-mutex-summary|Mutex 的竞争处理]]。参考：[sync.Mutex](https://pkg.go.dev/sync#Mutex)。

@@ -11,6 +11,6 @@ tags: ["Go", "初始化", "init"]
 
 **初始化函数按顺序完成，但它启动的 goroutine 不会自动被等待**；后台任务还没准备好，main 可能已经开始运行，需要显式同步。
 
-注册静态实现或简单初始化可以放 init；依赖网络、配置、超时、关闭顺序以及可重试错误的操作，更适合显式构造函数，让调用者看到失败并负责生命周期。只在首次使用时初始化则可考虑 [[go-once|sync.Once]]，同时接受它不自动重试的语义。
+注册静态实现或简单初始化可以放 init；依赖网络、配置、超时、关闭顺序以及可重试错误的操作，更适合显式构造函数，让调用者看到失败并负责生命周期。只在首次使用时初始化则可考虑 [[victoriametrics-once-summary|sync.Once]]，同时接受它不自动重试的语义。
 
 顺序依据：[Go 规范：Package initialization](https://go.dev/ref/spec#Package_initialization)。
