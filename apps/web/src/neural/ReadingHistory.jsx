@@ -11,7 +11,7 @@ export function ReadingNavigation({graph, reading, onTravel}) {
 }
 
 export function ReadingHistoryToggle({open, onToggle, toggleRef}) {
-  return <button ref={toggleRef} type="button" className="reading-history-toggle" aria-label="最近阅读" title="最近阅读" aria-expanded={open} aria-controls={open ? 'reading-history' : undefined} onClick={onToggle}>最近阅读</button>;
+  return <button ref={toggleRef} type="button" className="reading-history-toggle" aria-label="最近阅读" title="最近阅读" aria-expanded={open} aria-controls={open ? 'reading-history' : undefined} onClick={onToggle}><Icon name="history" size={15}/><span className="sr-only">最近阅读</span></button>;
 }
 
 function trailPath(edge, nodes) {

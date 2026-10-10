@@ -30,7 +30,7 @@ button.read-tag{cursor:pointer;font-family:inherit;text-align:left;transition:co
 .document-reader .an-scroll{min-height:0}
 .reader-relations{margin:10px 0 0}
 .reader-property-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px}
-.reader-category{flex:1 1 auto;margin:0;min-width:0}
+.reader-category{flex:0 1 auto;margin:0;min-width:0}
 .reader-tags{margin:6px 0 0}
 .reader-inline-relations{display:flex;align-items:baseline;gap:7px;margin-left:auto;flex:none}
 .reader-inline-relations button{padding:5px 1px;border:0;border-bottom:1px solid transparent;background:transparent;color:#9eacc1;font:inherit;font-size:11px;line-height:1.7;white-space:nowrap;cursor:pointer}
@@ -54,3 +54,9 @@ button.read-tag{cursor:pointer;font-family:inherit;text-align:left;transition:co
  .galaxy-page .reader-resize-handle:hover,.galaxy-page .reader-resize-handle:focus-visible{color:#e4edf9;background:#cad5e310;border-color:#cad5e324}
  .galaxy-page .reader-resize-handle:focus-visible{outline:1px solid #c0d8ed;outline-offset:1px}
 }
+
+.reader-parent{display:flex;align-items:baseline;gap:7px;margin:0;min-width:0;max-width:100%;font-size:11px;line-height:1.7}
+.reader-parent>span:first-child{font-size:10px;flex-shrink:0;color:var(--muted)}
+.reader-parent-target{min-width:0;overflow-wrap:anywhere}
+.reader-parent a{text-decoration:none}
+.reader-parent a:focus-visible{outline:1px solid currentColor;outline-offset:3px;border-radius:2px}

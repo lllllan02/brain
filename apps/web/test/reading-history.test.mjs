@@ -25,22 +25,24 @@ test('阅读足迹保留返回与分支的真实顺序，不因文档重复而�
   assert.deepEqual(trail.nodes.find(n => n.id === 'b').steps, [2]);
 });
 
-test('已有历史去重，连续回看不新增列表项、不改变顺序或编号', () => {
-  const visits = [visit('a', null), visit('b', 'a'), visit('c', 'b'), visit('b', 'c', 'b2')];
+test('最近阅读按最后访问时间倒序，回看置顶且列表编号与星图一致', () => {
+  const visits = [visit('a', null), visit('b', 'a'), visit('c', 'b'), visit('b', 'c', 'b2')].map((item, time) => ({...item, time}));
   let recent = recentDocuments(visits);
+  assert.deepEqual(recent.map(v => v.id), ['b', 'c', 'a']);
+  for (let i = 0; i < 70; i++) recent = rememberDocument(recent, {...visit(i % 2 ? 'a' : 'b', 'c', String(i)), time: i + 4});
   assert.deepEqual(recent.map(v => v.id), ['a', 'b', 'c']);
-  for (let i = 0; i < 70; i++) recent = rememberDocument(recent, visit(i % 2 ? 'a' : 'b', 'c', String(i)));
-  assert.deepEqual(recent.map(v => v.id), ['a', 'b', 'c']);
-  recent = rememberDocument(recent, visit('d', 'a'));
-  assert.deepEqual(recent.map(v => v.id), ['a', 'b', 'c', 'd']);
+  recent = rememberDocument(recent, {...visit('d', 'a'), time: 74});
+  assert.deepEqual(recent.map(v => v.id), ['d', 'a', 'b', 'c']);
+  assert.deepEqual(recentDocuments(JSON.parse(JSON.stringify(recent))), recent);
   const trail = readingTrail([...visits, visit('c', 'b')], new Set(['a', 'b', 'c', 'd']), recent);
-  assert.deepEqual(trail.nodes.map(n => n.steps), [[1], [2], [3], [4]]);
+  assert.deepEqual(trail.nodes.map(n => [n.id, ...n.steps]), [['d', 1], ['a', 2], ['b', 3], ['c', 4]]);
   assert.deepEqual(trail.edges.map(e => [e.from, e.to]), [['a', 'b'], ['b', 'c'], ['c', 'b']]);
   assert.equal(rememberDocument(Array.from({length:50}, (_, i) => visit(String(i), null)), visit('new', null)).length, 50);
   const full = Array.from({length:50}, (_, i) => ({...visit(String(i), null), time:i}));
   const refreshed = rememberDocument(full, {...visit('0', '49'), time:100});
   const trimmed = rememberDocument(refreshed, {...visit('new', '0'), time:101});
-  assert.equal(trimmed[0].id, '0');
+  assert.equal(trimmed[0].id, 'new');
+  assert.equal(trimmed[1].id, '0');
   assert.ok(!trimmed.some(item => item.id === '1'));
 });
 

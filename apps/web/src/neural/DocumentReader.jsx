@@ -41,11 +41,19 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
   }catch{setCopy('复制失败，请手动选择内容复制。');}
   finally{setCopying(false);}
  };
- const handleClick=async e=>{const button=e.target.closest('.copy-code');if(!button)return;const label=button.closest('.diagram-block')?'复制源码':'复制';try{await navigator.clipboard.writeText(button.closest('.code-block').querySelector(button.closest('.diagram-block')?'.diagram-source code':'pre code').textContent);button.textContent='已复制';setTimeout(()=>button.textContent=label,1800);}catch{setCopy('请手动选择代码进行复制。');}};
+ const handleClick=async e=>{
+  const button=e.target.closest('.copy-code');if(!button||button.disabled)return;
+  const label=button.closest('.diagram-block')?'复制源码':'复制代码';button.disabled=true;
+  try{
+   await navigator.clipboard.writeText(button.closest('.code-block').querySelector(button.closest('.diagram-block')?'.diagram-source code':'pre code').textContent);
+   button.dataset.copied='true';button.title='已复制';button.setAttribute('aria-label','已复制');setCopy('代码已复制');
+   setTimeout(()=>{delete button.dataset.copied;button.title=label;button.setAttribute('aria-label',label);button.disabled=false;},1800);
+  }catch{button.disabled=false;setCopy('复制失败，请手动选择代码进行复制。');}
+ };
  return <section className="analysis glass document-reader" data-document-id={node.id} ref={ref}>
   <div className="reader-toolbar"><div className="an-float">文档阅读</div>
    <div className="read-actions">
-    <button className="icon-btn" aria-label="切换专注阅读" aria-pressed={full} title={full?'退出专注阅读':'专注阅读'} onClick={()=>setFull(v=>!v)}><Icon name="expand" size={14}/></button>
+    <button className="icon-btn" aria-label="切换专注阅读" aria-pressed={full} title={full?'退出专注阅读':'专注阅读'} onClick={()=>setFull(v=>!v)}><Icon name={full?"collapse":"expand"} size={16}/></button>
     <button className="icon-btn" aria-label="关闭文档" title="关闭文档（Esc）" onClick={onClose}><Icon name="close" size={16}/></button>
    </div>
   </div>
@@ -57,14 +65,14 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
    </div>
    <ReaderRelations graph={graph} node={node} module={module} cluster={cluster} historyControl={{...historyControl,onToggle:()=>{setFull(false);historyControl.onToggle();}}} onChoose={next=>{setFull(false);onCluster(next);}}/>
    <div className="read-meta-row">
-    <p className="read-meta">{node.updated?'更新于 '+node.updated+' · ':''}{Math.max(1,Math.ceil(node.body.length/500))} 分钟阅读</p>
+    <p className="read-meta">{node.updated&&<span title={`更新于 ${node.updated}`}><Icon name="calendar" size={13}/><span className="sr-only">更新于 </span>{node.updated}</span>}<span title="预计阅读时间"><Icon name="clock" size={13}/>{Math.max(1,Math.ceil(node.body.length/500))} 分钟</span></p>
     <div className="read-copy-actions" role="group" aria-label="复制文档">
-     <button type="button" disabled={copying} onClick={()=>copyDocument(true)}>复制标题</button>
-     <button type="button" disabled={copying} title="复制标题和 Markdown 正文" onClick={()=>copyDocument(false)}>复制全文</button>
+     <button type="button" disabled={copying} aria-label="复制标题" title="复制标题" onClick={()=>copyDocument(true)}><Icon name="copy" size={14}/>标题</button>
+     <button type="button" disabled={copying} aria-label="复制全文" title="复制标题和 Markdown 正文" onClick={()=>copyDocument(false)}><Icon name="copy" size={14}/>全文</button>
     </div>
     <span className="read-copy-status" role="status" aria-atomic="true">{copy}</span>
    </div>
-   {node.toc.length>0&&<div className={`read-toc${tocOpen?' is-open':''}`}><button type="button" className="read-toc-toggle" aria-expanded={tocOpen} onClick={()=>setTocOpen(v=>!v)}>本页目录</button><div className="read-toc-content" inert={!tocOpen}><div>{node.toc.map(h=><a key={h.id} href={`#/doc/${encodeURIComponent(node.id)}/${encodeURIComponent(h.id)}`}>{h.title}</a>)}</div></div></div>}{article}
+   {node.toc.length>0&&<div className={`read-toc${tocOpen?' is-open':''}`}><button type="button" className="read-toc-toggle" aria-expanded={tocOpen} onClick={()=>setTocOpen(v=>!v)}><Icon name="list" size={15}/>目录<Icon name="chevron" size={13} className="toc-chevron"/></button><div className="read-toc-content" inert={!tocOpen}><div>{node.toc.map(h=><a key={h.id} href={`#/doc/${encodeURIComponent(node.id)}/${encodeURIComponent(h.id)}`}>{h.title}</a>)}</div></div></div>}{article}
    {externalLinks.length>0&&<section className="read-connections" aria-label="外部链接">
     <h3>外部链接</h3>
     {externalLinks.map(link=><a key={link.href} className="read-relation read-external-link" href={link.href} target="_blank" rel="noopener noreferrer">

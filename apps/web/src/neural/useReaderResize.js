@@ -2,6 +2,7 @@ import {useEffect, useRef} from 'react';
 
 export function useReaderResize(readerRef, full, onResize) {
  const drag = useRef(null);
+ const previousFull = useRef(full);
  useEffect(() => {
   const wrap = readerRef.current.closest('.analysis-wrap');
   const clear = () => {
@@ -11,8 +12,15 @@ export function useReaderResize(readerRef, full, onResize) {
    wrap.style.removeProperty('--reader-height');
   };
   // Let the responsive layout take over when the viewport or reading mode changes.
+  if (previousFull.current !== full) clear();
+  previousFull.current = full;
   window.addEventListener('resize', clear);
-  return () => {window.removeEventListener('resize', clear); clear();};
+  return () => {
+   window.removeEventListener('resize', clear);
+   drag.current = null;
+   // Documents remount inside the same window; its size belongs to the wrapper.
+   wrap.classList.remove('reader-resizing');
+  };
  }, [readerRef, full]);
  const apply = (width, height) => {
   const wrap = readerRef.current.closest('.analysis-wrap');

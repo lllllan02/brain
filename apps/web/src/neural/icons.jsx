@@ -1,6 +1,14 @@
 import React from 'react';
 
 const paths = {
+  copy: 'M9 9h12v12H9ZM5 15H3V3h12v2',
+  history: 'M3 11a9 9 0 1 1 2.6 7M3 4v7h7M12 7v5l3 2',
+  parent: 'M7 8h8a4 4 0 0 1 4 4v8M11 4 7 8l4 4',
+  incoming: 'M4 5h10a5 5 0 0 1 0 10H4m4-4-4 4 4 4',
+  clock: 'M12 8v4l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
+  calendar: 'M4 5h16v16H4ZM4 10h16M8 3v4M16 3v4',
+  list: 'M9 6h12M9 12h12M9 18h12M3 6h.01M3 12h.01M3 18h.01',
+  collapse: 'M3 8h5V3M21 8h-5V3M8 21v-5H3M16 21v-5h5',
   shuffle: 'M3 6h3c5 0 7 12 12 12h3m-4-4 4 4-4 4M3 18h3c1.8 0 3.2-1.5 4.5-3.5M13.5 9.5C14.8 7.5 16.2 6 18 6h3m-4-4 4 4-4 4',
   tag: 'M3 3h7l11 11-7 7L3 10ZM7 7h.01',
   works: 'M4 5h16v14H4ZM4 9h16M9 13l2 2 4-4',

@@ -55,7 +55,8 @@
 .galaxy-page .markdown a, .neural.link-preview .markdown a { color: var(--gold); border-color: #c5d3e24d; }
 .galaxy-page .markdown a:hover, .neural.link-preview .markdown a:hover { color: #fff; border-color: #d5e1ed; }
 /* Clone the marker on each line so long internal links can wrap naturally. */
-.galaxy-page .markdown a.wiki-link, .neural.link-preview .markdown a.wiki-link {
+.galaxy-page .markdown a.wiki-link, .neural.link-preview .markdown a.wiki-link,
+.galaxy-page .reader-parent a.wiki-link {
   color: #b8d9ff;
   font-weight: 500;
   border-bottom: 0;
@@ -65,7 +66,8 @@
   box-decoration-break: clone;
 }
 .galaxy-page .markdown a.wiki-link:is(:hover, :focus-visible),
-.neural.link-preview .markdown a.wiki-link:is(:hover, :focus-visible) {
+.neural.link-preview .markdown a.wiki-link:is(:hover, :focus-visible),
+.galaxy-page .reader-parent a.wiki-link:is(:hover, :focus-visible) {
   color: #f3f8ff;
   background: linear-gradient(transparent 35%, #344e6c 35%);
 }

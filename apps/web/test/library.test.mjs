@@ -30,7 +30,10 @@ test('Mermaid 保留原始源码并标记图表，图内文本不产生链接或
  assert.equal((result.html.match(/class="code-block diagram-block"/g)||[]).length,1);
  assert.match(result.html,/<details class="diagram-source" open>/);
  assert.match(result.html,/\[\[missing\]\] &amp; &lt;img/);
- assert.doesNotMatch(result.html,/<img|<svg/);
+ // The copy control contains trusted SVG; document source must remain escaped.
+ assert.doesNotMatch(result.html,/<img/);
+ for(const code of result.html.matchAll(/<pre><code>([\s\S]*?)<\/code><\/pre>/g))assert.doesNotMatch(code[1],/<svg/);
+ assert.match(result.html,/aria-label="复制源码"/);
  assert.match(result.html,/hljs-keyword/);
  assert.equal(result.body,a.body);
 });

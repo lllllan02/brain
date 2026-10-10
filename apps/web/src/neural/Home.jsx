@@ -223,7 +223,7 @@ export function Home({graph, focus, setFocus, reading, reduced}) {
           }
         }}/>
         {!shownNode && <ReadingHistoryToggle open={historyOpen} toggleRef={historyToggle} onToggle={() => setHistoryOpen(value => !value)}/>}
-        {query && <button type="button" className="galaxy-search-clear" aria-label="清空搜索" onClick={() => {setQuery('');searchInput.current?.focus();}}>×</button>}
+        {query && <button type="button" className="galaxy-search-clear" aria-label="清空搜索" onClick={() => {setQuery('');searchInput.current?.focus();}}><Icon name="close" size={16}/></button>}
       </form>
       <div className="galaxy-review">
         {review.shown && <button ref={review.ref} inert={review.closing} type="button" className="galaxy-random galaxy-review-title" onClick={() => go(review.shown.id)}
@@ -243,7 +243,7 @@ export function Home({graph, focus, setFocus, reading, reduced}) {
       <button className="galaxy-category-toggle" aria-pressed={expanded} disabled={!ready || Boolean(error)} title={expanded ? '收回整体星云' : '按分类展开星云'} onClick={() => {
         const next = !expanded; setExpanded(next); setFocus({mod: null, sel: null});
         scene.current?.focus(null, null); scene.current?.expand(next);
-      }}>分类</button>
+      }}><Icon name="grid" size={15}/><span>分类</span></button>
       <button className="galaxy-view-cycle" disabled={!ready || Boolean(error)}
         style={{'--view-index': viewIndex}} aria-label={`当前${views[viewIndex][1]}视图，切换到${nextView[1]}`} title={`切换到${nextView[1]}`}
         onClick={() => {setPreset(nextView[0]);scene.current?.preset(nextView[0]);}}>

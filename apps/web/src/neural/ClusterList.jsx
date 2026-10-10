@@ -1,3 +1,4 @@
+import {Icon} from './icons';
 import React, {useEffect, useMemo, useRef} from 'react';
 
 import {usePresence} from '../motion/usePresence';
@@ -122,7 +123,7 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, onClea
     </svg>
     <aside id={shown.recent ? 'reading-history' : undefined} className={`cluster-list${shown.recent ? ' cluster-history' : ''}`} aria-label={shown.recent ? '最近阅读' : `${kind} ${title} 的文档列表`}>
       <header className="cluster-list-header"><div>{kind && <span>{kind}</span>}<h2>{title}</h2><small>{documents.length} 篇</small></div>
-        <button type="button" onClick={onClose} aria-label={shown.recent ? '收起最近阅读' : '关闭文档列表'} title="关闭列表">×</button>
+        <button type="button" onClick={onClose} aria-label={shown.recent ? '收起最近阅读' : '关闭文档列表'} title="关闭列表"><Icon name="close" size={16}/></button>
       </header>
       <div className="cluster-list-scroll" ref={scroll} tabIndex={0} role="region" aria-label={`${title}文档，可滚动浏览`}>
         {documents.length ? <ul key={selectionKey}>{documents.map((node, index) => <li key={node.id}>
@@ -135,7 +136,7 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, onClea
           </button>
         </li>)}</ul> : <p className="cluster-list-empty">{shown.recent ? '打开文档后，这里会留下阅读足迹' : shown.document ? shown.direction === 'incoming' ? '还没有其他文档引用这篇文章' : '这篇文章没有可打开的内部链接' : '暂时没有匹配的文档'}</p>}
       </div>
-      {shown.recent && <footer className="cluster-history-footer"><span>同篇去重 · 最多 50 篇</span><button type="button" onClick={onClear} disabled={!documents.length}>清空</button></footer>}
+      {shown.recent && <footer className="cluster-history-footer"><span>同篇去重 · 最多 50 篇</span><button type="button" onClick={onClear} disabled={!documents.length} title="清空最近阅读记录"><Icon name="trash" size={14}/>清空</button></footer>}
     </aside>
   </div>;
 }

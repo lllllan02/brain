@@ -8,6 +8,7 @@ import {parseReadingRoute} from './reading-history';
 import './neural.css';
 import './documents.css';
 import './horizon-theme.css';
+import './controls.css';
 const staticPages=typeof __STATIC_PAGES__!=='undefined'&&__STATIC_PAGES__;
 function App(){
  const [library,setLibrary]=useState(null),[error,setError]=useState('');

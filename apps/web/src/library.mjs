@@ -15,7 +15,8 @@ export function parseDocument(raw, file) {
   const id = path.basename(file, '.md');
   const collection = file.replaceAll(path.sep, '/').replace(/^content\//, '').split('/')[0];
   if (meta.category != null && typeof meta.category !== 'string') throw new Error(`文档 ${file} 的 category 必须是单个文本`);
-  return { id, collection, path: file.replaceAll(path.sep, '/'), title: String(meta.title || id), aliases: list(meta.aliases), tags: list(meta.tags), category: (meta.category || '').trim(), type: String(meta.type || list(meta.classes)[0] || 'note'), updated: meta.updated_at || null, created: meta.created_at || null, sources: list(meta.source || meta.url), body, summary: String(meta.description || body.split(/\n\s*\n/).find(p => p.trim() && !p.startsWith('#')) || '').replace(/\[\[([^\]|]+)(?:\\?\|([^\]]+))?\]\]/g, (_, target, label) => label || target).replace(/[*`#]/g, '').slice(0, 200) };
+  if (meta.parent != null && (typeof meta.parent !== 'string' || !meta.parent.trim())) throw new Error(`文档 ${file} 的 parent 必须是非空文本`);
+  return { parentTarget: meta.parent?.trim() || null, id, collection, path: file.replaceAll(path.sep, '/'), title: String(meta.title || id), aliases: list(meta.aliases), tags: list(meta.tags), category: (meta.category || '').trim(), type: String(meta.type || list(meta.classes)[0] || 'note'), updated: meta.updated_at || null, created: meta.created_at || null, sources: list(meta.source || meta.url), body, summary: String(meta.description || body.split(/\n\s*\n/).find(p => p.trim() && !p.startsWith('#')) || '').replace(/\[\[([^\]|]+)(?:\\?\|([^\]]+))?\]\]/g, (_, target, label) => label || target).replace(/[*`#]/g, '').slice(0, 200) };
 }
 async function walk(root, dir) {
   const files = [];
@@ -51,6 +52,27 @@ export async function safeAsset(root, target, currentPath = '') {
   }
   return null;
 }
+// Parent remains an explicit metadata relationship; never infer it from body links.
+function parentParts(value) {
+  const raw = value.trim();
+  const match = /^\[\[([^\]\n]+)\]\]$/.exec(raw);
+  if (!match && /[\[\]\n]/.test(raw)) return null;
+  const [target, label] = (match ? match[1] : raw).replaceAll('\\|', '|').split('|');
+  return target.trim() ? {target: target.trim(), label: label?.trim()} : null;
+}
+function parentCycle(doc, documents) {
+  const seen = new Set([doc.id]);
+  let current = doc;
+  while (current.parentTarget) {
+    const parts = parentParts(current.parentTarget);
+    if (!parts) return false;
+    const next = resolveDocument(parts.target.split('#')[0], documents, current).doc;
+    if (!next) return false;
+    if (seen.has(next.id)) return true;
+    seen.add(next.id); current = next;
+  }
+  return false;
+}
 export function renderDocument(doc, documents) {
   const toc = [], references = [], issues = [], counts = new Map();
   const headingId = text => { const base = slug(text); const n = counts.get(base) || 0; counts.set(base, n + 1); return base + (n ? '-' + n : ''); };
@@ -75,10 +97,10 @@ export function renderDocument(doc, documents) {
     code(code, language) {
       const lang = (language || '').trim().split(/\s/)[0];
       if (lang.toLowerCase() === 'mermaid') {
-        return `<div class="code-block diagram-block"><div class="code-header"><span>Mermaid</span><button type="button" class="copy-code">复制源码</button></div><p class="diagram-status" role="status">正在绘制图表…</p><div class="diagram-canvas" hidden tabindex="0" role="region" aria-label="图表，可横向滚动"></div><details class="diagram-source" open><summary>查看源码</summary><pre><code>${escape(code)}</code></pre></details></div>`;
+        return `<div class="code-block diagram-block"><div class="code-header"><span>Mermaid</span><button type="button" class="copy-code" title="复制源码" aria-label="复制源码"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="copy-glyph" d="M9 9h12v12H9ZM5 15H3V3h12v2"/><path class="copied-glyph" d="m5 12 4 4L19 6"/></svg></button></div><p class="diagram-status" role="status">正在绘制图表…</p><div class="diagram-canvas" hidden tabindex="0" role="region" aria-label="图表，可横向滚动"></div><details class="diagram-source" open><summary>查看源码</summary><pre><code>${escape(code)}</code></pre></details></div>`;
       }
       const value = lang && hljs.getLanguage(lang) ? hljs.highlight(code, {language:lang}).value : escape(code);
-      return `<div class="code-block"><div class="code-header"><span>${escape(lang || 'text')}</span><button type="button" class="copy-code">复制</button></div><pre><code>${value}</code></pre></div>`;
+      return `<div class="code-block"><div class="code-header"><span>${escape(lang || 'text')}</span><button type="button" class="copy-code" title="复制代码" aria-label="复制代码"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="copy-glyph" d="M9 9h12v12H9ZM5 15H3V3h12v2"/><path class="copied-glyph" d="m5 12 4 4L19 6"/></svg></button></div><pre><code>${value}</code></pre></div>`;
     },
     link(href, title, text) { if (/^(https?:|mailto:)/i.test(href)) return `<a href="${escape(href)}" target="_blank" rel="noopener noreferrer">${text} ↗</a>`; if (href.startsWith('#')) return `<a href="#/doc/${encodeURIComponent(doc.id)}/${encodeURIComponent(slug(decodeURIComponent(href.slice(1))))}">${text}</a>`; if (/^[a-z][a-z0-9+.-]*:/i.test(href) || href.startsWith('//')) return `<span>${text}</span>`; if (/\.(png|jpe?g|gif|webp|pdf|mp3|mp4)(?:#|$)/i.test(href)) return `<a href="/api/asset?path=${encodeURIComponent(href)}&from=${encodeURIComponent(doc.path)}" target="_blank" rel="noopener">${text} ↗</a>`; return wiki(decodeURIComponent(href), text.replace(/<[^>]*>/g,''), false); },
     image(href, title, text) { if (/^(https?:|data:|javascript:)/i.test(href)) return `<span class="broken-link">外部图片：${escape(text)}</span>`; return `<img loading="lazy" src="/api/asset?path=${encodeURIComponent(href)}&from=${encodeURIComponent(doc.path)}" alt="${escape(text)}">`; },
@@ -87,8 +109,25 @@ export function renderDocument(doc, documents) {
   Object.assign(options.renderer, config.renderer);
   options.renderer.options = options;
   for (const extension of config.extensions) { options.extensions.inline.push(extension.tokenizer); options.extensions.startInline.push(extension.start); options.extensions.renderers[extension.name] = extension.renderer; }
+  let parent = null;
+  if (doc.parentTarget) {
+    const parts = parentParts(doc.parentTarget);
+    if (!parts) issues.push({target: doc.parentTarget, reason: 'parent 格式无效'});
+    else if (parentCycle(doc, documents)) issues.push({target: doc.parentTarget, reason: 'parent 存在自引用或循环'});
+    else {
+      const before = references.length;
+      wiki(parts.target, parts.label, false);
+      if (references.length > before) {
+        const ref = references[before];
+        ref.kind = 'parent';
+        const dest = documents.find(d => d.id === ref.id);
+        parent = {...ref, title: parts.label || (ref.anchor ? `${dest.title} · ${ref.anchor}` : dest.title),
+          href: `#/doc/${encodeURIComponent(ref.id)}${ref.anchor ? '/' + encodeURIComponent(ref.anchor.startsWith('^') ? ref.anchor : slug(ref.anchor)) : ''}`};
+      }
+    }
+  }
   const html = Parser.parse(Lexer.lex(doc.body, options), options);
-  return {...doc, html, toc, references, issues};
+  return {...doc, html, toc, references, issues, parent};
 }
 export async function loadLibrary(root) {
   const files = (await Promise.all(['notes', 'inbox'].map(dir => walk(root, dir)))).flat().sort();

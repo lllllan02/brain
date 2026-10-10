@@ -1,0 +1,39 @@
+/* Quiet, consistent controls; icon-only actions retain accessible names. */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.neural button svg{flex-shrink:0;vertical-align:middle}
+.galaxy-page :is(.icon-btn,.reading-navigation button,.copy-code,.galaxy-search-clear,.cluster-list-header button),.neural .link-preview-close{display:inline-flex;align-items:center;justify-content:center;min-width:30px;min-height:30px;padding:5px;border:0;border-radius:5px;background:transparent;color:var(--muted)}
+.galaxy-page :is(.icon-btn,.reading-navigation button,.copy-code,.galaxy-search-clear,.cluster-list-header button):hover:not(:disabled),.neural .link-preview-close:hover{background:var(--hover);color:var(--text)}
+.galaxy-page :is(.galaxy-category-toggle,.read-copy-actions button,.reader-inline-relations button,.reading-history-toggle,.cluster-history-footer button){display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:30px;border-radius:5px}
+.galaxy-page .galaxy-category-toggle{gap:6px}
+.galaxy-page .read-copy-actions{gap:6px}
+.galaxy-page .read-copy-actions button,.galaxy-page .reader-inline-relations button{padding:4px 6px;border:0;color:var(--muted)}
+.galaxy-page .reader-inline-relations{align-items:center;gap:4px}
+.galaxy-page .read-copy-actions button:hover:not(:disabled),.galaxy-page .reader-inline-relations button:hover,.galaxy-page .reader-inline-relations button[aria-pressed=true],.galaxy-page .reading-history-toggle[aria-expanded=true]{background:var(--hover);color:var(--text)}
+.galaxy-page .reading-history-toggle{min-width:30px;padding:5px}
+.galaxy-page .reader-property-row{align-items:center;gap:4px 14px}
+.galaxy-page .read-properties>div,.galaxy-page .reader-parent{align-items:center;gap:7px}
+.galaxy-page .read-properties dt,.galaxy-page .reader-parent>span:first-child{display:inline-flex;align-items:center;color:var(--muted)}
+.galaxy-page .read-properties dd{gap:3px 5px}
+.galaxy-page .read-category-link{min-height:28px;border:0}
+.galaxy-page .read-tag{min-height:28px;padding:3px 7px;background:transparent;border:0;border-radius:4px}
+.galaxy-page .read-tag:hover,.galaxy-page .read-tag[aria-pressed=true]{background:var(--hover);color:var(--text)}
+.galaxy-page .reader-parent a.wiki-link{color:var(--text-2);font-weight:400;background:none}
+.galaxy-page .reader-parent a.wiki-link:is(:hover,:focus-visible){color:var(--text);background:none;text-decoration:underline;text-underline-offset:4px}
+.galaxy-page .read-meta,.galaxy-page .read-meta>span{display:flex;align-items:center;gap:5px}
+.galaxy-page .read-meta{flex-wrap:wrap;gap:6px 14px}
+.galaxy-page .read-toc{border:0;border-block:1px solid var(--line);border-radius:0;padding:10px 0;background:none}
+.galaxy-page .read-toc-toggle{min-height:28px;color:var(--muted)}
+.galaxy-page .read-toc-toggle:hover{color:var(--text)}
+.galaxy-page .read-toc-toggle::before{content:none}
+.toc-chevron{margin-left:auto;transition:transform .18s}
+.read-toc.is-open .toc-chevron{transform:rotate(90deg)}
+.galaxy-page .code-header{padding:4px 10px;min-height:36px;letter-spacing:0;color:var(--muted)}
+.copy-code .copied-glyph,.copy-code[data-copied=true] .copy-glyph{display:none}
+.copy-code[data-copied=true] .copied-glyph{display:block}
+.galaxy-page .copy-code[data-copied=true]{color:var(--text)}
+@media(pointer:coarse){
+ .galaxy-page :is(.icon-btn,.reading-navigation button,.copy-code,.reading-history-toggle,.galaxy-search-clear,.read-copy-actions button,.reader-inline-relations button,.read-tag,.read-category-link,.cluster-list-header button),.neural .link-preview-close{min-width:36px;min-height:36px}
+}
+@media(prefers-reduced-motion:reduce){.toc-chevron{transition:none}}
+/* Focus mode keeps floating relation lists from covering the article. */
+.galaxy-page:has(.analysis-wrap.full-reader) .cluster-fan{visibility:hidden;pointer-events:none}

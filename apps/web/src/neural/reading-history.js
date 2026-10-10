@@ -36,21 +36,15 @@ export function recordVisit(visits, visit) {
   return [...visits, visit].slice(-HISTORY_LIMIT);
 }
 
-// Keep the list still while revisiting it; only a newly encountered document adds a row.
+// Normalize saved history and show the most recently read documents first.
 export function recentDocuments(visits) {
-  return [...new Map(visits.map(visit => [visit.id, visit])).values()].slice(-HISTORY_LIMIT);
+  return [...new Map(visits.map(visit => [visit.id, visit])).values()]
+    .sort((a, b) => b.time - a.time).slice(0, HISTORY_LIMIT);
 }
 
 export function rememberDocument(recent, visit) {
-  if (recent.some(item => item.id === visit.id)) {
-    return recent.map(item => item.id === visit.id ? {...item, time: visit.time} : item);
-  }
-  const next = [...recent, visit];
-  if (next.length > HISTORY_LIMIT) {
-    const oldest = next.reduce((index, item, i) => item.time < next[index].time ? i : index, 0);
-    next.splice(oldest, 1);
-  }
-  return next;
+  // Put this visit first even when two reads share the same timestamp.
+  return recentDocuments([visit, ...recent.filter(item => item.id !== visit.id)]);
 }
 
 export function adjacentDocument(entries, cursor, direction, available) {
