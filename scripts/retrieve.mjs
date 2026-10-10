@@ -78,6 +78,8 @@ function indexRecord(doc) {
     path: doc.path,
     id: doc.id,
     title: doc.title,
+    parent: doc.parent,
+    parentTarget: doc.parentTarget,
     aliases: doc.aliases,
     category: doc.category,
     tags: doc.tags,
@@ -196,6 +198,7 @@ function doLinks(lib, key) {
   const meta = [doc.category || '未分类', ...doc.tags].join(' · ');
   console.log(`${doc.id} — ${doc.title}  [${meta}]`);
   console.log(`路径: ${doc.path}`);
+  if (doc.parent) console.log(`上级: ${doc.parent.id}${doc.parent.anchor ? "#" + doc.parent.anchor : ""}`);
   console.log(`出链 ${doc.references.length + doc.issues.length}:`);
   for (const ref of doc.references) console.log(`  → ${ref.id}${ref.anchor ? '#' + ref.anchor : ''}`);
   for (const issue of doc.issues) console.log(`  ↯ ${issue.target}  [${issue.reason}]`);
