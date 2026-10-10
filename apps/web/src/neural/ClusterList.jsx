@@ -1,8 +1,8 @@
 import {Icon} from './icons';
-import React, {useEffect, useMemo, useRef} from 'react';
+import React, {useEffect, useLayoutEffect, useMemo, useRef} from 'react';
 
 import {usePresence} from '../motion/usePresence';
-import {MOTION, damp, smooth, stagger, curveSamples, pointAlongCurve} from '../motion/tokens.js';
+import {MOTION, smooth, stagger, curveSamples, pointAlongCurve} from '../motion/tokens.js';
 
 const clusterKey = cluster => !cluster ? null : cluster.latest ? 'latest' : cluster.recent ? 'recent' : cluster.document ? `document:${cluster.document}:${cluster.direction || 'outgoing'}` : cluster.tag ? `tag:${cluster.tag}` : `category:${cluster.category}`;
 
@@ -24,10 +24,10 @@ export function clusterDocuments(graph, cluster) {
     .sort((a, b) => a.title.localeCompare(b.title, 'zh-CN') || a.id.localeCompare(b.id));
 }
 
-export function ClusterList({graph, cluster, selected, onSelect, onClose, onClear, getAnchor, reduced, onPresenceChange, navigation}) {
+export function ClusterList({graph, cluster, selected, anchorId = selected, onSelect, onClose, onClear, getAnchor, reduced, onPresenceChange, navigation}) {
   const scroll = useRef(null), svg = useRef(null), origin = useRef(selected);
   const {shown, ref: layer, closing} = usePresence(cluster, clusterKey(cluster), reduced, 'translateX(-12px)');
-  if (!closing && selected) origin.current = selected;
+  if (!closing && anchorId) origin.current = anchorId;
   const documents = useMemo(() => clusterDocuments(graph, shown), [graph, shown]);
   const timeline = Boolean(shown?.recent || shown?.latest);
   const kind = timeline ? '' : shown?.document ? shown.direction === 'incoming' ? '被引用' : '内部链接' : shown?.tag ? '标签' : '分类';
@@ -42,22 +42,48 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, onClea
     if (!shown.document && !timeline) scroll.current.focus({preventScroll: true});
   }, [selectionKey]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!shown || !layer.current) return;
     let raf, previous = 0, elapsed = 0, source = null, sourceId = origin.current, sourceTween = null;
-    const visibility = new Map();
+    const scroller = scroll.current;
+    const track = scroller.querySelector('.cluster-scroll-track');
+    const content = scroller.querySelector('.cluster-scroll-content');
+    let appliedOffset = 0;
+    content.style.transform = 'translateY(0px)';
+    const size = () => {
+      track.style.height = `${Math.max(content.offsetHeight, scroller.clientHeight)}px`;
+      scroller.style.setProperty('--cluster-viewport-height', `${scroller.clientHeight}px`);
+    };
+    size();
+    const paths = svg.current.querySelectorAll('path');
+    const sparks = svg.current.querySelectorAll('.cluster-thread-sparks');
+    const rows = Array.from(scroller.querySelectorAll('.cluster-list-item'), (row, i) => ({
+      row, port: row.querySelector('.cluster-card-port'), path: paths[i], glow: sparks[i],
+      dots: sparks[i]?.querySelectorAll('.cluster-flow-dot'),
+      ripples: sparks[i]?.querySelectorAll('.cluster-flow-ripple'),
+    }));
     // SVG connects the current reading node to only the currently visible
     // document ports. Scrolling never creates hidden lines outside the list.
     const update = now => {
       if (!layer.current || !scroll.current || !svg.current) return;
-      raf = requestAnimationFrame(update);
       if (document.hidden) { previous = 0; return; }
-      const dt = previous ? Math.min(now - previous, MOTION.maxFrame) : 0;
+      const dt = previous ? Math.max(0, Math.min(now - previous, MOTION.maxFrame)) : 0;
       elapsed += dt;
-      previous = now;
+      previous = Math.max(previous, now);
       const box = layer.current.getBoundingClientRect();
       const viewport = scroll.current.getBoundingClientRect();
       const anchor = getAnchor?.(origin.current);
+      // Elastic overscroll can report negative or beyond-bottom values. Both
+      // cards and lines stop at the same content boundary, including short lists.
+      const maxOffset = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+      const offset = Math.max(0, Math.min(scroller.scrollTop, maxOffset));
+      const scrollDelta = offset - appliedOffset;
+      // Read all ports before writing SVG styles to avoid per-row layout flushes.
+      const ports = rows.map(({port}) => port.getBoundingClientRect());
+      // Native scrolling moves only the track. Its sticky viewport stays put;
+      // cards and SVG endpoints consume this single offset in the same paint.
+      content.style.transform = `translateY(${-offset}px)`;
+      appliedOffset = offset;
       // Never draw from an invented or stale origin while a node is unavailable.
       svg.current.style.opacity = anchor ? 1 : 0;
       if (!anchor) return;
@@ -69,29 +95,24 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, onClea
         if (p === 1) sourceTween = null;
       } else source = {...anchor};
       const startX = source.x - box.left, startY = source.y - box.top;
-      const rows = scroll.current.querySelectorAll('.cluster-list-item');
-      const paths = svg.current.querySelectorAll('path');
-      const sparks = svg.current.querySelectorAll('.cluster-thread-sparks');
-      rows.forEach((row, i) => {
-        const port = row.querySelector('.cluster-card-port').getBoundingClientRect();
-        const endY = port.top + port.height / 2, visible = endY > viewport.top + 3 && endY < viewport.bottom - 3;
-        const path = paths[i];
+      rows.forEach(({row, path, glow, dots, ripples}, i) => {
+        const port = ports[i];
+        const endY = port.top + port.height / 2 - scrollDelta;
         if (!path) return;
-        const edge = Math.max(0, Math.min(1, (endY - viewport.top) / 18, (viewport.bottom - endY) / 18));
-        const alpha = reduced ? edge : (visibility.get(i) || 0) + (edge - (visibility.get(i) || 0)) * damp(dt / 1000, .08);
-        visibility.set(i, alpha);
+        // Visibility is spatial: a port outside the viewport loses its line in
+        // the same update, with no time-based fade trailing behind scrolling.
+        const visible = endY > viewport.top + 3 && endY < viewport.bottom - 3;
+        const alpha = visible ? Math.max(0, Math.min(1, (endY - viewport.top) / 18, (viewport.bottom - endY) / 18)) : 0;
         path.style.strokeOpacity = alpha * (row.getAttribute('aria-current') ? .9 : .48);
-        const glow = sparks[i];
         if (glow) glow.style.opacity = alpha;
-        if (!visible && alpha < .001) return;
+        if (!visible) return;
         const endX = port.left + port.width / 2 - box.left, targetY = endY - box.top;
         const span = Math.max(28, (endX - startX) * .52);
         path.setAttribute('d', `M ${startX} ${startY} C ${startX + span} ${startY}, ${endX - span * .65} ${targetY}, ${endX} ${targetY}`);
         if (glow) {
           const reveal = smooth((elapsed - MOTION.enter - stagger(i)) / MOTION.enter);
           const samples = curveSamples({x: startX, y: startY, endX, endY: targetY, bend: span});
-          const ripples = glow.querySelectorAll('.cluster-flow-ripple');
-          glow.querySelectorAll('.cluster-flow-dot').forEach((dot, j) => {
+          dots.forEach((dot, j) => {
             const travel = elapsed / MOTION.flow + (i * .19 + j * .5) % 1;
             const progressAlong = travel % 1;
             const incoming = shown.direction === 'incoming';
@@ -109,8 +130,37 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, onClea
         }
       });
     };
-    raf = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(raf);
+    const tick = now => {
+      update(now);
+      raf = requestAnimationFrame(tick);
+    };
+    // Scroll events run before animation-frame callbacks. Update immediately so
+    // scrollbar dragging and wheel/touch scrolling share the same geometry.
+    const onScroll = () => update(performance.now());
+    const resize = new ResizeObserver(() => { size(); update(performance.now()); });
+    resize.observe(scroller);
+    resize.observe(content);
+    // Focus reveal must use content coordinates, since the visible rows are
+    // translated inside a pinned viewport rather than natively scrolled.
+    const onFocus = event => {
+      const row = event.target.closest('.cluster-list-item');
+      if (!row) return;
+      const item = row.closest('li');
+      const top = item.offsetTop, bottom = top + item.offsetHeight;
+      if (top < scroller.scrollTop) scroller.scrollTop = top;
+      else if (bottom > scroller.scrollTop + scroller.clientHeight) scroller.scrollTop = bottom - scroller.clientHeight;
+      update(performance.now());
+    };
+    scroller.addEventListener('focusin', onFocus);
+    scroller.addEventListener('scroll', onScroll, {passive: true});
+    update(performance.now());
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(raf);
+      scroller.removeEventListener('scroll', onScroll);
+      scroller.removeEventListener('focusin', onFocus);
+      resize.disconnect();
+    };
   }, [selectionKey, documents, getAnchor, reduced]);
 
   if (!shown) return navigation ? <div className="cluster-fan"><aside className="cluster-list cluster-list-collapsed" aria-label="文档列表导航"><div className="cluster-list-navigation">{navigation}</div></aside></div> : null;
@@ -129,6 +179,7 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, onClea
         <button type="button" onClick={onClose} aria-label={timeline ? `收起${title}` : '关闭文档列表'} title="关闭列表"><Icon name="close" size={16}/></button>
       </header>
       <div className="cluster-list-scroll" ref={scroll} tabIndex={0} role="region" aria-label={`${title}文档，可滚动浏览`}>
+        <div className="cluster-scroll-track"><div className="cluster-scroll-viewport"><div className="cluster-scroll-content">
         {documents.length ? <ul key={selectionKey}>{documents.map((node, index) => <li key={node.id}>
           <button type="button" className="cluster-list-item" style={{'--fan-delay': `${stagger(index)}ms`}}
             aria-current={node.id === selected ? 'page' : undefined} onClick={() => onSelect(node.id)}>
@@ -138,6 +189,7 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, onClea
             {timeline && node.id === selected && <small className="cluster-history-current">当前</small>}
           </button>
         </li>)}</ul> : <p className="cluster-list-empty">{shown.latest ? '暂无有有效日期的文档' : shown.recent ? '打开文档后，这里会留下阅读足迹' : shown.document ? shown.direction === 'incoming' ? '还没有其他文档引用这篇文章' : '这篇文章没有可打开的内部链接' : '暂时没有匹配的文档'}</p>}
+        </div></div></div>
       </div>
       {shown.latest && <footer className="cluster-history-footer"><span>按更新时间 · 最近 10 篇</span></footer>}
       {shown.recent && <footer className="cluster-history-footer"><span>同篇去重 · 最多 50 篇</span><button type="button" onClick={onClear} disabled={!documents.length} title="清空最近阅读记录"><Icon name="trash" size={14}/>清空</button></footer>}
