@@ -10,6 +10,7 @@ export interface GraphNode {
 	tags: string[];
 	/** Inbox retains the normal star shape with slightly smaller size and weaker rays. */
 	inbox?: boolean;
+	collection?: 'notes' | 'inbox' | 'readings';
 	unresolved: boolean;
 	tag: boolean; // true=有界标签 hub（非文件），与 unresolved 并列的判别位
 }

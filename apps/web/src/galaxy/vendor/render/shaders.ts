@@ -19,12 +19,14 @@ export const NODE_VERTEX_SHADER = /* glsl */ `
 attribute float aSize;
 attribute float aGhost;
 attribute float aInbox;
+attribute float aReading;
 attribute float aDim;
 attribute float aActive;
 attribute float aPreview;
 varying vec3 vColor;
 varying float vGhost;
 varying float vInbox;
+varying float vReading;
 varying float vDim;
 varying float vPointSize;
 varying float vActive;
@@ -45,6 +47,7 @@ void main() {
 	vColor = color;
 	vGhost = aGhost;
 	vInbox = aInbox;
+	vReading = aReading;
 	vDim = mix(aDim, 1.0, max(aActive, aPreview));
 	vActive = aActive;
 	vPreview = aPreview;
@@ -61,6 +64,7 @@ export const NODE_FRAGMENT_SHADER = /* glsl */ `
 varying vec3 vColor;
 varying float vGhost;
 varying float vInbox;
+varying float vReading;
 varying float vDim;
 varying float vPointSize;
 varying float vActive;
@@ -77,23 +81,34 @@ void main() {
 	// 菱形轮廓专属于可阅读的文档，背景星仍是无轮廓的小光点。
 	float coreWidth = mix(0.11, 0.13, vActive) * mix(1.0, 0.90, vInbox);
 	float core = 1.0 - smoothstep(coreWidth - pixel, coreWidth + pixel, abs(uv.x) + abs(uv.y));
-	float halo = exp(-dot(uv, uv) * mix(80.0, 36.0, vActive)) * mix(0.10, 0.42, vActive);
+	float halo = exp(-dot(uv, uv) * mix(42.0, 30.0, vActive)) * mix(mix(0.08, 0.22, vDim), 0.42, vActive);
 	halo += vPreview * exp(-dot(uv, uv) * 25.0) * (0.3 + uPreviewPulse * 0.65);
-	float rayWidth = max(0.011, pixel * 0.65);
-	float rays = exp(-abs(uv.x) / rayWidth - abs(uv.y) * 8.0)
-		+ exp(-abs(uv.y) / rayWidth - abs(uv.x) * 10.0);
+	float rayWidth = max(0.014, pixel * 0.65);
+	// 远景仍是一颗星；靠近后外部导读的横向衍射光稍长。
+	float detail = smoothstep(10.0, 32.0, vPointSize);
+	float rays = exp(-abs(uv.x) / rayWidth - abs(uv.y) * 5.0)
+		+ exp(-abs(uv.y) / rayWidth - abs(uv.x) * mix(5.5, 3.8, vReading * mix(0.5, 1.0, detail)));
 	float edge = 1.0 - smoothstep(0.38, 0.5, d);
-	float starAlpha = (core + halo * mix(1.0, 0.55, vInbox)
-		+ rays * mix(0.35, 0.85, vActive) * mix(1.0, 0.40, vInbox)) * edge;
+	float glow = halo * mix(1.0, 0.75, vInbox)
+		+ rays * mix(mix(0.22, 0.65, vDim), 0.85, vActive) * mix(1.0, 0.70, vInbox);
+	// 阅读聚焦沿用原有明暗权重，整颗星一起淡出；通过光芒比例保留星形。
+	float starAlpha = clamp((core + glow) * edge, 0.0, 1.0) * vDim;
 	vec3 starTint = mix(vColor, vec3(0.94, 0.97, 1.0), vActive * 0.65);
 	starTint = mix(starTint, vec3(0.88, 0.94, 1.0), vPreview * 0.55);
-	vec3 starColor = mix(starTint, vec3(1.0), exp(-d * d * 100.0) * mix(0.85, 0.98, vActive) * (1.0 - vGhost));
+	// 在线性空间中保留足够色差，避免白核和 bloom 将目录色冲成白光。
+	// 目录色覆盖星核边缘及星芒，最外层仍渐变回分类色。
+	vec3 collectionTint = mix(vec3(0.90, 0.76, 0.56), vec3(0.36, 0.56, 0.82), vInbox);
+	collectionTint = mix(collectionTint, vec3(0.40, 0.72, 0.69), vReading);
+	float collectionMask = 1.0 - smoothstep(0.28, 0.48, d);
+	starTint = mix(starTint, collectionTint, collectionMask * mix(0.94, 1.0, detail));
+	// 白光仅留在中心小点，选中时靠尺寸和光晕强调，避免整颗褪色。
+	vec3 starColor = mix(starTint, vec3(1.0), exp(-d * d * 650.0) * 0.72 * (1.0 - vGhost));
 
 	// 晨昼保留纸面圆点；所有 smoothstep 使用递增边界，避免未定义行为。
 	float disk = 1.0 - smoothstep(0.42, 0.5, d);
 	float rim = smoothstep(0.40, 0.46, d) * (1.0 - smoothstep(0.46, 0.5, d));
 	vec3 col = mix(starColor, vColor * (1.0 - rim * 0.28), uLightMode);
-	float alpha = mix(clamp(starAlpha, 0.0, 1.0), disk, uLightMode) * mix(1.0, 0.45, vGhost) * vDim;
+	float alpha = mix(clamp(starAlpha, 0.0, 1.0), disk * vDim, uLightMode) * mix(1.0, 0.45, vGhost);
 	if (alpha < 0.002) discard;
 	gl_FragColor = vec4(col, alpha);
 }
