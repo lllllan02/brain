@@ -5,15 +5,19 @@ updated_at: "2026-10-10"
 tags: ["Go", "Once", "初始化"]
 aliases: ["sync.Once"]
 parent: victoriametrics-go-concurrency
+source: "[Go sync.Once is Simple... Does It Really?](https://victoriametrics.com/blog/go-sync-once/)，VictoriaMetrics"
 ---
 
-**Once 不只阻止重复执行，还要保证其他调用者返回时，首次调用已经结束。**
+**Once 的保证包含两部分：函数只执行一次，其他调用者返回时这次执行也已经结束。**
 
-原文：[Go sync.Once is Simple... Does It Really?](https://victoriametrics.com/blog/go-sync-once/)，VictoriaMetrics。
+## 为什么一个 CAS 标记不够
 
-- 仅用 CAS 抢到执行权不够：若提前发布完成标记，其他调用者会读到未完成的初始化结果。
-- 实现用原子标记走快速路径，慢路径用 Mutex 串行化并再次检查；函数结束后才发布完成状态。拆开两条路径也便于内联常用路径。
-- `Do` 中函数 panic 后仍算执行过，后续不会重试；递归调用同一个 Once 会死锁。
-- Go 1.21 的 `OnceFunc/OnceValue/OnceValues` 可包装函数或缓存返回值；error 同样会被缓存，panic 会在后续调用中再次触发。
+如果抢到执行权就把标记设成“完成”，其他 goroutine 会直接返回，却可能读到尚未初始化的数据。原文实现先用原子标记提供快速路径，未完成时进入锁保护的慢路径，再次检查并执行函数，结束后才发布完成状态。
 
-因此，Once 适合 [[go-initialization|初始化]] 的延迟执行，不承担失败重试。它须与被保护对象共享生命周期，使用后不可复制；回看推导可定位原文 How it works?。
+锁让并发调用者等到执行结束；快速路径则降低初始化完成后反复调用的成本。
+
+## 失败也可能被记住
+
+`Do` 的函数发生 panic 后仍算执行过，之后不会重试；递归调用同一个 Once 会死锁。Go 1.21 的 `OnceFunc/OnceValue/OnceValues` 可包装函数与缓存返回值，其中 error 也会被缓存，panic 会在后续调用时再次触发。
+
+因此它适合[[go-initialization|一次性初始化]]，不承担失败重试；Once 应与被保护对象共享生命周期，使用后不可复制。

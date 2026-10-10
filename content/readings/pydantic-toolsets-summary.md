@@ -5,22 +5,21 @@ category: "Agent"
 tags: ["Agent", "工具调用", "工具注册"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+source: "[Toolsets 官方文档](https://pydantic.dev/docs/ai/tools-toolsets/toolsets/)"
 ---
 
-**Pydantic AI 用工具集（Toolset）统一组织工具，并通过组合与包装调整暴露方式。** 这是一种应用内抽象，不要求部署独立的注册服务。
+**Pydantic AI 用工具集（Toolset）统一“提供工具定义”和“执行工具调用”，再通过包装层调整模型可见的集合。**
 
-来源：[Toolsets 官方文档](https://pydantic.dev/docs/ai/tools-toolsets/toolsets/)，按 2026-10-10 页面总结，未运行示例。
+## 如何接入与复用
 
-## 怎样组织工具
+`FunctionToolset` 接入本地函数，`CombinedToolset` 组合多个来源。自定义工具集实现 `get_tools()` 和 `call_tool()`，分别负责给出定义和分发调用，使不同工具来源可以共用一套上层接口。
 
-`FunctionToolset` 接入本地函数，`CombinedToolset` 合并多个工具集。自定义工具集实现 `get_tools()` 和 `call_tool()`，分别提供定义与处理调用，使工具来源和执行方式可以封装在同一接口后。[工具集组合](https://pydantic.dev/docs/ai/tools-toolsets/toolsets/#:~:text=Toolset%20Composition)、[自定义工具集](https://pydantic.dev/docs/ai/tools-toolsets/toolsets/#:~:text=Building%20a%20Custom%20Toolset)
+复用同一工具集时，无需复制实现；可以改变外层组合、名称或过滤条件。
 
-## 为什么还需要包装层
+## 包装层解决什么问题
 
-- 组合后可能重名：前缀或重命名明确工具身份。
-- 工具已接入，但本轮未必需要：过滤器在每一步根据运行上下文与工具定义筛选。
-- 多处复用同一组工具：调整外层组合与过滤，不必复制工具实现。
+组合后重名，可增加前缀或重命名；工具已经接入但当前不需要，可在每一步按运行上下文与工具定义筛选。文档用 `TestModel` 展示和检查模型实际拿到的工具集合。
 
-文档展示了过滤前后的模型可见列表，可用 `TestModel` 检查实际提供了哪些定义。[筛选与命名](https://pydantic.dev/docs/ai/tools-toolsets/toolsets/#:~:text=Filtering%20Tools)
+由此形成“工具来源 → 组合与命名 → 每轮筛选 → 调用分发”的分工。它是应用内抽象，不要求独立注册服务；筛选也可以直接来自上下文，不一定先做工具搜索。
 
-可借鉴的结构是「工具来源 → 组合与命名 → 每轮筛选 → 调用分发」。工具集不限于保存一个 Map，也不意味着必须先做搜索；过滤条件可以直接来自应用上下文。
+依据 2026-10-10 官方文档，未运行示例。

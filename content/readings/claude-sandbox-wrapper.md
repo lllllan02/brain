@@ -5,14 +5,21 @@ category: "Agent"
 tags: ["Agent", "沙箱", "源码"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+source: ["[`wrapWithSandbox`](https://github.com/anthropics/sandbox-runtime/blob/4160dcde76f9905268cb76826381665c422bfbf6/src/sandbox/sandbox-manager.ts#L1879)"]
 ---
 
-**`sandbox-runtime` 的命令包装接口负责生成受限启动方式，调用方负责真正执行。** 返回包装后的命令，不等于程序已经在沙箱内运行。实际使用见[[srt-sandbox-practice|srt 配置与启动]]。
+**Claude 使用的公开 `sandbox-runtime` 负责生成受限启动命令；真正执行命令的是调用方。**
 
-[`wrapWithSandbox`](https://github.com/anthropics/sandbox-runtime/blob/4160dcde76f9905268cb76826381665c422bfbf6/src/sandbox/sandbox-manager.ts#L1879)读取文件与网络配置、等待必要的网络初始化，再按平台分派：macOS 生成 Seatbelt 相关包装；Linux 交给 bubblewrap 等机制组织执行。
+## 包装接口做了什么
 
-包装中需要把工作目录、读写路径、代理端口或桥接 socket 传到正确的位置。最终保护范围取决于实际执行这个结果的调用方，以及提供的配置。
+`wrapWithSandbox` 读取文件与网络配置，等待必要的网络初始化，再按平台分派：macOS 生成 Seatbelt 相关包装，Linux 交给 bubblewrap 等机制组织环境。
 
-因此这份公开库能说明命令包装机制，不能单独证明 Claude Code 每一种工具都经过同一个入口。[[claude-sandbox-network|Linux 网络实现]]可继续追踪具体边界；[[claude-sandbox-devcontainer|devcontainer]]则是覆盖另一层环境的方案。
+工作目录、读写路径、代理端口和桥接 socket 都需要传入正确位置。返回的字符串描述“怎样启动”，不代表程序已经进入沙箱；实际用法见 [[srt-sandbox-practice|srt 配置与启动]]。
 
-阅读范围：sandbox-runtime `4160dcd`；这是 Claude Code 使用的公开运行时，不等于 Claude Code 的全部内部实现。
+## 能从这份源码确认到哪里
+
+它可以解释公开库的包装机制，但最终保护范围还取决于调用方是否使用包装结果及所传配置，不能单独证明 Claude Code 每一种工具都经过同一个入口。
+
+继续追踪网络可看[[claude-sandbox-network|Linux 网络隔离与代理]]；[[claude-sandbox-devcontainer|devcontainer]]则覆盖整个开发环境，是另一层边界。
+
+阅读范围：sandbox-runtime `4160dcd`，不等于 Claude Code 全部内部实现；未运行验证。

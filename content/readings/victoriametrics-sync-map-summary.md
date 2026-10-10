@@ -6,15 +6,19 @@ updated_at: "2026-10-10"
 tags: ["Go", "sync.Map", "源码"]
 aliases: ["sync.Map read dirty"]
 parent: victoriametrics-go-concurrency
+source: "[Go sync.Map: The Right Tool for the Right Job](https://victoriametrics.com/blog/go-sync-map/)，VictoriaMetrics"
 ---
 
-**文章以 read/dirty 双表解释 sync.Map 如何减少读路径锁竞争，同时指出它不能替代所有 map 加锁方案。**
+**原文以旧版 read/dirty 双表解释 sync.Map 如何减少读路径锁竞争，并说明它为何不能替代所有 map 加锁方案。**
 
-原文：[Go sync.Map: The Right Tool for the Right Job](https://victoriametrics.com/blog/go-sync-map/)，VictoriaMetrics。
+## 双表如何降低竞争
 
-- read 提供快速查找，缺失且可能有新增键时加锁查 dirty；慢路径访问积累后，dirty 晋升为 read。
-- 两表共享 entry，通过原子指针更新值；read 不意味着值永不改变。删除先标记，再在后续表转换中清理；expunged 不等于键已经从所有表消失。
-- 新键、删除与表重建会带来额外成本，选型需看访问模式和实际负载，不能只靠读写比例。
-- 单个方法的并发安全不等于多步操作的原子性；`Range` 也不是一致快照，接口边界见 [[go-sync-map|sync.Map]]。
+read 提供快速查找；未找到且可能有新键时，再加锁查 dirty。慢路径访问积累后，dirty 晋升为 read，减少后续加锁查询。
 
-**版本边界**：这是旧双表实现；[Go 1.24 已改用并发哈希 Trie](https://go.dev/doc/go1.24#sync)。原文 How sync.Map Works 及后续增删查章节适合了解旧实现。
+两张表共享 entry，值通过原子指针更新，因此 read 并不意味着其中的值永远不变。删除会先改变 entry 状态，再随表转换清理；新增键和重建 dirty 则仍有额外成本。
+
+## 机制与接口分别有哪些边界
+
+适不适合取决于键的访问方式和实际负载，不能只看读写比例。[[go-sync-map|单个方法并发安全]]不意味着“先检查再写入”等多步流程原子，`Range` 也不是一致快照。
+
+**这是历史实现：[Go 1.24 已改用并发哈希 Trie](https://go.dev/doc/go1.24#sync)。** 原文适合学习旧双表的设计取舍，不能据此描述当前所有版本的内部结构。

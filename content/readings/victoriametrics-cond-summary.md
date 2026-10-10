@@ -6,15 +6,19 @@ updated_at: "2026-10-10"
 tags: ["Go", "sync.Cond", "源码"]
 aliases: ["Cond notifyList"]
 parent: victoriametrics-go-concurrency
+source: "[Go sync.Cond, the Most Overlooked Sync Mechanism](https://victoriametrics.com/blog/go-sync-cond/)，VictoriaMetrics"
 ---
 
-**Cond 将条件检查、释放锁和等待通知衔接起来，避免忙等，也避免在解锁与进入等待之间漏掉通知。**
+**Cond 把检查条件、释放锁和等待通知衔接起来；通知只意味着可以重新检查，不保证条件已经成立。**
 
-原文：[Go sync.Cond, the Most Overlooked Sync Mechanism](https://victoriametrics.com/blog/go-sync-cond/)，VictoriaMetrics。
+## 为什么醒来还要循环检查
 
-- 使用流程是持锁检查条件，不满足就 `Wait`；返回后重新持锁检查，因此要用循环，通知本身不保证条件仍成立。
-- `Signal` 通知一个等待者，`Broadcast` 通知当前全部等待者；与关闭 channel 不同，广播可以重复使用。通知不会被无限储存给未来的等待者。
-- `Wait` 先取得票号，再解锁。真正休眠前会检查票号是否已被通知，补上“通知先到、等待者后入队”的间隙。
-- 票号、入队和实际运行顺序可能不同；源码机制不能推出公平调度承诺。`copyChecker` 通过地址变化检测使用后的复制。
+调用者持锁检查条件，不满足就 `Wait`。`Wait` 释放锁并等待通知，返回前重新取得锁；这期间其他 goroutine 可能先修改状态，所以仍要在循环中检查条件。
 
-文章的核心是理解“通知意味着重新检查”，用法可结合 [[go-cond|Cond 知识卡]]。源码细节见原文的 How It Works Internally。
+`Signal` 通知一个等待者，`Broadcast` 通知当前全部等待者。它们不为尚未登记的未来等待者积存通知，广播也不同于永久关闭一个 channel。
+
+## 怎样避免解锁后漏掉通知
+
+`Wait` 先领取票号、登记等待，再释放锁。若通知恰好在真正入队和休眠前到达，等待者会发现自己的票号已被通知，跳过休眠。因此，“登记后、入睡前”的间隙不会吞掉这次通知。
+
+票号分配、入队与实际运行顺序可能不同，不能由此推出公平调度承诺。理解这条机制后，再结合 [[go-cond|Cond 用法]]看持锁检查循环。
