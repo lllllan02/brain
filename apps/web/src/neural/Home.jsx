@@ -11,6 +11,7 @@ import {ReadingNavigation, ReadingHistoryToggle, ReadingTrail} from './ReadingHi
 import {latestDocuments, documentHighlight} from './latest-documents';
 import {readingTrail, readingDirection} from './reading-history';
 import {usePresence} from '../motion/usePresence';
+import {ReaderTransition} from '../motion/ReaderTransition';
 import {motionVariables} from '../motion/tokens.js';
 import '../motion/motion.css';
 import '../galaxy/galaxy.css';
@@ -58,8 +59,12 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   const documents = useMemo(() => graph.nodes.filter(node => node.module), [graph]);
   const node = graph.index.get(focus.sel);
   const reviewNode = graph.index.get(reviewId);
-  const reader = usePresence(node?.module ? {node, location: reading.location} : null, node?.module ? node.id : null, reduced, 'translateX(16px)');
+  // Keep the panel in place while its contents hand off to the next document.
+  const reader = usePresence(node?.module ? {node, location: reading.location} : null, node?.module ? 'reader' : null, reduced, 'translateX(16px)');
   const shownNode = reader.shown?.node;
+  const visualNode = node?.module ? shownNode : null;
+  const visualFocus = {sel: visualNode?.id || null, mod: visualNode?.module || focus.mod};
+  current.current.visualFocus = visualFocus;
   const syncReaderLayout = useCallback(() => {
     const panel = reader.ref.current;
     if (!panel) return;
@@ -133,7 +138,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       }, current.current.reduced, current.current.preset);
       scene.current = instance;
       const cluster = current.current.groupCluster;
-      instance.focus(cluster ? null : current.current.focus.sel, cluster ? cluster.category : current.current.focus.mod, cluster?.tag, current.current.focus.sel);
+      instance.focus(cluster ? null : current.current.visualFocus.sel, cluster ? cluster.category : current.current.visualFocus.mod, cluster?.tag, current.current.visualFocus.sel);
       instance.pause(current.current.reduced);
       instance.expand(current.current.expanded, current.current.grouping);
       instance.readingTrail(current.current.trail);
@@ -147,8 +152,8 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   useEffect(() => {scene.current?.readingTrail(trail);}, [trail]);
   useEffect(() => { if (!focus.sel) setReaderCluster(null); }, [focus.sel]);
   useEffect(() => {
-    scene.current?.focus(groupCluster ? null : focus.sel, groupCluster ? groupCluster.category : focus.mod, groupCluster?.tag, focus.sel);
-  }, [focus.sel, focus.mod, groupCluster]);
+    scene.current?.focus(groupCluster ? null : visualFocus.sel, groupCluster ? groupCluster.category : visualFocus.mod, groupCluster?.tag, visualFocus.sel);
+  }, [visualFocus.sel, visualFocus.mod, groupCluster]);
   const showReaderCluster = cluster => {
     setHistoryOpen(false); setLatestOpen(false);
     setReaderCluster({owner: focus.sel, value: cluster});
@@ -254,10 +259,12 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       }}><Icon name={icon} size={15}/><span>{title}</span></button>)}
 
     </nav>
-    <ClusterList navigation={node && <ReaderRelations graph={graph} node={node} module={moduleOf(graph,node)} cluster={timelineOpen ? null : activeCluster} onChoose={showReaderCluster}/>} graph={graph} cluster={displayedCluster} selected={node?.id} reduced={reduced} getAnchor={timelineOpen && !focus.sel ? undefined : listAnchor}
+    <ClusterList navigation={node && <ReaderRelations graph={graph} node={node} module={moduleOf(graph,node)} cluster={timelineOpen ? null : activeCluster} onChoose={showReaderCluster}/>} graph={graph} cluster={displayedCluster} selected={node?.id} anchorId={shownNode?.id} reduced={reduced} getAnchor={timelineOpen && !focus.sel ? undefined : listAnchor}
       onPresenceChange={setClusterVisible} onSelect={id => go(id, !timelineOpen)} onClear={reading.clear} onClose={() => latestOpen ? closeLatest() : historyOpen ? closeHistory() : setReaderCluster({owner: focus.sel, value: null})}/>
-    {shownNode && <div ref={reader.ref} inert={reader.closing} className="analysis-wrap">
+    {shownNode && <div ref={reader.ref} inert={reader.closing} className="analysis-wrap reader-shell">
+      <ReaderTransition documentId={shownNode.id} reduced={reduced}>
       <DocumentReader collectionAction={collectionAction} navigation={<ReadingNavigation graph={graph} reading={reading} onTravel={reading.travel}/>} onResize={syncReaderLayout} key={shownNode.id} reduced={reduced} onPreview={previewNode} graph={graph} node={shownNode} readingLocation={reader.shown.location} onReadingScroll={reading.saveScroll} module={moduleOf(graph, shownNode)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>
+      </ReaderTransition>
     </div>}
   </section>;
 }
