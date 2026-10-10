@@ -1,0 +1,4 @@
+interface:
+  display_name: "技术学习清单与问题探索"
+  short_description: "根据学习提问、场景与已有材料，整理清单、提出问题并补充值得深入的内容"
+  default_prompt: "使用 $tech-study-map，根据我的提问、学习场景和已有材料，整理需要了解或掌握的内容，提出相关问题并给出必要的补充。"
