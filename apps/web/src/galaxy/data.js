@@ -5,6 +5,7 @@ export function galaxyData(graph) {
   const indices = new Map(documents.map((node, i) => [node.id, i]));
   const nodes = documents.map(node => ({
     id: node.id, name: node.title, folderTop: node.module,
+    collection: node.collection,
     degree: node.deg, inDegree: node.in, outDegree: node.out,
     fileSize: new TextEncoder().encode(node.body || '').length,
     inbox: node.collection === 'inbox',
@@ -27,7 +28,7 @@ export function galaxyFocus(data, selected, category, tag = null) {
       }
     });
   } else if (category || tag) {
-    data.nodes.forEach((node, i) => { if (tag ? node.tags?.includes(tag) : node.folderTop === category) bright.add(i); });
+    data.nodes.forEach((node, i) => { if (tag ? node.tags?.includes(tag) : (category.startsWith('collection:') ? node.collection === category.slice(11) : node.folderTop === category)) bright.add(i); });
     data.links.forEach((link, i) => {
       if (bright.has(link.source) && bright.has(link.target)) links.push(i);
     });

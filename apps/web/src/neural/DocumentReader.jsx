@@ -4,8 +4,9 @@ import {LinkPreview} from './LinkPreview';
 import {ReaderRelations} from './ReaderRelations';
 import {MarkdownArticle} from './MarkdownArticle';
 import {ExternalLinkPreview} from './ExternalLinkPreview';
+import {collectExternalLinks} from './external-links';
 import {useReaderResize} from './useReaderResize';
-export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,onResize,reduced,readingLocation,onReadingScroll,navigation,historyControl}){
+export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,onResize,reduced,readingLocation,onReadingScroll,navigation}){
  const ref=useRef(null);const [full,setFull]=useState(false);const [copy,setCopy]=useState('');const [tocOpen,setTocOpen]=useState(false);
  const [copying,setCopying]=useState(false);
  const resizeHandlers=useReaderResize(ref,full,onResize);
@@ -22,16 +23,7 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
   // Read rendered anchors, so code samples, internal references and attachments
   // cannot accidentally become external links. Template content stays inert.
   const template=document.createElement('template');template.innerHTML=node.html;
-  const links=new Map();
-  for(const anchor of template.content.querySelectorAll('a[href]')){
-   try{
-    const url=new URL(anchor.getAttribute('href'));
-    if(!['http:','https:','mailto:'].includes(url.protocol)||links.has(url.href))continue;
-    const title=anchor.textContent.replace(/\s*↗\s*$/,'').trim()||url.href;
-    links.set(url.href,{href:url.href,title});
-   }catch{/* Relative document links and local attachments stay in the article. */}
-  }
-  return [...links.values()];
+  return collectExternalLinks(template.content.querySelectorAll('a[href]'));
  },[node.html]);
  const copyDocument=async titleOnly=>{
   setCopy('');setCopying(true);
@@ -63,7 +55,7 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
     <h2>{node.title}</h2>
     {navigation}
    </div>
-   <ReaderRelations graph={graph} node={node} module={module} cluster={cluster} historyControl={{...historyControl,onToggle:()=>{setFull(false);historyControl.onToggle();}}} onChoose={next=>{setFull(false);onCluster(next);}}/>
+   <ReaderRelations graph={graph} node={node} module={module} cluster={cluster} onChoose={next=>{setFull(false);onCluster(next);}}/>
    <div className="read-meta-row">
     <p className="read-meta">{node.updated&&<span title={`更新于 ${node.updated}`}><Icon name="calendar" size={13}/><span className="sr-only">更新于 </span>{node.updated}</span>}<span title="预计阅读时间"><Icon name="clock" size={13}/>{Math.max(1,Math.ceil(node.body.length/500))} 分钟</span></p>
     <div className="read-copy-actions" role="group" aria-label="复制文档">

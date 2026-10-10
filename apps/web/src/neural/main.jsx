@@ -1,3 +1,4 @@
+import {CONTENT_COLLECTIONS} from '../collections.js';
 import React,{useCallback,useEffect,useMemo,useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {buildGraph,moduleOf} from './graph';
@@ -19,7 +20,7 @@ function App(){
  const reading=useReadingHistory(graph);
  const setFocus=useCallback(next=>reading.navigate(next.sel?'#/doc/'+encodeURIComponent(next.sel):next.mod?'#/module/'+next.mod:'#/'),[reading.navigate]);
  const route=parseReadingRoute(reading.location.url), node=graph?.index.get(route.id);
- const focus=node?.module?{mod:moduleOf(graph,node).id,sel:node.id}:{mod:graph?.modules.some(m=>m.id===route.module)?route.module:null,sel:null};
+ const focus=node?.module?{mod:moduleOf(graph,node).id,sel:node.id}:{mod:(graph?.modules.some(m=>m.id===route.module)||CONTENT_COLLECTIONS.some(c=>route.module===`collection:${c}`))?route.module:null,sel:null};
  if(!graph)return <div className="neural loading-screen">{error||`正在打开${CONFIG.brand.name}…`}</div>;
  return <div className="neural page-home"><Home graph={graph} focus={focus} setFocus={setFocus} reading={reading} reduced={reduced}/></div>;
 }

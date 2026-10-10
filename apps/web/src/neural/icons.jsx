@@ -1,6 +1,7 @@
 import React from 'react';
 
 const paths = {
+  folder: 'M3 7V5h6l2 2h10v13H3Z',
   copy: 'M9 9h12v12H9ZM5 15H3V3h12v2',
   history: 'M3 11a9 9 0 1 1 2.6 7M3 4v7h7M12 7v5l3 2',
   parent: 'M7 8h8a4 4 0 0 1 4 4v8M11 4 7 8l4 4',

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {adjacentDocument, parseReadingRoute, readVisits, readingTrail, recordVisit, recentDocuments, rememberDocument, readingDirection, trailPlayback} from '../src/neural/reading-history.js';
+import {adjacentDocument, parseReadingRoute, readVisits, readingTrail, recordVisit, recentDocuments, rememberDocument, readingDirection, trailPlayback, trailPath, readingOrigin} from '../src/neural/reading-history.js';
 
 const visit = (id, from, key = id) => ({key, id, from, time: 1});
 test('前后篇跳过主页、同篇锚点与已移除文档，并在边界停下', () => {
@@ -101,4 +101,28 @@ test('首次展开播放全程，持续展开时仅播放最后新增的一段',
   assert.deepEqual(trailPlayback(segments.slice(1),['a','b','c']),{play:[],settled:segments.slice(1)});
   assert.deepEqual(trailPlayback([],['a']),{play:[],settled:[]});
   assert.deepEqual(trailPlayback(segments,[]),{play:[segments[2]],settled:segments.slice(0,2)});
+});
+
+test('缩放后相邻星点不足 32 像素时仍保留有效轨迹', () => {
+  for (const distance of [1, 12, 31, 32, 100]) {
+    const nodes = new Map([['a', {x:0,y:0}], ['b', {x:distance,y:0}]]);
+    const path = trailPath({from:'a',to:'b'}, nodes);
+    assert.ok(path.startsWith('M'));
+    const values = path.match(/-?\d+(?:\.\d+)?(?:e[+-]?\d+)?/g).map(Number);
+    assert.ok(values.every(Number.isFinite));
+    assert.ok(values[0] < values[4], '端点裁剪不能吞掉整条线或反转方向');
+    assert.ok(values[0] <= distance * .12);
+    assert.ok(values[4] >= distance * .84);
+  }
+  assert.equal(trailPath({from:'a',to:'missing'}, new Map()), '');
+  assert.equal(trailPath({from:'a',to:'b'}, new Map([['a',{x:0,y:0}],['b',{x:0,y:0}]])), '');
+});
+
+test('关闭正文后继续阅读保留来源，缺失文档仍切断路径', () => {
+  let previous = readingOrigin(null, 'a', 'a');
+  previous = readingOrigin(previous, null, null);
+  assert.equal(previous, 'a');
+  const visits = [visit('a', null), visit('b', previous)];
+  assert.equal(readingTrail(visits, new Set(['a','b'])).edges.length, 1);
+  assert.equal(readingOrigin(previous, 'missing', null), null);
 });

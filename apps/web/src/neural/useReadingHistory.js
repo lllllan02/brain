@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
-import {adjacentDocument, parseReadingRoute, readVisits, recordVisit, recentDocuments, rememberDocument} from './reading-history.js';
+import {adjacentDocument, parseReadingRoute, readVisits, recordVisit, recentDocuments, rememberDocument, readingOrigin} from './reading-history.js';
 
 const storageKey = `brain:reading:v1:${location.pathname}`;
 const uid = () => crypto.randomUUID();
@@ -94,7 +94,7 @@ export function useReadingHistory(graph) {
       if (read('sessionStorage', `${storageKey}:last`) === JSON.stringify(locationState.key)) {lastRead.current = id; return;}
     }
     const from = lastRead.current;
-    lastRead.current = id;
+    lastRead.current = readingOrigin(from, locationState.id, id);
     write('sessionStorage', `${storageKey}:last`, locationState.key);
     if (!id || id === from) return;
     const visit = {key: uid(), id, from, time: Date.now()};

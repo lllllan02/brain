@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
+import {collectionLabel} from '../collections.js';
 import {moduleOf} from './graph';
 import {createSearchIndex, searchDocuments} from './search.js';
 import {CONFIG, asset} from '../config';
@@ -22,8 +23,9 @@ export function Home({graph, focus, setFocus, reading, reduced}) {
   const composing = useRef(false);
   const current = useRef({focus, setFocus});
   const [labels, setLabels] = useState([]), [ready, setReady] = useState(false), [error, setError] = useState('');
-  const [preset, setPreset] = useState('nebula');
+  const preset = graph.index.get(focus.sel)?.module ? 'nebula' : 'deepfield';
   const [expanded, setExpanded] = useState(false);
+  const [grouping, setGrouping] = useState('category');
   const [readerCluster, setReaderCluster] = useState(null);
   const [clusterVisible, setClusterVisible] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -43,13 +45,10 @@ export function Home({graph, focus, setFocus, reading, reduced}) {
   }, [graph, focus.sel, readerCluster, historyOpen]);
   const displayedCluster = useMemo(() => historyOpen ? {recent: reading.recent} : activeCluster, [historyOpen, reading.recent, activeCluster]);
   const groupCluster = activeCluster?.document ? null : activeCluster;
-  const views = [['galaxy', '银河'], ['nebula', '星云'], ['deepfield', '深空']];
-  const viewIndex = views.findIndex(([id]) => id === preset);
-  const nextView = views[(viewIndex + 1) % views.length];
   const [query, setQuery] = useState(''), [searchOpen, setSearchOpen] = useState(false);
   const [searchSelection, setSearchSelection] = useState(null);
   const [reviewId, setReviewId] = useState(null);
-  current.current = {focus, setFocus, preset, expanded, groupCluster, reduced, trail, reading};
+  current.current = {focus, setFocus, preset, expanded, grouping, groupCluster, reduced, trail, reading};
   const documents = useMemo(() => graph.nodes.filter(node => node.module), [graph]);
   const node = graph.index.get(focus.sel);
   const reviewNode = graph.index.get(reviewId);
@@ -125,19 +124,19 @@ export function Home({graph, focus, setFocus, reading, reduced}) {
           const target = graph.index.get(id);
           if (target?.module) current.current.setFocus({mod: target.module, sel: id});
         },
-      }, current.current.reduced);
+      }, current.current.reduced, current.current.preset);
       scene.current = instance;
       const cluster = current.current.groupCluster;
       instance.focus(cluster ? null : current.current.focus.sel, cluster ? cluster.category : current.current.focus.mod, cluster?.tag, current.current.focus.sel);
       instance.pause(current.current.reduced);
-      if (current.current.preset !== 'nebula') instance.preset(current.current.preset);
-      instance.expand(current.current.expanded);
+      instance.expand(current.current.expanded, current.current.grouping);
       instance.readingTrail(current.current.trail);
     }).catch(() => {
       if (active) setError('当前浏览器无法显示三维星云，可通过下方搜索继续阅读。');
     });
     return () => { active = false; instance?.dispose(); scene.current = null; };
   }, [graph]);
+  useEffect(() => scene.current?.preset(preset), [preset]);
   useEffect(() => scene.current?.setReducedMotion(reduced), [reduced]);
   useEffect(() => {scene.current?.readingTrail(trail);}, [trail]);
   useEffect(() => { if (!focus.sel) setReaderCluster(null); }, [focus.sel]);
@@ -175,12 +174,12 @@ export function Home({graph, focus, setFocus, reading, reduced}) {
     window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
   }, [focus, query, setFocus, historyOpen]);
   const reset = () => { setQuery(''); setSearchOpen(false); searchInput.current?.blur(); setFocus({mod: null, sel: null}); scene.current?.reset(); };
-  return <section className={`galaxy-page ${node || shownNode ? 'galaxy-reading' : ''} ${displayedCluster || clusterVisible ? 'galaxy-browsing' : ''} ${historyOpen ? 'galaxy-history-open' : ''}`} aria-label={CONFIG.brand.name} style={motionVariables}>
+  return <section className={`galaxy-page ${node || shownNode ? 'galaxy-reading' : ''} ${displayedCluster || clusterVisible ? 'galaxy-browsing' : ''} ${historyOpen ? 'galaxy-history-open' : ''}`} aria-label={CONFIG.brand.name} data-view={preset} style={motionVariables}>
     <div className={`galaxy-viewport ${!ready || error ? 'is-loading' : ''}`} ref={host}>
       <div className="galaxy-frame" aria-hidden="true"/>
       {historyOpen && <ReadingTrail projection={trailProjection} route={trail} reduced={reduced} hidden={!ready || Boolean(error)}/>}
       <div className="galaxy-labels">{ready && !error && labels.map(label => label.category ?
-        <button key={label.id} className="galaxy-category-label" style={{left: label.x, top: label.y, opacity: label.opacity, pointerEvents: label.exiting ? 'none' : undefined}} onPointerEnter={() => scene.current?.hoverCategory(label.id)} onPointerLeave={() => scene.current?.hoverCategory(null)} onFocus={() => scene.current?.hoverCategory(label.id)} onBlur={() => scene.current?.hoverCategory(null)} onClick={() => setFocus({mod: label.id, sel: null})} aria-label={`查看${label.title}分类`}>{label.title}</button> :
+        <button key={label.id} className="galaxy-category-label" style={{left: label.x, top: label.y, opacity: label.opacity, '--group-color': label.color, pointerEvents: label.exiting ? 'none' : undefined}} onPointerEnter={() => scene.current?.hoverCategory(label.id)} onPointerLeave={() => scene.current?.hoverCategory(null)} onFocus={() => scene.current?.hoverCategory(label.id)} onBlur={() => scene.current?.hoverCategory(null)} onClick={() => setFocus({mod: label.id, sel: null})} aria-label={`查看${label.title}${label.id.startsWith('collection:') ? '目录' : '分类'}`}><i aria-hidden="true"/>{label.title}<small>{label.count}</small></button> :
         <React.Fragment key={label.id}>
           {label.current && <svg className="galaxy-current-marker" aria-hidden="true" viewBox="-20 -20 40 40" style={{left: label.x, top: label.y, opacity: label.opacity, pointerEvents: label.exiting ? 'none' : undefined}}>
             <path d="M -8 -17 H -17 V -8 M 8 -17 H 17 V -8 M -8 17 H -17 V 8 M 8 17 H 17 V 8"/>
@@ -202,7 +201,7 @@ export function Home({graph, focus, setFocus, reading, reduced}) {
             aria-selected={index === search.shown.activeResultIndex}
             onPointerMove={() => setSearchSelection({results, index})}
             onMouseDown={event => event.preventDefault()} onClick={() => go(n.id)}>
-            <span>{n.title}</span><small>{n.category || '未分类'} · {n.collection === 'inbox' ? 'Inbox' : 'Notes'}</small>
+            <span>{n.title}</span><small>{n.category || '未分类'} · {collectionLabel(n.collection)}</small>
           </button>)}
         </div>
       </div>}
@@ -222,7 +221,6 @@ export function Home({graph, focus, setFocus, reading, reduced}) {
             if(results.length) setSearchSelection({results, index: Math.max(0, Math.min(results.length - 1, activeResultIndex + (event.key === 'ArrowDown' ? 1 : -1)))});
           }
         }}/>
-        {!shownNode && <ReadingHistoryToggle open={historyOpen} toggleRef={historyToggle} onToggle={() => setHistoryOpen(value => !value)}/>}
         {query && <button type="button" className="galaxy-search-clear" aria-label="清空搜索" onClick={() => {setQuery('');searchInput.current?.focus();}}><Icon name="close" size={16}/></button>}
       </form>
       <div className="galaxy-review">
@@ -240,21 +238,18 @@ export function Home({graph, focus, setFocus, reading, reduced}) {
     </div>
     {status.shown && <div className="galaxy-status" role="status"><span ref={status.ref}>{status.shown}</span></div>}
     <nav className="galaxy-views" aria-label="星空视图">
-      <button className="galaxy-category-toggle" aria-pressed={expanded} disabled={!ready || Boolean(error)} title={expanded ? '收回整体星云' : '按分类展开星云'} onClick={() => {
-        const next = !expanded; setExpanded(next); setFocus({mod: null, sel: null});
-        scene.current?.focus(null, null); scene.current?.expand(next);
-      }}><Icon name="grid" size={15}/><span>分类</span></button>
-      <button className="galaxy-view-cycle" disabled={!ready || Boolean(error)}
-        style={{'--view-index': viewIndex}} aria-label={`当前${views[viewIndex][1]}视图，切换到${nextView[1]}`} title={`切换到${nextView[1]}`}
-        onClick={() => {setPreset(nextView[0]);scene.current?.preset(nextView[0]);}}>
-        <span className="galaxy-view-highlight" aria-hidden="true"/>
-        {views.map(([id, title]) => <span key={id} className={preset === id ? 'is-current' : ''} aria-hidden="true">{title}</span>)}
-      </button>
+      <ReadingHistoryToggle open={historyOpen} toggleRef={historyToggle} onToggle={() => setHistoryOpen(value => !value)}/>
+      {[['category', '分类', 'grid'], ['collection', '目录', 'folder']].map(([mode, title, icon]) => <button key={mode} className="galaxy-category-toggle" aria-pressed={expanded && grouping === mode} disabled={!ready || Boolean(error)} title={expanded && grouping === mode ? '收回整体星云' : `按${title}展开星云`} onClick={() => {
+        const next = !expanded || grouping !== mode;
+        setGrouping(mode); setExpanded(next); setHistoryOpen(false); setFocus({mod: null, sel: null});
+        scene.current?.focus(null, null); scene.current?.expand(next, mode);
+      }}><Icon name={icon} size={15}/><span>{title}</span></button>)}
+
     </nav>
     <ClusterList graph={graph} cluster={displayedCluster} selected={node?.id} reduced={reduced} getAnchor={historyOpen && !focus.sel ? undefined : listAnchor}
       onPresenceChange={setClusterVisible} onSelect={id => go(id, !historyOpen)} onClear={reading.clear} onClose={() => historyOpen ? closeHistory() : setReaderCluster({owner: focus.sel, value: null})}/>
     {shownNode && <div ref={reader.ref} inert={reader.closing} className="analysis-wrap">
-      <DocumentReader navigation={<ReadingNavigation graph={graph} reading={reading} onTravel={reading.travel}/>} historyControl={{open:historyOpen,toggleRef:historyToggle,onToggle:()=>setHistoryOpen(value=>!value)}} onResize={syncReaderLayout} key={shownNode.id} reduced={reduced} onPreview={previewNode} graph={graph} node={shownNode} readingLocation={reader.shown.location} onReadingScroll={reading.saveScroll} module={moduleOf(graph, shownNode)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>
+      <DocumentReader navigation={<ReadingNavigation graph={graph} reading={reading} onTravel={reading.travel}/>} onResize={syncReaderLayout} key={shownNode.id} reduced={reduced} onPreview={previewNode} graph={graph} node={shownNode} readingLocation={reader.shown.location} onReadingScroll={reading.saveScroll} module={moduleOf(graph, shownNode)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>
     </div>}
   </section>;
 }

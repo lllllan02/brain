@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {Icon} from './icons';
-import {trailPlayback} from './reading-history';
+import {trailPlayback, trailPath} from './reading-history';
 import './reading-history.css';
 
 export function ReadingNavigation({graph, reading, onTravel}) {
@@ -11,16 +11,7 @@ export function ReadingNavigation({graph, reading, onTravel}) {
 }
 
 export function ReadingHistoryToggle({open, onToggle, toggleRef}) {
-  return <button ref={toggleRef} type="button" className="reading-history-toggle" aria-label="最近阅读" title="最近阅读" aria-expanded={open} aria-controls={open ? 'reading-history' : undefined} onClick={onToggle}><Icon name="history" size={15}/><span className="sr-only">最近阅读</span></button>;
-}
-
-function trailPath(edge, nodes) {
-  const a = nodes.get(edge.from), b = nodes.get(edge.to);
-  if (!a || !b) return '';
-  const dx = b.x - a.x, dy = b.y - a.y, length = Math.hypot(dx, dy);
-  if (length < 32) return '';
-  const ux = dx / length, uy = dy / length, bend = Math.min(38, length * .14);
-  return `M${a.x + ux * 14},${a.y + uy * 14} Q${(a.x + b.x) / 2 - uy * bend},${(a.y + b.y) / 2 + ux * bend} ${b.x - ux * 18},${b.y - uy * 18}`;
+  return <button ref={toggleRef} type="button" className="reading-history-toggle" aria-label="最近阅读" title="最近阅读" aria-expanded={open} aria-controls={open ? 'reading-history' : undefined} onClick={onToggle}><Icon name="history" size={15}/><span>最近阅读</span></button>;
 }
 
 // Read the live projected paths each frame so the travelling light stays attached
@@ -88,6 +79,11 @@ export function ReadingTrail({projection, route, reduced, hidden}) {
   const nodes = new Map(projection.nodes.map(n => [n.id, n]));
   return <svg ref={svg} className="reading-trail" aria-hidden="true" style={{visibility: hidden ? 'hidden' : undefined}}>
     <defs>
+      <radialGradient id="reading-glow">
+        <stop offset="0" stopColor="#ffe7bd" stopOpacity=".65"/>
+        <stop offset=".3" stopColor="#e8bd7e" stopOpacity=".3"/>
+        <stop offset="1" stopColor="#e8bd7e" stopOpacity="0"/>
+      </radialGradient>
       <marker id="reading-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 1 1 L 9 5 L 1 9"/></marker>
       {segments.map(segment => <path key={segment.key} data-segment={segment.key} d={trailPath(segment, nodes)}/>)}
     </defs>
@@ -96,7 +92,7 @@ export function ReadingTrail({projection, route, reduced, hidden}) {
     <circle className="reading-trail-head" r="2.8"/>
     <circle className="reading-trail-ripple" r="6"/>
     {projection.nodes.map(node => <g key={node.id} transform={`translate(${node.x},${node.y})`} className={node.current ? 'is-current' : ''}>
-      <circle r="11"/><text x="0" y="-18" textAnchor="middle">{node.steps.join('·')}</text>
+      <circle className="reading-trail-glow" r="15"/><text x="0" y="-18" textAnchor="middle">{node.steps.join('·')}</text>
     </g>)}
   </svg>;
 }

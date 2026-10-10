@@ -1,3 +1,5 @@
+import {starCluster} from './starCluster.js';
+import {collectionLabel} from '../collections.js';
 import {MOTION, smooth} from '../motion/tokens.js';
 import {Color, Vector3} from 'three';
 import {AggregateRenderer} from './vendor/render/AggregateRenderer';
@@ -13,7 +15,7 @@ import {CategoryEffects} from './categoryEffects';
 import {categoryStyle} from './categoryStyles';
 import {NebulaBackdrop} from './nebulaBackdrop';
 
-export function createGalaxy(container, graph, hooks, reduced) {
+export function createGalaxy(container, graph, hooks, reduced, initialPreset = 'deepfield') {
   const data = galaxyData(graph);
   const nodeIndices = new Map(data.nodes.map((node, i) => [node.id, i]));
   const incidentLinks = data.nodes.map(() => []);
@@ -36,7 +38,8 @@ export function createGalaxy(container, graph, hooks, reduced) {
     const color = new Color(module.color), hsl = {}; color.getHSL(hsl);
     return [module.id, color.setHSL(hsl.h, 0.32, 0.70)];
   }));
-  renderer.setColorFn(node => colors.get(node.folderTop) || new Color('#bccbdf'));
+  const collectionColors = new Map([['inbox', new Color('#a4c5e8')], ['notes', new Color('#e1c49b')], ['readings', new Color('#b5d6c2')]]);
+  const neutralColor = new Color('#c7d3e4');
   let layout, preset, width = 1, height = 1, frameWidth = 1, frameHeight = 1, disposed = false;
   let ready = false, paused = reduced, selected = null, category = null, tag = null;
   let readingIndex = -1;
@@ -45,6 +48,8 @@ export function createGalaxy(container, graph, hooks, reduced) {
   let focus = galaxyFocus(data, selected, category, tag);
   let raf = 0, previous = 0, labelTime = 0, hovered = -1, down = null;
   let initialFramed = false, workerDeadline = 0;
+  let grouping = 'category';
+  const groupId = node => grouping === 'collection' ? `collection:${node.collection}` : node.folderTop;
   let expanded = false, transition = null, overview = null, clusters = null, effects = null;
   let display = null, categoryBlend = 0;
   let presetFrom = null, pendingOverview = null, currentLook = null;
@@ -62,6 +67,12 @@ export function createGalaxy(container, graph, hooks, reduced) {
   }
   const scratch = new Vector3();
 
+  function updateColors() {
+    renderer.setColorFn(node => expanded
+      ? grouping === 'collection' ? collectionColors.get(node.collection) || neutralColor : colors.get(node.folderTop) || neutralColor
+      : preset?.id === 'deepfield' ? neutralColor : colors.get(node.folderTop) || neutralColor);
+    renderer.recolor();
+  }
   function snapshot() {
     const result = new Float32Array(positions.length);
     data.nodes.forEach((_, i) => renderer.nodePosition(i, scratch).toArray(result, i * 3));
@@ -73,7 +84,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
       nebula: preset.space.nebula * (1 - blend) + style.background * blend,
       clouds: preset.space.clusterClouds * (1 - blend),
       links: preset.look.linkOpacity * .35 * (1 - blend) + style.linkOpacity * blend,
-      nodes: preset.look.nodeSize * 2 * (1 - blend) + style.nodeScale * blend,
+      nodes: preset.look.nodeSize * (preset.id === 'deepfield' ? 1.45 : 2) * (1 - blend) + style.nodeScale * blend,
       stars: .34 * (1 - blend) + style.starfield * blend,
       bloom: preset.bloom.strength * .5, radius: preset.bloom.radius * .75, threshold: Math.max(.3, preset.bloom.threshold),
       twinkle: preset.look.twinkle, curve: preset.look.linkCurve,
@@ -92,8 +103,8 @@ export function createGalaxy(container, graph, hooks, reduced) {
   function updateLinkFilter() {
     filteredLinks = categoryBlend > .005;
     renderer.setLinkFilter(filteredLinks ? i => {
-      const link = data.links[i], a = data.nodes[link.source].folderTop, b = data.nodes[link.target].folderTop;
-      return a === b && (!category || a === category);
+      const link = data.links[i], a = groupId(data.nodes[link.source]), b = groupId(data.nodes[link.target]);
+      return a === b && (!category || category.startsWith('collection:') !== (grouping === 'collection') || a === category);
     } : null);
     updateSelectedLinks();
   }
@@ -105,7 +116,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     renderer.setSelectedLinks(filteredLinks
       ? focus.index >= 0 || (!focus.active && hovered >= 0) ? links.filter(i => {
         const link = data.links[i];
-        return data.nodes[link.source].folderTop === data.nodes[link.target].folderTop;
+        return groupId(data.nodes[link.source]) === groupId(data.nodes[link.target]);
       }) : []
       : links, []);
   }
@@ -126,13 +137,14 @@ export function createGalaxy(container, graph, hooks, reduced) {
         vertical = Math.max(vertical, Math.abs(scratch.dot(clusters.up)));
         depth = Math.max(depth, Math.abs(scratch.dot(clusters.normal)));
       }
-      fit = Math.max((horizontal + 25) / (frameWidth / frameHeight), vertical + 45) * .68 + depth * .12;
+      fit = Math.max((horizontal + 25) / (frameWidth / frameHeight), vertical + 85) * .72 + depth * .12;
     }
     if (instant || reduced) camera.setInitialFraming(center, fit);
     else camera.resetView(center, fit);
   }
   function expand(value, instant = false, morph = false) {
     expanded = value;
+    updateColors();
     if (!ready || !overview) return;
     hovered = -1; hoveredCategory = null;
     const from = snapshot();
@@ -214,6 +226,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     return {charge: -preset.physics.repel, ...preset.physics, velocityDecay: 0.4};
   }
   function setPreset(id) {
+    if (preset?.id === id) return;
     const hadScene = overviewCache.size > 0;
     presetFrom = hadScene ? snapshot() : null;
     camera.cancelMotion();
@@ -226,6 +239,11 @@ export function createGalaxy(container, graph, hooks, reduced) {
     layout?.dispose(); layout = null;
     workerDeadline = 0;
     pendingOverview = overviewCache.get(preset.id) || null;
+    if (!pendingOverview && preset.id === 'deepfield') {
+      pendingOverview = starCluster(data.nodes.map(node => node.id), Math.max(55, Math.cbrt(data.nodes.length) * 28));
+      overviewCache.set(preset.id, pendingOverview);
+    }
+    updateColors();
     // Keep the last frame visible while preparing a preset for the first time.
     // Later visits reuse its settled coordinates without restarting the worker.
     if (!hadScene) {
@@ -265,7 +283,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     if (direct && !canvasChanged) {readerLayoutDirty = true; return;}
     if (ready) {
       if (!selected && !category && !tag && overview) {
-        clusters = categoryLayout(data, overview, {aspect: frameWidth / frameHeight, elevation: preset.frameElevDeg || 18, preset: preset.id});
+        clusters = categoryLayout(data, overview, {aspect: frameWidth / frameHeight, elevation: preset.frameElevDeg || 18, preset: preset.id, grouping});
         retireEffects(); effects = new CategoryEffects(renderer.scene, clusters.groups, data, colors);
         if (expanded) expand(true, reduced, true);
         else applyFocus(true);
@@ -294,15 +312,16 @@ export function createGalaxy(container, graph, hooks, reduced) {
       const occupied = [];
       const ordered = [...clusters.groups].sort((a,b) => Number(b.id === (hoveredCategory || category)) - Number(a.id === (hoveredCategory || category)) || b.members.length - a.members.length);
       for (const group of ordered) {
-        const module = graph.modules.find(m => m.id === group.id);
+        const title = grouping === 'collection' ? collectionLabel(group.id.slice(11)) : graph.modules.find(m => m.id === group.id)?.title || '未分类';
         const p = new Vector3(...group.center).addScaledVector(clusters.up, group.radius + 12).project(renderer.camera);
         const x = (p.x + 1) * width / 2, y = (1 - p.y) * height / 2;
         if (p.z < -1 || p.z > 1 || x < 20 || x > width - 20 || y < 76 || y > height - 88) continue;
-        const half = ((module?.title.length || 3) * (frameWidth < 640 ? 11 : 13) + 20) / 2;
+        const half = ((title.length || 3) * (frameWidth < 640 ? 11 : 13) + 52) / 2;
         const box = {left:x-half,right:x+half,top:y-28,bottom:y+4};
         if (occupied.some(r => box.left < r.right && box.right > r.left && box.top < r.bottom && box.bottom > r.top)) continue;
         occupied.push(box);
-        result.push({id: group.id, title: module?.title || '未分类', x, y, category: true});
+        const color = grouping === 'collection' ? collectionColors.get(group.id.slice(11)) : colors.get(group.id);
+        result.push({id: group.id, title, count: group.members.length, color: color ? `#${color.getHexString()}` : '#c7d3e4', x, y, category: true});
       }
     }
     const next = new Map(result.map(label => [label.id, label]));
@@ -334,13 +353,14 @@ export function createGalaxy(container, graph, hooks, reduced) {
       }
       pendingOverview = null;
       renderer.refreshClusterClouds();
-      clusters = categoryLayout(data, overview, {aspect: frameWidth / frameHeight, elevation: preset.frameElevDeg || 18, preset: preset.id});
+      clusters = categoryLayout(data, overview, {aspect: frameWidth / frameHeight, elevation: preset.frameElevDeg || 18, preset: preset.id, grouping});
       effects = new CategoryEffects(renderer.scene, clusters.groups, data, colors);
       if (presetFrom) {
         renderer.setDisplayPositions(presetFrom);
         expand(expanded, reduced, true);
       } else if (expanded) expand(true, reduced, true);
       else {
+        renderer.setDisplayPositions(overview); renderer.updatePositions();
         frame(!initialFramed || reduced);
         if (!reduced && !selected && !category && !tag) renderer.playReveal(MOTION.expand);
       }
@@ -406,7 +426,7 @@ export function createGalaxy(container, graph, hooks, reduced) {
     backdrop.dispose(); renderer.dispose(); canvas.remove();
   }
   camera.setReducedMotion(reduced); renderer.setReducedMotion(reduced);
-  try { resize(); setPreset('nebula'); raf = requestAnimationFrame(tick); }
+  try { resize(); setPreset(initialPreset); raf = requestAnimationFrame(tick); }
   catch (error) { dispose(); throw error; }
   return {
     readingTrail(value) {
@@ -435,7 +455,17 @@ export function createGalaxy(container, graph, hooks, reduced) {
     },
     pause(value) { if (disposed) return; paused = value; if (value) camera.cancelMotion(); },
     preset(id) { if (!disposed) setPreset(id); },
-    expand(value) { if (!disposed) expand(value); },
+    expand(value, nextGrouping = grouping) {
+      if (disposed) return;
+      const changed = grouping !== nextGrouping;
+      grouping = nextGrouping;
+      if (changed && overview) {
+        clusters = categoryLayout(data, overview, {aspect: frameWidth / frameHeight, elevation: preset.frameElevDeg || 18, preset: preset.id, grouping});
+        retireEffects(); effects = new CategoryEffects(renderer.scene, clusters.groups, data, colors);
+        updateLinkFilter();
+      }
+      expand(value, false, changed && expanded);
+    },
     hoverCategory(id) { hoveredCategory = id; },
     previewNode(id) {
       if (disposed) return;

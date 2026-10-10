@@ -1,18 +1,21 @@
 #!/usr/bin/env node
 // 只读的 Agent 检索层：复用 apps/web 的解析逻辑（frontmatter、双链、锚点、反链），
-// 覆盖 content/notes 与 content/inbox。每次按当前源文件实时生成，不落地缓存，避免索引漂移。
+// 覆盖 content/notes、content/inbox 与 content/readings。每次按当前源文件实时生成，不落地缓存，避免索引漂移。
 //
 // 用法（在项目根目录执行；需先 make install 安装 apps/web 依赖）：
 //   node scripts/retrieve.mjs index                      # 每篇一行 JSON，不含正文
 //   node scripts/retrieve.mjs query 覆盖索引 回表        # 紧凑候选，含命中字段与片段
 //   node scripts/retrieve.mjs links mysql-explain        # 出链、入链与断链
 //   node scripts/retrieve.mjs lint                       # 断链、重复、孤立、元数据、日期、格式
-// 选项：--dirs content/notes,content/inbox   --limit 20   --json（query/lint）
+// 选项：--dirs content/notes,content/inbox,content/readings   --limit 20   --json（query/lint）
 
 import path from 'node:path';
 import { readdir, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { parseDocument, renderDocument } from '../apps/web/src/library.mjs';
+
+import { CONTENT_COLLECTIONS } from '../apps/web/src/collections.js';
+const DEFAULT_DIRS = CONTENT_COLLECTIONS.map(dir => `content/${dir}`);
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const NAME_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -130,7 +133,7 @@ function scoreDoc(doc, terms) {
 }
 
 function parseOptions(args) {
-  const options = { dirs: ['content/notes', 'content/inbox'], limit: 20, json: false, terms: [] };
+  const options = { dirs: [...DEFAULT_DIRS], limit: 20, json: false, terms: [] };
   for (let i = 0; i < args.length; i += 1) {
     const arg = args[i];
     if (arg === '--json') options.json = true;
@@ -138,13 +141,13 @@ function parseOptions(args) {
     else if (arg === '--limit') options.limit = Number(args[++i]) || 20;
     else options.terms.push(arg);
   }
-  if (!options.dirs.length) options.dirs = ['content/notes', 'content/inbox'];
+  if (!options.dirs.length) options.dirs = [...DEFAULT_DIRS];
   return options;
 }
 
 const USAGE = `用法：
   node scripts/retrieve.mjs index
-  node scripts/retrieve.mjs query <词...> [--limit 20] [--dirs content/notes,content/inbox] [--json]
+  node scripts/retrieve.mjs query <词...> [--limit 20] [--dirs content/notes,content/inbox,content/readings] [--json]
   node scripts/retrieve.mjs links <文件名|路径>
   node scripts/retrieve.mjs lint [--json]`;
 
@@ -229,7 +232,7 @@ function doLint(lib, options) {
     for (const match of raw.matchAll(/\[\[([^\]\n]+)\]\]/g)) {
       const target = match[1].replaceAll('\\|', '|').split('|')[0].split('#')[0];
       if (/\.md$/i.test(target)) findings.format.push(`${doc.id}: [[${target}]] 不应带 .md`);
-      else if (/^(notes|inbox|archive|sources)\//.test(target) || target.startsWith('/Users/')) findings.format.push(`${doc.id}: [[${target}]] 不应写目录或绝对路径`);
+      else if (/^(notes|inbox|readings|archive|sources)\//.test(target) || target.startsWith('/Users/')) findings.format.push(`${doc.id}: [[${target}]] 不应写目录或绝对路径`);
     }
   }
 

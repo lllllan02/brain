@@ -72,3 +72,20 @@ export function readingTrail(visits, available, recent = recentDocuments(visits)
   });
   return {nodes: [...nodes.values()], edges, segments};
 }
+
+// Scale endpoint gaps with projected distance so zooming out never drops an edge.
+export function trailPath(edge, nodes) {
+  const a = nodes.get(edge.from), b = nodes.get(edge.to);
+  if (!a || !b) return '';
+  const dx = b.x - a.x, dy = b.y - a.y, length = Math.hypot(dx, dy);
+  if (length < .01) return '';
+  const ux = dx / length, uy = dy / length, bend = Math.min(38, length * .14);
+  const start = Math.min(6, length * .12), end = Math.min(8, length * .16);
+  return `M${a.x + ux * start},${a.y + uy * start} Q${(a.x + b.x) / 2 - uy * bend},${(a.y + b.y) / 2 + ux * bend} ${b.x - ux * end},${b.y - uy * end}`;
+}
+
+export function readingOrigin(previous, routeId, readableId) {
+  // Closing the reader or browsing categories is still the same reading session.
+  // A missing document, however, must not create a jump across unavailable content.
+  return routeId === null ? previous : readableId;
+}

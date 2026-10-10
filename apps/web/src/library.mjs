@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import yaml from 'js-yaml';
 import { Lexer, Parser, Renderer } from 'marked';
 import hljs from 'highlight.js';
+import { CONTENT_COLLECTIONS } from './collections.js';
 
 export const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const slug = text => text.replace(/<[^>]*>/g, '').replace(/[*`_]/g, '').trim().toLowerCase().replace(/\s+/g, '-');
@@ -130,7 +131,7 @@ export function renderDocument(doc, documents) {
   return {...doc, html, toc, references, issues, parent};
 }
 export async function loadLibrary(root) {
-  const files = (await Promise.all(['notes', 'inbox'].map(dir => walk(root, dir)))).flat().sort();
+  const files = (await Promise.all(CONTENT_COLLECTIONS.map(dir => walk(root, dir)))).flat().sort();
   const docs = await Promise.all(files.map(async file => parseDocument(await readFile(path.join(root, file), 'utf8'), file)));
   const ids = new Set();
   for (const d of docs) { if (ids.has(d.id)) throw new Error(`文档文件名重复：${d.id}`); ids.add(d.id); }

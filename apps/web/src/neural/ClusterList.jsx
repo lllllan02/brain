@@ -129,7 +129,7 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, onClea
         {documents.length ? <ul key={selectionKey}>{documents.map((node, index) => <li key={node.id}>
           <button type="button" className="cluster-list-item" style={{'--fan-delay': `${stagger(index)}ms`}}
             aria-current={node.id === selected ? 'page' : undefined} onClick={() => onSelect(node.id)}>
-            <i className={`cluster-card-port${node.collection === 'inbox' ? ' is-inbox' : ''}`} aria-hidden="true"/>
+            <i className={`cluster-card-port${node.collection === 'inbox' ? ' is-inbox' : node.collection === 'readings' ? ' is-reading' : ''}`} aria-hidden="true"/>
             {shown.recent && <small className="cluster-history-index">{shown.recent.findIndex(item => item.id === node.id) + 1}</small>}
             <span><strong>{node.title}</strong></span>
             {shown.recent && node.id === selected && <small className="cluster-history-current">当前</small>}

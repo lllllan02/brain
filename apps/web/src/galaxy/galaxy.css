@@ -1,4 +1,4 @@
-/* A full-screen sky; identity, search, category expansion and one cycling view control. */
+/* A full-screen sky; identity, search, category and directory expansion. */
 .galaxy-page{--space:#000003;--starlight:#e5eaf2;--dust:#9eacc1;--gold:#cbd5e1;--text:#e5eaf2;--text-2:#a9b2bf;--muted:#7e8999;position:relative;height:100svh;min-height:360px;background:var(--space);overflow:hidden}
 .galaxy-viewport{position:absolute;inset:0;isolation:isolate}
 .galaxy-frame{position:absolute;inset:0;pointer-events:none}
@@ -63,12 +63,6 @@
 .galaxy-category-label:focus-visible,.galaxy-views button:focus-visible{outline:1px solid #a8c4df;outline-offset:3px}
 @media(max-width:760px){.galaxy-views .galaxy-category-toggle{margin-right:5px}.galaxy-category-label{font-size:11px;letter-spacing:.05em}.galaxy-views button{padding-inline:7px}}
 
-.galaxy-views .galaxy-view-cycle{position:relative;display:grid;grid-template-columns:repeat(3,48px);align-items:center;padding:3px;border:1px solid #9ab0ca26;border-radius:20px;background:#080e1873;backdrop-filter:blur(12px);isolation:isolate}
-.galaxy-view-cycle>span:not(.galaxy-view-highlight){position:relative;padding:5px 0;color:#8392a9;transition:color .35s;z-index:1}
-.galaxy-view-cycle>span.is-current{color:#e4edf9}
-.galaxy-view-highlight{position:absolute;left:3px;top:3px;bottom:3px;width:48px;border-radius:16px;background:#b5cce824;box-shadow:inset 0 0 0 1px #bed4ee20;transform:translateX(calc(var(--view-index)*100%));transition:transform .5s cubic-bezier(.22,.68,0,1)}
-@media(max-width:760px){.galaxy-views .galaxy-view-cycle{grid-template-columns:repeat(3,39px);padding:3px}.galaxy-view-highlight{width:39px}}
-
 /* One continuous sky behind the graph, title fan and opaque reading card. */
 .galaxy-browsing .galaxy-frame{right:calc(clamp(380px,33vw,470px) + 310px)}
 .cluster-fan{position:absolute;inset:0;z-index:7;pointer-events:none;--fan-ink:#bdc6eb;--fan-dim:#9daacc}
@@ -125,3 +119,11 @@
  .cluster-list-header h2{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
  .cluster-list-header small{flex-shrink:0}
 }
+
+.cluster-card-port.is-reading{border-radius:1px;transform:rotate(45deg)}
+
+@media(max-width:480px){.galaxy-views{top:64px}.galaxy-views .galaxy-category-toggle{margin-right:5px}}
+
+.galaxy-category-label{display:flex;align-items:center;gap:8px}
+.galaxy-category-label>i{width:5px;height:5px;border-radius:50%;background:var(--group-color);box-shadow:0 0 8px var(--group-color)}
+.galaxy-category-label>small{color:var(--group-color);font:10px system-ui;letter-spacing:0;opacity:.8}

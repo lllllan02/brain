@@ -1,14 +1,15 @@
+import {starCluster} from './starCluster.js';
 import {Vector3} from 'three';
 import {categoryStyle, categorySeed} from './categoryStyles.js';
 
 const smooth = t => { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); };
 
 // A second display layout only: note IDs, references and the force simulation stay intact.
-export function categoryLayout(data, overview, {aspect = 1.6, elevation = 18, preset = 'nebula'} = {}) {
+export function categoryLayout(data, overview, {aspect = 1.6, elevation = 18, preset = 'nebula', grouping = 'category'} = {}) {
   const style = categoryStyle(preset);
   const memberships = new Map();
   data.nodes.forEach((node, i) => {
-    const id = node.folderTop || 'uncategorized';
+    const id = grouping === 'collection' ? `collection:${node.collection}` : node.folderTop || 'uncategorized';
     if (!memberships.has(id)) memberships.set(id, []);
     memberships.get(id).push(i);
   });
@@ -16,23 +17,16 @@ export function categoryLayout(data, overview, {aspect = 1.6, elevation = 18, pr
   const right = new Vector3().crossVectors(new Vector3(0, 1, 0), normal).normalize();
   const up = new Vector3().crossVectors(normal, right);
   const groups = [...memberships].sort(([a], [b]) => a.localeCompare(b)).map(([id, members]) => ({
-    id, members, radius: Math.min(90, 24 + Math.sqrt(members.length) * 9), center: [0, 0, 0],
+    id, members, radius: Math.min(160, 22 + Math.sqrt(members.length) * 6), center: [0, 0, 0],
   }));
-  // A deterministic spiral disk opens into an oblate shell, then a sphere.
-  // Category references never pull these slots out of their regular arrangement.
-  const depth = preset === 'galaxy' ? 0 : style.depth;
+  // Keep group centers on the viewing plane so directory labels and small
+  // groups remain distinct; depth belongs inside each individual star cluster.
   const stretch = Math.sqrt(Math.max(.5, Math.min(2, aspect)));
   const slots = groups.map((_, i) => {
     if (groups.length === 1) return new Vector3();
-    const t = (i + .5) / groups.length;
+    const r = Math.sqrt((i + .5) / groups.length);
     const angle = i * Math.PI * (3 - Math.sqrt(5));
-    const latitude = 1 - 2 * t;
-    const disk = Math.sqrt(t), sphere = Math.sqrt(1 - latitude * latitude);
-    const r = disk * (1 - depth) + sphere * depth;
-    // Ease out the viewport stretch so deep space remains a true sphere.
-    const sx = 1 + (stretch - 1) * (1 - depth);
-    const sy = 1 + (1 / stretch - 1) * (1 - depth);
-    return new Vector3(Math.cos(angle) * r * sx, Math.sin(angle) * r * sy, latitude * depth);
+    return new Vector3(Math.cos(angle) * r * stretch, Math.sin(angle) * r / stretch, 0);
   });
   // Uniform scaling preserves the pattern while reserving room for unequal
   // note counts; avoid per-category forces that turn the pattern into a tangle.
@@ -53,18 +47,14 @@ export function categoryLayout(data, overview, {aspect = 1.6, elevation = 18, pr
   for (const group of groups) {
     group.center = new Vector3(...group.center).sub(center).toArray();
     const ordered = [...group.members].sort((a, b) => data.nodes[a].id.localeCompare(data.nodes[b].id));
+    const cloud = starCluster(ordered.map(i => data.nodes[i].id), group.radius, Math.max(.08, style.depth));
     ordered.forEach((i, rank) => {
       delays[i] = categorySeed(group.id) * .12;
       const tangent = new Vector3().crossVectors(normal, new Vector3(...group.center)).clampLength(0, 35);
       tangent.toArray(tangents, i * 3);
-      const r = ordered.length > 1 ? group.radius * Math.sqrt((rank + .5) / ordered.length) : 0;
-      const angle = r / group.radius * 5.2 + (rank % 2) * Math.PI;
-      const thickness = ordered.length > 1 ? Math.sqrt(group.radius ** 2 - r ** 2) : 0;
-      // The same real notes form spiral arms; increasing depth lifts them out
-      // of the disk without replacing them with decorative particles or maps.
-      const offset = right.clone().multiplyScalar(Math.cos(angle) * r)
-        .addScaledVector(up, Math.sin(angle) * r * (.6 + .25 * style.depth))
-        .addScaledVector(normal, (categorySeed(data.nodes[i].id) * 2 - 1) * thickness * style.depth);
+      const offset = right.clone().multiplyScalar(cloud[rank * 3])
+        .addScaledVector(up, cloud[rank * 3 + 1] * .88)
+        .addScaledVector(normal, cloud[rank * 3 + 2]);
       for (let a = 0; a < 3; a++) positions[i * 3 + a] = group.center[a] + offset.getComponent(a);
     });
   }

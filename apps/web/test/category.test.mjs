@@ -54,7 +54,7 @@ test('展开和收回保持起止位置准确，途中反向切换不跳帧', ()
   }
 });
 
-test('分类排列由视图维度决定，不受引用数量或输入顺序牵引', () => {
+test('分组中心保持可读的平面排列，不受引用数量或输入顺序牵引', () => {
   const nodes = Array.from({length:24}, (_,i)=>({id:`n${i}`,folderTop:`c${i}`}));
   const links = nodes.slice(1).map((_,i)=>({source:0,target:i+1}));
   const source = new Float32Array(nodes.length * 3);
@@ -69,13 +69,8 @@ test('分类排列由视图维度决定，不受引用数量或输入顺序牵�
     y:g.center.reduce((sum,v,i)=>sum+v*layout.up.getComponent(i),0),
     z:g.center.reduce((sum,v,i)=>sum+v*layout.normal.getComponent(i),0),
   }));
-  const [disk, shell, sphere] = layouts.map(projected);
-  assert.ok(disk.every(p=>Math.abs(p.z)<1e-8));
-  const range = points => Math.max(...points.map(p=>p.z))-Math.min(...points.map(p=>p.z));
-  assert.ok(range(shell)>10 && range(shell)<range(sphere));
-  // A sphere has comparable extents on all axes, unlike a flattened disk.
-  const spans = ['x','y','z'].map(axis=>Math.max(...sphere.map(p=>p[axis]))-Math.min(...sphere.map(p=>p[axis])));
-  assert.ok(Math.min(...spans) / Math.max(...spans) > .85);
+  for (const layout of layouts) assert.ok(projected(layout).every(p=>Math.abs(p.z)<1e-8));
+  assert.deepEqual(layouts[0].groups.map(g=>g.center), layouts[2].groups.map(g=>g.center));
 });
 
 test('错峰动画保留原位和终点，快速反向切换仍连续', () => {
@@ -88,4 +83,29 @@ test('错峰动画保留原位和终点，快速反向切换仍连续', () => {
   assert.deepEqual(mid.slice(3),from.slice(3));
   assert.notDeepEqual(mid.slice(0,3),from.slice(0,3));
   assert.deepEqual(interpolateCategories(mid,from,0,false,out,motion),mid);
+});
+
+// Directory grouping must cross topic boundaries without changing real links.
+test('目录布局覆盖三个目录，目录聚焦只突出所属文档及内部引用', async () => {
+  const {galaxyFocus} = await import('../src/galaxy/data.js');
+  const nodes = [
+    {id:'a', folderTop:'topic-a', collection:'inbox'},
+    {id:'b', folderTop:'topic-b', collection:'inbox'},
+    {id:'c', folderTop:'topic-a', collection:'notes'},
+    {id:'d', folderTop:'topic-b', collection:'readings'},
+  ];
+  const data = {nodes, links:[{source:0,target:1},{source:0,target:2}]};
+  const original = structuredClone(data);
+  for (const preset of ['galaxy', 'nebula', 'deepfield']) {
+    const layout = categoryLayout(data, new Float32Array(12), {preset, grouping:'collection'});
+    assert.deepEqual(layout.groups.map(g=>[g.id,g.members]), [
+      ['collection:inbox',[0,1]], ['collection:notes',[2]], ['collection:readings',[3]],
+    ]);
+    assert.ok([...layout.positions].every(Number.isFinite));
+  }
+  const focus = galaxyFocus(data, null, 'collection:inbox');
+  assert.deepEqual([...focus.bright], [0,1]);
+  assert.deepEqual(focus.links, [0]);
+  assert.deepEqual([...galaxyFocus(data, null, 'topic-a').bright], [0,2]);
+  assert.deepEqual(data, original);
 });
