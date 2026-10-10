@@ -4,10 +4,11 @@ import React, {useEffect, useMemo, useRef} from 'react';
 import {usePresence} from '../motion/usePresence';
 import {MOTION, damp, smooth, stagger, curveSamples, pointAlongCurve} from '../motion/tokens.js';
 
-const clusterKey = cluster => !cluster ? null : cluster.recent ? 'recent' : cluster.document ? `document:${cluster.document}:${cluster.direction || 'outgoing'}` : cluster.tag ? `tag:${cluster.tag}` : `category:${cluster.category}`;
+const clusterKey = cluster => !cluster ? null : cluster.latest ? 'latest' : cluster.recent ? 'recent' : cluster.document ? `document:${cluster.document}:${cluster.direction || 'outgoing'}` : cluster.tag ? `tag:${cluster.tag}` : `category:${cluster.category}`;
 
 export function clusterDocuments(graph, cluster) {
   if (!cluster) return [];
+  if (cluster.latest) return cluster.latest.map(item => graph.index.get(item.id)).filter(node => node?.module);
   if (cluster.recent) return cluster.recent.map(item => graph.index.get(item.id)).filter(node => node?.module);
   if (cluster.document) {
     const source = graph.index.get(cluster.document);
@@ -28,8 +29,9 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, onClea
   const {shown, ref: layer, closing} = usePresence(cluster, clusterKey(cluster), reduced, 'translateX(-12px)');
   if (!closing && selected) origin.current = selected;
   const documents = useMemo(() => clusterDocuments(graph, shown), [graph, shown]);
-  const kind = shown?.recent ? '' : shown?.document ? shown.direction === 'incoming' ? '被引用' : '内部链接' : shown?.tag ? '标签' : '分类';
-  const title = shown?.recent ? '最近阅读' : shown?.document ? graph.index.get(shown.document)?.title || '文档' : shown?.tag || graph.modules.find(item => item.id === shown?.category)?.title || '未分类';
+  const timeline = Boolean(shown?.recent || shown?.latest);
+  const kind = timeline ? '' : shown?.document ? shown.direction === 'incoming' ? '被引用' : '内部链接' : shown?.tag ? '标签' : '分类';
+  const title = shown?.latest ? '最新文档' : shown?.recent ? '最近阅读' : shown?.document ? graph.index.get(shown.document)?.title || '文档' : shown?.tag || graph.modules.find(item => item.id === shown?.category)?.title || '未分类';
   const selectionKey = clusterKey(shown);
   useEffect(() => { onPresenceChange(Boolean(shown)); }, [Boolean(shown), onPresenceChange]);
 
@@ -37,7 +39,7 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, onClea
     if (!shown || !scroll.current) return;
     scroll.current.scrollTop = 0;
     // Automatically opened references should not move focus away from the reader.
-    if (!shown.document && !shown.recent) scroll.current.focus({preventScroll: true});
+    if (!shown.document && !timeline) scroll.current.focus({preventScroll: true});
   }, [selectionKey]);
 
   useEffect(() => {
@@ -121,22 +123,23 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, onClea
         <circle className="cluster-flow-dot" r="1.8" opacity="0"/><circle className="cluster-flow-dot" r="1.2" opacity="0"/>
       </g>)}
     </svg>
-    <aside id={shown.recent ? 'reading-history' : undefined} className={`cluster-list${shown.recent ? ' cluster-history' : ''}`} aria-label={shown.recent ? '最近阅读' : `${kind} ${title} 的文档列表`}>
+    <aside id={shown.latest ? 'latest-documents' : shown.recent ? 'reading-history' : undefined} className={`cluster-list${timeline ? ' cluster-history' : ''}`} aria-label={timeline ? title : `${kind} ${title} 的文档列表`}>
       {navigation && <div className="cluster-list-navigation">{navigation}</div>}
       <header className="cluster-list-header"><div>{kind && <span>{kind}</span>}<h2>{title}</h2><small>{documents.length} 篇</small></div>
-        <button type="button" onClick={onClose} aria-label={shown.recent ? '收起最近阅读' : '关闭文档列表'} title="关闭列表"><Icon name="close" size={16}/></button>
+        <button type="button" onClick={onClose} aria-label={timeline ? `收起${title}` : '关闭文档列表'} title="关闭列表"><Icon name="close" size={16}/></button>
       </header>
       <div className="cluster-list-scroll" ref={scroll} tabIndex={0} role="region" aria-label={`${title}文档，可滚动浏览`}>
         {documents.length ? <ul key={selectionKey}>{documents.map((node, index) => <li key={node.id}>
           <button type="button" className="cluster-list-item" style={{'--fan-delay': `${stagger(index)}ms`}}
             aria-current={node.id === selected ? 'page' : undefined} onClick={() => onSelect(node.id)}>
             <i className={`cluster-card-port${node.collection === 'inbox' ? ' is-inbox' : node.collection === 'readings' ? ' is-reading' : ''}`} aria-hidden="true"/>
-            {shown.recent && <small className="cluster-history-index">{shown.recent.findIndex(item => item.id === node.id) + 1}</small>}
+            {timeline && <small className="cluster-history-index">{index + 1}</small>}
             <span><strong>{node.title}</strong></span>
-            {shown.recent && node.id === selected && <small className="cluster-history-current">当前</small>}
+            {timeline && node.id === selected && <small className="cluster-history-current">当前</small>}
           </button>
-        </li>)}</ul> : <p className="cluster-list-empty">{shown.recent ? '打开文档后，这里会留下阅读足迹' : shown.document ? shown.direction === 'incoming' ? '还没有其他文档引用这篇文章' : '这篇文章没有可打开的内部链接' : '暂时没有匹配的文档'}</p>}
+        </li>)}</ul> : <p className="cluster-list-empty">{shown.latest ? '暂无有有效日期的文档' : shown.recent ? '打开文档后，这里会留下阅读足迹' : shown.document ? shown.direction === 'incoming' ? '还没有其他文档引用这篇文章' : '这篇文章没有可打开的内部链接' : '暂时没有匹配的文档'}</p>}
       </div>
+      {shown.latest && <footer className="cluster-history-footer"><span>按更新时间 · 最近 10 篇</span></footer>}
       {shown.recent && <footer className="cluster-history-footer"><span>同篇去重 · 最多 50 篇</span><button type="button" onClick={onClear} disabled={!documents.length} title="清空最近阅读记录"><Icon name="trash" size={14}/>清空</button></footer>}
     </aside>
   </div>;

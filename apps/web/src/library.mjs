@@ -138,7 +138,11 @@ export function renderDocument(doc, documents) {
 }
 export async function loadLibrary(root) {
   const files = (await Promise.all(CONTENT_COLLECTIONS.map(dir => walk(root, dir)))).flat().sort();
-  const docs = await Promise.all(files.map(async file => parseDocument(await readFile(path.join(root, file), 'utf8'), file)));
+  const docs = await Promise.all(files.map(async file => {
+    const absolute = path.join(root, file);
+    const [raw, info] = await Promise.all([readFile(absolute, 'utf8'), stat(absolute)]);
+    return {...parseDocument(raw, file), modified: new Date(Math.floor(info.mtimeMs / 1000) * 1000).toISOString()};
+  }));
   const ids = new Set();
   for (const d of docs) { if (ids.has(d.id)) throw new Error(`文档文件名重复：${d.id}`); ids.add(d.id); }
   const documents = docs.map(d => renderDocument(d, docs));

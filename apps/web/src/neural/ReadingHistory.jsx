@@ -10,8 +10,8 @@ export function ReadingNavigation({graph, reading, onTravel}) {
   </nav>;
 }
 
-export function ReadingHistoryToggle({open, onToggle, toggleRef}) {
-  return <button ref={toggleRef} type="button" className="reading-history-toggle" aria-label="最近阅读" title="最近阅读" aria-expanded={open} aria-controls={open ? 'reading-history' : undefined} onClick={onToggle}><Icon name="history" size={15}/><span>最近阅读</span></button>;
+export function ReadingHistoryToggle({open, onToggle, toggleRef, label = '最近阅读', icon = 'history', controls = 'reading-history'}) {
+  return <button ref={toggleRef} type="button" className="reading-history-toggle" aria-label={label} title={label} aria-expanded={open} aria-controls={open ? controls : undefined} onClick={onToggle}><Icon name={icon} size={15}/><span>{label}</span></button>;
 }
 
 // Read the live projected paths each frame so the travelling light stays attached
