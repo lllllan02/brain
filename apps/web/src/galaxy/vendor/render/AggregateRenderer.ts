@@ -41,6 +41,7 @@ import type { VisualTokens } from './presets';
 import { effectivePixelRatio, type QualityTier } from '../quality/tiers';
 import { DEEP_SPACE } from './presets';
 import { maxPositionRadius, revealScale } from './reveal';
+import {crystalLinkAttributes, patchCrystalLinks} from './crystalLinks';
 
 const FOCUS_FADE_S = MOTION.feedback / 1000;
 
@@ -70,6 +71,8 @@ export class AggregateRenderer {
 	private linkSegments: LineSegments | null = null;
 	private linkGeometry: BufferGeometry | null = null;
 	private linkMaterial: LineBasicMaterial | null = null;
+	private crystalUniforms = {uCrystalStrength:{value:0}, uCrystalCenter:{value:1}, uCrystalRadius:{value:100}};
+	private crystalDirection = new Vector3();
 	private revealLinkMaterial: LineBasicMaterial | null = null;
 	private selSegments: LineSegments | null = null;
 	private selGeometry: BufferGeometry | null = null;
@@ -263,12 +266,14 @@ export class AggregateRenderer {
 		this.linkGeometry = new BufferGeometry();
 		this.linkGeometry.setAttribute('position', new BufferAttribute(new Float32Array(m * this.linkK * 2 * 3), 3));
 		this.linkGeometry.setAttribute('color', new BufferAttribute(new Float32Array(m * this.linkK * 2 * 4), 4));
+		crystalLinkAttributes(this.linkGeometry, m, this.linkK);
 		this.linkMaterial = new LineBasicMaterial({
 			vertexColors: true,
 			transparent: true,
 			opacity: this.effectiveLinkOpacity(),
 			depthWrite: false,
 		});
+		patchCrystalLinks(this.linkMaterial, this.crystalUniforms);
 		this.linkSegments = new LineSegments(this.linkGeometry, this.linkMaterial);
 		this.linkSegments.renderOrder = 0;
 		this.linkSegments.frustumCulled = false;
@@ -610,6 +615,14 @@ export class AggregateRenderer {
 		const linkAttr = this.linkGeometry.getAttribute('position') as BufferAttribute;
 		fillLinkPositions(linkAttr.array as Float32Array, this.renderPositions, this.data.links, this.linkK, this.linkCurvature);
 		linkAttr.needsUpdate = true;
+		const spans = this.linkGeometry.getAttribute('aCrystalSpan') as BufferAttribute;
+		for (let i = 0; i < this.data.links.length; i++) {
+			const link = this.data.links[i];
+			const a = link.source * 3, b = link.target * 3;
+			const distance = Math.hypot(this.renderPositions[a] - this.renderPositions[b], this.renderPositions[a + 1] - this.renderPositions[b + 1], this.renderPositions[a + 2] - this.renderPositions[b + 2]);
+			(spans.array as Float32Array).fill(distance, i * this.linkK * 2, (i + 1) * this.linkK * 2);
+		}
+		spans.needsUpdate = true;
 		this.updateSelPositions();
 		this.updateGhostPositions();
 	}
@@ -731,6 +744,11 @@ export class AggregateRenderer {
 		const attr = this.selGeometry.getAttribute('position') as BufferAttribute;
 		fillLinkPositions(attr.array as Float32Array, this.renderPositions, this.selLinks, this.linkK, this.linkCurvature);
 		attr.needsUpdate = true;
+	}
+
+	setCrystalLinks(enabled: boolean, radius: number): void {
+		this.crystalUniforms.uCrystalStrength.value = enabled ? 1 : 0;
+		this.crystalUniforms.uCrystalRadius.value = Math.max(1, radius);
 	}
 
 	private effectiveLinkOpacity(): number {
@@ -866,6 +884,7 @@ export class AggregateRenderer {
 	// ---------- 渲染循环 ----------
 
 	render(deltaS: number, animationDeltaS = deltaS): void {
+		this.crystalUniforms.uCrystalCenter.value = -this.camera.position.dot(this.camera.getWorldDirection(this.crystalDirection));
 		this.stepHighlights(animationDeltaS);
 		this.stepLinkWeights(animationDeltaS);
 		if (!this.reducedMotion && this.previewAnimated && this.nodeMaterial) {

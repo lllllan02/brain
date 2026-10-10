@@ -2,6 +2,49 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {categoryLayout, interpolateCategories, readingNeighborhood} from '../src/galaxy/categoryLayout.js';
 import {categoryStyle} from '../src/galaxy/categoryStyles.js';
+import {starCluster} from '../src/galaxy/starCluster.js';
+
+test('首页分组保留同一球体的所有空间采样，三轴都有厚度且语义区域聚拢', () => {
+  const nodes = Array.from({length:180}, (_,i) => ({id:`n-${i}`, folderTop:`topic-${i % 8}`,collection:['inbox','notes','readings'][i % 3]}));
+  const source = starCluster(nodes.map(n=>n.id), 180);
+  for (const grouping of ['category','collection']) {
+    const result = categoryLayout({nodes}, source, {preset:'deepfield',grouping});
+    assert.equal(result.spherical,true);
+    const coordinates = (positions, scale) => nodes.map((_,i) => [...positions.slice(i*3,i*3+3)].map(v => Math.fround(v*scale).toFixed(3)).join(',')).sort();
+    assert.deepEqual(coordinates(result.positions,1),coordinates(source,1.12));
+    assert.equal(new Set(result.groups.flatMap(g=>g.members)).size,nodes.length);
+    for (let axis=0;axis<3;axis++) {
+      const values = nodes.map((_,i)=>result.positions[i*3+axis]);
+      assert.ok(Math.max(...values)-Math.min(...values)>200);
+    }
+    for (const group of result.groups) {
+      const coherence = positions => {
+        const sum = [0,0,0];
+        for (const i of group.members) {
+          const p = positions.slice(i*3,i*3+3), r = Math.hypot(...p) || 1;
+          p.forEach((v,a)=>{sum[a]+=v/r;});
+        }
+        return Math.hypot(...sum)/group.members.length;
+      };
+      assert.ok(coherence(result.positions)>coherence(source));
+    }
+  }
+});
+
+test('球形展开沿圆弧运动，对向星点不穿过中心，途中反向保持连续', () => {
+  const from = new Float32Array([100,0,0,0,50,0,0,0,0]);
+  const to = new Float32Array([-112,0,0,0,-56,0,0,0,12]);
+  const output = new Float32Array(from.length), motion = {spherical:true};
+  assert.deepEqual(interpolateCategories(from,to,0,true,output,motion),from);
+  assert.deepEqual(interpolateCategories(from,to,1,true,output,motion),to);
+  for (let i=1;i<20;i++) {
+    const mid = new Float32Array(interpolateCategories(from,to,i/20,true,output,motion));
+    assert.ok([...mid].every(Number.isFinite));
+    assert.ok(Math.hypot(...mid.slice(0,3))>=100);
+    assert.ok(Math.hypot(...mid.slice(3,6))>=50);
+    assert.deepEqual(interpolateCategories(mid,from,0,false,output,motion),mid);
+  }
+});
 
 test('阅读邻域限制数量、排除其他分组并按实际节点范围取景', () => {
   const data = {nodes:Array.from({length:40}, (_,i) => ({folderTop:i<25?'a':'b', collection:i%2?'notes':'inbox'})), links:[{source:0,target:14}]};
@@ -38,7 +81,7 @@ test('同一分类从平面逐级增加厚度，深空背景弱于主体', () =>
   assert.ok(categoryStyle('deepfield').nodeScale > categoryStyle('galaxy').nodeScale);
 });
 
-test('分类星云不丢失文档，分类边界互不重叠，兼容空库与单分类', () => {
+test('分类星云不丢失文档，阅读布局边界独立，兼容空库与单分类', () => {
   for (const count of [0, 1, 4, 35]) for (const aspect of [.46, 1.78]) for (const preset of ['galaxy','nebula','deepfield']) {
     const nodes = [], original = [];
     for (let g = 0; g < count; g++) for (let i = 0; i <= g % 7; i++) {
@@ -53,7 +96,7 @@ test('分类星云不丢失文档，分类边界互不重叠，兼容空库与�
     assert.deepEqual(source,backup);
     for (const group of result.groups) {
       for (const i of group.members) assert.ok(Math.hypot(...group.center.map((v,a)=>result.positions[i*3+a]-v))<=group.radius+.001);
-      for (const other of result.groups) if (other!==group) assert.ok(Math.hypot(...group.center.map((v,a)=>v-other.center[a]))>group.radius+other.radius);
+      if (!result.spherical) for (const other of result.groups) if (other!==group) assert.ok(Math.hypot(...group.center.map((v,a)=>v-other.center[a]))>group.radius+other.radius);
     }
   }
 });
@@ -76,7 +119,7 @@ test('分组中心保持可读的平面排列，不受引用数量或输入顺�
   const nodes = Array.from({length:24}, (_,i)=>({id:`n${i}`,folderTop:`c${i}`}));
   const links = nodes.slice(1).map((_,i)=>({source:0,target:i+1}));
   const source = new Float32Array(nodes.length * 3);
-  const layouts = ['galaxy','nebula','deepfield'].map(preset => {
+  const layouts = ['galaxy','nebula'].map(preset => {
     const base = categoryLayout({nodes,links:[]}, source, {preset});
     assert.deepEqual(categoryLayout({nodes,links}, source, {preset}).positions, base.positions);
     assert.deepEqual(categoryLayout({nodes:[...nodes].reverse()}, source, {preset}).groups.map(g=>g.center), base.groups.map(g=>g.center));
@@ -88,7 +131,7 @@ test('分组中心保持可读的平面排列，不受引用数量或输入顺�
     z:g.center.reduce((sum,v,i)=>sum+v*layout.normal.getComponent(i),0),
   }));
   for (const layout of layouts) assert.ok(projected(layout).every(p=>Math.abs(p.z)<1e-8));
-  assert.deepEqual(layouts[0].groups.map(g=>g.center), layouts[2].groups.map(g=>g.center));
+  assert.deepEqual(layouts[0].groups.map(g=>g.center), layouts[1].groups.map(g=>g.center));
 });
 
 test('错峰动画保留原位和终点，快速反向切换仍连续', () => {

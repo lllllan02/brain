@@ -1,6 +1,7 @@
 import {starCluster} from './starCluster.js';
 import {Vector3} from 'three';
 import {categoryStyle, categorySeed} from './categoryStyles.js';
+import {sphericalGroups, interpolateSphere} from './sphericalGroups.js';
 
 const smooth = t => { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); };
 
@@ -19,6 +20,7 @@ export function categoryLayout(data, overview, {aspect = 1.6, elevation = 18, pr
   const groups = [...memberships].sort(([a], [b]) => a.localeCompare(b)).map(([id, members]) => ({
     id, members, radius: Math.min(160, 22 + Math.sqrt(members.length) * 6), center: [0, 0, 0],
   }));
+  if (preset === 'deepfield') return sphericalGroups(data, overview, groups, {normal,right,up});
   // Keep group centers on the viewing plane so directory labels and small
   // groups remain distinct; depth belongs inside each individual star cluster.
   const stretch = Math.sqrt(Math.max(.5, Math.min(2, aspect)));
@@ -66,6 +68,7 @@ export function categoryLayout(data, overview, {aspect = 1.6, elevation = 18, pr
 export function interpolateCategories(from, to, progress, expanding, output, motion) {
   if (progress <= 0) { output.set(from); return output; }
   if (progress >= 1) { output.set(to); return output; }
+  if (motion?.spherical) return interpolateSphere(from, to, progress, output);
   for (let node = 0; node < output.length / 3; node++) {
     const delay = expanding ? motion?.delays[node] || 0 : 0;
     const p = Math.max(0, Math.min(1, (progress - delay) / (1 - delay)));
