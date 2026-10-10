@@ -1,11 +1,13 @@
 ---
 title: "OpenAI：自动检查与工具审批"
-parent: sandbox-execution
+parent: tool-permissions
 category: "Agent"
 tags: ["Agent", "行为约束", "权限"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
-source: "[Guardrails and human review](https://developers.openai.com/api/docs/guides/agents/guardrails-approvals)"
+source:
+  - "[Guardrails and human review](https://developers.openai.com/api/docs/guides/agents/guardrails-approvals)"
+  - "[Human-in-the-loop](https://openai.github.io/openai-agents-python/human_in_the_loop/)"
 ---
 
 **自动检查判断规则是否满足，审批决定敏感操作能否执行。** 本文总结 OpenAI Agents SDK 的工作流机制。
@@ -22,4 +24,12 @@ SDK 的输入检查只覆盖链条首个 Agent，输出检查只覆盖最终输�
 
 原文以取消订单演示 `needsApproval`／`needs_approval`，并给出批准后恢复的代码。它补充了[[sandbox-execution|执行前的权限检查]]；审批机制本身不说明操作系统隔离如何落实。
 
-以上按 2026-10-10 文档整理，示例未运行。
+## 批准的范围与状态归属
+
+Python SDK 的单次批准按调用 ID 关联；`always_approve`／`always_reject` 可将决定扩展到同一运行后续的同一工具。两者授权范围不同，不能无意中把一次批准变成持续放行。
+
+暂停后通过 `result.to_state()` 取得状态，批准或拒绝，再交给 `Runner.run` 恢复；嵌套 Agent 的审批也从原顶层 Agent 恢复。审批条件可根据调用参数动态判断。
+
+长时间等待可序列化状态，但应保存在可信服务端。反序列化并不会验证提交者身份或快照真实性；客户端只应提交待审批项的标识与决定，由应用校验。
+
+以上按 2026-10-10 两篇文档整理，SDK 示例未运行。
