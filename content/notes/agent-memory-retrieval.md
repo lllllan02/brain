@@ -1,4 +1,5 @@
 ---
+parent: long-term-memory
 title: "长期记忆如何检索"
 category: "Agent"
 tags: ["Agent", "记忆", "检索"]

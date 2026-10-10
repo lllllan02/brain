@@ -1,10 +1,11 @@
 ---
+parent: agent-capabilities
 title: "工具调用（Tool Calling）"
 aliases: ["Tool Calling", "Function Calling", "函数调用"]
 category: "Agent"
 tags: ["Agent", "工具调用"]
 created_at: "2026-10-09"
-updated_at: "2026-10-10"
+updated_at: "2026-10-10T21:10:22+08:00"
 ---
 
 **工具调用是模型生成工具名称与参数，由外部程序执行工具，再将结果交回模型的交互机制。** 模型发出调用请求，实际执行由程序负责。
@@ -21,4 +22,4 @@ updated_at: "2026-10-10"
 4. 外部系统接入：[[mcp|MCP]]说明标准协议的角色与能力，并导向完整交互流程；本地函数、HTTP API、命令行和浏览器等接入方式也属于此方向。
 5. 执行调度与失败处理：[[tool-scheduling|工具执行调度]]说明依赖、并发、运行时约束及失败后的推进方式；[[agent-retry|重试]]展开失败分类和副作用边界。
 6. 工具结果处理：[[tool-calling-flow#结果回传与继续决策|结果回传与继续决策]]说明调用关联、状态表达与大结果处理；接口设计说明模型需要哪些返回信息。
-7. 权限与审批：[[tool-permissions|工具调用的权限与审批]]组织授权判断、操作确认与恢复的阅读材料；执行隔离另见[[sandbox-execution|权限检查与沙箱执行]]。
+7. 权限与审批：[[tool-permissions|工具调用的权限与审批]]说明授权判断、操作确认与暂停后的继续方式；执行隔离另见[[sandbox-execution|权限检查与沙箱执行]]。

@@ -1,4 +1,5 @@
 ---
+parent: agent-task-state
 title: "任务状态与新要求冲突时如何处理"
 category: "Agent"
 tags: ["Agent", "状态管理"]

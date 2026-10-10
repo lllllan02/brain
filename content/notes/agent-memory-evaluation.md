@@ -1,4 +1,5 @@
 ---
+parent: long-term-memory
 title: "Agent 记忆质量如何评估与归因"
 category: "Agent"
 tags: ["Agent", "记忆", "评测", "可观测性"]

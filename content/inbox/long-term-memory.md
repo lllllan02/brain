@@ -1,4 +1,5 @@
 ---
+parent: agent-memory
 title: "长期记忆（Long-term Memory）"
 aliases: ["Long-term Memory", "长期记忆管理"]
 category: "Agent"

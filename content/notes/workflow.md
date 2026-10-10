@@ -1,4 +1,5 @@
 ---
+parent: agent-vs-workflow
 title: "工作流（Workflow）"
 aliases: ["Workflow", "工作流"]
 category: "Agent"

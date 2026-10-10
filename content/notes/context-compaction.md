@@ -1,4 +1,5 @@
 ---
+parent: agent-context
 title: "上下文压缩（Context Compaction）"
 aliases: ["Context Compaction", "上下文摘要", "增量压缩", "全量压缩", "分层摘要"]
 category: "Agent"

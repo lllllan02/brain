@@ -1,4 +1,5 @@
 ---
+parent: agent-task-state
 title: "任务状态怎样提供给模型"
 category: "Agent"
 tags: ["Agent", "状态管理"]

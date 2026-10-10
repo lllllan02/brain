@@ -1,6 +1,6 @@
 ---
 title: "Claude Code：Shell 权限规则与无法判定的调用"
-parent: tool-permissions
+parent: tool-permission-design
 category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10T20:44:35+08:00"

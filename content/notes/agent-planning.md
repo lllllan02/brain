@@ -1,4 +1,5 @@
 ---
+parent: agent-capabilities
 title: "Agent 的 Planning 与 Replanning"
 aliases: ["Planning", "Replanning", "任务规划", "重新规划"]
 category: "Agent"

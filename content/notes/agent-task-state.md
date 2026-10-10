@@ -1,10 +1,11 @@
 ---
+parent: agent-capabilities
 title: "Agent 任务状态管理"
 aliases: ["Agent Task State", "Task State Management"]
 category: "Agent"
 tags: ["Agent", "状态管理"]
 created_at: "2026-10-09"
-updated_at: "2026-10-09"
+updated_at: "2026-10-10T21:10:22+08:00"
 ---
 
 **Agent 任务状态管理是把当前任务的目标、计划、进度、关键结果和待处理事项，作为独立记录持续维护的机制。** 这里的「状态」具体包括以下内容，不只是「运行中、完成、失败」这样的进度标签。
@@ -35,8 +36,6 @@ Claude Code 与 Codex 分别维护了以下任务信息，可作为设计参考�
 
 | 实例 | 维护的内容与边界 |
 | --- | --- |
-| Claude Code Task list | 待办项及待执行、执行中、已完成的进度；任务能跨上下文压缩保留。它与运行 shell、子 Agent 的后台任务视图分开。 |
-| Codex Plan | 计划步骤及 `pending`、`inProgress`、`completed` 状态；App Server 在计划变化时发送更新通知。 |
-| Codex Goal | 当前线程的持久目标、生命周期、预算与进度计量；它不属于全局记忆或项目指令。 |
-
-来源：[Claude Code Task list](https://code.claude.com/docs/en/interactive-mode#task-list)、[Codex Plan 通知](https://learn.chatgpt.com/docs/app-server#notifications)、[Codex Goal 设计](https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex#how-goals-are-designed-in-codex)。
+| Claude Code Task list | 待办项及待执行、执行中、已完成的进度；任务能跨上下文压缩保留。它与运行 shell、子 Agent 的后台任务视图分开。[Task list](https://code.claude.com/docs/en/interactive-mode#task-list) |
+| Codex Plan | 计划步骤及 `pending`、`inProgress`、`completed` 状态；App Server 在计划变化时发送更新通知。[Plan 通知](https://learn.chatgpt.com/docs/app-server#notifications) |
+| Codex Goal | 当前线程的持久目标、生命周期、预算与进度计量；它不属于全局记忆或项目指令。[Goal 设计](https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex#how-goals-are-designed-in-codex) |

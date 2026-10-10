@@ -1,4 +1,5 @@
 ---
+parent: agent-context
 title: "上下文裁剪与筛选"
 aliases: ["Context Truncation", "Context Trimming", "Context Filtering", "上下文裁剪", "上下文筛选"]
 category: "Agent"

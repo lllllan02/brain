@@ -1,4 +1,5 @@
 ---
+parent: context-compaction
 title: "压缩摘要的保存与读取"
 aliases: ["摘要覆盖范围", "压缩边界", "Summary Boundary"]
 category: "Agent"

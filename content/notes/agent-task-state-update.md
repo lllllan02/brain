@@ -1,4 +1,5 @@
 ---
+parent: agent-task-state
 title: "任务状态由谁、依据什么更新"
 category: "Agent"
 tags: ["Agent", "状态管理"]

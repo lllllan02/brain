@@ -1,4 +1,5 @@
 ---
+parent: agent-capabilities
 title: "Agent 与工作流有什么区别"
 category: "Agent"
 updated_at: "2026-10-09"

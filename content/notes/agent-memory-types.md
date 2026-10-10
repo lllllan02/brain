@@ -1,4 +1,5 @@
 ---
+parent: long-term-memory
 title: "长期记忆的内容分类"
 category: "Agent"
 tags: ["Agent", "记忆"]

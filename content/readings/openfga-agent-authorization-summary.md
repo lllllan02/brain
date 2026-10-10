@@ -1,6 +1,6 @@
 ---
 title: "OpenFGA：Agent 授权关系与动态条件"
-parent: tool-permissions
+parent: tool-permission-design
 category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10T20:24:03+08:00"

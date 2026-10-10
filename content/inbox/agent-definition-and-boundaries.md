@@ -1,4 +1,5 @@
 ---
+parent: agent-capabilities
 title: "Agent 是什么"
 category: "Agent"
 updated_at: "2026-10-09"

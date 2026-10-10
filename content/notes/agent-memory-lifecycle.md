@@ -1,4 +1,5 @@
 ---
+parent: long-term-memory
 title: "Agent 记忆的有效期与遗忘机制"
 category: "Agent"
 tags: ["Agent", "记忆", "TTL"]

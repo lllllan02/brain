@@ -1,4 +1,5 @@
 ---
+parent: long-term-memory
 title: "长期记忆的安全边界"
 category: "Agent"
 tags: ["Agent", "记忆"]

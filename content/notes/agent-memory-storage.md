@@ -1,4 +1,5 @@
 ---
+parent: long-term-memory
 title: "长期记忆如何存储"
 category: "Agent"
 tags: ["Agent", "记忆", "持久化"]

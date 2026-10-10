@@ -1,4 +1,5 @@
 ---
+parent: agent-task-state
 title: "任务状态应该记录到什么程度"
 category: "Agent"
 tags: ["Agent", "状态管理"]

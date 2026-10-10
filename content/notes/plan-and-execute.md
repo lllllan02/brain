@@ -1,4 +1,5 @@
 ---
+parent: agent-planning
 title: "Plan-and-Execute（先规划再执行）"
 aliases: ["Plan and Execute", "Plan-and-Execute"]
 category: "Agent"

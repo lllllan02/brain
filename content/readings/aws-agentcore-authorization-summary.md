@@ -1,6 +1,6 @@
 ---
 title: "AWS AgentCore：把身份与工具参数交给授权策略"
-parent: tool-permissions
+parent: tool-permission-design
 category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10"

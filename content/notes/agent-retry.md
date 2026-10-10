@@ -1,4 +1,5 @@
 ---
+parent: agent-capabilities
 title: "Agent 重试"
 aliases: ["Agent Retry", "Task Retry"]
 category: "Agent"
