@@ -4,7 +4,7 @@ aliases: ["Context Management", "Agent Context"]
 category: "Agent"
 tags: ["Agent", "上下文管理"]
 created_at: "2026-10-09"
-updated_at: "2026-10-09"
+updated_at: "2026-10-10"
 ---
 
 **Agent 上下文管理（Context Management）是为每次模型调用组织、选择和压缩输入的机制。** 它从指令、历史、工具信息与[[agent-task-state|任务状态]]中选择模型本轮需要的内容。
@@ -29,7 +29,7 @@ updated_at: "2026-10-09"
 
 从职责看，可以理解为「信息组织与存储 → 容量预算 → 内容选择 → 必要的压缩 → 组装与检查」。这是运行时的逻辑关系，与逐步增加功能的设计过程不同，也不要求每轮都执行所有步骤。
 
-一种输入组合是「当前有效指令与[[agent-task-state-input|最新任务状态]] + 历史摘要 + 尚未压缩的交互 + 必要的外部信息」，当前用户输入只加入一次。**每轮调用前检查容量、工具请求与结果的配对关系，以及关键约束是否保留。** 压缩可以按预算触发，也可在阶段结束后提前完成。[上下文管理实践](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+一种输入组合是「当前有效指令与[[agent-task-state-input|最新任务状态]] + 历史摘要 + 尚未压缩的交互 + 必要的外部信息」，当前用户输入只加入一次。 [[context-call-input|一次调用的消息示例]]展示这些内容如何放在一起，以及工具返回后下一次输入增加了什么。**每轮调用前检查容量、工具请求与结果的配对关系，以及关键约束是否保留。** 压缩可以按预算触发，也可在阶段结束后提前完成。[上下文管理实践](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 
 [[long-term-memory|长期记忆]]将跨会话信息按需带入模型输入，召回内容仍需参与筛选、去重与预算管理。
 
