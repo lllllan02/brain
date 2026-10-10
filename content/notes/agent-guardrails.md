@@ -4,7 +4,7 @@ aliases: ["Guardrails", "Agent Guardrails"]
 category: "Agent"
 tags: ["Agent", "行为约束"]
 created_at: "2026-10-09"
-updated_at: "2026-10-09"
+updated_at: "2026-10-10"
 ---
 
 **行为约束（Guardrails）是引导、检测和限制 Agent 行为的一组机制，贯穿输入、决策、工具执行与结果输出。** 它可以分布在 Runtime 各环节，不要求独立组件；不同框架对其范围的命名可能不同。
@@ -23,7 +23,7 @@ updated_at: "2026-10-09"
 ## 放在哪些环节？
 
 - **输入与决策**：检查请求范围，说明任务边界与本轮可用工具。
-- **工具执行前**：校验参数、权限和审批条件，具体见[[tool-calling-harness|工具调用的约束]]。
+- **工具执行前**：校验参数、权限和审批条件，具体见[[tool-calling-flow#执行前的检查|工具执行前的检查]]。
 - **运行中**：限制 [[agent-loop|Agent Loop]] 迭代、调用次数及资源预算。
 - **输出前**：检查格式、业务规则与内容要求。
 

@@ -1,6 +1,6 @@
 ---
 title: "AWS：超时、重试、退避与抖动"
-parent: tool-scheduling
+parent: retry-decision
 category: "分布式系统"
 tags: ["超时", "重试", "幂等"]
 created_at: "2026-10-10"

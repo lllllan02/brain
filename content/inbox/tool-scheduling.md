@@ -31,4 +31,4 @@ updated_at: "2026-10-10"
 
 按调用 ID 保存结果，解锁依赖；前置失败或结果未知时阻断依赖分支，按需重新规划。[[agent-retry|重试]]另行处理，[[aws-retries-summary|AWS 容错经验]]说明退避与重复副作用。
 
-超时、取消不等于远端停止或回滚。代码编排也需遵守这些边界；[[anthropic-advanced-tool-use-summary|Anthropic]]与 [[cloudflare-code-mode-summary|Cloudflare]]展示了用代码表达调用依赖的另一种形式。
+超时、取消不等于远端停止或回滚。代码编排也需遵守这些边界；[[anthropic-advanced-tool-use-summary|Anthropic]]与 [[cloudflare-code-mode-summary|Cloudflare]]展示了用代码表达调用依赖的另一种形式。[[openai-programmatic-tools-summary|OpenAI 程序化工具调用]]进一步展示托管程序与应用侧工具之间的暂停、回传和恢复。

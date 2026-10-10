@@ -21,4 +21,6 @@ updated_at: "2026-10-10"
 
 [[agent-human-in-the-loop|审批]]可以授权一次、本次任务或长期规则，具体取决于产品；开放某个目标与批准沙箱外运行的保护范围不同。获准访问域名也不等于只获准某条 URL，详见[[sandbox-network|网络粒度]]。
 
+[[openai-guardrails-summary|OpenAI 自动检查与审批]]给出工具检查、暂停审批和从状态恢复的 SDK 实例，并说明 Agent 级检查的覆盖边界。
+
 本地命令、远程执行器、文件工具与 MCP 服务可能走不同入口，需逐一确认策略落点。[[codex-sandbox-launch|Codex 命令链路]]和[[codex-sandbox-retry|拒绝后的重试]]展示这些分支。[沙箱与审批](https://learn.chatgpt.com/docs/sandboxing)
