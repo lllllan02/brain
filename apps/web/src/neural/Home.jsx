@@ -19,7 +19,7 @@ export function moduleItems(graph, modId) {
     .sort((a, b) => (a.type === 'overview' ? 0 : 1) - (b.type === 'overview' ? 0 : 1));
 }
 
-export function Home({graph, focus, setFocus, reading, reduced}) {
+export function Home({graph, focus, setFocus, reading, reduced, collectionAction}) {
   const host = useRef(null), scene = useRef(null), searchInput = useRef(null);
   const composing = useRef(false);
   const current = useRef({focus, setFocus});
@@ -250,7 +250,7 @@ export function Home({graph, focus, setFocus, reading, reduced}) {
     <ClusterList navigation={node && <ReaderRelations graph={graph} node={node} module={moduleOf(graph,node)} cluster={historyOpen ? null : activeCluster} onChoose={showReaderCluster}/>} graph={graph} cluster={displayedCluster} selected={node?.id} reduced={reduced} getAnchor={historyOpen && !focus.sel ? undefined : listAnchor}
       onPresenceChange={setClusterVisible} onSelect={id => go(id, !historyOpen)} onClear={reading.clear} onClose={() => historyOpen ? closeHistory() : setReaderCluster({owner: focus.sel, value: null})}/>
     {shownNode && <div ref={reader.ref} inert={reader.closing} className="analysis-wrap">
-      <DocumentReader navigation={<ReadingNavigation graph={graph} reading={reading} onTravel={reading.travel}/>} onResize={syncReaderLayout} key={shownNode.id} reduced={reduced} onPreview={previewNode} graph={graph} node={shownNode} readingLocation={reader.shown.location} onReadingScroll={reading.saveScroll} module={moduleOf(graph, shownNode)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>
+      <DocumentReader collectionAction={collectionAction} navigation={<ReadingNavigation graph={graph} reading={reading} onTravel={reading.travel}/>} onResize={syncReaderLayout} key={shownNode.id} reduced={reduced} onPreview={previewNode} graph={graph} node={shownNode} readingLocation={reader.shown.location} onReadingScroll={reading.saveScroll} module={moduleOf(graph, shownNode)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>
     </div>}
   </section>;
 }

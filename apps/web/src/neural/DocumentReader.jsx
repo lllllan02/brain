@@ -1,3 +1,4 @@
+import {CollectionIcon} from './CollectionIcon';
 import React,{useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {Icon} from './icons';
 import {LinkPreview} from './LinkPreview';
@@ -9,7 +10,7 @@ import {ReaderSources} from './ReaderSources';
 import {copyDocumentMarkdown} from './document-sources.js';
 import {useToolbarTitle} from './useToolbarTitle';
 import {useReaderResize} from './useReaderResize';
-export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,onResize,reduced,readingLocation,onReadingScroll,navigation}){
+export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,onResize,reduced,readingLocation,onReadingScroll,navigation,collectionAction}){
  const ref=useRef(null);const [full,setFull]=useState(false);const [copy,setCopy]=useState('');const [tocOpen,setTocOpen]=useState(false);
  const [detailsOpen,setDetailsOpen]=useState(false);
  const [copying,setCopying]=useState(false);
@@ -25,6 +26,9 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
  useEffect(()=>{const wrap=ref.current.closest('.analysis-wrap');wrap.classList.toggle('full-reader',full);return()=>wrap.classList.remove('full-reader');},[full]);
  useEffect(()=>{setTocOpen(false);setDetailsOpen(false);setCopy('');},[node.id]);
  const toolbarTitle=useToolbarTitle(ref,titleRef,node.id,readingLocation?.key);
+ const canMove=collectionAction&&['inbox','notes'].includes(node.collection);
+ const moveLabel=node.collection==='inbox'?'已理解，移入 Notes':'重新学习，移回 Inbox';
+ const titleIcon=canMove?<button type="button" className="collection-toggle" title={moveLabel} aria-label={moveLabel} disabled={collectionAction.pending} aria-busy={collectionAction.pending} onClick={()=>collectionAction.move(node,node.collection==='inbox'?'notes':'inbox')}><CollectionIcon collection={node.collection}/></button>:<CollectionIcon collection={node.collection}/>;
  const relations={graph,node,module,cluster,onChoose:next=>{setFull(false);onCluster(next);}};
  const article=<MarkdownArticle html={node.html}/>;
  const externalLinks=useMemo(()=>{
@@ -54,7 +58,7 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
   <div className="reader-toolbar">
    <div className={`reader-toolbar-heading${toolbarTitle?' shows-title':''}${reduced?' reduced-motion':''}`}>
     <div className="reader-toolbar-context" inert={toolbarTitle} aria-hidden={toolbarTitle}><ReaderRelations {...relations} section="context"/></div>
-    <div className="reader-toolbar-title" aria-hidden={!toolbarTitle} title={node.title}>{node.title}</div>
+    <div className="reader-toolbar-title" aria-hidden={!toolbarTitle} inert={!toolbarTitle} title={node.title}>{titleIcon}{node.title}</div>
    </div>
    <div className="read-actions">
     <button className="icon-btn" aria-label="切换专注阅读" aria-pressed={full} title={full?'退出专注阅读':'专注阅读'} onClick={()=>setFull(v=>!v)}><Icon name={full?"collapse":"expand"} size={16}/></button>
@@ -65,7 +69,7 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
   <div className="an-scroll" onClick={handleClick} onScroll={event=>onReadingScroll?.(readingLocation?.key,event.currentTarget.scrollTop)}>
    <header className="reader-heading">
    <div className="an-title-row">
-    <h2 ref={titleRef}>{node.title}</h2>
+    <h2 ref={titleRef}>{titleIcon}{node.title}</h2>
     {navigation}
    </div>
    <ReaderSources key={node.id} sources={node.sources}/>

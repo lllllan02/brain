@@ -1,3 +1,4 @@
+import {CollectionIcon} from './CollectionIcon';
 import {Icon} from './icons';
 import React, {memo, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
@@ -194,7 +195,7 @@ export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPrevie
   return createPortal(
     <aside ref={cardRef} className="neural link-preview" inert={closing} role="dialog" aria-label={`预览：${preview.node.title}`} style={{...motionVariables, ...(position || {visibility: 'hidden'})}}>
       <header className="link-preview-header">
-        <div><span className="link-preview-label">文档预览 · {preview.node.category || '未分类'}</span><a className="link-preview-title" href={preview.href}>{preview.node.title}</a></div>
+        <div><span className="link-preview-label">文档预览 · {preview.node.category || '未分类'}</span><a className="link-preview-title" href={preview.href}><CollectionIcon collection={preview.node.collection}/>{preview.node.title}</a></div>
         <button type="button" className="link-preview-close" aria-label="关闭预览" title="关闭预览"><Icon name="close" size={16}/></button>
       </header>
       <div className="link-preview-scroll" ref={scrollRef} tabIndex={0} aria-label="预览正文"><ReaderSources sources={preview.node.sources}/><MarkdownArticle html={html}/></div>

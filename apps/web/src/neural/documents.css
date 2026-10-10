@@ -62,7 +62,7 @@ button.read-tag{cursor:pointer;font-family:inherit;text-align:left;transition:co
 .reader-parent a:focus-visible{outline:1px solid currentColor;outline-offset:3px;border-radius:2px}
 
 /* Inline SVG inherits the marker color and leaves long link text free to wrap. */
-.markdown .internal-link-icon{display:inline-block;width:1em;height:1em;margin-right:.28em;vertical-align:-.14em;opacity:.85;pointer-events:none}
+.markdown .internal-link-icon,.collection-title-icon{display:inline-block;width:1em;height:1em;margin-right:.28em;vertical-align:-.14em;opacity:.85;pointer-events:none}
 
 .reader-sources{display:flex;align-items:baseline;gap:8px;margin:6px 0 12px;font-size:11px;line-height:1.7;color:var(--muted);min-width:0}
 .reader-sources-label{display:inline-flex;align-items:center;gap:5px;flex-shrink:0}
@@ -71,3 +71,14 @@ button.read-tag{cursor:pointer;font-family:inherit;text-align:left;transition:co
 .reader-sources a{color:var(--text-2);text-decoration:none}
 .reader-sources a:hover,.reader-sources a:focus-visible{text-decoration:underline;text-underline-offset:3px;color:var(--text)}
 .reader-sources a:focus-visible{outline:1px solid currentColor;outline-offset:3px}
+
+
+.collection-toggle{display:inline-flex;align-items:center;justify-content:center;vertical-align:-.14em;margin:0 .28em 0 0;padding:0;border:0;border-radius:4px;background:transparent;color:inherit;font:inherit;cursor:pointer}
+.collection-toggle .collection-title-icon{margin:0;vertical-align:0}
+.collection-toggle:hover{color:var(--gold);background:#ffffff0a}
+.collection-toggle:focus-visible{outline:1px solid var(--gold);outline-offset:3px}
+.collection-toggle:disabled{opacity:.45;cursor:wait}
+
+.collection-move-toast{position:fixed;z-index:100;top:24px;left:50%;max-width:min(420px,calc(100vw - 40px));padding:9px 16px;border:1px solid #ffffff18;border-radius:18px;background:#22252bf2;box-shadow:0 6px 24px #0005;color:var(--text);font-size:12px;line-height:1.6;text-align:center;overflow-wrap:anywhere;pointer-events:none;animation:collectionToast var(--toast-duration,2400ms) both}
+@keyframes collectionToast{0%{opacity:0;transform:translate(-50%,8px)}10%,85%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-6px)}}
+@media(prefers-reduced-motion:reduce){.collection-move-toast{animation:none;transform:translateX(-50%)}}
