@@ -1,6 +1,6 @@
 ---
 title: "Pydantic AI：工具并发、失败反馈与取消"
-parent: tool-scheduling-readings
+parent: tool-scheduling
 category: "Agent"
 tags: ["Agent", "工具调用"]
 created_at: "2026-10-10"

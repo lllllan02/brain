@@ -1,6 +1,6 @@
 ---
 title: "Cloudflare Code Mode：用代码组织多步工具调用"
-parent: tool-scheduling-readings
+parent: tool-scheduling
 category: "Agent"
 tags: ["Agent", "工具调用"]
 created_at: "2026-10-10"

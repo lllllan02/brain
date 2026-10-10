@@ -1,6 +1,6 @@
 ---
 title: "Gemini CLI：模型声明并行与顺序屏障"
-parent: tool-scheduling-readings
+parent: tool-scheduling
 category: "Agent"
 tags: ["Agent", "工具调用"]
 created_at: "2026-10-10"
