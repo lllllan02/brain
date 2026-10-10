@@ -1,6 +1,6 @@
 ---
 title: "brain"
-updated_at: "2026-10-09"
+updated_at: "2026-10-10"
 category: "知识库管理"
 tags: ["知识库", "Obsidian", "项目使用", "服务启动"]
 ---
@@ -16,7 +16,7 @@ tags: ["知识库", "Obsidian", "项目使用", "服务启动"]
 ## 目录
 
 ```text
-content/       个人内容：notes 正文、inbox 暂存、trash 归档
+content/       个人内容：notes 正文、inbox 暂存、archive 归档
 apps/web/      图谱看板代码
 scripts/       Agent 只读检索层（复用看板解析逻辑）
 AGENTS.md      Agent 工作约束

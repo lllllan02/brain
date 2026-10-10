@@ -77,7 +77,7 @@ Galaxy View 源码固定到提交 `b49b60cb04687783153f24ff7f9b0a0af59334af`，�
 
 ## 文档与边界
 
-文档按约定平铺在 `content/notes/` 与 `content/inbox/`，两个目录均可搜索和阅读；读取器兼容递归读取，不收录 trash、sources、项目配置。两者都为空时，页面显示空状态。目录来源由路径生成，无需额外元数据；两者沿用原有星点样式，Inbox 星点稍小、星芒较弱，仅搜索结果的辅助文字显示 Notes / Inbox，阅读页不额外显示目录状态；列表端点也使用实心 / 空心区分。title 缺省时显示文件名；别名参与检索，type 优先、兼容 classes；摘要缺省取正文开头，未知日期不补造。Agent 用的只读检索层 `scripts/retrieve.mjs` 复用本目录 `library.mjs` 的解析逻辑，覆盖相同的 notes 与 inbox 范围，实时生成不落盘。
+文档按约定平铺在 `content/notes/` 与 `content/inbox/`，两个目录均可搜索和阅读；读取器兼容递归读取，不收录 archive、sources、项目配置。两者都为空时，页面显示空状态。目录来源由路径生成，无需额外元数据；两者沿用原有星点样式，Inbox 星点稍小、星芒较弱，仅搜索结果的辅助文字显示 Notes / Inbox，阅读页不额外显示目录状态；列表端点也使用实心 / 空心区分。title 缺省时显示文件名；别名参与检索，type 优先、兼容 classes；摘要缺省取正文开头，未知日期不补造。Agent 用的只读检索层 `scripts/retrieve.mjs` 复用本目录 `library.mjs` 的解析逻辑，覆盖相同的 notes 与 inbox 范围，实时生成不落盘。
 
 支持 Obsidian 双链的文件名、显示名、显式路径、章节与段落块引用，兼容 Markdown 代码与表格中的链接。文档嵌入显示目标摘要与入口，避免递归复制正文。重复文件名阻止索引生成；歧义、断链和缺失锚点显示提示。列表或表格整块的块引用尚未支持。
 
@@ -89,7 +89,7 @@ Galaxy View 源码固定到提交 `b49b60cb04687783153f24ff7f9b0a0af59334af`，�
 
 ## GitHub Pages
 
-GitHub Pages 与本地服务共用 `loadLibrary`，文档来源统一为 `content/notes/` 与 `content/inbox/` 下的全部 Markdown 文档，兼容递归读取。新增、修改、删除或在这两个目录间移动文档会在下次部署时同步；trash 和 sources 不收录。部署后两个目录的内容都会随站点公开；目录表示学习状态，不表示公开授权，发布前须核对完整导出范围。
+GitHub Pages 与本地服务共用 `loadLibrary`，文档来源统一为 `content/notes/` 与 `content/inbox/` 下的全部 Markdown 文档，兼容递归读取。新增、修改、删除或在这两个目录间移动文档会在下次部署时同步；archive 和 sources 不收录。部署后两个目录的内容都会随站点公开；目录表示学习状态，不表示公开授权，发布前须核对完整导出范围。
 
 ```sh
 npm --prefix apps/web run build:pages

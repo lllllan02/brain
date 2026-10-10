@@ -226,7 +226,7 @@ function doLint(lib, options) {
     for (const match of raw.matchAll(/\[\[([^\]\n]+)\]\]/g)) {
       const target = match[1].replaceAll('\\|', '|').split('|')[0].split('#')[0];
       if (/\.md$/i.test(target)) findings.format.push(`${doc.id}: [[${target}]] 不应带 .md`);
-      else if (/^(notes|inbox|trash|sources)\//.test(target) || target.startsWith('/Users/')) findings.format.push(`${doc.id}: [[${target}]] 不应写目录或绝对路径`);
+      else if (/^(notes|inbox|archive|sources)\//.test(target) || target.startsWith('/Users/')) findings.format.push(`${doc.id}: [[${target}]] 不应写目录或绝对路径`);
     }
   }
 
