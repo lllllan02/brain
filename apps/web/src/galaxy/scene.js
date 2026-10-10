@@ -72,6 +72,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     renderer.setColorFn(node => expanded
       ? grouping === 'collection' ? collectionColors.get(node.collection) || neutralColor : colors.get(node.folderTop) || neutralColor
       : preset?.id === 'deepfield' ? neutralColor : colors.get(node.folderTop) || neutralColor);
+    renderer.setLinkColorFn(preset?.id === 'deepfield' && !expanded ? node => colors.get(node.folderTop) || neutralColor : null);
     renderer.recolor();
   }
   function snapshot() {
@@ -93,7 +94,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
       nodes: preset.look.nodeSize * (preset.id === 'deepfield' ? 1.45 : 2) * (1 - blend) + style.nodeScale * blend,
       stars: .34 * (1 - blend) + style.starfield * blend,
       bloom: preset.bloom.strength * .5, radius: preset.bloom.radius * .75, threshold: Math.max(.3, preset.bloom.threshold),
-      twinkle: preset.look.twinkle, curve: preset.id === 'deepfield' ? .55 : preset.look.linkCurve,
+      twinkle: preset.look.twinkle, curve: preset.id === 'deepfield' ? .3 * (1 - blend) + .55 * blend : preset.look.linkCurve,
     };
     const look = from ? Object.fromEntries(Object.entries(target).map(([key, value]) => [key, from[key] + (value - from[key]) * categoryEase(progress)])) : target;
     renderer.setSpace({fieldStars: 0, nebula: look.nebula * .05, clusterClouds: look.clouds * .08});
@@ -271,7 +272,10 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     workerDeadline = 0;
     pendingOverview = overviewCache.get(preset.id) || null;
     if (!pendingOverview && preset.id === 'deepfield') {
-      pendingOverview = starCluster(data.nodes.map(node => node.id), Math.max(55, Math.cbrt(data.nodes.length) * 28));
+      pendingOverview = starCluster(data.nodes.map(node => node.id), Math.max(55, Math.cbrt(data.nodes.length) * 28), 1, {
+        links: data.links.map(link => ({source: data.nodes[link.source].id, target: data.nodes[link.target].id})),
+        groups: new Map(data.nodes.map(node => [node.id, node.folderTop || ''])),
+      });
       overviewCache.set(preset.id, pendingOverview);
     }
     updateColors();
@@ -512,7 +516,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
       const point = renderer.nodePosition(index, scratch).project(renderer.camera);
       if (point.z < -1 || point.z > 1) return null;
       const rect = canvas.getBoundingClientRect();
-      return {x:rect.left + (point.x + 1) * width / 2, y:rect.top + (1 - point.y) * height / 2};
+      return {x:rect.left + (point.x + 1) * width / 2, y:rect.top + (1 - point.y) * height / 2, flowTime: renderer.readingFlowTime};
     },
     reset() { if (!disposed) { if (readingTrail && trailIndices.size) frame(false, [...trailIndices]); else if (expanded && clusters) frameDestination(clusters.positions); else frame(); } },
     replay() { if (!disposed && ready) { frame(); if (!reduced) renderer.playReveal(MOTION.expand); } },

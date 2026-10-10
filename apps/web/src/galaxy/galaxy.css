@@ -65,13 +65,19 @@
 
 /* One continuous sky behind the graph, title fan and opaque reading card. */
 .galaxy-browsing .galaxy-frame{right:calc(clamp(380px,33vw,470px) + 310px)}
-.cluster-fan{position:absolute;inset:0;z-index:7;pointer-events:none;--fan-ink:#bdc6eb;--fan-dim:#9daacc}
+.cluster-fan{position:absolute;inset:0;z-index:7;pointer-events:none;--fan-ink:#d3e6f4;--fan-dim:#9daacc}
 .cluster-fan-lines{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;pointer-events:none}
-.cluster-fan-lines path{fill:none;stroke:var(--fan-ink);stroke-width:1;stroke-opacity:.48;vector-effect:non-scaling-stroke;stroke-dasharray:1;animation:clusterThreadIn .8s cubic-bezier(.2,.7,.2,1) var(--fan-delay) both}
-.cluster-fan-lines path.is-current{stroke:#e2e4ff;stroke-width:1.5;stroke-opacity:.9}
-.cluster-thread-sparks{fill:#ecf3ff;filter:drop-shadow(0 0 3px #b5cfff) drop-shadow(0 0 7px #9ebaff99);transition:opacity .2s}
-.cluster-flow-ripple{fill:none;stroke:#c8ddff;stroke-width:1;vector-effect:non-scaling-stroke}
-@media(prefers-reduced-motion:reduce){.cluster-thread-sparks{display:none}}
+.cluster-fan-lines .cluster-thread{fill:none;stroke:var(--reading-thread);stroke-width:var(--reading-width);stroke-opacity:.32;vector-effect:non-scaling-stroke;stroke-dasharray:1;animation:clusterThreadIn .8s cubic-bezier(.2,.7,.2,1) var(--fan-delay) both}
+.cluster-fan-lines .cluster-thread.is-current{stroke:var(--reading-thread)}
+.cluster-thread-sparks{transition:opacity .2s}
+.cluster-flow-beam{fill:none;stroke-linecap:round;opacity:0;vector-effect:non-scaling-stroke}
+.cluster-flow-wake{fill:none;stroke:var(--reading-aura);stroke-width:3;stroke-linecap:round;filter:blur(1px);opacity:0;vector-effect:non-scaling-stroke}
+.cluster-flow-beam.reading-trail-flow-aura{stroke:var(--reading-aura);stroke-width:var(--reading-aura-width);filter:blur(1.6px)}
+.cluster-flow-beam.reading-trail-flow-core{stroke:var(--reading-core);stroke-width:var(--reading-core-width);filter:blur(.25px)}
+.cluster-flow-ripple{fill:var(--reading-aura);stroke:none;filter:blur(2px)}
+.cluster-flow-hub circle{fill:var(--reading-core);filter:blur(3px)}
+.cluster-flow-hub ellipse{fill:none;stroke:var(--reading-aura);stroke-width:1;filter:blur(.6px)}
+@media(prefers-reduced-motion:reduce){.cluster-thread-sparks,.cluster-flow-hub{display:none}}
 .cluster-list{position:absolute;top:96px;bottom:110px;right:calc(clamp(380px,33vw,470px) + 42px);width:250px;display:flex;flex-direction:column;min-height:0;pointer-events:auto}
 .cluster-list-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 6px 12px 28px;flex-shrink:0}
 .cluster-list-header>div{display:flex;align-items:baseline;gap:8px;min-width:0}

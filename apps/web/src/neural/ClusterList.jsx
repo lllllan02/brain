@@ -2,8 +2,10 @@ import {Icon} from './icons';
 import {collectionLabel} from '../collections.js';
 import React, {useEffect, useLayoutEffect, useMemo, useRef} from 'react';
 
+import {readingFlow, READING_FLOW, READING_INK, readingInkVariables, launchAccent, launchWake} from '../motion/reading-flow.js';
+
 import {usePresence} from '../motion/usePresence';
-import {MOTION, smooth, stagger, curveSamples, pointAlongCurve} from '../motion/tokens.js';
+import {MOTION, smooth, stagger} from '../motion/tokens.js';
 
 const clusterKey = cluster => !cluster ? null : cluster.latest ? 'latest' : cluster.recent ? 'recent' : cluster.document ? `document:${cluster.document}:${cluster.direction || 'outgoing'}` : cluster.tag ? `tag:${cluster.tag}` : `category:${cluster.category}`;
 
@@ -57,11 +59,12 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
       scroller.style.setProperty('--cluster-viewport-height', `${scroller.clientHeight}px`);
     };
     size();
-    const paths = svg.current.querySelectorAll('path');
+    const paths = svg.current.querySelectorAll('.cluster-thread');
     const sparks = svg.current.querySelectorAll('.cluster-thread-sparks');
     const rows = Array.from(scroller.querySelectorAll('.cluster-list-item'), (row, i) => ({
       row, port: row.querySelector('.cluster-card-port'), path: paths[i], glow: sparks[i],
-      dots: sparks[i]?.querySelectorAll('.cluster-flow-dot'),
+      beams: sparks[i]?.querySelectorAll('.cluster-flow-beam'),
+      wake: sparks[i]?.querySelector('.cluster-flow-wake'),
       ripples: sparks[i]?.querySelectorAll('.cluster-flow-ripple'),
     }));
     // SVG connects the current reading node to only the currently visible
@@ -97,7 +100,22 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
         if (p === 1) sourceTween = null;
       } else source = {...anchor};
       const startX = source.x - box.left, startY = source.y - box.top;
-      rows.forEach(({row, path, glow, dots, ripples}, i) => {
+      const visibleRows = ports.map((port, i) => ({i, y: port.top + port.height / 2 - scrollDelta}))
+        .filter(({y}) => y > viewport.top + 3 && y < viewport.bottom - 3);
+      const time = anchor.flowTime ?? elapsed / 1000;
+      const accent = launchAccent(time);
+      const hub = svg.current.querySelector('.cluster-flow-hub');
+      if (hub) {
+        hub.setAttribute('transform', `translate(${startX} ${startY})`);
+        hub.style.opacity = visibleRows.length ? smooth((elapsed - MOTION.enter) / MOTION.enter) : 0;
+        const charge = hub.querySelector('circle'), wave = hub.querySelector('ellipse');
+        charge.setAttribute('r', 4 + accent.charge * 6);
+        charge.style.opacity = accent.charge * .55 + accent.flash * .75;
+        wave.setAttribute('rx', 6 + (1 - (1 - accent.wave) ** 2) * 32);
+        wave.setAttribute('ry', 3 + accent.wave * 13);
+        wave.style.opacity = accent.flash * .5;
+      }
+      rows.forEach(({row, path, glow, beams, wake, ripples}, i) => {
         const port = ports[i];
         const endY = port.top + port.height / 2 - scrollDelta;
         if (!path) return;
@@ -105,7 +123,7 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
         // the same update, with no time-based fade trailing behind scrolling.
         const visible = endY > viewport.top + 3 && endY < viewport.bottom - 3;
         const alpha = visible ? Math.max(0, Math.min(1, (endY - viewport.top) / 18, (viewport.bottom - endY) / 18)) : 0;
-        path.style.strokeOpacity = alpha * (row.getAttribute('aria-current') ? .9 : .48);
+        path.style.strokeOpacity = alpha * READING_INK.opacity;
         if (glow) glow.style.opacity = alpha;
         if (!visible) return;
         const endX = port.left + port.width / 2 - box.left, targetY = endY - box.top;
@@ -113,22 +131,24 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
         path.setAttribute('d', `M ${startX} ${startY} C ${startX + span} ${startY}, ${endX - span * .65} ${targetY}, ${endX} ${targetY}`);
         if (glow) {
           const reveal = smooth((elapsed - MOTION.enter - stagger(i)) / MOTION.enter);
-          const samples = curveSamples({x: startX, y: startY, endX, endY: targetY, bend: span});
-          dots.forEach((dot, j) => {
-            const travel = elapsed / MOTION.flow + (i * .19 + j * .5) % 1;
-            const progressAlong = travel % 1;
-            const incoming = shown.direction === 'incoming';
-            const t = incoming ? 1 - progressAlong : progressAlong;
-            const {x, y} = pointAlongCurve(samples, t);
-            const fade = Math.min(1, t / .12, (1 - t) / .18);
-            dot.setAttribute('cx', x); dot.setAttribute('cy', y);
-            dot.setAttribute('opacity', smooth(fade) * reveal * (j ? .5 : .9));
-            // A completed trip emits one soft wave at the actual list endpoint.
-            const ripple = ripples[j], progress = Math.min(1, progressAlong / .22);
-            ripple.setAttribute('cx', incoming ? startX : endX); ripple.setAttribute('cy', incoming ? startY : targetY);
-            ripple.setAttribute('r', 4 + progress * 14);
-            ripple.setAttribute('opacity', travel >= 1 ? (1 - progress) ** 2 * reveal * .5 : 0);
+          const rank = visibleRows.findIndex(item => item.i === i);
+          const flow = readingFlow(time, rank, visibleRows.length, true);
+          const residual = launchWake(time);
+          wake.setAttribute('d', path.getAttribute('d'));
+          wake.style.strokeDasharray = `${residual.length} 2`;
+          wake.style.opacity = flow.active ? residual.opacity * reveal : 0;
+          beams.forEach(beam => {
+            beam.setAttribute('d', path.getAttribute('d'));
+            beam.style.strokeDasharray = `${flow.tail} 2`;
+            beam.style.strokeDashoffset = String(flow.offset);
+            beam.style.opacity = flow.active ? flow.opacity * reveal : 0;
           });
+          // One diffuse arrival at the card, using the same palette as history.
+          const age = time % READING_FLOW.period - READING_FLOW.handoff - READING_FLOW.launch;
+          const ripple = ripples[0], progress = Math.max(0, Math.min(1, age / READING_FLOW.arrival));
+          ripple.setAttribute('cx', endX); ripple.setAttribute('cy', targetY);
+          ripple.setAttribute('r', 3 + (1 - (1 - progress) ** 2) * 10);
+          ripple.setAttribute('opacity', flow.active && age >= 0 ? (1 - progress) ** 2 * reveal * .45 : 0);
         }
       });
     };
@@ -167,12 +187,15 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
 
   if (!shown) return navigation ? <div className="cluster-fan"><aside className="cluster-list cluster-list-collapsed" aria-label="文档列表导航"><div className="cluster-list-navigation">{navigation}</div></aside></div> : null;
   return <div ref={layer} className={`cluster-fan${closing ? ' is-closing' : ''}`} inert={closing}>
-    <svg ref={svg} className="cluster-fan-lines" aria-hidden="true" key={`lines:${selectionKey}`}>
-      {documents.map((node, index) => <path key={node.id} pathLength="1" className={node.id === selected ? 'is-current' : ''}
+    <svg ref={svg} className="cluster-fan-lines" style={readingInkVariables} aria-hidden="true" key={`lines:${selectionKey}`}>
+      {!reduced && <g className="cluster-flow-hub"><circle r="4" opacity="0"/><ellipse rx="6" ry="3" opacity="0"/></g>}
+      {documents.map((node, index) => <path key={node.id} pathLength="1" className={`cluster-thread${node.id === selected ? ' is-current' : ''}`}
         style={{'--fan-delay': `${stagger(index)}ms`}}/>)}
       {!reduced && documents.map(node => <g key={`sparks:${node.id}`} className="cluster-thread-sparks">
-        <circle className="cluster-flow-ripple" r="4" opacity="0"/><circle className="cluster-flow-ripple" r="4" opacity="0"/>
-        <circle className="cluster-flow-dot" r="1.8" opacity="0"/><circle className="cluster-flow-dot" r="1.2" opacity="0"/>
+        <path className="cluster-flow-wake" pathLength="1"/>
+        <circle className="cluster-flow-ripple" r="4" opacity="0"/>
+        <path className="cluster-flow-beam reading-trail-flow-aura" pathLength="1"/>
+        <path className="cluster-flow-beam reading-trail-flow-core" pathLength="1"/>
       </g>)}
     </svg>
     <aside id={shown.latest ? 'latest-documents' : shown.recent ? 'reading-history' : undefined} className={`cluster-list${timeline ? ' cluster-history' : ''}`} aria-label={timeline ? title : `${kind} ${title} 的文档列表`}>

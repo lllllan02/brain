@@ -2,6 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {Icon} from './icons';
 import {trailPlayback, trailPath} from './reading-history';
 import './reading-history.css';
+import {beamEnvelope} from '../motion/reading-flow.js';
 
 export function ReadingNavigation({graph, reading, onTravel}) {
   return <nav className="reading-navigation" aria-label="阅读导航">
@@ -91,7 +92,6 @@ export function ReadingTrail({projection, route, reduced, hidden}) {
     if (!element || reduced || hidden || !beamCount) return;
     const beams = [...element.querySelectorAll('.reading-trail-shared-beam')];
     let raf, previous = 0, elapsed = 0;
-    const smooth = t => {t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t);};
     const tick = now => {
       const dt = previous ? Math.min(80, now - previous) : 0;
       previous = now;
@@ -108,13 +108,12 @@ export function ReadingTrail({projection, route, reduced, hidden}) {
         const guide = guides[(hop * beamCount + index) % guides.length];
         const path = guide?.getAttribute('d');
         if (!path) return;
-        const travel = phase * phase;
-        const tail = .1 + .3 * phase * phase;
-        beam.style.opacity = String(.65 * smooth(phase / .18) * (1 - smooth((phase - .88) / .12)));
+        const {tail, offset, opacity} = beamEnvelope(phase);
+        beam.style.opacity = String(opacity);
         beam.querySelectorAll('path').forEach(light => {
           light.setAttribute('d', path);
           light.style.strokeDasharray = `${tail} 2`;
-          light.style.strokeDashoffset = String(tail - (1 + tail) * travel);
+          light.style.strokeDashoffset = String(offset);
         });
       });
       raf = requestAnimationFrame(tick);

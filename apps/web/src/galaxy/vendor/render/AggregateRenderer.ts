@@ -41,7 +41,9 @@ import type { VisualTokens } from './presets';
 import { effectivePixelRatio, type QualityTier } from '../quality/tiers';
 import { DEEP_SPACE } from './presets';
 import { maxPositionRadius, revealScale } from './reveal';
-import {crystalLinkAttributes, patchCrystalLinks} from './crystalLinks';
+import {crystalLinkAttributes, linkImportance, patchCrystalLinks} from './crystalLinks';
+import {selectionFlowAttributes} from './selectionFlow';
+import {createRibbonUniforms, LinkRibbons} from './linkRibbons';
 
 const FOCUS_FADE_S = MOTION.feedback / 1000;
 
@@ -72,6 +74,22 @@ export class AggregateRenderer {
 	private linkGeometry: BufferGeometry | null = null;
 	private linkMaterial: LineBasicMaterial | null = null;
 	private crystalUniforms = {uCrystalStrength:{value:0}, uCrystalCenter:{value:1}, uCrystalRadius:{value:100}};
+	// 环境动效时钟：星芒闪烁、主星呼吸与高亮引用光点共用；暂停或减少动态效果时停止。
+	private ambientUniforms = {uAmbientTime:{value:0}, uTwinkle:{value:1}, uFlowStrength:{value:1}};
+	// 引用线改用随透视变粗变细的光带；原 LineSegments 只在入场动画中绘制。
+	private ribbonUniforms = {
+		...createRibbonUniforms(),
+		uFlowCount: {value: 0},
+		uDepthCenter: this.crystalUniforms.uCrystalCenter,
+		uDepthRadius: this.crystalUniforms.uCrystalRadius,
+		uDepthStrength: this.crystalUniforms.uCrystalStrength,
+		uAmbientTime: this.ambientUniforms.uAmbientTime,
+		uFlowStrength: this.ambientUniforms.uFlowStrength,
+	};
+	private linkRibbons: LinkRibbons | null = null;
+	private linkColorFn: NodeColorFn | null = null;
+	private linkImportance = new Float32Array(0);
+	private selRibbons: LinkRibbons | null = null;
 	private crystalDirection = new Vector3();
 	private revealLinkMaterial: LineBasicMaterial | null = null;
 	private selSegments: LineSegments | null = null;
@@ -180,6 +198,11 @@ export class AggregateRenderer {
 		this.colorFn = fn;
 	}
 
+	/** 连线可独立于星点着色：首页星点保持中性色，引用线仍带所属分类的颜色。 */
+	setLinkColorFn(fn: NodeColorFn | null): void {
+		this.linkColorFn = fn;
+	}
+
 	setData(data: GraphData, positions: Float32Array): void {
 		this.resetRevealState();
 		this.data = data;
@@ -222,6 +245,10 @@ export class AggregateRenderer {
 		this.nodeGeometry.setAttribute('aDim', new BufferAttribute(this.dimCurrent, 1));
 		this.nodeGeometry.setAttribute('aActive', new BufferAttribute(new Float32Array(n), 1));
 		this.nodeGeometry.setAttribute('aPreview', new BufferAttribute(new Float32Array(n), 1));
+		// 按引用数排名取权重：引用数集中在少数几档，直接归一会让大部分星点挤成一样大。
+		const degrees = data.nodes.map(node => node?.degree ?? 0).sort((x, y) => x - y);
+		const rank = (degree: number) => degrees.length > 1 ? degrees.findLastIndex(d => d <= degree) / (degrees.length - 1) : 0.5;
+		this.nodeGeometry.setAttribute('aWeight', new BufferAttribute(Float32Array.from(data.nodes, node => rank(node?.degree ?? 0) ** 2), 1));
 		this.nodeMaterial = new ShaderMaterial({
 			vertexShader: NODE_VERTEX_SHADER,
 			fragmentShader: NODE_FRAGMENT_SHADER,
@@ -230,6 +257,8 @@ export class AggregateRenderer {
 			depthWrite: false,
 			uniforms: {
 				uPreviewPulse: { value: 0 },
+				uAmbientTime: this.ambientUniforms.uAmbientTime,
+				uTwinkle: this.ambientUniforms.uTwinkle,
 				uPixelScale: { value: this.pixelScale },
 				uSizeMul: { value: this.nodeScale },
 				uLightMode: { value: this.tokens.lightMode ? 1 : 0 },
@@ -256,6 +285,11 @@ export class AggregateRenderer {
 
 	/** 链接层几何按当前 K（曲率/档位）分配；曲率 0↔>0 或档位变化时重建（毫秒级一次性） */
 	private buildLinkLayer(): void {
+		if (this.linkRibbons) {
+			this.scene.remove(this.linkRibbons.mesh);
+			this.linkRibbons.dispose();
+			this.linkRibbons = null;
+		}
 		if (this.linkSegments) {
 			this.scene.remove(this.linkSegments);
 			this.linkGeometry?.dispose();
@@ -266,7 +300,8 @@ export class AggregateRenderer {
 		this.linkGeometry = new BufferGeometry();
 		this.linkGeometry.setAttribute('position', new BufferAttribute(new Float32Array(m * this.linkK * 2 * 3), 3));
 		this.linkGeometry.setAttribute('color', new BufferAttribute(new Float32Array(m * this.linkK * 2 * 4), 4));
-		crystalLinkAttributes(this.linkGeometry, m, this.linkK);
+		this.linkImportance = linkImportance(this.data.links, this.data.nodes);
+		crystalLinkAttributes(this.linkGeometry, m, this.linkK, this.linkImportance);
 		this.linkMaterial = new LineBasicMaterial({
 			vertexColors: true,
 			transparent: true,
@@ -277,7 +312,15 @@ export class AggregateRenderer {
 		this.linkSegments = new LineSegments(this.linkGeometry, this.linkMaterial);
 		this.linkSegments.renderOrder = 0;
 		this.linkSegments.frustumCulled = false;
+		this.linkSegments.visible = this.reveal !== null;
 		this.scene.add(this.linkSegments);
+		this.linkRibbons = new LinkRibbons(this.linkGeometry, this.ribbonUniforms, {
+			along: 'aCrystalAlong', extra: 'aCrystalGain', span: 'aCrystalSpan', flow: false,
+			width: 0.7, minWidth: 0.45, maxWidth: 1.05,
+		});
+		this.linkRibbons.mesh.renderOrder = 0;
+		this.linkRibbons.mesh.visible = this.reveal === null;
+		this.scene.add(this.linkRibbons.mesh);
 		this.setLinkFilter(this.linkFilter);
 	}
 
@@ -417,6 +460,7 @@ export class AggregateRenderer {
 		this.revealMaxRadiusUniform.value = maxR;
 		this.activateRevealLinkLayer(target);
 		this.activateRevealSelectionLayer(target);
+		this.syncLinkLayerVisibility();
 		if (this.ghostMaterial) this.ghostMaterial.opacity = 0;
 		this.updateGhostPositions();
 		// 编译发生在遮罩淡出阶段；避免把首次 shader program 建立成本打进动画首个可见帧。
@@ -524,6 +568,7 @@ export class AggregateRenderer {
 		this.revealMaxRadiusUniform.value = 1;
 		if (this.linkSegments && this.linkMaterial) this.linkSegments.material = this.linkMaterial;
 		if (this.selSegments && this.selMaterial) this.selSegments.material = this.selMaterial;
+		this.syncLinkLayerVisibility();
 		if (this.ghostMaterial) this.ghostMaterial.opacity = 0.22;
 	}
 
@@ -562,7 +607,7 @@ export class AggregateRenderer {
 		for (let li = 0; li < this.data.links.length; li++) {
 			const l = this.data.links[li];
 			if (!l) continue;
-			const c = ink ?? linkColor(resolved[l.source] ?? fallback, resolved[l.target] ?? fallback);
+			const c = ink ?? this.categoryLinkColor(l.source, l.target, li) ?? linkColor(resolved[l.source] ?? fallback, resolved[l.target] ?? fallback);
 			for (let v = 0; v < vertsPerLink; v++) {
 				linkCol[(li * vertsPerLink + v) * 4] = c.r;
 				linkCol[(li * vertsPerLink + v) * 4 + 1] = c.g;
@@ -630,9 +675,21 @@ export class AggregateRenderer {
 	// ---------- 聚焦与选中高亮 ----------
 
 	/** 当前阅读文档独立于分类/标签聚焦，始终保留主星样式。 */
-	setReducedMotion(value: boolean): void { this.reducedMotion = value; }
+	setReducedMotion(value: boolean): void {
+		this.reducedMotion = value;
+		this.ambientUniforms.uTwinkle.value = value ? 0 : 1;
+		this.ambientUniforms.uFlowStrength.value = value ? 0 : 1;
+	}
 
-	setActiveNode(index: number): void { this.activeIndex = index; }
+	get readingFlowTime(): number { return this.ribbonUniforms.uReadingTime.value; }
+
+	setActiveNode(index: number): void {
+		if (index === this.activeIndex) return;
+		this.activeIndex = index;
+		this.ribbonUniforms.uReadingActive.value = index >= 0 ? 1 : 0;
+		this.ribbonUniforms.uReadingTime.value = 0;
+		this.buildSelLayer();
+	}
 
 	/** Keep fading the previous highlight while the next one appears. */
 	setPreviewNode(index: number, animated = true): void {
@@ -688,6 +745,7 @@ export class AggregateRenderer {
 	private buildSelLayer(): void {
 		this.selLinkIdx = [...this.selTier1, ...this.selTier2];
 		this.selLinks = this.selLinkIdx.map((i) => this.data.links[i]);
+		this.disposeSelRibbons();
 		if (this.selSegments) {
 			this.scene.remove(this.selSegments);
 			this.selGeometry?.dispose();
@@ -725,6 +783,7 @@ export class AggregateRenderer {
 		this.selGeometry.setAttribute('position', new BufferAttribute(pos, 3));
 		this.selectionColorsDirty = true;
 		this.selGeometry.setAttribute('color', new BufferAttribute(col, 4));
+		this.ribbonUniforms.uFlowCount.value = selectionFlowAttributes(this.selGeometry, this.selLinks, K, this.activeIndex, this.selectionTargets, this.selLinkIdx);
 		this.selMaterial = new LineBasicMaterial({
 			vertexColors: true,
 			transparent: true,
@@ -734,9 +793,47 @@ export class AggregateRenderer {
 		this.selSegments = new LineSegments(this.selGeometry, this.selMaterial);
 		this.selSegments.renderOrder = 2;
 		this.selSegments.frustumCulled = false;
+		this.selSegments.visible = this.reveal !== null;
 		this.scene.add(this.selSegments);
+		this.selRibbons = new LinkRibbons(this.selGeometry, this.ribbonUniforms, {
+			along: 'aFlowAlong', extra: 'aFlowSeed', span: 'aFlowSpan', flow: true,
+			width: 1.0, minWidth: 0.8, maxWidth: 1.35,
+		});
+		this.selRibbons.mesh.renderOrder = 2;
+		this.selRibbons.mesh.visible = this.reveal === null;
+		this.scene.add(this.selRibbons.mesh);
 		this.updateSelPositions();
 		if (this.reveal) this.activateRevealSelectionLayer(this.reveal.target);
+	}
+
+	private disposeSelRibbons(): void {
+		if (!this.selRibbons) return;
+		this.scene.remove(this.selRibbons.mesh);
+		this.selRibbons.dispose();
+		this.selRibbons = null;
+	}
+
+	/** 入场动画由原线层按 GPU 进度展开；结束后切回光带。 */
+	private syncLinkLayerVisibility(): void {
+		const revealing = this.reveal !== null;
+		if (this.linkSegments) this.linkSegments.visible = revealing;
+		if (this.selSegments) this.selSegments.visible = revealing;
+		if (this.linkRibbons) this.linkRibbons.mesh.visible = !revealing;
+		if (this.selRibbons) this.selRibbons.mesh.visible = !revealing;
+	}
+
+	/** 同分类引用取分类色并保留饱和度；跨分类引用退成冷灰细丝。 */
+	private categoryLinkColor(source: number, target: number, index: number): Color | null {
+		if (!this.linkColorFn) return null;
+		const a = this.data.nodes[source], b = this.data.nodes[target];
+		if (!a || !b) return null;
+		const hsl = {h: 0, s: 0, l: 0};
+		if (a.folderTop === b.folderTop) {
+			const c = this.linkColorFn(a).clone();
+			c.getHSL(hsl);
+			return c.setHSL(hsl.h, Math.min(hsl.s * 1.15, .38), .5 + (this.linkImportance[index] ?? 1) * .06);
+		}
+		return new Color().setHSL(.6, .12, .34);
 	}
 
 	private updateSelPositions(): void {
@@ -885,6 +982,10 @@ export class AggregateRenderer {
 
 	render(deltaS: number, animationDeltaS = deltaS): void {
 		this.crystalUniforms.uCrystalCenter.value = -this.camera.position.dot(this.camera.getWorldDirection(this.crystalDirection));
+		if (!this.reducedMotion) {
+			this.ambientUniforms.uAmbientTime.value = (this.ambientUniforms.uAmbientTime.value + deltaS) % 3600;
+			this.ribbonUniforms.uReadingTime.value = (this.ribbonUniforms.uReadingTime.value + deltaS) % 3600;
+		}
 		this.stepHighlights(animationDeltaS);
 		this.stepLinkWeights(animationDeltaS);
 		if (!this.reducedMotion && this.previewAnimated && this.nodeMaterial) {
@@ -903,6 +1004,16 @@ export class AggregateRenderer {
 		if (this.motes?.visible) this.motes.rotation.y -= STARFIELD_ROTATION_RAD_PER_S * 2 * deltaS;
 		if (this.dimAnimating) this.stepDim(animationDeltaS);
 		if (this.reveal) this.stepReveal(animationDeltaS);
+		if (this.linkRibbons && this.linkMaterial) {
+			this.renderer.getDrawingBufferSize(this.ribbonUniforms.uResolution.value);
+			this.ribbonUniforms.uPixelRatio.value = this.renderer.getPixelRatio();
+			this.linkRibbons.opacity = this.linkMaterial.opacity * 0.6;
+			this.linkRibbons.sync();
+		}
+		if (this.selRibbons && this.selMaterial) {
+			this.selRibbons.opacity = this.selMaterial.opacity;
+			this.selRibbons.sync();
+		}
 		this.renderer.info.reset();
 		this.composer.render();
 	}
@@ -1150,6 +1261,12 @@ export class AggregateRenderer {
 	private disposeGraphObjects(): void {
 		if (this.nodePoints) this.scene.remove(this.nodePoints);
 		if (this.linkSegments) this.scene.remove(this.linkSegments);
+		if (this.linkRibbons) {
+			this.scene.remove(this.linkRibbons.mesh);
+			this.linkRibbons.dispose();
+			this.linkRibbons = null;
+		}
+		this.disposeSelRibbons();
 		if (this.selSegments) {
 			this.scene.remove(this.selSegments);
 			this.selGeometry?.dispose();

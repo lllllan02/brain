@@ -1,6 +1,7 @@
 // 节点 = 单次 draw call 的 THREE.Points + 星光 shader。
 // 暗色：细小亮核、连续衰减的光晕与短星芒；浅色：墨水圆盘 + 深色 rim。
 // aDim: 聚焦模式下非邻居淡出（0.12..1）
+// uAmbientTime 驱动星芒闪烁与当前主星的呼吸星冕；减少动态效果时 uTwinkle = 0。
 
 import { CURVE_BOW } from './linkCurves';
 import { REVEAL_ACTIVE_SPAN, REVEAL_DELAY_SPAN } from './reveal';
@@ -23,6 +24,7 @@ attribute float aReading;
 attribute float aDim;
 attribute float aActive;
 attribute float aPreview;
+attribute float aWeight; // 0..1，按引用数归一，拉开星点的主次
 varying vec3 vColor;
 varying float vGhost;
 varying float vInbox;
@@ -31,7 +33,12 @@ varying float vDim;
 varying float vPointSize;
 varying float vActive;
 varying float vPreview;
+varying float vTwinkle;
+varying float vBreath;
+varying float vWeight;
 uniform float uPreviewPulse;
+uniform float uAmbientTime;
+uniform float uTwinkle;
 uniform float uPixelScale; // drawingBufferHeight / (2·tan(fov/2))
 uniform float uSizeMul; // 控制面板「节点大小」倍率
 uniform float uMaxPoint; // 设备像素钳制：穿行星团时防满屏大精灵打爆填充率（M3）
@@ -51,10 +58,16 @@ void main() {
 	vDim = mix(aDim, 1.0, max(aActive, aPreview));
 	vActive = aActive;
 	vPreview = aPreview;
+	// 每颗星按顶点序号取稳定相位与频率，偶尔亮起一下，不同步闪烁。
+	float seed = fract(sin(float(gl_VertexID) * 12.9898) * 43758.5453);
+	float wave = 0.5 + 0.5 * sin(uAmbientTime * mix(0.55, 1.25, fract(seed * 7.13)) + seed * 6.2831);
+	vTwinkle = uTwinkle * pow(wave, 6.0) * (1.0 - uLightMode);
+	vBreath = 0.5 + 0.5 * sin(uAmbientTime * 1.6);
+	vWeight = aWeight;
 	vec4 mv = modelViewMatrix * vec4(revealPosition(position), 1.0);
 	// 给光晕和星芒留出空间，亮核仍比原来的圆盘小；浅色模式维持原尺寸。
 	float projectedSize = aSize * uSizeMul * uPixelScale / max(-mv.z, 1.0) * mix(1.6, 1.0, uLightMode);
-	vPointSize = min(max(projectedSize, uMinPoint * (1.0 - uLightMode)) * mix(1.0, 0.90, aInbox) * max(mix(1.0, 1.6, aActive), 1.0 + aPreview * (0.55 + uPreviewPulse * 0.65)), uMaxPoint);
+	vPointSize = min(max(projectedSize, uMinPoint * mix(0.74, 1.5, aWeight) * (1.0 - uLightMode)) * mix(1.0, 0.90, aInbox) * max(mix(1.0, 1.6, aActive), 1.0 + aPreview * (0.55 + uPreviewPulse * 0.65)), uMaxPoint);
 	gl_PointSize = vPointSize;
 	gl_Position = projectionMatrix * mv;
 }
@@ -69,6 +82,9 @@ varying float vDim;
 varying float vPointSize;
 varying float vActive;
 varying float vPreview;
+varying float vTwinkle;
+varying float vBreath;
+varying float vWeight;
 uniform float uPreviewPulse;
 uniform float uLightMode; // 0 = 深空（白热核心），1 = 晨昼（墨水圆盘 + rim）
 
@@ -88,9 +104,18 @@ void main() {
 	float detail = smoothstep(10.0, 32.0, vPointSize);
 	float rays = exp(-abs(uv.x) / rayWidth - abs(uv.y) * 5.0)
 		+ exp(-abs(uv.y) / rayWidth - abs(uv.x) * mix(5.5, 3.8, vReading * mix(0.5, 1.0, detail)));
+	// 当前主星补一组很淡的斜向细芒和缓慢呼吸的星冕，与四角定位标记互不重叠。
+	vec2 diag = vec2(uv.x + uv.y, uv.x - uv.y) * 0.70710678;
+	float diagonalRays = (exp(-abs(diag.x) / rayWidth - abs(diag.y) * 9.0)
+		+ exp(-abs(diag.y) / rayWidth - abs(diag.x) * 9.0)) * vActive * 0.22;
+	float coronaRadius = 0.20 + vBreath * 0.025;
+	float corona = exp(-pow((d - coronaRadius) / 0.022, 2.0)) * vActive * mix(0.10, 0.20, vBreath);
 	float edge = 1.0 - smoothstep(0.38, 0.5, d);
-	float glow = halo * mix(1.0, 0.75, vInbox)
-		+ rays * mix(mix(0.22, 0.65, vDim), 0.85, vActive) * mix(1.0, 0.70, vInbox);
+	// 引用多的星光晕更足、星芒更长，少引用的星收敛为小亮点。
+	float weightGlow = mix(mix(0.62, 1.45, vWeight), 1.0, vActive);
+	float glow = halo * mix(1.0, 0.75, vInbox) * (1.0 + vTwinkle * 0.35) * weightGlow
+		+ rays * mix(mix(0.22, 0.65, vDim), 0.85, vActive) * mix(1.0, 0.70, vInbox) * (1.0 + vTwinkle * 0.6) * weightGlow
+		+ diagonalRays + corona;
 	// 阅读聚焦沿用原有明暗权重，整颗星一起淡出；通过光芒比例保留星形。
 	float starAlpha = clamp((core + glow) * edge, 0.0, 1.0) * vDim;
 	vec3 starTint = mix(vColor, vec3(0.94, 0.97, 1.0), vActive * 0.65);
