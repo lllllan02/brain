@@ -23,7 +23,7 @@ export function clusterDocuments(graph, cluster) {
     .sort((a, b) => a.title.localeCompare(b.title, 'zh-CN') || a.id.localeCompare(b.id));
 }
 
-export function ClusterList({graph, cluster, selected, onSelect, onClose, onClear, getAnchor, reduced, onPresenceChange}) {
+export function ClusterList({graph, cluster, selected, onSelect, onClose, onClear, getAnchor, reduced, onPresenceChange, navigation}) {
   const scroll = useRef(null), svg = useRef(null), origin = useRef(selected);
   const {shown, ref: layer, closing} = usePresence(cluster, clusterKey(cluster), reduced, 'translateX(-12px)');
   if (!closing && selected) origin.current = selected;
@@ -111,7 +111,7 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, onClea
     return () => cancelAnimationFrame(raf);
   }, [selectionKey, documents, getAnchor, reduced]);
 
-  if (!shown) return null;
+  if (!shown) return navigation ? <div className="cluster-fan"><aside className="cluster-list cluster-list-collapsed" aria-label="文档列表导航"><div className="cluster-list-navigation">{navigation}</div></aside></div> : null;
   return <div ref={layer} className={`cluster-fan${closing ? ' is-closing' : ''}`} inert={closing}>
     <svg ref={svg} className="cluster-fan-lines" aria-hidden="true" key={`lines:${selectionKey}`}>
       {documents.map((node, index) => <path key={node.id} pathLength="1" className={node.id === selected ? 'is-current' : ''}
@@ -122,6 +122,7 @@ export function ClusterList({graph, cluster, selected, onSelect, onClose, onClea
       </g>)}
     </svg>
     <aside id={shown.recent ? 'reading-history' : undefined} className={`cluster-list${shown.recent ? ' cluster-history' : ''}`} aria-label={shown.recent ? '最近阅读' : `${kind} ${title} 的文档列表`}>
+      {navigation && <div className="cluster-list-navigation">{navigation}</div>}
       <header className="cluster-list-header"><div>{kind && <span>{kind}</span>}<h2>{title}</h2><small>{documents.length} 篇</small></div>
         <button type="button" onClick={onClose} aria-label={shown.recent ? '收起最近阅读' : '关闭文档列表'} title="关闭列表"><Icon name="close" size={16}/></button>
       </header>

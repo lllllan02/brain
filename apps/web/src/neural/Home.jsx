@@ -4,6 +4,7 @@ import {moduleOf} from './graph';
 import {createSearchIndex, searchDocuments} from './search.js';
 import {CONFIG, asset} from '../config';
 import {DocumentReader} from './DocumentReader';
+import {ReaderRelations} from './ReaderRelations';
 import {ClusterList, clusterDocuments} from './ClusterList';
 import {Icon} from './icons';
 import {ReadingNavigation, ReadingHistoryToggle, ReadingTrail} from './ReadingHistory';
@@ -246,7 +247,7 @@ export function Home({graph, focus, setFocus, reading, reduced}) {
       }}><Icon name={icon} size={15}/><span>{title}</span></button>)}
 
     </nav>
-    <ClusterList graph={graph} cluster={displayedCluster} selected={node?.id} reduced={reduced} getAnchor={historyOpen && !focus.sel ? undefined : listAnchor}
+    <ClusterList navigation={node && <ReaderRelations graph={graph} node={node} module={moduleOf(graph,node)} cluster={historyOpen ? null : activeCluster} onChoose={showReaderCluster}/>} graph={graph} cluster={displayedCluster} selected={node?.id} reduced={reduced} getAnchor={historyOpen && !focus.sel ? undefined : listAnchor}
       onPresenceChange={setClusterVisible} onSelect={id => go(id, !historyOpen)} onClear={reading.clear} onClose={() => historyOpen ? closeHistory() : setReaderCluster({owner: focus.sel, value: null})}/>
     {shownNode && <div ref={reader.ref} inert={reader.closing} className="analysis-wrap">
       <DocumentReader navigation={<ReadingNavigation graph={graph} reading={reading} onTravel={reading.travel}/>} onResize={syncReaderLayout} key={shownNode.id} reduced={reduced} onPreview={previewNode} graph={graph} node={shownNode} readingLocation={reader.shown.location} onReadingScroll={reading.saveScroll} module={moduleOf(graph, shownNode)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>

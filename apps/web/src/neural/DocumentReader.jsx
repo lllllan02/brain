@@ -5,10 +5,15 @@ import {ReaderRelations} from './ReaderRelations';
 import {MarkdownArticle} from './MarkdownArticle';
 import {ExternalLinkPreview} from './ExternalLinkPreview';
 import {collectExternalLinks} from './external-links';
+import {ReaderSources} from './ReaderSources';
+import {copyDocumentMarkdown} from './document-sources.js';
+import {useToolbarTitle} from './useToolbarTitle';
 import {useReaderResize} from './useReaderResize';
 export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,onResize,reduced,readingLocation,onReadingScroll,navigation}){
  const ref=useRef(null);const [full,setFull]=useState(false);const [copy,setCopy]=useState('');const [tocOpen,setTocOpen]=useState(false);
+ const [detailsOpen,setDetailsOpen]=useState(false);
  const [copying,setCopying]=useState(false);
+ const titleRef=useRef(null);
  const resizeHandlers=useReaderResize(ref,full,onResize);
  useEffect(()=>{if(!copy)return;const timer=setTimeout(()=>setCopy(''),4000);return()=>clearTimeout(timer);},[copy]);
  useLayoutEffect(()=>{
@@ -18,6 +23,9 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
   scroller.scrollTo({top,behavior:'instant'});
  },[node.id,readingLocation?.key]);
  useEffect(()=>{const wrap=ref.current.closest('.analysis-wrap');wrap.classList.toggle('full-reader',full);return()=>wrap.classList.remove('full-reader');},[full]);
+ useEffect(()=>{setTocOpen(false);setDetailsOpen(false);setCopy('');},[node.id]);
+ const toolbarTitle=useToolbarTitle(ref,titleRef,node.id,readingLocation?.key);
+ const relations={graph,node,module,cluster,onChoose:next=>{setFull(false);onCluster(next);}};
  const article=<MarkdownArticle html={node.html}/>;
  const externalLinks=useMemo(()=>{
   // Read rendered anchors, so code samples, internal references and attachments
@@ -28,7 +36,7 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
  const copyDocument=async titleOnly=>{
   setCopy('');setCopying(true);
   try{
-   await navigator.clipboard.writeText(titleOnly?node.title:`# ${node.title}\n\n${node.body}`);
+   await navigator.clipboard.writeText(titleOnly?node.title:copyDocumentMarkdown(node));
    setCopy(titleOnly?'标题已复制':'全文已复制');
   }catch{setCopy('复制失败，请手动选择内容复制。');}
   finally{setCopying(false);}
@@ -43,7 +51,11 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
   }catch{button.disabled=false;setCopy('复制失败，请手动选择代码进行复制。');}
  };
  return <section className="analysis glass document-reader" data-document-id={node.id} ref={ref}>
-  <div className="reader-toolbar"><div className="an-float">文档阅读</div>
+  <div className="reader-toolbar">
+   <div className={`reader-toolbar-heading${toolbarTitle?' shows-title':''}${reduced?' reduced-motion':''}`}>
+    <div className="reader-toolbar-context" inert={toolbarTitle} aria-hidden={toolbarTitle}><ReaderRelations {...relations} section="context"/></div>
+    <div className="reader-toolbar-title" aria-hidden={!toolbarTitle} title={node.title}>{node.title}</div>
+   </div>
    <div className="read-actions">
     <button className="icon-btn" aria-label="切换专注阅读" aria-pressed={full} title={full?'退出专注阅读':'专注阅读'} onClick={()=>setFull(v=>!v)}><Icon name={full?"collapse":"expand"} size={16}/></button>
     <button className="icon-btn" aria-label="关闭文档" title="关闭文档（Esc）" onClick={onClose}><Icon name="close" size={16}/></button>
@@ -51,20 +63,32 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
   </div>
   <button type="button" className="reader-resize-handle" aria-label="调整阅读卡片大小" title="拖动调整大小，也可聚焦后使用方向键" {...resizeHandlers}><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 4v4a5 5 0 0 0 5 5h4M7 4v3a2 2 0 0 0 2 2h3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg></button>
   <div className="an-scroll" onClick={handleClick} onScroll={event=>onReadingScroll?.(readingLocation?.key,event.currentTarget.scrollTop)}>
+   <header className="reader-heading">
    <div className="an-title-row">
-    <h2>{node.title}</h2>
+    <h2 ref={titleRef}>{node.title}</h2>
     {navigation}
    </div>
-   <ReaderRelations graph={graph} node={node} module={module} cluster={cluster} onChoose={next=>{setFull(false);onCluster(next);}}/>
+   <ReaderSources key={node.id} sources={node.sources}/>
+   </header>
+   <div className="reader-navigation-row">
+    <ReaderRelations {...relations} section="tags"/>
+    <div className="reader-disclosures">
+     {node.toc.length>0&&<button type="button" aria-expanded={tocOpen} aria-controls="reader-toc" onClick={()=>{setTocOpen(v=>!v);setDetailsOpen(false);}}><Icon name="list" size={14}/>目录<Icon name="chevron" size={11}/></button>}
+     <button type="button" aria-expanded={detailsOpen} aria-controls="reader-details" onClick={()=>{setDetailsOpen(v=>!v);setTocOpen(false);}}>详情<Icon name="chevron" size={11}/></button>
+    </div>
+   </div>
+   <div id="reader-details" className="reader-details" hidden={!detailsOpen}>
    <div className="read-meta-row">
     <p className="read-meta">{node.updated&&<span title={`更新于 ${node.updated}`}><Icon name="calendar" size={13}/><span className="sr-only">更新于 </span>{node.updated}</span>}<span title="预计阅读时间"><Icon name="clock" size={13}/>{Math.max(1,Math.ceil(node.body.length/500))} 分钟</span></p>
     <div className="read-copy-actions" role="group" aria-label="复制文档">
      <button type="button" disabled={copying} aria-label="复制标题" title="复制标题" onClick={()=>copyDocument(true)}><Icon name="copy" size={14}/>标题</button>
-     <button type="button" disabled={copying} aria-label="复制全文" title="复制标题和 Markdown 正文" onClick={()=>copyDocument(false)}><Icon name="copy" size={14}/>全文</button>
+     <button type="button" disabled={copying} aria-label="复制全文" title="复制标题、来源和 Markdown 正文" onClick={()=>copyDocument(false)}><Icon name="copy" size={14}/>全文</button>
     </div>
-    <span className="read-copy-status" role="status" aria-atomic="true">{copy}</span>
    </div>
-   {node.toc.length>0&&<div className={`read-toc${tocOpen?' is-open':''}`}><button type="button" className="read-toc-toggle" aria-expanded={tocOpen} onClick={()=>setTocOpen(v=>!v)}><Icon name="list" size={15}/>目录<Icon name="chevron" size={13} className="toc-chevron"/></button><div className="read-toc-content" inert={!tocOpen}><div>{node.toc.map(h=><a key={h.id} href={`#/doc/${encodeURIComponent(node.id)}/${encodeURIComponent(h.id)}`}>{h.title}</a>)}</div></div></div>}{article}
+   </div>
+   <span className="read-copy-status" role="status" aria-atomic="true">{copy}</span>
+   <div id="reader-toc" className="reader-toc-panel" hidden={!tocOpen || !node.toc.length}>{node.toc.map(h=><a key={h.id} href={`#/doc/${encodeURIComponent(node.id)}/${encodeURIComponent(h.id)}`}>{h.title}</a>)}</div>
+   {article}
    {externalLinks.length>0&&<section className="read-connections" aria-label="外部链接">
     <h3>外部链接</h3>
     {externalLinks.map(link=><a key={link.href} className="read-relation read-external-link" href={link.href} target="_blank" rel="noopener noreferrer">

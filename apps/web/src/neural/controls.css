@@ -37,3 +37,69 @@
 @media(prefers-reduced-motion:reduce){.toc-chevron{transition:none}}
 /* Focus mode keeps floating relation lists from covering the article. */
 .galaxy-page:has(.analysis-wrap.full-reader) .cluster-fan{visibility:hidden;pointer-events:none}
+
+/* Reading hierarchy: context, title, source, then a single navigation rail. */
+.galaxy-page .reader-heading{margin-bottom:12px}
+.galaxy-page .reader-context{display:flex;align-items:center;gap:9px;min-width:0;margin:0 0 8px;color:var(--muted);font-size:11px;line-height:1.6}
+.galaxy-page .reader-context>.read-category-link{flex-shrink:0;color:var(--muted);font-size:11px;min-height:24px}
+.galaxy-page .reader-context .reader-parent{min-width:0;font-size:11px}
+.galaxy-page .reader-context .reader-parent>span:first-child{display:none}
+.galaxy-page .reader-context .reader-parent-target{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.galaxy-page .reader-context-separator{opacity:.5}
+.galaxy-page .reader-context .reader-parent a.wiki-link{color:var(--muted)}
+.galaxy-page .reader-context a:hover,.galaxy-page .reader-context button:hover{color:var(--text)}
+.reader-heading .reader-sources{margin:9px 0 0;align-items:flex-start;gap:7px}
+.reader-sources ul{flex:1}
+.reader-sources:not(.is-expanded) li{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.reader-sources-more{flex:none;border:0;border-radius:4px;background:var(--hover);color:var(--text-2);font:inherit;padding:1px 6px;min-height:24px;cursor:pointer}
+.reader-sources-more:hover{color:var(--text)}
+.reader-sources.is-expanded li+li{margin-top:5px}
+.galaxy-page .reader-navigation-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2px 12px;padding:5px 0 10px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.galaxy-page .reader-navigation-row .reader-inline-relations{margin:0;gap:8px}
+.galaxy-page .reader-navigation-row .reader-inline-relations button{padding:4px 0}
+.reader-disclosures{display:flex;align-items:center;gap:12px;margin-left:auto}
+.reader-disclosures button{display:inline-flex;align-items:center;gap:5px;min-height:30px;padding:4px 0;border:0;background:none;color:var(--muted);font:inherit;font-size:11px;cursor:pointer}
+.reader-disclosures button:hover,.reader-disclosures button[aria-expanded=true]{color:var(--text)}
+.reader-disclosures button[aria-expanded=true] svg:last-child{transform:rotate(90deg)}
+.galaxy-page .reader-details{margin:-10px 0 20px;padding:0 0 12px;border-bottom:1px solid var(--line)}
+.galaxy-page .reader-navigation-row .reader-tags{margin:0;flex:1 1 180px;min-width:0}
+.galaxy-page .reader-navigation-row .reader-tags>div{align-items:baseline}
+.galaxy-page .reader-navigation-row .reader-tags dd{gap:2px 5px}
+.galaxy-page .reader-navigation-row .read-tag{padding:3px 5px}
+.galaxy-page .reader-details .read-meta-row{margin:0;gap:5px 12px}
+.galaxy-page .reader-details .read-copy-actions{margin-left:auto}
+.reader-toc-panel{margin:-8px 0 20px;padding-bottom:12px;border-bottom:1px solid var(--line);font-size:12px;line-height:1.7}
+.reader-toc-panel a{display:block;padding:5px 0;color:var(--text-2);text-decoration:none;overflow-wrap:anywhere}
+.reader-toc-panel a:hover{color:var(--text)}
+.read-copy-status:empty{display:none}
+.read-copy-status:not(:empty){display:block;padding:0 0 12px}
+@media(pointer:coarse){.reader-disclosures button,.reader-sources-more{min-height:36px;min-width:36px}}
+
+/* Relationship controls belong to the document list, including its closed state. */
+.cluster-list-navigation{flex-shrink:0;padding:0 6px 10px 28px}
+.galaxy-page .cluster-list-navigation .reader-inline-relations{margin:0;justify-content:flex-start;gap:12px}
+.galaxy-page .cluster-list-navigation .reader-inline-relations button{font-size:11px;padding:4px 5px}
+.cluster-list-collapsed{height:auto!important;bottom:auto}
+@media(min-width:901px){
+ .galaxy-reading .cluster-list-collapsed{right:calc(100% - var(--reader-left) + 18px);width:var(--reader-list-width);top:calc(var(--reader-top,85px) + 11px)}
+}
+@media(max-width:900px){
+ .galaxy-page .cluster-list{top:112px;height:calc(clamp(180px,30svh,280px) - 36px)}
+ .cluster-list-navigation{padding:0 5px 6px 17px}
+}
+
+/* Reuse the fixed toolbar for context instead of repeating a reading label. */
+.galaxy-page .reader-toolbar .reader-context{flex:1;min-width:0;margin:0;gap:8px}
+.galaxy-page .reader-toolbar .reader-context>.read-category-link{max-width:35%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.galaxy-page .reader-toolbar .reader-parent{flex:1;min-width:0}
+.galaxy-page .reader-toolbar .read-actions{flex:none}
+
+/* Both states occupy the same slot, so the toolbar and actions never jump. */
+.reader-toolbar-heading{display:grid;align-items:center;flex:1;min-width:0;min-height:30px;overflow:hidden}
+.reader-toolbar-heading>div{grid-area:1/1;min-width:0;transition:opacity var(--motion-exit,220ms) ease,transform var(--motion-exit,220ms) var(--motion-ease,ease),visibility var(--motion-exit,220ms)}
+.reader-toolbar-context{opacity:1;transform:translateY(0);visibility:visible}
+.reader-toolbar-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;line-height:1.7;color:var(--text);font-weight:500;opacity:0;transform:translateY(7px);visibility:hidden}
+.reader-toolbar-heading.shows-title .reader-toolbar-context{opacity:0;transform:translateY(-7px);visibility:hidden;pointer-events:none}
+.reader-toolbar-heading.shows-title .reader-toolbar-title{opacity:1;transform:translateY(0);visibility:visible}
+.reader-toolbar-heading.reduced-motion>div{transition:none;transform:none}
+@media(prefers-reduced-motion:reduce){.reader-toolbar-heading>div{transition:none;transform:none!important}}
