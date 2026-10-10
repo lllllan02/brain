@@ -4,15 +4,34 @@ parent: tool-calling
 category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10"
-updated_at: "2026-10-10T20:24:03+08:00"
+updated_at: "2026-10-10T21:01:38+08:00"
 ---
 
-**权限与审批关注一次工具调用是否获准、是否需要人确认，以及批准后如何继续执行。** 执行环境的隔离机制由[[agent-sandbox|沙箱专题]]展开，两者在[[sandbox-execution|调用链中的衔接]]另有说明。
+**权限规则决定一次工具调用是直接执行、拒绝还是进入审批；审批决定是否批准这次待执行调用。** 执行环境的隔离由[[agent-sandbox|沙箱专题]]展开，两者在[[sandbox-execution|调用链中的衔接]]另有说明。
 
-Agent 权限设计的阅读主线：
+## 权限规则决定入口
 
-1. [[aws-agentcore-authorization-summary|AWS AgentCore]]：将工具调用变成统一授权请求，用集中策略与默认拒绝、禁止优先决定结果。
-2. [[openfga-agent-authorization-summary|OpenFGA]]：用授权关系表达可调用能力，用运行时条件限定资源和参数；动态条件属于实验功能。
-3. [[permit-agent-approvals-summary|Permit]]：在授权后组合审批规则，并区分获得访问权限与批准具体操作。
+[[tool-permission-design|权限规则设计]]用主体、动作、资源和条件统一判断；[[aws-agentcore-authorization-summary|AWS AgentCore]]展示集中策略，[[openfga-agent-authorization-summary|OpenFGA]]展示授权关系与运行时条件，后者的动态条件属于实验功能。
 
-规则在程序中的执行位置见[[agent-guardrails|行为约束]]，暂停与恢复见[[agent-human-in-the-loop|人工介入]]；这两篇分别连接 Claude 和 OpenAI 的 SDK 实现参考。
+复杂调用无法可靠识别时，还需确定审批、拒绝或受限执行的策略。[[claude-code-shell-permissions-summary|Claude Code]]展示 Shell 解析与审查的边界，[[codex-exec-policy-summary|Codex]]展示命令规则与沙箱的组合决策。实际执行前的检查位置由[[agent-guardrails|行为约束]]展开。
+
+权限不足不自动进入审批，只有规则允许申请额外授权，或要求操作确认时，才进入对应流程。
+
+## 审批什么，由谁审批？
+
+审批对象是「一次完整的工具调用及其确定参数」，发生在执行前。多次调用分别判断是否需要审批；批准不自动覆盖后续调用，参数发生实质变化时重新判断。若工具内部某个步骤必须单独确认，可拆成另一次调用。
+
+本地或交互式 Agent 通常由当前用户确认；申请额外权限则交给业务规定的有权审批者。[[permit-agent-approvals-summary|Permit 的两类审批流程]]展示了操作批准与访问权限申请的区别。当前用户无权批准时，不能靠点击同意补足权限，也可以转已有业务流程处理，不必在 Agent 内实现跨人审批。
+
+## 审批结束后怎样继续？
+
+保存待审批调用与任务状态 → 暂停 → 收到结果 → 恢复 Agent。
+
+- 通过：核验调用仍在批准范围内、权限与相关资源状态仍满足要求，再执行工具。
+- 拒绝、取消或超时：不执行该调用，把结果交回 Agent，停止相关步骤或继续其他已获授权的工作，不能换工具绕过拒绝。
+
+通过与拒绝都可以恢复 Agent，只有通过才执行待审批工具。流程属于[[agent-human-in-the-loop|人工介入]]的一种场景。
+
+## TODO
+
+- [ ] 在[[agent-checkpoint-recovery|Checkpoint 与中断恢复]]专题继续讨论审批场景的实现：保存哪些状态、如何恢复待执行调用，以及如何避免重复执行。
