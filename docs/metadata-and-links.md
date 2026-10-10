@@ -8,11 +8,13 @@ tags: ["知识库", "元数据", "命名", "链接维护"]
 
 ## 文件名与属性
 
-目录区分学习状态：inbox 保存新建及仍在学习的内容，notes 保存用户明确确认已理解本篇所需概念的笔记，archive 归档「曾整理好、但当前先精简掉」的文档（不参与看板，恢复时移回并维护链接）。正式笔记直接平铺在 `content/notes/`，inbox 同样保持平铺；专题入口也按学习状态放入这两个目录，不用物理子目录表达专题层次。文档类型通过 type（兼容已有 classes）区分，主题归属通过单值 category 表达，tags 用于多标签检索，不再建立主题或类型子目录。
+目录区分内容用途及知识笔记的学习状态：inbox 保存新建及仍在学习的内容，notes 保存用户明确确认已理解本篇所需概念的笔记，readings 保存外部资料的摘要与导读，sources 保存必要的原始资料或格式转换内容，archive 归档「曾整理好、但当前先精简掉」的文档（不参与看板，恢复时移回并维护链接）。正式笔记直接平铺在 `content/notes/`，inbox 同样保持平铺；专题入口也按学习状态放入 notes 或 inbox，不用物理子目录表达专题层次。文档类型通过 type（兼容已有 classes）区分，主题归属通过单值 category 表达，tags 用于多标签检索，不再建立主题或类型子目录。
 
-新建笔记默认保存到 `content/inbox/<filename>.md`，用户明确确认本篇所需概念已理解后再移入 `content/notes/`，不建立月份子目录。常规更新、补充旧文保持路径稳定，不随日期、分类或标签变化搬家；重构改变主题范围时按下述命名规则同步改名；日期通过元数据表达。网页同时收录两个目录，两者沿用原有星点样式，Inbox 星点稍小、星芒较弱；目录来源直接从路径生成，不另加学习状态字段。inbox 中已有内容先更新原文件，用户确认理解并授权迁入后再移入 notes，保留有效正文、出处与原有日期，并维护受影响的引用。
+外部资料导读平铺在 `content/readings/`，以来源为中心组织要点与定位链接；围绕自己的问题形成的理解放入 inbox 或 notes，导读本身不随阅读完成迁移。
 
-文件名使用简短英文与短横线，如 `agent-definition.md`、`mysql-explain-type.md`。在 content 内的笔记中保持唯一，包括 inbox 与 notes；只在实际冲突时加必要的限定词，不把完整分类层级拼进名称。文件名按内容适当收敛：主题能被更短、更上位的词涵盖时就用它，避免「主题 + 动作/限定」的冗余（如 OAuth 授权 → `oauth`）。README.md、AGENTS.md 等项目约定名称保留。
+自己的新建知识笔记默认保存到 `content/inbox/<filename>.md`，用户明确确认本篇所需概念已理解后再移入 `content/notes/`，不建立月份子目录。常规更新、补充旧文保持路径稳定，不随日期、分类或标签变化搬家；重构改变主题范围时按下述命名规则同步改名；日期通过元数据表达。网页同时收录 notes、inbox、readings 三个目录，Readings 沿用 Notes 星点样式，Inbox 星点稍小、星芒较弱；目录来源直接从路径生成，不另加学习状态字段。inbox 中已有内容先更新原文件，用户确认理解并授权迁入后再移入 notes，保留有效正文、出处与原有日期，并维护受影响的引用。
+
+文件名使用简短英文与短横线，如 `agent-definition.md`、`mysql-explain-type.md`。在 content 内的笔记中保持唯一，包括 inbox、notes 与 readings；只在实际冲突时加必要的限定词，不把完整分类层级拼进名称。文件名按内容适当收敛：主题能被更短、更上位的词涵盖时就用它，避免「主题 + 动作/限定」的冗余（如 OAuth 授权 → `oauth`）。README.md、AGENTS.md 等项目约定名称保留。
 
 内容收敛、拆分或重构后，文件名应跟随最终主题调整，不能只改 title 而沿用已不匹配的旧文件名。例如，`trace-and-span.md` 收敛为只解释 Trace、Span 已独立成篇时，应改为 `trace.md`。先核对新文件名在 content 中唯一，再按重命名流程维护全部引用；仅因措辞偏好或普通补充不反复改名，重命名也不改变 inbox/notes 的学习状态。
 
@@ -47,7 +49,7 @@ Obsidian 内置的常规属性是 tags、aliases、cssclasses，其他字段是�
 
 ## 链接与合并
 
-内部用 Obsidian 双链，不加 `.md`，笔记直接引用唯一文件名，如 `[[agent-definition-and-boundaries|Agent 是什么]]`、`[[mysql-explain|EXPLAIN 总览]]`。不将 inbox 或 notes 目录写进常规笔记链接，不使用 `/Users/...` 等本机绝对路径。中文用于显示名，外部 URL 使用 Markdown 链接。
+内部用 Obsidian 双链，不加 `.md`，笔记直接引用唯一文件名，如 `[[agent-definition-and-boundaries|Agent 是什么]]`、`[[mysql-explain|EXPLAIN 总览]]`。不将 inbox、notes 或 readings 目录写进常规笔记链接，不使用 `/Users/...` 等本机绝对路径。中文用于显示名，外部 URL 使用 Markdown 链接。
 
 解析先匹配 Vault 内的准确路径，再检查路径后缀是否唯一，无法唯一确定则报告歧义，不能随意挑选同名文件。章节用 `[[目标#标题|显示名]]`，块引用用 `[[目标#^block-id]]`，附件用 `![[assets/image.png]]`；目标和锚点必须存在。管理文档位于 Vault 外，跨目录链接使用项目根路径。
 
