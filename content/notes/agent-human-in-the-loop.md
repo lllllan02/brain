@@ -4,7 +4,7 @@ aliases: ["Human-in-the-Loop", "HITL"]
 category: "Agent"
 tags: ["Agent", "人工介入"]
 created_at: "2026-10-09"
-updated_at: "2026-10-09"
+updated_at: "2026-10-10T20:24:03+08:00"
 ---
 
 **人工介入（HITL）是在 Agent 执行过程中，将部分决策、审核或操作交给人参与的机制。** 自动权限校验属于[[agent-guardrails|行为约束]]；等待人确认或判断才属于人工介入。
@@ -24,6 +24,8 @@ updated_at: "2026-10-09"
 ## 如何暂停与恢复？
 
 **触发介入 → 暂停相关执行 → 保存状态与待处理事项 → 展示问题或操作 → 接收人的决定 → 校验后继续、修改或终止。** Runtime 负责暂停与恢复，等待原因和待回答问题写入[[agent-task-state|任务状态]]，审批请求及决定另按具体操作记录；跨进程等待需要[[agent-checkpoint-recovery|持久化与检查点]]。[HITL 中断与恢复示例](https://docs.langchain.com/oss/python/langchain/human-in-the-loop)
+
+[[openai-guardrails-summary|OpenAI SDK 的检查与审批]]展示调用 ID 关联、批准范围及可信状态恢复。
 
 审批应对应具体操作与参数；参数变化后重新判断是否需审批。拒绝或未回复不能当作同意，恢复前仍须校验权限和操作条件。
 

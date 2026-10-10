@@ -1,6 +1,6 @@
 ---
 title: "OpenAI：自动检查与工具审批"
-parent: tool-permissions
+parent: agent-human-in-the-loop
 category: "Agent"
 tags: ["Agent", "行为约束", "权限"]
 created_at: "2026-10-10"

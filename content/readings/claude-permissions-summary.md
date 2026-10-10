@@ -1,6 +1,6 @@
 ---
 title: "Claude Agent SDK：权限规则如何决定工具调用"
-parent: tool-permissions
+parent: agent-guardrails
 category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10"
