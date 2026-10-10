@@ -4,19 +4,21 @@ aliases: ["Tool Calling", "Function Calling", "函数调用"]
 category: "Agent"
 tags: ["Agent", "工具调用"]
 created_at: "2026-10-09"
-updated_at: "2026-10-09"
+updated_at: "2026-10-10"
 ---
 
 **工具调用是模型生成工具名称与参数，由外部程序执行工具，再将结果交回模型的交互机制。** 模型发出调用请求，实际执行由程序负责。
 
-1. 提供工具定义：程序向模型传入工具名称、用途和参数结构（Schema）。
-2. 生成调用请求：模型根据问题决定是否调用工具，需要时返回工具名称、参数和调用标识。
-3. 执行工具：程序解析并校验参数、检查权限，执行对应函数。
-4. 回传结果：将调用请求与执行结果加入上下文，关联对应调用标识，再次调用模型。
-5. 继续决策：模型根据结果生成答案，或请求下一次工具调用。
-
 工具调用本身不等于 Agent；它也可以用于固定流程。[[agent-loop|Agent Loop]] 将这种交互放入可持续决策的循环中。
 
-生产实践还需按问题补充[[tool-calling-harness|工具调用的 Harness 能力]]，覆盖注册与发现、执行约束、失败恢复和结果处理。
+## 工具调用与外部交互的学习方向
 
-具体传输格式见 [[chat-completions-tool-calling|Chat Completions 工具调用示例]]。流程参考 [OpenAI Function calling](https://developers.openai.com/api/docs/guides/function-calling)。
+从基本交互开始，再看接口设计、工具接入与执行反馈。各方向的阅读入口如下，执行与安全部分复用相应专题。
+
+1. 调用机制与流程：[[tool-calling-flow|工具调用流程]]用 Chat Completions 示例串起定义、请求、执行与结果回传。
+2. 工具接口设计：[[tool-interface-design|工具接口设计]]讨论名称、描述、参数、粒度、返回值，以及如何根据使用情况调整。
+3. 发现、注册与选择：[[tool-registry|工具注册中心]]管理定义与执行入口；[[tool-loading|按需加载]]决定本轮提供哪些工具。
+4. 外部系统接入：[[mcp|MCP]]说明标准协议的角色与能力，并导向完整交互流程；本地函数、HTTP API、命令行和浏览器等接入方式也属于此方向。
+5. 执行调度与失败处理：[[tool-calling-harness|工具调用的 Harness 能力]]串起执行约束与恢复，[[agent-retry|重试]]进一步说明失败分类和副作用边界。
+6. 工具结果处理：Harness 中的结果回传说明调用关联、状态表达与大结果处理；接口设计说明模型需要哪些返回信息。
+7. 权限与安全边界：[[sandbox-execution|权限检查与沙箱执行]]说明授权和隔离在调用链中的位置，并连接沙箱专题。

@@ -1,10 +1,11 @@
 ---
 title: "MCP（模型上下文协议）"
+parent: tool-calling
 aliases: ["MCP", "Model Context Protocol", "模型上下文协议"]
 category: "Agent"
 tags: ["MCP", "工具调用", "协议"]
 created_at: "2026-10-09"
-updated_at: "2026-10-09"
+updated_at: "2026-10-10"
 ---
 
 **MCP（Model Context Protocol，模型上下文协议）是 AI 应用连接外部能力的标准协议，统一工具、数据资源和提示模板的发现与通信方式。** 提供方按协议暴露能力，AI 应用通过对应 Client 接入，减少每种集成都自行设计通信接口的工作。
@@ -26,3 +27,5 @@ updated_at: "2026-10-09"
 MCP 使用 JSON-RPC 表达协议消息，可通过本地 stdio 或远程 Streamable HTTP 通信。它不规定应用如何调用模型、组织上下文或实现内部注册表；MCP 也不等于 Agent 或动态注册机制。角色、能力与协议范围参考 [官方架构说明](https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture)。
 
 从连接、发现到使用和更新的过程，在 [[mcp-flow|MCP 的完整交互流程]] 中展开。
+
+服务端可以选择开放哪些能力。[[fastmcp-visibility-summary|FastMCP 的可见性控制]]展示了全局与会话范围的启停规则；这是框架的管理方式，不是 MCP 要求所有工具始终可见，也不同于 Host 向模型提供哪些定义。

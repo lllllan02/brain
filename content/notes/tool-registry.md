@@ -1,10 +1,11 @@
 ---
 title: "工具注册中心（Tool Registry）"
+parent: tool-calling
 aliases: ["Tool Registry", "工具注册表"]
 category: "Agent"
 tags: ["Agent", "工具调用", "工具注册"]
 created_at: "2026-10-09"
-updated_at: "2026-10-09"
+updated_at: "2026-10-10"
 ---
 
 **工具注册中心是统一保存工具定义与执行入口、支持注册和查找的组件。** 执行器按名称取得工具，模型可见的工具定义也从这里生成；它可以只是进程内的注册表，不必是独立服务。
@@ -16,6 +17,8 @@ updated_at: "2026-10-09"
 ## 最小实现
 
 一种实现示例是「统一接口 + Map」：工具接口提供名称、Schema 和执行方法，用 `map[string]Tool` 保存实例，提供 `Register`、`Get`、`List` 方法。执行器按名称查找，再调用统一执行接口；注册时检查重名和定义有效性。
+
+工具来源增多时，可以按来源封装工具集，再组合、加前缀或重命名；每轮筛选可见定义，调用时仍回到对应执行入口。[[pydantic-toolsets-summary|Pydantic AI 的 Toolsets]]提供这种实现参考：用 `get_tools()` 与 `call_tool()` 分别组织定义与执行。工具集是应用内抽象，不等于独立注册服务。
 
 ## 静态与动态注册
 

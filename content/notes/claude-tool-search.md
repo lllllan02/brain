@@ -1,10 +1,11 @@
 ---
 title: "Claude 的 Tool Search 与延迟加载"
+parent: tool-loading
 aliases: ["ToolSearch", "Claude Tool Search"]
 category: "Agent"
 tags: ["按需加载", "工具调用", "Claude"]
 created_at: "2026-10-09"
-updated_at: "2026-10-09"
+updated_at: "2026-10-10"
 ---
 
 **Claude Tool Search 通过搜索工具目录实现[[tool-loading|工具按需加载]]。** API 的协议行为与 Claude Code 的产品策略有所区别，以下依据 2026-10-09 的官方文档。
@@ -25,3 +26,5 @@ updated_at: "2026-10-09"
 Server 配置中的 `alwaysLoad: true` 可让工具提前加载；是否启用搜索还受模型、服务提供方和配置支持影响。这些是 Claude Code 的策略，不是 MCP 的通用要求。[Claude Code 官方说明](https://code.claude.com/docs/en/mcp#scale-with-mcp-tool-search)
 
 官方 API 已说明搜索类型，但上述资料不足以确定 Claude Code 在所有配置下选择哪种实现，也不能据此还原全部服务端细节。
+
+[[anthropic-advanced-tool-use-summary|Anthropic 的高级工具使用文章]]解释了引入搜索的动机与取舍：工具定义较多时节省上下文，但增加搜索步骤；应按任务验证选择质量与延迟收益。文章同时区分程序化调用和使用示例，三者分别处理不同瓶颈。
