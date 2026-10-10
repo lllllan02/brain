@@ -87,3 +87,21 @@ export function interpolateCategories(from, to, progress, expanding, output, mot
 }
 
 export const categoryEase = smooth;
+
+// Reading uses a bounded neighbourhood, not every cluster in the library.
+export function readingNeighborhood(data, positions, index, grouping, limit = 12) {
+  if (index < 0 || !data.nodes[index]) return null;
+  const node = data.nodes[index], anchor = new Vector3().fromArray(positions, index * 3);
+  const related = new Set();
+  for (const link of data.links || []) {
+    if (link.source === index) related.add(link.target);
+    if (link.target === index) related.add(link.source);
+  }
+  const key = grouping === 'collection' ? 'collection' : 'folderTop';
+  const nearest = data.nodes.flatMap((candidate, i) => {
+    if (i === index || candidate[key] !== node[key]) return [];
+    const distance = new Vector3().fromArray(positions, i * 3).distanceTo(anchor);
+    return [{i, distance, score: distance * (related.has(i) ? .65 : 1)}];
+  }).sort((a,b) => a.score - b.score || a.i - b.i).slice(0, limit);
+  return {indices: new Set([index, ...nearest.map(item => item.i)]), radius: Math.max(28, ...nearest.map(item => item.distance))};
+}

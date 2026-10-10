@@ -1,9 +1,47 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createServer} from 'vite';
-import {Scene, Color, BufferGeometry, BufferAttribute} from 'three';
+import {Scene, Color, BufferGeometry, BufferAttribute, PerspectiveCamera, Vector3} from 'three';
+import {interpolateCategories, categoryEase} from '../src/galaxy/categoryLayout.js';
 import {damp, curveSamples, pointAlongCurve} from '../src/motion/tokens.js';
 import {CategoryEffects} from '../src/galaxy/categoryEffects.js';
+
+test('阅读布局与局部取景同步，节点保持居中，中途反向从当前机位继续', async () => {
+  const server = await createServer({configFile:false, optimizeDeps:{noDiscovery:true}, server:{middlewareMode:true,hmr:false,ws:false}});
+  try {
+    const {CameraDirector} = await server.ssrLoadModule('/src/galaxy/vendor/interactions/CameraDirector.ts');
+    const camera = new PerspectiveCamera(45, 1.6, .1, 10000);
+    camera.position.set(210, 130, 300);
+    const target = new Vector3(12, -30, 5);
+    camera.lookAt(target); camera.updateMatrixWorld();
+    const director = Object.create(CameraDirector.prototype);
+    Object.assign(director, {camera, controls:{target}});
+    let display = new Float32Array([12,-30,5,70,19,-25]);
+    const origin = new Vector3().fromArray(display).project(camera);
+    for (const [to, steps] of [
+      [new Float32Array([600,270,-180,580,300,-210]), 23],
+      [new Float32Array([-470,200,160,-450,190,170]), 60],
+      [new Float32Array([12,-30,5,70,19,-25]), 60],
+    ]) {
+      const from = new Float32Array(display);
+      const anchor = new Vector3().fromArray(from);
+      const view = director.captureAnchorView(anchor, 45);
+      const before = camera.position.clone();
+      director.updateAnchorView(anchor, view, 0);
+      assert.ok(camera.position.distanceTo(before) < 1e-10);
+      for (let step = 1; step <= steps; step++) {
+        interpolateCategories(from, to, step / 60, false, display);
+        director.updateAnchorView(new Vector3().fromArray(display), view, categoryEase(step / 60));
+        camera.lookAt(target);
+        camera.updateMatrixWorld();
+        const screen = new Vector3().fromArray(display).project(camera);
+        assert.ok(Math.hypot(screen.x - origin.x, screen.y - origin.y) < 1e-10);
+        assert.ok(screen.z > -1 && screen.z < 1);
+      }
+      if (steps === 60) assert.ok(Math.abs(camera.position.distanceTo(target) - 45 / Math.sin(Math.PI / 8) * 1.25) < 1e-10);
+    }
+  } finally { await server.close(); }
+});
 
 test('阻尼在 30、60、120 帧下经过相同时间到达相同位置', () => {
   const results = [30, 60, 120].map(fps => {

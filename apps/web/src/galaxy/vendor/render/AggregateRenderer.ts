@@ -1096,6 +1096,7 @@ export class AggregateRenderer {
 		let best = -1;
 		let bestDist = maxPx;
 		for (let i = 0; i < this.data.nodes.length; i++) {
+			if (this.dimTarget[i] === 0) continue;
 			const p = this.projectNode(i, w, h);
 			if (p.behind) continue;
 			const d = Math.hypot(p.x - px, p.y - py);

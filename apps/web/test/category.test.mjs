@@ -1,7 +1,25 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {categoryLayout, interpolateCategories} from '../src/galaxy/categoryLayout.js';
+import {categoryLayout, interpolateCategories, readingNeighborhood} from '../src/galaxy/categoryLayout.js';
 import {categoryStyle} from '../src/galaxy/categoryStyles.js';
+
+test('阅读邻域限制数量、排除其他分组并按实际节点范围取景', () => {
+  const data = {nodes:Array.from({length:40}, (_,i) => ({folderTop:i<25?'a':'b', collection:i%2?'notes':'inbox'})), links:[{source:0,target:14}]};
+  const positions = new Float32Array(data.nodes.flatMap((_,i) => [i * 5, 0, 0]));
+  for (const grouping of ['category','collection']) {
+    const result = readingNeighborhood(data, positions, 0, grouping);
+    assert.equal(result.indices.size,13);
+    assert.ok(result.indices.has(0));
+    assert.ok(result.indices.has(14));
+    const key = grouping === 'category' ? 'folderTop' : 'collection';
+    for (const index of result.indices) {
+      assert.equal(data.nodes[index][key],data.nodes[0][key]);
+      assert.ok(index * 5 <= result.radius);
+    }
+  }
+  assert.equal(readingNeighborhood(data,positions,-1,'category'),null);
+  assert.deepEqual(readingNeighborhood({nodes:[{folderTop:'a'}],links:[]},new Float32Array(3),0,'category'),{indices:new Set([0]),radius:28});
+});
 
 test('同一分类从平面逐级增加厚度，深空背景弱于主体', () => {
   const data = {nodes:Array.from({length:40},(_,i)=>({id:`note-${i}`,folderTop:'one'}))};

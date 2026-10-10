@@ -191,7 +191,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       <div className="galaxy-frame" aria-hidden="true"/>
       {historyOpen && <ReadingTrail projection={trailProjection} route={trail} reduced={reduced} hidden={!ready || Boolean(error)}/>}
       <div className="galaxy-labels">{ready && !error && labels.map(label => label.category ?
-        <button key={label.id} className="galaxy-category-label" style={{left: label.x, top: label.y, opacity: label.opacity, '--group-color': label.color, pointerEvents: label.exiting ? 'none' : undefined}} onPointerEnter={() => scene.current?.hoverCategory(label.id)} onPointerLeave={() => scene.current?.hoverCategory(null)} onFocus={() => scene.current?.hoverCategory(label.id)} onBlur={() => scene.current?.hoverCategory(null)} onClick={() => setFocus({mod: label.id, sel: null})} aria-label={`查看${label.title}${label.id.startsWith('collection:') ? '目录' : '分类'}`}><i aria-hidden="true"/>{label.title}<small>{label.count}</small></button> :
+        <button key={label.id} className="galaxy-category-label" style={{left: label.x, top: label.y, opacity: label.opacity, '--group-color': label.color, pointerEvents: label.exiting ? 'none' : undefined}} onPointerEnter={() => scene.current?.hoverCategory(label.id)} onPointerLeave={() => scene.current?.hoverCategory(null)} onFocus={() => scene.current?.hoverCategory(label.id)} onBlur={() => scene.current?.hoverCategory(null)} onClick={() => focus.sel ? setReaderCluster({owner: focus.sel, value: {category: label.id}}) : setFocus({mod: label.id, sel: null})} aria-label={`查看${label.title}${label.id.startsWith('collection:') ? '目录' : '分类'}`}><i aria-hidden="true"/>{label.title}<small>{label.count}</small></button> :
         <React.Fragment key={label.id}>
           {label.current && <svg className="galaxy-current-marker" aria-hidden="true" viewBox="-20 -20 40 40" style={{left: label.x, top: label.y, opacity: label.opacity, pointerEvents: label.exiting ? 'none' : undefined}}>
             <path d="M -8 -17 H -17 V -8 M 8 -17 H 17 V -8 M -8 17 H -17 V 8 M 8 17 H 17 V 8"/>
@@ -254,8 +254,8 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       <ReadingHistoryToggle label="最新文档" icon="calendar" controls="latest-documents" open={latestOpen} toggleRef={latestToggle} onToggle={() => {setHistoryOpen(false);setLatestOpen(value => !value);}}/>
       {[['category', '分类', 'grid'], ['collection', '目录', 'folder']].map(([mode, title, icon]) => <button key={mode} className="galaxy-category-toggle" aria-pressed={expanded && grouping === mode} disabled={!ready || Boolean(error)} title={expanded && grouping === mode ? '收回整体星云' : `按${title}展开星云`} onClick={() => {
         const next = !expanded || grouping !== mode;
-        setGrouping(mode); setExpanded(next); setHistoryOpen(false); setLatestOpen(false); setFocus({mod: null, sel: null});
-        scene.current?.focus(null, null); scene.current?.expand(next, mode);
+        setGrouping(mode); setExpanded(next);
+        scene.current?.expand(next, mode);
       }}><Icon name={icon} size={15}/><span>{title}</span></button>)}
 
     </nav>

@@ -1,4 +1,5 @@
 import {Icon} from './icons';
+import {collectionLabel} from '../collections.js';
 import React, {useEffect, useLayoutEffect, useMemo, useRef} from 'react';
 
 import {usePresence} from '../motion/usePresence';
@@ -20,7 +21,7 @@ export function clusterDocuments(graph, cluster) {
   }
   return graph.nodes.filter(node => node.module && (cluster.tag
     ? node.tags?.includes(cluster.tag)
-    : node.module === cluster.category))
+    : cluster.category?.startsWith('collection:') ? node.collection === cluster.category.slice(11) : node.module === cluster.category))
     .sort((a, b) => a.title.localeCompare(b.title, 'zh-CN') || a.id.localeCompare(b.id));
 }
 
@@ -30,8 +31,9 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
   if (!closing && anchorId) origin.current = anchorId;
   const documents = useMemo(() => clusterDocuments(graph, shown), [graph, shown]);
   const timeline = Boolean(shown?.recent || shown?.latest);
-  const kind = timeline ? '' : shown?.document ? shown.direction === 'incoming' ? '被引用' : '内部链接' : shown?.tag ? '标签' : '分类';
-  const title = shown?.latest ? '最新文档' : shown?.recent ? '最近阅读' : shown?.document ? graph.index.get(shown.document)?.title || '文档' : shown?.tag || graph.modules.find(item => item.id === shown?.category)?.title || '未分类';
+  const collection = shown?.category?.startsWith('collection:') ? shown.category.slice(11) : null;
+  const kind = timeline ? '' : shown?.document ? shown.direction === 'incoming' ? '被引用' : '内部链接' : shown?.tag ? '标签' : collection ? '目录' : '分类';
+  const title = shown?.latest ? '最新文档' : shown?.recent ? '最近阅读' : shown?.document ? graph.index.get(shown.document)?.title || '文档' : collection ? collectionLabel(collection) : shown?.tag || graph.modules.find(item => item.id === shown?.category)?.title || '未分类';
   const selectionKey = clusterKey(shown);
   useEffect(() => { onPresenceChange(Boolean(shown)); }, [Boolean(shown), onPresenceChange]);
 

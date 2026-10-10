@@ -158,6 +158,18 @@ export class CameraDirector {
 		this.cruiseAnchor = null;
 	}
 
+	/** Share the layout's progress while fitting the local reading neighbourhood. */
+	captureAnchorView(anchor: Vector3, radius: number) {
+		const offset = this.camera.position.clone().sub(anchor);
+		const distance = radius / Math.sin(this.camera.fov * Math.PI / 360) * 1.25;
+		return {offset, target: this.controls.target.clone().sub(anchor), end: offset.clone().normalize().multiplyScalar(distance)};
+	}
+
+	updateAnchorView(anchor: Vector3, view: ReturnType<CameraDirector['captureAnchorView']>, progress: number): void {
+		this.camera.position.copy(view.offset).lerp(view.end, progress).add(anchor);
+		this.controls.target.copy(view.target).multiplyScalar(1 - progress).add(anchor);
+	}
+
 	/** 外部（如渲染循环兜底）安全清除进行中的路径/补间，恢复水平地平线；不触发 onDone。 */
 	cancelMotion(): void {
 		// A new framing must not resume the previous node's close-up orbit.
