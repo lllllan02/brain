@@ -102,34 +102,48 @@
 .reader-toolbar-heading.reduced-motion>div{transition:none;transform:none}
 @media(prefers-reduced-motion:reduce){.reader-toolbar-heading>div{transition:none;transform:none!important}}
 
-/* Fixed celestial lenses; the option strips move underneath them. */
-.galaxy-page .cluster-list-navigation{padding:0 0 6px;flex:none}
-.list-navigation-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
-.list-modes{--roller-ink:174,205,240;position:relative;width:100%;min-width:0;height:34px;margin:0 auto;isolation:isolate;overflow:hidden;touch-action:none;user-select:none;cursor:grab;border-radius:9px;background:radial-gradient(ellipse at 50% 70%,rgba(var(--roller-ink),.06),transparent 70%)}
-.list-modes+.list-modes{--roller-ink:167,211,207}
-.list-mode-window{position:absolute;top:3px;bottom:3px;left:24%;width:52%;border-radius:8px;background:linear-gradient(160deg,rgba(var(--roller-ink),.12),#10172280 60%);box-shadow:inset 0 0 0 1px rgba(var(--roller-ink),.16),inset 0 1px 0 rgba(var(--roller-ink),.12),0 0 12px rgba(var(--roller-ink),.06);pointer-events:none;transition:background .2s ease,box-shadow .2s ease}
-.list-mode-window::before{content:"";position:absolute;left:18%;right:18%;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--roller-ink),.65),transparent)}
-.list-mode-window::after{content:"";position:absolute;top:-1px;left:20%;width:3px;height:3px;border-radius:50%;background:rgba(var(--roller-ink),.85);box-shadow:0 0 5px rgba(var(--roller-ink),.6);opacity:.55;transition:opacity .2s ease}
-.list-mode-drum{position:relative;height:34px;mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
-.list-modes .list-mode-option{position:absolute;top:0;left:calc(50% + var(--slot-x)*1.65);width:calc(52% - var(--distance)*22%);height:34px;display:flex;align-items:center;justify-content:center;gap:3px;padding:0;overflow:hidden;border:0;background:none;color:rgba(var(--roller-ink),.8);font:inherit;font-size:calc(11px - var(--distance)*1px);white-space:nowrap;cursor:grab;opacity:0;pointer-events:none;transform:translateX(-50%);transition:left .2s ease,width .2s ease,font-size .2s ease,opacity .18s ease,color .18s ease;user-select:none}
+/* A single quiet toolbar keeps the list mode, filter and actions together. */
+.cluster-list-toolbar{display:flex;align-items:center;gap:4px;flex:none;padding:0 0 6px;min-width:0}
+.galaxy-page .cluster-list-navigation{padding:0;flex:1;min-width:0}
+.list-navigation-controls{display:grid;grid-template-columns:minmax(0,1fr) 72px;gap:2px}
+.list-modes{--roller-ink:174,205,240;position:relative;width:100%;min-width:0;height:32px;margin:0;overflow:hidden;touch-action:none;user-select:none;cursor:grab;border-radius:5px;pointer-events:auto}
+.list-mode-window{position:absolute;inset:2px;border-radius:4px;pointer-events:none;transition:background .2s ease}
+.list-mode-drum{position:relative;height:32px;mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.list-modes .list-mode-option{position:absolute;top:0;left:calc(50% + var(--slot-x)*1.65);width:max(0px,calc(100% - var(--distance)*60%));height:32px;display:flex;align-items:center;justify-content:center;gap:3px;padding:0;overflow:hidden;border:0;background:none;color:#9baec4;font:inherit;font-size:calc(11px - var(--distance)*1px);white-space:nowrap;cursor:grab;opacity:0;pointer-events:none;transform:translateX(-50%);transition:left .2s ease,width .2s ease,opacity .18s ease,color .18s ease;user-select:none}
 .list-modes .list-mode-option.is-centered{color:#dce6f3;opacity:1;pointer-events:auto}
-.list-modes .list-mode-option[aria-pressed=true]{color:#edf3fc;font-weight:500;text-shadow:0 0 10px rgba(var(--roller-ink),.22)}
+.list-modes .list-mode-option[aria-pressed=true]{color:#edf3fc;font-weight:500}
 .list-modes .list-mode-option small{font-size:9px;font-variant-numeric:tabular-nums;opacity:.65;font-weight:400}
-.list-modes:focus-visible{outline:1px solid rgba(var(--roller-ink),.8);outline-offset:2px}
-.list-modes .list-mode-option:focus-visible{outline:1px solid rgba(var(--roller-ink),.8);outline-offset:-2px;border-radius:7px}
+.list-modes+.list-modes .list-mode-option{color:#9baec4;font-size:10px;font-weight:400}
+.list-modes:focus-visible{outline:1px solid rgba(var(--roller-ink),.8);outline-offset:1px}
+.list-modes .list-mode-option:focus-visible{outline:1px solid rgba(var(--roller-ink),.8);outline-offset:-2px;border-radius:5px}
 .list-modes.is-dragging,.list-modes.is-dragging .list-mode-option{cursor:grabbing}
 .list-modes.is-dragging .list-mode-option{transition:none}
-.list-modes:is(.is-dragging,:focus-visible,:has(:focus-visible)) .list-mode-option{opacity:calc(1 - var(--distance)*.3);pointer-events:auto}
-.list-modes:is(.is-dragging,:focus-visible,:has(:focus-visible)) .list-mode-window{box-shadow:inset 0 0 0 1px rgba(var(--roller-ink),.3),0 0 14px rgba(var(--roller-ink),.12)}
-@media(hover:hover){
- .list-modes:hover .list-mode-option{opacity:calc(1 - var(--distance)*.3);pointer-events:auto}
- .list-modes:hover .list-mode-window{box-shadow:inset 0 0 0 1px rgba(var(--roller-ink),.3),0 0 14px rgba(var(--roller-ink),.12)}
- .list-modes:hover .list-mode-window::after{opacity:1}
- .list-modes .list-mode-option:hover{color:#edf3fc}
+.list-modes:is(.is-dragging,:focus-visible,:has(:focus-visible)) .list-mode-option{width:calc(52% - var(--distance)*22%);opacity:calc(1 - var(--distance)*.3);pointer-events:auto}
+@media(hover:hover){.list-modes:hover .list-mode-option{width:calc(52% - var(--distance)*22%);opacity:calc(1 - var(--distance)*.3);pointer-events:auto}}
+.list-modes:is(:hover,:focus-visible,:has(:focus-visible),.is-dragging) .list-mode-window{background:#b9cce212}
+.cluster-list-actions{display:flex;align-items:center;flex-shrink:0;gap:0}
+.galaxy-page .cluster-list-actions button{display:inline-flex;align-items:center;justify-content:center;min-width:28px;min-height:32px;padding:4px;border:0;border-radius:5px;background:transparent;color:var(--muted);cursor:pointer}
+.galaxy-page .cluster-list-actions button:hover{background:var(--hover);color:var(--text)}
+.cluster-list-actions button:focus-visible{outline:1px solid #a8c4df;outline-offset:-2px}
+.cluster-list-context{padding:0 6px 6px 18px;color:#9baec4;font-size:11px;line-height:1.6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:none}
+.cluster-list-context span{color:#75869c}
+.galaxy-page .cluster-list-scroll li{margin-bottom:5px}
+.galaxy-page .cluster-list-item{min-height:40px;padding-top:7px;padding-bottom:7px}
+@media(max-width:900px){
+ .galaxy-page .cluster-list-actions button{min-width:32px;min-height:36px}
+ .galaxy-page .cluster-list-item{min-height:44px}
 }
 .list-mode-announcement{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 @media(prefers-reduced-motion:reduce){.list-modes .list-mode-option,.list-mode-window,.list-mode-window::after{transition:none}}
-@media(max-width:900px){.galaxy-page .cluster-list-navigation{padding-bottom:8px}}
 
-.cluster-list-header .cluster-list-actions{flex-shrink:0;gap:2px}
-.galaxy-page .cluster-list-actions button[aria-pressed=true]{color:#edf3fc;background:#b9cce226;box-shadow:inset 0 0 0 1px #c0d8ed33}
+
+.cluster-list-navigation[hidden]{display:none}
+.cluster-list-pinned-title{display:flex;align-items:center;gap:6px;flex:1;min-width:0;min-height:32px;padding-left:14px;pointer-events:auto}
+.cluster-list-pinned-title h2{min-width:0;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:500;color:#e1e9f3}
+.cluster-list-pinned-title h2 span{color:#9baec4;font-weight:400}
+.cluster-list-pinned-title small,.cluster-list-pinned-filter{flex:none;font-size:10px;color:#9baec4;font-variant-numeric:tabular-nums}
+.cluster-list-pinned-filter{font-size:9px}
+.cluster-list-actions button svg{transition:transform .18s ease}
+.galaxy-page .cluster-list-actions button[aria-pressed=true]{color:#f1d4a4;background:#d8b77d26;box-shadow:inset 0 0 0 1px #e1bd7955,0 0 10px #dfb67518}
+.cluster-list-actions button[aria-pressed=true] svg{transform:rotate(-35deg);filter:drop-shadow(0 0 3px #efc98b55)}
+@media(prefers-reduced-motion:reduce){.cluster-list-actions button svg{transition:none}}

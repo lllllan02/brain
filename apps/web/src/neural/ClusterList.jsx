@@ -213,13 +213,22 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
       </g>)}
     </svg>}
     <aside id={shown?.queue ? 'reading-queue' : shown?.latest ? 'latest-documents' : shown?.recent ? 'reading-history' : undefined} className={`cluster-list${timeline ? ' cluster-history' : ''}${!shown ? ' cluster-list-collapsed' : ''}`} aria-label={!shown ? '文档列表导航' : timeline ? title : `${kind} ${title} 的文档列表`}>
-      {navigation && <div className="cluster-list-navigation">{navigation}</div>}
-      {shown && <div ref={body} className="cluster-list-body" inert={closing}>
-      <header className="cluster-list-header"><div>{kind && <span>{kind}</span>}<h2>{title}</h2><small>{documents.length}{collectionFilter !== 'all' && ` / ${allDocuments.length}`} 篇</small></div>
-        <div className="cluster-list-actions">
+      <header className="cluster-list-toolbar">
+        {pinned && shown && <div className="cluster-list-pinned-title" title={`${kind ? `${kind}：` : ''}${title}${collectionFilter !== 'all' ? ` · ${collectionLabel(collectionFilter)}` : ''}`}>
+          <h2>{kind && <span>{kind} · </span>}{title}</h2>
+          {collectionFilter !== 'all' && <span className="cluster-list-pinned-filter">{collectionLabel(collectionFilter)}</span>}
+          <small>{documents.length}{collectionFilter !== 'all' && `/${allDocuments.length}`}</small>
+        </div>}
+        {navigation && <div className="cluster-list-navigation" hidden={Boolean(pinned && shown)}>{React.cloneElement(navigation, {
+          documentCount: shown ? documents.length : null,
+          totalCount: allDocuments.length,
+        })}</div>}
+        {shown && <div className="cluster-list-actions" inert={closing}>
         {!shown.queue && <button type="button" onClick={onPin} aria-pressed={pinned} aria-label={pinned ? '取消固定列表' : '固定列表'} title={pinned ? '取消固定，恢复跟随当前文档' : '固定当前列表，切换文档时保持不变'}><Icon name="pin" size={14}/></button>}
-        <button type="button" onClick={onClose} aria-label={timeline ? `收起${title}` : '关闭文档列表'} title="关闭列表"><Icon name="close" size={16}/></button></div>
+        <button type="button" onClick={onClose} aria-label={timeline ? `收起${title}` : '关闭文档列表'} title="关闭列表"><Icon name="close" size={16}/></button></div>}
       </header>
+      {shown && <div ref={body} className="cluster-list-body" inert={closing}>
+      {(!pinned && !timeline && !shown.document) && <div className="cluster-list-context" title={`${kind}：${title}`}><span>{kind}：</span>{title}</div>}
       <div className="cluster-list-scroll" ref={scroll} tabIndex={0} role="region" aria-label={`${title}文档，可滚动浏览`}>
         <div className="cluster-scroll-track"><div className="cluster-scroll-viewport"><div className="cluster-scroll-content">
         {documents.length ? <ul key={selectionKey}>{documents.map((node, index) => <li key={node.id} className={queue ? "has-queue-action" : undefined}>
@@ -230,7 +239,7 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
             <span><strong>{node.title}</strong></span>
           </button>
           {queue && <ReadingQueueButton queue={queue} node={node} className="queue-list-action"/>}
-        </li>)}</ul> : <p className="cluster-list-empty">{collectionFilter !== 'all' ? `当前列表没有 ${collectionLabel(collectionFilter)} 文档，可切换为“显示全部”` : shown.queue ? '还没有待阅读文档，可用文章或列表旁的书签按钮添加' : shown.latest ? '暂无有有效日期的文档' : shown.recent ? '打开文档后，这里会留下阅读足迹' : shown.document ? shown.direction === 'incoming' ? '还没有其他文档引用这篇文章' : '这篇文章没有可打开的内部链接' : '暂时没有匹配的文档'}</p>}
+        </li>)}</ul> : <p className="cluster-list-empty">{collectionFilter !== 'all' ? `当前列表没有 ${collectionLabel(collectionFilter)} 文档，${pinned ? '解除固定后可切换为“全部”' : '可切换为“全部”'}` : shown.queue ? '还没有待阅读文档，可用文章或列表旁的书签按钮添加' : shown.latest ? '暂无有有效日期的文档' : shown.recent ? '打开文档后，这里会留下阅读足迹' : shown.document ? shown.direction === 'incoming' ? '还没有其他文档引用这篇文章' : '这篇文章没有可打开的内部链接' : '暂时没有匹配的文档'}</p>}
         </div></div></div>
       </div>
       {shown.latest && <footer className="cluster-history-footer"><span>按更新时间 · 最近 10 篇</span></footer>}
