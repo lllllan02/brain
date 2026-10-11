@@ -10,7 +10,7 @@ run:
 install:
 	npm --prefix apps/web ci
 
-# Agent 检索层，复用 apps/web 的解析逻辑，覆盖 content/notes 与 content/inbox。
+# Agent 检索层，复用 apps/web 的解析逻辑，收录范围来自 apps/web/collections.config.json。
 # 用法：make search q="覆盖索引 回表" / make index / make lint
 search:
 	@node scripts/retrieve.mjs query $(q) $(ARGS)
