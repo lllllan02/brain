@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import yaml from 'js-yaml';
 import { Lexer, Parser, Renderer } from 'marked';
 import hljs from 'highlight.js';
-import { CONTENT_COLLECTIONS, collectionIcons } from './collections.js';
+import { CONTENT_COLLECTIONS, collectionIcons, collectionStyle } from './collections.js';
 
 
 export const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -93,8 +93,10 @@ export function renderDocument(doc, documents) {
     const collection = collectionIcons[dest.collection];
     const text = escape(label || dest.title);
     const icon = collection ? `<svg class="internal-link-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${escape(collection.path)}"/></svg>` : '';
+    const {color, opacity} = collectionStyle(dest.collection).link;
+    const linkStyle = ` style="--link-color:${color};--link-opacity:${opacity}"`;
     const provenance = collection ? ` data-collection="${dest.collection}" title="${escape(collection.label)}" aria-label="${text}（${escape(collection.label)}）"` : '';
-    const link = `<a class="wiki-link" id="${referenceId}" href="${href}"${provenance}>${icon}${text}</a>`;
+    const link = `<a class="wiki-link" id="${referenceId}" href="${href}"${provenance}${linkStyle}>${icon}${text}</a>`;
     return embed ? `<span class="embed-card">${link}<span>${escape(dest.summary)}</span></span>` : link;
   };
   const config = {extensions:[{name:'wiki', level:'inline', start: src => src.indexOf('[['), tokenizer(src) { const m = /^(!?)\[\[([^\]\n]+)\]\]/.exec(src); if (m) return {type:'wiki', raw:m[0], value:m[2], embed:Boolean(m[1])}; }, renderer(token) { const [target, label] = token.value.replaceAll('\\|','|').split('|'); if (/\.(png|jpe?g|gif|webp|svg|pdf|mp3|mp4)$/i.test(target)) { const url = `/api/asset?path=${encodeURIComponent(target)}&from=${encodeURIComponent(doc.path)}`; return token.embed && /\.(png|jpe?g|gif|webp)$/i.test(target) ? `<img loading="lazy" src="${url}" alt="${escape(label || target)}">` : `<a href="${url}" target="_blank" rel="noopener">${escape(label || target)} ↗</a>`; } return wiki(target, label, token.embed); }}], renderer:{

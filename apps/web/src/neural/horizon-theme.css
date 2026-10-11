@@ -57,11 +57,11 @@
 /* Clone the marker on each line so long internal links can wrap naturally. */
 .galaxy-page .markdown a.wiki-link, .neural.link-preview .markdown a.wiki-link,
 .galaxy-page .reader-parent a.wiki-link {
-  color: #b8d9ff;
+  color: var(--link-color, #bec7d2);
   font-weight: 500;
   border-bottom: 0;
   padding-bottom: 2px;
-  background: linear-gradient(transparent 62%, #253a52 62%);
+  background: linear-gradient(transparent 55%, color-mix(in srgb, var(--link-color, #bec7d2) calc(var(--link-opacity, .12) * 100%), transparent) 55%);
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
@@ -69,7 +69,7 @@
 .neural.link-preview .markdown a.wiki-link:is(:hover, :focus-visible),
 .galaxy-page .reader-parent a.wiki-link:is(:hover, :focus-visible) {
   color: #f3f8ff;
-  background: linear-gradient(transparent 35%, #344e6c 35%);
+  background: linear-gradient(transparent 35%, color-mix(in srgb, var(--link-color, #bec7d2) min(100%, calc((var(--link-opacity, .12) + .12) * 100%)), transparent) 35%);
 }
 .galaxy-page .markdown :not(pre) > code, .neural.link-preview .markdown :not(pre) > code { color: #ced9e5; background: #c5d3e209; border-color: var(--line); }
 .galaxy-page .markdown li::marker, .neural.link-preview .markdown li::marker { color: #8999ad; }

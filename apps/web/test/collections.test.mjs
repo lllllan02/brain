@@ -12,9 +12,11 @@ test('目录配置支持自定义项、禁用、样式默认值，并拒绝越�
  assert.deepEqual(registry.directories,['reference']);
  assert.equal(registry.label('reference'),'参考');
  assert.equal(registry.style('reference').node.size,1);
+ assert.deepEqual(registry.style('reference').link,{color:'#bec7d2',opacity:0.12});
+ assert.deepEqual(createCollectionRegistry([{...entry,link:{color:'#abcdef',opacity:0.3}}]).style('reference').link,{color:'#abcdef',opacity:0.3});
  assert.equal(registry.icons.reference.label,'参考 · 随查资料');
  assert.equal(collectionMarkerStyle('glossary')['--collection-fill'],'transparent');
- for(const patch of [{id:'../outside'},{id:'nested/path'},{enabled:'false'},{color:'red'},{icon:'" onload="x'},{node:{size:-1}},{node:{rayAngle:Infinity}},{marker:{shape:'triangle'}}]) {
+ for(const patch of [{id:'../outside'},{id:'nested/path'},{enabled:'false'},{color:'red'},{icon:'" onload="x'},{node:{size:-1}},{node:{rayAngle:Infinity}},{marker:{shape:'triangle'}},{link:null},{link:{color:'red'}},{link:{color:'#fff;bad'}},{link:{opacity:1.1}},{link:{opacity:-1}},{link:{opacity:'0.2'}}]) {
   assert.throws(()=>createCollectionRegistry([{...entry,...patch}]),/目录配置/);
  }
  assert.throws(()=>createCollectionRegistry([entry,entry]),/重复/);
@@ -32,7 +34,7 @@ test('只改配置即可收录第五目录、渲染图标、搜索及静态导�
  for(const file of ['collections.js','library.mjs','document-dates.js','neural/search.js']) await copyFile(path.resolve('src',file),path.join(root,'src',file));
  await copyFile(path.resolve('scripts/build-pages.mjs'),path.join(root,'scripts/build-pages.mjs'));
  const config=JSON.parse(await readFile('collections.config.json','utf8'));
- config.push(entry);
+ config.push({...entry,link:{color:'#abcdef',opacity:0.3}});
  await writeFile(path.join(root,'collections.config.json'),JSON.stringify(config));
  for(const dir of ['inbox','glossary','reference','unconfigured']) await mkdir(path.join(root,'content',dir),{recursive:true});
  await writeFile(path.join(root,'content/inbox/topic.md'),'---\ntitle: 主题\n---\n[[term]] [[custom]]');
@@ -53,6 +55,9 @@ test('只改配置即可收录第五目录、渲染图标、搜索及静态导�
  if(enabled){
   assert.match(topic.html,/data-collection="reference"/);
   assert.match(topic.html,/参考 · 随查资料/);
+  assert.ok(topic.html.includes('--link-color:#abcdef;--link-opacity:0.3'));
+  assert.ok(topic.html.includes('--link-color:#bec7d2;--link-opacity:0.12'));
+  assert.ok(library.documents.find(d=>d.id==='term').html.includes('--link-color:#acd2fa;--link-opacity:0.26'));
   assert.deepEqual(searchDocuments(createSearchIndex(library.documents),'配置驱动检索').map(d=>d.id),['custom']);
  }else{assert.ok(topic.issues.some(issue=>issue.target==='custom'));}
  assert.deepEqual((await pagesLibrary('./content')).library,library);`;

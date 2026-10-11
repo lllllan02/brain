@@ -6,6 +6,7 @@
     "enabled": true,
     "icon": "M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z M8 3v18 M13 3v8l2-1.5 2 1.5V3",
     "color": "#f3e2c5",
+    "link": {"color": "#e4d0ab", "opacity": 0.18},
     "marker": {"shape": "circle", "hollow": false}
   },
   {
@@ -15,6 +16,7 @@
     "enabled": true,
     "icon": "M4 4h16l2 10v6H2v-6L4 4Z M2 14h6l2 3h4l2-3h6",
     "color": "#a2c5ea",
+    "link": {"color": "#acd2fa", "opacity": 0.26},
     "marker": {"shape": "circle", "hollow": true},
     "node": {"size": 0.9, "halo": 0.75, "rays": 0.7}
   },
