@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import {useReadingQueue} from './useReadingQueue';
+import {Workbench} from './Workbench';
 import {useViewState} from './useViewState';
 import {validCluster, validPinnedList} from './view-state';
 import {collectionLabel, CONTENT_COLLECTIONS} from '../collections.js';
@@ -41,6 +42,8 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   const [latestOpen, setLatestOpen] = useViewState('latestOpen', false);
   const [relationMode, setRelationMode] = useViewState('relationMode', 'outgoing', value => ['outgoing', 'incoming'].includes(value));
   const queue = useReadingQueue();
+  const [homeMode, setHomeMode] = useViewState('homeMode', 'workbench', value => ['workbench', 'galaxy'].includes(value));
+  const workbenchVisible = homeMode === 'workbench' && !focus.sel && !focus.mod;
   const [queueOpen, setQueueOpen] = useViewState('queueOpen', false);
   const queueToggle = useRef(null);
   const closeQueue = () => {setQueueOpen(false);setReaderCluster({owner: focus.sel, value: null});queueToggle.current?.focus({preventScroll: true});};
@@ -156,6 +159,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
     return () => { active = false; instance?.dispose(); scene.current = null; };
   }, [graph]);
   useEffect(() => scene.current?.preset(preset), [preset]);
+  useEffect(() => {scene.current?.pause(workbenchVisible || reduced);}, [workbenchVisible, reduced, ready]);
   useEffect(() => scene.current?.setReducedMotion(reduced), [reduced]);
   useEffect(() => {scene.current?.readingTrail(trail);}, [trail]);
   useEffect(() => { if (!focus.sel) setReaderCluster(null); }, [focus.sel]);
@@ -170,6 +174,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   };
   useEffect(() => {
     const key = event => {
+      if (workbenchVisible) return;
       if (document.querySelector('[role="dialog"]')) return;
       const typing = event.target.closest('input,textarea,[contenteditable="true"]');
       const direction = readingDirection(event);
@@ -200,9 +205,11 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       }
     };
     window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
-  }, [focus, query, searchVisible, setFocus, historyOpen, latestOpen, queueOpen]);
+  }, [focus, query, searchVisible, setFocus, historyOpen, latestOpen, queueOpen, workbenchVisible]);
   const reset = () => { setQuery(''); setSearchOpen(false); searchInput.current?.blur(); setFocus({mod: null, sel: null}); scene.current?.reset(); };
-  return <section className={`galaxy-page ${node || shownNode ? 'galaxy-reading' : ''} ${displayedCluster || clusterVisible ? 'galaxy-browsing' : ''} ${timelineOpen ? 'galaxy-history-open' : ''}`} aria-label={CONFIG.brand.name} data-reader-open={Boolean(node?.module)} data-view={preset} style={motionVariables}>
+  return <section className={`galaxy-page ${workbenchVisible ? 'workbench-visible' : ''} ${node || shownNode ? 'galaxy-reading' : ''} ${displayedCluster || clusterVisible ? 'galaxy-browsing' : ''} ${timelineOpen ? 'galaxy-history-open' : ''}`} aria-label={CONFIG.brand.name} data-reader-open={Boolean(node?.module)} data-view={preset} style={motionVariables}>
+    <nav className="workbench-mode" aria-label="首页模式"><button aria-pressed={homeMode === 'workbench'} onClick={() => {setHomeMode('workbench');reset();}}>看板</button><button aria-pressed={homeMode === 'galaxy'} onClick={() => {setHomeMode('galaxy');reset();}}>星图</button></nav>
+    <Workbench graph={graph} hidden={!workbenchVisible}/>
     <div className={`galaxy-viewport ${!ready || error ? 'is-loading' : ''}`} ref={host}>
       <div className="galaxy-frame" aria-hidden="true"/>
       {historyOpen && <ReadingTrail projection={trailProjection} route={trail} reduced={reduced} hidden={!ready || Boolean(error)}/>}
