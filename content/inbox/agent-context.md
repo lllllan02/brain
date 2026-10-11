@@ -1,37 +1,38 @@
 ---
 parent: agent
 title: "Agent 上下文管理"
-aliases: ["Context Management", "Agent Context"]
+aliases: ["Context Management"]
 category: "Agent"
 tags: ["Agent", "上下文管理"]
 created_at: "2026-10-09"
-updated_at: "2026-10-10"
+updated_at: "2026-10-11T16:16:55+08:00"
 ---
 
-**Agent 上下文管理（Context Management）是为每次模型调用组织、选择和压缩输入的机制。** 它从指令、历史、工具信息与[[agent-task-state|任务状态]]中选择模型本轮需要的内容。
+**Agent 上下文管理（Context Management）是在有限窗口内，为每次模型调用选择和组织输入的机制。** [[agent-context-input|上下文]]会随循环增长，接近窗口上限时，就需要开始删减。[窗口与长历史的限制](https://docs.langchain.com/oss/python/langchain/short-term-memory)
 
-## 为什么需要管理上下文？
+最简单的是[[context-trimming|上下文裁剪]]：例如用滑动窗口保留最近几轮完整交互，移除更早的记录。但旧记录也可能包含仍有效的约束和结论，直接删除会让模型失去这些信息。
 
-[[agent-loop|Agent Loop]] 不断累积消息与工具结果，可能超出窗口、增加成本与延迟，无关信息也会干扰判断。因此，需要在有限预算内保留任务所需的信息。[长上下文的限制](https://docs.langchain.com/oss/python/langchain/short-term-memory)
+于是引入[[context-compaction|摘要压缩]]：把旧历史中的关键信息提炼成短摘要，与近期原文一起传入。这样既保留近期细节，也延续较早的任务信息；摘要仍可能遗漏内容，需要检查关键约束与证据。[压缩的保留取舍](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 
-## 如何逐步完善？
+这两种操作处理的是本轮输入，完整历史仍可另外[[agent-storage|保存]]，不必随裁剪删除。[历史与输入的区别](https://www.anthropic.com/engineering/managed-agents)
 
-设计可以从「直接拼接历史消息」开始，根据暴露的问题增加机制：
+## 再按遇到的问题完善
 
-- 历史太长：先用[[context-trimming|裁剪]]保留近期完整交互。
-- 裁剪丢了旧约束或进度：引入[[context-compaction|压缩]]，用摘要延续关键信息。
-- 摘要、历史与工具结果仍可能超限：通过[[context-budget|预算]]统筹容量，为输出留空间。
-- 不同信息不能采用同一种保留策略：引入[[context-layering|分层]]，分别管理指令、任务状态、历史和工具结果。
-- 无关信息过多或单次结果太大：结合相关性筛选与[[context-loading|按需加载]]，只取当前需要的部分。
+- 何时触发、保留多少：用[[context-budget|预算]]控制 Token 总量并预留输出空间。
+- 哪些不能删、哪些需要更新：用[[context-layering|分层]]区分指令、任务状态与普通历史的处理策略。
+- 单次资料就太大：用[[context-loading|按需加载]]只取相关片段。
+- 工具定义占用太多：用[[tool-loading|工具按需加载]]选择本轮暴露的工具。
 
-这是一条按问题推演的设计路径，顺序可以调整，例如先实现预算，再引入压缩；这些机制也可以组合使用。
+## 问题定义与工程取舍
 
-## 每次调用时怎样配合？
+- [[anthropic-context-engineering-summary|Anthropic：为每一步选择有效上下文]]
+- [[manus-context-engineering-summary|Manus：上下文怎样影响成本与行动]]
+- [[langchain-context-engineering-summary|LangChain：写入、选择、压缩与隔离上下文]]
 
-从职责看，可以理解为「信息组织与存储 → 容量预算 → 内容选择 → 必要的压缩 → 组装与检查」。这是运行时的逻辑关系，与逐步增加功能的设计过程不同，也不要求每轮都执行所有步骤。
+## 实验与替代方案
 
-一种输入组合是「当前有效指令与[[agent-task-state-input|最新任务状态]] + 历史摘要 + 尚未压缩的交互 + 必要的外部信息」，当前用户输入只加入一次。 [[context-call-input|一次调用的消息示例]]展示这些内容如何放在一起，以及工具返回后下一次输入增加了什么。**每轮调用前检查容量、工具请求与结果的配对关系，以及关键约束是否保留。** 压缩可以按预算触发，也可在阶段结束后提前完成。[上下文管理实践](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
-
-[[long-term-memory|长期记忆]]将跨会话信息按需带入模型输入，召回内容仍需参与筛选、去重与预算管理。
-
-完整历史的[[agent-storage|存储]]与模型输入分别管理；压缩或裁剪本轮输入不要求删除原始记录。[会话记录与上下文的区别](https://www.anthropic.com/engineering/managed-agents)
+- [[complexity-trap-summary|旧工具结果屏蔽能否替代摘要]]
+- [[factory-compression-evaluation-summary|压缩后的任务状态怎样评测]]
+- [[chroma-context-rot-summary|长上下文失效怎样通过对照实验定位]]
+- [[ace-context-engineering-summary|ACE：用增量条目保留可复用经验]]
+- [[recursive-language-models-summary|RLM：把长输入放在环境中分解处理]]
