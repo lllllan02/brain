@@ -1,3 +1,4 @@
+import {CONTENT_COLLECTIONS,collectionLabel} from '../collections.js';
 import {useViewState} from './useViewState';
 import {CollectionIcon} from './CollectionIcon';
 import React,{useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
@@ -27,8 +28,8 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
  },[node.id,readingLocation?.key]);
 
  const toolbarTitle=useToolbarTitle(ref,titleRef,node.id,readingLocation?.key);
- const canMove=collectionAction&&['inbox','notes'].includes(node.collection);
- const moveLabel=node.collection==='inbox'?'已理解，移入 Notes':'重新学习，移回 Inbox';
+ const canMove=collectionAction&&['inbox','notes'].every(id=>CONTENT_COLLECTIONS.includes(id))&&['inbox','notes'].includes(node.collection);
+ const moveLabel=node.collection==='inbox'?`已理解，移入 ${collectionLabel('notes')}`:`重新学习，移回 ${collectionLabel('inbox')}`;
  const titleIcon=canMove?<button type="button" className="collection-toggle" title={moveLabel} aria-label={moveLabel} disabled={collectionAction.pending} aria-busy={collectionAction.pending} onClick={()=>collectionAction.move(node,node.collection==='inbox'?'notes':'inbox')}><CollectionIcon collection={node.collection}/></button>:<CollectionIcon collection={node.collection}/>;
  const relations={graph,node,module,cluster,onChoose:next=>{setFull(false);onCluster(next);}};
  const article=<MarkdownArticle html={node.html}/>;

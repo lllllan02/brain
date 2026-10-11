@@ -92,8 +92,8 @@ export function renderDocument(doc, documents) {
     const href = `#/doc/${encodeURIComponent(dest.id)}${anchor ? '/' + encodeURIComponent(block ? anchor : slug(anchor)) : ''}`;
     const collection = collectionIcons[dest.collection];
     const text = escape(label || dest.title);
-    const icon = collection ? `<svg class="internal-link-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${collection.path}"/></svg>` : '';
-    const provenance = collection ? ` data-collection="${dest.collection}" title="${collection.label}" aria-label="${text}（${collection.label}）"` : '';
+    const icon = collection ? `<svg class="internal-link-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${escape(collection.path)}"/></svg>` : '';
+    const provenance = collection ? ` data-collection="${dest.collection}" title="${escape(collection.label)}" aria-label="${text}（${escape(collection.label)}）"` : '';
     const link = `<a class="wiki-link" id="${referenceId}" href="${href}"${provenance}>${icon}${text}</a>`;
     return embed ? `<span class="embed-card">${link}<span>${escape(dest.summary)}</span></span>` : link;
   };

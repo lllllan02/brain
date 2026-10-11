@@ -23,6 +23,7 @@ test('切换保留正文与 ID、修复显式链接和 parent、可反向移动�
     'inbox/a.md':'---\ntitle: A\nupdated_at: 2026-01-01\n---\n## 章节\n内容 [[./b]]\n',
     'inbox/b.md':'B',
     'notes/ref.md':'---\nparent: "inbox/a#章节"\n---\n[[inbox/a#章节|显示名]] [链接](../inbox/a.md#章节) [[a]]\n',
+    'glossary/term.md':'[[inbox/a|术语引用]]',
     'readings/ref2.md':'[引用][a]\n\n[a]: ../inbox/a.md\n',
     'archive/old.md':'[[inbox/a|旧引用]]',
   });
@@ -34,6 +35,7 @@ test('切换保留正文与 ID、修复显式链接和 parent、可反向移动�
   assert.equal(after.documents.find(d=>d.id==='ref2').references[0].id,'a');
   assert.match(await readFile(path.join(root,'notes/ref.md'),'utf8'),/notes\/a#章节\|显示名/);
   assert.match(await readFile(path.join(root,'archive/old.md'),'utf8'),/notes\/a/);
+  assert.match(await readFile(path.join(root,'glossary/term.md'),'utf8'),/notes\/a/);
   assert.match(await readFile(path.join(root,'notes/a.md'),'utf8'),/\[\[inbox\/b\]\]/);
   assert.ok(!after.documents.some(d=>d.issues.length));
   await moveDocument(root,{id:'a',collection:'inbox',version:after.version});
@@ -54,11 +56,13 @@ test('代码示例与行内代码保持原样，移动文章的相对附件保�
 });
 
 test('旧版本、Readings、非法目标和符号链接均拒绝，保留原文件',async t=>{
-  const root=await fixture(t,{'inbox/a.md':'原文','readings/r.md':'来源'});
+  const root=await fixture(t,{'inbox/a.md':'原文','readings/r.md':'来源','glossary/term.md':'术语'});
   const old=await request(root);
   await writeFile(path.join(root,'inbox/a.md'),'新内容');
   await assert.rejects(moveDocument(root,old),/知识库已更新/);
   await assert.rejects(moveDocument(root,await request(root,'r')),/只能/);
+  await assert.rejects(moveDocument(root,await request(root,'term')),/只能/);
+  await assert.rejects(moveDocument(root,await request(root,'a','glossary')),/参数/);
   await assert.rejects(moveDocument(root,await request(root,'a','../elsewhere')),/参数/);
   await symlink(path.join(root,'inbox/a.md'),path.join(root,'notes/a.md'));
   await assert.rejects(moveDocument(root,await request(root)),/同名文件/);

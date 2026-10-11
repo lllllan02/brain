@@ -1,4 +1,4 @@
-import {CONTENT_COLLECTIONS} from '../collections.js';
+import {CONTENT_COLLECTIONS,collectionLabel} from '../collections.js';
 import React,{useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {buildGraph,moduleOf} from './graph';
@@ -42,6 +42,6 @@ function App(){
  const route=parseReadingRoute(reading.location.url), node=graph?.index.get(route.id);
  const focus=node?.module?{mod:moduleOf(graph,node).id,sel:node.id}:{mod:(graph?.modules.some(m=>m.id===route.module)||CONTENT_COLLECTIONS.some(c=>route.module===`collection:${c}`))?route.module:null,sel:null};
  if(!graph)return <div className="neural loading-screen">{error||`正在打开${CONFIG.brand.name}…`}</div>;
- return <div className="neural page-home"><Home collectionAction={collectionAction} graph={graph} focus={focus} setFocus={setFocus} reading={reading} reduced={reduced}/>{moveState.id&&!moveState.pending&&<div key={revision.current} className="collection-move-toast" role="status" aria-live="polite" style={{'--toast-duration':moveState.error?'4500ms':'2400ms'}}>{moveState.error||`已移入 ${moveState.collection==='notes'?'Notes':'Inbox'}`}</div>}</div>;
+ return <div className="neural page-home"><Home collectionAction={collectionAction} graph={graph} focus={focus} setFocus={setFocus} reading={reading} reduced={reduced}/>{moveState.id&&!moveState.pending&&<div key={revision.current} className="collection-move-toast" role="status" aria-live="polite" style={{'--toast-duration':moveState.error?'4500ms':'2400ms'}}>{moveState.error||`已移入 ${collectionLabel(moveState.collection)}`}</div>}</div>;
 }
 createRoot(document.getElementById('root')).render(<App/>);

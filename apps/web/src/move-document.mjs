@@ -1,3 +1,4 @@
+import {CONTENT_COLLECTIONS} from './collections.js';
 import path from 'node:path';
 import {readdir, readFile, realpath, lstat, link, unlink, writeFile, rename, mkdir} from 'node:fs/promises';
 import {randomUUID} from 'node:crypto';
@@ -7,7 +8,7 @@ import {loadLibrary, parseDocument, renderDocument, resolveDocument, safeAsset} 
 export class MoveError extends Error {
   constructor(message, status = 409) { super(message); this.status = status; }
 }
-const allowed = new Set(['inbox', 'notes']);
+const allowed = new Set(['inbox', 'notes'].filter(id => CONTENT_COLLECTIONS.includes(id)));
 const external = value => /^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i.test(value);
 const assetPattern = /\.(?:png|jpe?g|gif|webp|svg|pdf|mp3|mp4)(?:#.*)?$/i;
 
