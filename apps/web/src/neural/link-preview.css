@@ -31,3 +31,8 @@
 .link-preview-footer a:hover { color: #e6cf98; }
 @keyframes link-preview-enter { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .neural.link-preview { animation: none; } }
+
+.link-queue-popover { position: fixed; z-index: var(--layer-preview, 40); padding: 0; }
+.link-queue-button { display: flex; align-items: center; gap: 7px; min-height: 34px; padding: 7px 11px; border: 1px solid #a7bfd033; border-radius: 7px; background: #171c23; color: #cbd5e1; box-shadow: 0 4px 16px #0006; font-family: inherit; font-size: 12px; line-height: 1.5; white-space: nowrap; cursor: pointer; }
+.link-queue-button:hover, .link-queue-button[aria-pressed=true] { color: #e6cf98; border-color: #e6cf9866; }
+.link-queue-button:focus-visible { outline: 1px solid #e6cf98; outline-offset: 3px; }

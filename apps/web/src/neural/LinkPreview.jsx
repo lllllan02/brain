@@ -7,6 +7,7 @@ import {usePresence} from '../motion/usePresence';
 import {motionVariables} from '../motion/tokens.js';
 import {ReaderSources} from './ReaderSources';
 import {MarkdownArticle} from './MarkdownArticle';
+import {ReadingQueueButton} from './ReadingQueueButton';
 
 // Only use the already-filtered library, including in the public Pages build.
 function resolvePreview(element, graph) {
@@ -19,10 +20,12 @@ function resolvePreview(element, graph) {
   } catch { return null; }
 }
 
-export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPreview, reduced}) {
+export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPreview, reduced, queue}) {
   const [requested, setPreview] = useState(null);
   const {shown: preview, ref: cardRef, closing} = usePresence(requested, requested?.href || null, reduced);
   const scrollRef = useRef(null);
+  const actionRef = useRef(null);
+  const [actionPosition, setActionPosition] = useState(null);
   const [position, setPosition] = useState(null);
   const html = useMemo(() => {
     if (!preview) return '';
@@ -42,6 +45,7 @@ export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPrevie
     setPosition(null);
     let openTimer, closeTimer, active = null, suppressed = null;
     const contains = (parent, target) => target instanceof Node && parent?.contains(target);
+    const inPreview = target => contains(cardRef.current, target) || contains(actionRef.current, target);
     const find = target => target instanceof Element
       ? target.closest('.markdown a[href], .read-relation[data-preview-href]') : null;
     const cancelClose = () => clearTimeout(closeTimer);
@@ -81,13 +85,13 @@ export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPrevie
       if (contains(element, event.relatedTarget)) return;
       if (element === suppressed) suppressed = null;
       if (element !== active?.element) return;
-      if (contains(cardRef.current, event.relatedTarget)) { cancelClose(); return; }
+      if (inPreview(event.relatedTarget)) { cancelClose(); return; }
       // Allow time to cross the reader from the link to the card beside it.
       scheduleClose(cardRef.current ? 600 : 180);
     };
     const move = event => {
-      if (contains(cardRef.current, event.target)) cancelClose();
-      else if (contains(cardRef.current, event.relatedTarget) && !contains(active?.element, event.target)) scheduleClose();
+      if (inPreview(event.target)) cancelClose();
+      else if (inPreview(event.relatedTarget) && !contains(active?.element, event.target)) scheduleClose();
     };
     const key = event => {
       if (!active) return;
@@ -96,12 +100,12 @@ export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPrevie
         event.preventDefault();
         event.stopImmediatePropagation();
         suppressed = active.element;
-        if (contains(card, document.activeElement)) suppressed.focus({preventScroll: true});
+        if (inPreview(document.activeElement)) suppressed.focus({preventScroll: true});
         close();
       } else if (event.key === 'Tab' && card && !event.shiftKey && document.activeElement === active.element) {
         event.preventDefault();
-        card.querySelector('a').focus({preventScroll: true});
-      } else if (event.key === 'Tab' && event.shiftKey && document.activeElement === card?.querySelector('a')) {
+        (actionRef.current?.querySelector('button') || card.querySelector('a')).focus({preventScroll: true});
+      } else if (event.key === 'Tab' && event.shiftKey && document.activeElement === (actionRef.current?.querySelector('button') || card?.querySelector('a'))) {
         event.preventDefault();
         active.element.focus({preventScroll: true});
       }
@@ -116,14 +120,15 @@ export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPrevie
         }, 220);
         return;
       }
-      if (!contains(cardRef.current, event.target)) close();
+      if (!inPreview(event.target)) close();
     };
     const click = event => {
+      if (contains(actionRef.current, event.target)) return;
       if (event.target.closest('.link-preview-close') && active) {
         suppressed = active.element;
         suppressed.focus({preventScroll: true});
       }
-      if (!contains(cardRef.current, event.target) || event.target.closest('a,button')) close();
+      if (!inPreview(event.target) || event.target.closest('a,button')) close();
     };
     reader.addEventListener('pointerover', enter);
     reader.addEventListener('pointerout', leave);
@@ -158,6 +163,11 @@ export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPrevie
     if (!preview) return;
     const rect = preview.rect;
     const margin = 12, gap = 8;
+    const action = actionRef.current?.getBoundingClientRect();
+    setActionPosition(action ? {
+      left: Math.max(margin, Math.min(rect.left, window.innerWidth - action.width - margin)),
+      top: rect.top >= action.height + gap + margin ? rect.top - action.height - gap : rect.bottom + gap,
+    } : null);
     const reader = readerRef.current.getBoundingClientRect();
     const sideGap = 16;
     const leftSpace = reader.left - sideGap - margin;
@@ -176,12 +186,16 @@ export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPrevie
     }
     // A narrow or full-width reader has no usable side space.
     const width = Math.min(420, window.innerWidth - margin * 2);
-    const below = window.innerHeight - rect.bottom - gap - margin;
-    const above = rect.top - gap - margin;
+    // Reserve room for the action when both overlays share the reader column.
+    const actionAbove = action && rect.top >= action.height + gap + margin;
+    const topGap = gap + (actionAbove ? action.height + gap : 0);
+    const bottomGap = gap + (action && !actionAbove ? action.height + gap : 0);
+    const below = window.innerHeight - rect.bottom - bottomGap - margin;
+    const above = rect.top - topGap - margin;
     const down = below >= Math.min(400, window.innerHeight * .65) || below >= above;
     const maxHeight = Math.max(0, Math.min(400, window.innerHeight * .65, down ? below : above));
     const height = Math.min(cardRef.current.offsetHeight, maxHeight);
-    setPosition({width, maxHeight, left: Math.max(margin, Math.min(rect.left, window.innerWidth - width - margin)), top: down ? rect.bottom + gap : Math.max(margin, rect.top - gap - height)});
+    setPosition({width, maxHeight, left: Math.max(margin, Math.min(rect.left, window.innerWidth - width - margin)), top: down ? rect.bottom + bottomGap : Math.max(margin, rect.top - topGap - height)});
   }, [preview, html, readerRef]);
 
   useLayoutEffect(() => {
@@ -193,6 +207,10 @@ export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPrevie
 
   if (!preview) return null;
   return createPortal(
+    <>
+    {queue && preview.node.module && preview.element.matches('.markdown a') && <div ref={actionRef} className="link-queue-popover" inert={closing} style={actionPosition || {visibility: 'hidden'}}>
+      <ReadingQueueButton queue={queue} node={preview.node} className="link-queue-button" showLabel/>
+    </div>}
     <aside ref={cardRef} className="neural link-preview" inert={closing} role="dialog" aria-label={`预览：${preview.node.title}`} style={{...motionVariables, ...(position || {visibility: 'hidden'})}}>
       <header className="link-preview-header">
         <div><span className="link-preview-label">文档预览 · {preview.node.category || '未分类'}</span><a className="link-preview-title" href={preview.href}><CollectionIcon collection={preview.node.collection}/>{preview.node.title}</a></div>
@@ -200,6 +218,6 @@ export const LinkPreview = memo(function LinkPreview({readerRef, graph, onPrevie
       </header>
       <div className="link-preview-scroll" ref={scrollRef} tabIndex={0} aria-label="预览正文"><ReaderSources sources={preview.node.sources}/><MarkdownArticle html={html}/></div>
       <footer className="link-preview-footer"><span>滚动预览</span><a href={preview.href}>打开文档 ↗</a></footer>
-    </aside>, document.body
+    </aside></>, document.body
   );
 });
