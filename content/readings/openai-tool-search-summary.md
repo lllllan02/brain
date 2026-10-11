@@ -4,7 +4,7 @@ parent: tool-loading
 category: "Agent"
 tags: ["Agent", "工具调用", "按需加载"]
 created_at: "2026-10-10"
-updated_at: "2026-10-10"
+updated_at: "2026-10-11T23:21:17+08:00"
 source: "[Tool search](https://developers.openai.com/api/docs/guides/tools-tool-search)"
 ---
 
@@ -21,4 +21,6 @@ source: "[Tool search](https://developers.openai.com/api/docs/guides/tools-tool-
 
 加载出的工具按正常流程调用；新增定义追加到上下文末尾，以保留已有缓存。返回动态定义时，应校验 Schema 并仅暴露可信工具。
 
-这为[[tool-loading|按需加载]]提供了明确的协议实例。配置与两种搜索流程见原文；本文按 2026-10-10 文档整理，模型支持范围以官方页面为准。
+客户端搜索的 `tool_search_output.tools` 记录已加载集合。保留这些会话项后，后续轮次可以继续调用，无需重复加载；移除其中的定义会让工具不可用，并破坏该位置之后的缓存。这是会话中的工具定义管理，不是工具执行结果缓存。
+
+这为[[tool-loading|按需加载]]提供了明确的协议实例。配置与两种搜索流程见原文；本文按 2026-10-11 文档整理，模型支持范围以官方页面为准。

@@ -5,10 +5,10 @@ aliases: ["Agent Checkpoint", "Agent 中断恢复"]
 category: "Agent"
 tags: ["Agent", "Checkpoint", "持久化"]
 created_at: "2026-10-09"
-updated_at: "2026-10-09"
+updated_at: "2026-10-11T21:31:01+08:00"
 ---
 
-**Checkpoint 是某个执行节点的状态快照与恢复信息；中断恢复是读取这些记录，从可恢复节点继续任务的机制。** 它可以保存在不同介质中，跨进程恢复需使用[[agent-storage|持久存储]]。
+**Checkpoint 是某个执行节点的状态快照与恢复信息；中断恢复是读取这些记录，从可恢复节点继续任务的机制。** 它可以保存在不同介质中，跨进程恢复需使用文件或数据库等持久存储。
 
 ## 为什么需要？
 

@@ -1,10 +1,9 @@
 ---
 title: "Anthropic：为每一步选择有效上下文"
-parent: agent-context
 category: "Agent"
 tags: ["Agent", "上下文管理"]
 created_at: "2026-10-11T15:24:08+08:00"
-updated_at: "2026-10-11T15:24:08+08:00"
+updated_at: "2026-10-11T21:07:40+08:00"
 source: "[Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)"
 ---
 
@@ -22,7 +21,9 @@ Agent 循环不断加入工具结果和历史，输入的相关性随任务变�
 
 [[context-loading|按需加载]]先保留路径、查询或链接，再由工具读取细节。文件名、目录和时间等元数据帮助缩小探索范围。例如用查询及局部文件读取处理大数据，而不把整份结果塞进输入。
 
-代价是探索增加延迟，也可能走错方向。预先提供稳定规则、运行时再检索细节的混合方式，可兼顾速度与灵活性。
+每次读取还会提供下一步的线索：目录和文件名帮助判断用途，大小提示内容规模，时间信息帮助判断相关性。模型逐步缩小范围，不要求先建立向量索引；针对性查询、文件搜索和局部读取也能支持这一过程。
+
+原文以 Claude Code 说明混合方式：先提供项目指令，再通过 glob、grep 等工具定位需要的文件。代价是运行时探索增加延迟，也可能走错方向或遗漏关键信息，因此工具和检索指导同样重要。此处对应原文 `Context retrieval and agentic search`，讨论的是任务资料获取。
 
 ## 长任务怎样延续？
 

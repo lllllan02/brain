@@ -1,7 +1,7 @@
 ---
 title: "The Complexity Trap：旧工具结果屏蔽能否替代摘要"
 aliases: ["The Complexity Trap", "Observation Masking"]
-parent: agent-context
+parent: context-trimming
 category: "Agent"
 tags: ["上下文管理", "文本压缩", "评测"]
 created_at: "2026-10-11T15:37:35+08:00"

@@ -1,10 +1,9 @@
 ---
 title: "Manus：上下文怎样影响成本与行动"
-parent: agent-context
 category: "Agent"
 tags: ["Agent", "上下文管理"]
 created_at: "2026-10-11T15:24:08+08:00"
-updated_at: "2026-10-11T15:24:08+08:00"
+updated_at: "2026-10-11T22:35:33+08:00"
 source: "[Context Engineering for AI Agents: Lessons from Building Manus](https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus)"
 ---
 
@@ -22,9 +21,13 @@ source: "[Context Engineering for AI Agents: Lessons from Building Manus](https:
 
 未来可能需要当前看似无关的细节，不可逆摘要存在风险。Manus 将资料留在文件系统，窗口里保留可重新读取的路径或 URL，以此支持[[context-loading|按需取回]]。
 
+原文的 `Use the File System as Context` 给出两个例子：省略网页正文但保留 URL；省略文档内容但保留沙箱文件路径。模型通过文件读写管理窗口外的信息，后续需要时重新获取。这里管理的是资料正文与观察结果，不是工具定义。
+
+这套思路将「当前不带入」与「永久丢失」分开。应用时仍需检查引用能否访问；若要求取回当时的精确内容，应保留快照，不能把可能变化的网页 URL 当作原文备份。这是对恢复条件的补充判断，原文没有给出统一的存储或检索协议。
+
 ## 如何避免行为偏离？
 
-- 目标淡出：持续更新待办，把目标带回近期上下文，减少长循环中的偏离。
+- 目标淡出：创建 `todo.md`，随任务推进重写待办、勾选完成项，把整体计划带回近期上下文。这种[[agent-task-state|任务状态维护]]既保存进度，也让目标不被中间的大量工具交互淹没。
 - 重复失败：保留失败动作及其错误反馈，让后续决策知道哪些尝试无效；擦去错误也会擦去证据。
 - 机械模仿：重复的行动记录可能诱发照搬。作者以批量审阅简历为例，采用受控的表述和格式变化打破单一模式。
 

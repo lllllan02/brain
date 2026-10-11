@@ -3,8 +3,7 @@ title: "Agent"
 category: "Agent"
 tags: ["Agent", "工程选型"]
 created_at: "2026-10-09"
-source: "[长任务 Harness 实践](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)"
-updated_at: "2026-10-11T16:01:08+08:00"
+updated_at: "2026-10-11T22:35:33+08:00"
 ---
 
 **LLM Agent（智能体）是以大模型为决策核心，在给定目标与约束下自主选择动作，并根据执行结果持续调整行动的系统。**
@@ -21,9 +20,11 @@ updated_at: "2026-10-11T16:01:08+08:00"
 
 需要动态决策的任务，可以从[[agent-loop|最小 Agent Loop]]开始；固定步骤则可采用[[agent-vs-workflow|工作流]]。围绕模型组织执行与反馈的运行系统称为 [[agent-harness|Agent Harness]]，可以从这个循环起步，按实际问题逐步完善。
 
-模型每轮收到的[[agent-context-input|上下文]]包含指令、任务状态、工具定义与对话记录。窗口有限，需要[[agent-context|上下文管理]]；长任务还需用[[agent-task-state|任务状态]]保留目标、完成标准与进度，不能只依赖压缩后的历史。复用过去经验靠[[agent-memory|记忆]]，补充外部知识可用 [[rag|RAG]]。
+模型每轮收到的[[agent-context-input|上下文]]包含指令、任务状态、工具定义与对话记录。窗口有限，需要[[agent-context|上下文管理]]，对历史进行裁剪或压缩，并单独维护任务目标、约束与进度。复用过去经验靠[[agent-memory|记忆]]，补充外部知识可用 [[rag|RAG]]。
 
-工具增多，需要完善[[tool-calling|工具接入与调度]]；步骤复杂，需要[[agent-planning|规划与调整]]；任务跨越多次运行，则需要[[agent-storage|保存历史与状态]]及[[agent-checkpoint-recovery|中断恢复]]。
+工具增多，需要完善[[tool-calling|工具接入与调度]]；步骤复杂，需要[[agent-planning|规划与调整]]；任务跨越多次运行，则需要[[history-storage|保存对话历史]]及[[agent-checkpoint-recovery|中断恢复]]。
+
+资料、工具定义和 Skill 指令不必一次全部提供，可以按[[agent-loading|按需加载]]的思路逐步展开；不同对象的加载内容和使用方式需要分别管理。
 
 执行失败时，区分[[agent-retry|重试]]与[[agent-self-correction|修正行动]]，通过 [[agent-trace-requirements|Trace]]追查过程；控制执行风险则涉及[[agent-guardrails|行为约束]]、[[agent-sandbox|沙箱隔离]]与[[agent-human-in-the-loop|人工介入]]。
 

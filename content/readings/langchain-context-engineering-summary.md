@@ -1,6 +1,5 @@
 ---
 title: "LangChain：写入、选择、压缩与隔离上下文"
-parent: agent-context
 category: "Agent"
 tags: ["Agent", "上下文管理"]
 created_at: "2026-10-11T15:24:08+08:00"

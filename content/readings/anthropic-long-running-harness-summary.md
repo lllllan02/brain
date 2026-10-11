@@ -4,7 +4,7 @@ parent: agent-harness
 category: "Agent"
 tags: ["Agent", "Harness"]
 created_at: "2026-10-11T11:46:46+08:00"
-updated_at: "2026-10-11T12:33:19+08:00"
+updated_at: "2026-10-11T22:35:33+08:00"
 source: "[Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)"
 ---
 
@@ -25,6 +25,8 @@ source: "[Effective harnesses for long-running agents](https://www.anthropic.com
 | 功能清单 | 把目标落实为可测试要求，初始均未通过，避免凭印象宣布完成 |
 | 进度记录与 Git 历史 | 说明已做工作，支持追溯和恢复 |
 | 启动脚本 | 减少每次重新摸索运行环境的成本 |
+
+功能清单采用 JSON，记录功能描述、验证步骤和 `passes` 标记；初始为未通过，编码阶段要求只更新通过状态，不随意删改验收要求。`claude-progress.txt` 则记录已做工作。这为[[agent-task-state|任务状态管理]]提供了一个具体例子：完成标准与过程进度分别维护。
 
 每次会话先读记录、启动环境并检查基础功能，再选一个未完成项实现；结束时验证、提交并更新进度。这里的「初始化 Agent」与「编码 Agent」主要是提示和阶段职责不同，并非两套底层 Harness。
 
