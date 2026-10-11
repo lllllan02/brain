@@ -12,7 +12,7 @@ test('目录配置支持自定义项、禁用、样式默认值，并拒绝越�
  assert.deepEqual(registry.directories,['reference']);
  assert.equal(registry.label('reference'),'参考');
  assert.equal(registry.style('reference').node.size,1);
- assert.deepEqual(registry.style('reference').link,{color:'#bec7d2',opacity:0.12});
+ assert.deepEqual(registry.style('reference').link,{color:'#c9b4ee',opacity:0.24});
  assert.deepEqual(createCollectionRegistry([{...entry,link:{color:'#abcdef',opacity:0.3}}]).style('reference').link,{color:'#abcdef',opacity:0.3});
  assert.equal(registry.icons.reference.label,'参考 · 随查资料');
  assert.equal(collectionMarkerStyle('glossary')['--collection-fill'],'transparent');
@@ -56,7 +56,7 @@ test('只改配置即可收录第五目录、渲染图标、搜索及静态导�
   assert.match(topic.html,/data-collection="reference"/);
   assert.match(topic.html,/参考 · 随查资料/);
   assert.ok(topic.html.includes('--link-color:#abcdef;--link-opacity:0.3'));
-  assert.ok(topic.html.includes('--link-color:#bec7d2;--link-opacity:0.12'));
+  assert.ok(topic.html.includes('--link-color:#c9b4ee;--link-opacity:0.24'));
   assert.ok(library.documents.find(d=>d.id==='term').html.includes('--link-color:#acd2fa;--link-opacity:0.26'));
   assert.deepEqual(searchDocuments(createSearchIndex(library.documents),'配置驱动检索').map(d=>d.id),['custom']);
  }else{assert.ok(topic.issues.some(issue=>issue.target==='custom'));}

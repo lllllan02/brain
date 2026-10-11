@@ -1,6 +1,6 @@
 import config from '../collections.config.json' with {type: 'json'};
 
-const defaultStyle = Object.freeze({color: '#d0dbe7', link: {color: '#bec7d2', opacity: 0.12}, marker: {shape: 'circle', hollow: false}, node: {size: 1, halo: 1, rays: 1, rayStretch: 1, rayAngle: 0}});
+const defaultStyle = Object.freeze({color: '#d0dbe7', link: {color: '#c9b4ee', opacity: 0.24}, marker: {shape: 'circle', hollow: false}, node: {size: 1, halo: 1, rays: 1, rayStretch: 1, rayAngle: 0}});
 
 // Configuration is shared by Node (reader/export/retrieval) and the browser.
 // Reject unsafe paths and invalid visual values before either side uses them.
