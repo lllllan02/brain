@@ -31,26 +31,31 @@ export function clusterDocuments(graph, cluster) {
     .sort((a, b) => a.title.localeCompare(b.title, 'zh-CN') || a.id.localeCompare(b.id));
 }
 
-export function ClusterList({graph, cluster, selected, anchorId = selected, onSelect, onClose, onClear, getAnchor, reduced, onPresenceChange, navigation, pinned, onPin, queue}) {
+export function ClusterList({graph, cluster, selected, anchorId = selected, onSelect, onClose, onClear, getAnchor, reduced, onPresenceChange, navigation, pinned, onPin, queue, collectionFilter = 'all'}) {
   const scroll = useRef(null), svg = useRef(null), origin = useRef(selected);
   const layer = useRef(null);
   const {shown, ref: body, closing} = usePresence(cluster, cluster ? 'list' : null, reduced, 'translateX(12px)', MOTION.layout);
   if (!closing && anchorId) origin.current = anchorId;
-  const documents = useMemo(() => clusterDocuments(graph, shown), [graph, shown]);
+  const allDocuments = useMemo(() => clusterDocuments(graph, shown), [graph, shown]);
+  const documents = useMemo(() => collectionFilter === 'all' ? allDocuments : allDocuments.filter(node => node.collection === collectionFilter), [allDocuments, collectionFilter]);
   const timeline = Boolean(shown?.queue || shown?.recent || shown?.latest);
   const collection = shown?.category?.startsWith('collection:') ? shown.category.slice(11) : null;
   const kind = timeline ? '' : shown?.document ? shown.direction === 'incoming' ? '被引用' : '内部链接' : shown?.tag ? '标签' : collection ? '目录' : '分类';
   const title = shown?.queue ? '待阅读' : shown?.latest ? '最新文档' : shown?.recent ? '最近阅读' : shown?.document ? graph.index.get(shown.document)?.title || '文档' : collection ? collectionLabel(collection) : shown?.tag || graph.modules.find(item => item.id === shown?.category)?.title || '未分类';
-  const selectionKey = clusterKey(shown);
+  const sourceKey = clusterKey(shown);
+  const selectionKey = collectionFilter === 'all' ? sourceKey : `${sourceKey}:collection:${collectionFilter}`;
   useEffect(() => { onPresenceChange(Boolean(shown)); }, [Boolean(shown), onPresenceChange]);
 
   useEffect(() => {
     if (!shown || !scroll.current) return;
     // The track height is established in the layout effect below.
     scroll.current.scrollTop = readViewState(`listScroll:${selectionKey}`, 0, value => Number.isFinite(value) && value >= 0);
-    // Automatically opened references should not move focus away from the reader.
-    if (!shown.document && !timeline) scroll.current.focus({preventScroll: true});
   }, [selectionKey]);
+
+  useEffect(() => {
+    // Changing the filter must keep keyboard focus on its selector.
+    if (shown && !shown.document && !timeline) scroll.current?.focus({preventScroll: true});
+  }, [sourceKey]);
 
   useLayoutEffect(() => {
     if (!shown || !layer.current) return;
@@ -210,7 +215,7 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
     <aside id={shown?.queue ? 'reading-queue' : shown?.latest ? 'latest-documents' : shown?.recent ? 'reading-history' : undefined} className={`cluster-list${timeline ? ' cluster-history' : ''}${!shown ? ' cluster-list-collapsed' : ''}`} aria-label={!shown ? '文档列表导航' : timeline ? title : `${kind} ${title} 的文档列表`}>
       {navigation && <div className="cluster-list-navigation">{navigation}</div>}
       {shown && <div ref={body} className="cluster-list-body" inert={closing}>
-      <header className="cluster-list-header"><div>{kind && <span>{kind}</span>}<h2>{title}</h2><small>{documents.length} 篇</small></div>
+      <header className="cluster-list-header"><div>{kind && <span>{kind}</span>}<h2>{title}</h2><small>{documents.length}{collectionFilter !== 'all' && ` / ${allDocuments.length}`} 篇</small></div>
         <div className="cluster-list-actions">
         {!shown.queue && <button type="button" onClick={onPin} aria-pressed={pinned} aria-label={pinned ? '取消固定列表' : '固定列表'} title={pinned ? '取消固定，恢复跟随当前文档' : '固定当前列表，切换文档时保持不变'}><Icon name="pin" size={14}/></button>}
         <button type="button" onClick={onClose} aria-label={timeline ? `收起${title}` : '关闭文档列表'} title="关闭列表"><Icon name="close" size={16}/></button></div>
@@ -221,15 +226,15 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
           <button type="button" className="cluster-list-item" style={{'--fan-delay': `${stagger(index)}ms`}}
             aria-current={node.id === selected ? 'page' : undefined} onClick={() => onSelect(node.id)}>
             <i className="cluster-card-port" style={collectionMarkerStyle(node.collection)} aria-hidden="true"/>
-            {timeline && <small className="cluster-history-index">{index + 1}</small>}
+            {timeline && <small className="cluster-history-index">{allDocuments.indexOf(node) + 1}</small>}
             <span><strong>{node.title}</strong></span>
           </button>
           {queue && <ReadingQueueButton queue={queue} node={node} className="queue-list-action"/>}
-        </li>)}</ul> : <p className="cluster-list-empty">{shown.queue ? '还没有待阅读文档，可用文章或列表旁的书签按钮添加' : shown.latest ? '暂无有有效日期的文档' : shown.recent ? '打开文档后，这里会留下阅读足迹' : shown.document ? shown.direction === 'incoming' ? '还没有其他文档引用这篇文章' : '这篇文章没有可打开的内部链接' : '暂时没有匹配的文档'}</p>}
+        </li>)}</ul> : <p className="cluster-list-empty">{collectionFilter !== 'all' ? `当前列表没有 ${collectionLabel(collectionFilter)} 文档，可切换为“显示全部”` : shown.queue ? '还没有待阅读文档，可用文章或列表旁的书签按钮添加' : shown.latest ? '暂无有有效日期的文档' : shown.recent ? '打开文档后，这里会留下阅读足迹' : shown.document ? shown.direction === 'incoming' ? '还没有其他文档引用这篇文章' : '这篇文章没有可打开的内部链接' : '暂时没有匹配的文档'}</p>}
         </div></div></div>
       </div>
       {shown.latest && <footer className="cluster-history-footer"><span>按更新时间 · 最近 10 篇</span></footer>}
-      {shown.recent && <footer className="cluster-history-footer"><span>同篇去重 · 最多 50 篇</span><button type="button" onClick={onClear} disabled={!documents.length} title="清空最近阅读记录"><Icon name="trash" size={14}/>清空</button></footer>}
+      {shown.recent && <footer className="cluster-history-footer"><span>同篇去重 · 最多 50 篇</span><button type="button" onClick={onClear} disabled={!allDocuments.length} title="清空所有目录的最近阅读记录"><Icon name="trash" size={14}/>清空</button></footer>}
       </div>}
     </aside>
   </div>;

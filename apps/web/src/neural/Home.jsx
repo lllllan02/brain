@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useStat
 import {useReadingQueue} from './useReadingQueue';
 import {useViewState} from './useViewState';
 import {validCluster, validPinnedList} from './view-state';
-import {collectionLabel} from '../collections.js';
+import {collectionLabel, CONTENT_COLLECTIONS} from '../collections.js';
 import {moduleOf} from './graph';
 import {createSearchIndex, searchDocuments} from './search.js';
 import {CONFIG, asset} from '../config';
@@ -34,6 +34,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   const [grouping, setGrouping] = useViewState('grouping', 'category', value => ['category', 'collection'].includes(value));
   const [readerCluster, setReaderCluster] = useViewState('readerCluster', null, validCluster);
   const [pinnedList, setPinnedList] = useViewState('pinnedList', null, validPinnedList);
+  const [collectionFilter, setCollectionFilter] = useViewState('listCollectionFilter', 'all', value => value === 'all' || CONTENT_COLLECTIONS.includes(value));
   const [clusterVisible, setClusterVisible] = useState(false);
   const [historyOpen, setHistoryOpen] = useViewState('historyOpen', false);
   const historyToggle = useRef(null), latestToggle = useRef(null);
@@ -272,7 +273,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       }}><Icon name={icon} size={15}/><span>{title}</span></button>)}
 
     </nav>
-    <ClusterList queue={queue} navigation={<ListNavigation graph={graph} node={pinnedList?.document ? graph.index.get(pinnedList.document) : node} cluster={displayedCluster} queueRef={queueToggle} historyRef={historyToggle} latestRef={latestToggle} onChoose={mode => {
+    <ClusterList collectionFilter={collectionFilter} queue={queue} navigation={<ListNavigation collectionFilter={collectionFilter} onFilter={setCollectionFilter} graph={graph} node={pinnedList?.document ? graph.index.get(pinnedList.document) : node} cluster={displayedCluster} queueRef={queueToggle} historyRef={historyToggle} latestRef={latestToggle} onChoose={mode => {
       const activeMode = displayedCluster?.queue ? 'queue' : displayedCluster?.latest ? 'latest' : displayedCluster?.recent ? 'recent' : displayedCluster?.document ? displayedCluster.direction || 'outgoing' : null;
       if (mode === activeMode) return;
       setPinnedList(null);
