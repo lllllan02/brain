@@ -29,7 +29,7 @@ export function buildGraph(library){
  const links=[...edgeMap.values()].map(e=>({...e,both:e.ab>0&&e.ba>0,s:e.ab?e.a:e.b,t:e.ab?e.b:e.a}));
  for(const n of nodes){n.in=0;n.out=0;n.deg=0;n.mutual=0;}
  for(const l of links){if(l.kind==='contain')continue;const a=index.get(l.a),b=index.get(l.b);a.deg++;b.deg++;if(l.both){a.mutual++;b.mutual++;a.in++;b.in++;a.out++;b.out++;}else{index.get(l.s).out++;index.get(l.t).in++;}}
- return {nodes,links,index,modules,kinds,styles,public:Boolean(library.public)};
+ return {nodes,links,index,modules,kinds,styles,activity:library.activity,public:Boolean(library.public)};
 }
 function hslHex(h,s,l){
  const a=s*Math.min(l,1-l);

@@ -44,6 +44,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   const queue = useReadingQueue();
   const [homeMode, setHomeMode] = useViewState('homeMode', 'workbench', value => ['workbench', 'galaxy'].includes(value));
   const workbenchVisible = homeMode === 'workbench' && !focus.sel && !focus.mod;
+  const [galaxyReturnFocus, setGalaxyReturnFocus] = useViewState('galaxyReturnFocus', null, value => value === null || (typeof value === 'object' && ['sel', 'mod'].every(key => value[key] === null || typeof value[key] === 'string')));
   const [queueOpen, setQueueOpen] = useViewState('queueOpen', false);
   const queueToggle = useRef(null);
   const closeQueue = () => {setQueueOpen(false);setReaderCluster({owner: focus.sel, value: null});queueToggle.current?.focus({preventScroll: true});};
@@ -131,6 +132,9 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   const statusText = error || (!documents.length ? '还没有文档。保存笔记后，这里会亮起第一颗星。' : !ready ? '正在展开星系…' : null);
   const status = usePresence(statusText, statusText, reduced, 'none');
   useEffect(() => {
+    // The dashboard needs no WebGL scene. Dispose it on entry and create it
+    // only for the galaxy/reader; pause() stops motion, not rendering.
+    if (workbenchVisible) return;
     let active = true, instance;
     setError(''); setReady(false); setLabels([]);
     import('../galaxy/scene').then(({createGalaxy}) => {
@@ -157,9 +161,9 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       if (active) setError('当前浏览器无法显示三维星云，可通过下方搜索继续阅读。');
     });
     return () => { active = false; instance?.dispose(); scene.current = null; };
-  }, [graph]);
+  }, [graph, workbenchVisible]);
   useEffect(() => scene.current?.preset(preset), [preset]);
-  useEffect(() => {scene.current?.pause(workbenchVisible || reduced);}, [workbenchVisible, reduced, ready]);
+  useEffect(() => {scene.current?.pause(reduced);}, [reduced, ready]);
   useEffect(() => scene.current?.setReducedMotion(reduced), [reduced]);
   useEffect(() => {scene.current?.readingTrail(trail);}, [trail]);
   useEffect(() => { if (!focus.sel) setReaderCluster(null); }, [focus.sel]);
@@ -207,12 +211,33 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
     window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
   }, [focus, query, searchVisible, setFocus, historyOpen, latestOpen, queueOpen, workbenchVisible]);
   const reset = () => { setQuery(''); setSearchOpen(false); searchInput.current?.blur(); setFocus({mod: null, sel: null}); scene.current?.reset(); };
+  const switchHomeMode = mode => {
+    if (mode === 'workbench') {
+      if (workbenchVisible) return;
+      setGalaxyReturnFocus(focus);
+      setHomeMode(mode);
+      // navigate() captures the reader scroll before leaving the document.
+      reset();
+    } else {
+      setHomeMode(mode);
+      if (!workbenchVisible) return;
+      const saved = galaxyReturnFocus;
+      const sel = graph.index.get(saved?.sel)?.module ? saved.sel : null;
+      const mod = graph.modules.some(module => module.id === saved?.mod) || CONTENT_COLLECTIONS.some(collection => saved?.mod === `collection:${collection}`) ? saved.mod : null;
+      setFocus({sel, mod});
+    }
+  };
   return <section className={`galaxy-page ${workbenchVisible ? 'workbench-visible' : ''} ${node || shownNode ? 'galaxy-reading' : ''} ${displayedCluster || clusterVisible ? 'galaxy-browsing' : ''} ${timelineOpen ? 'galaxy-history-open' : ''}`} aria-label={CONFIG.brand.name} data-reader-open={Boolean(node?.module)} data-view={preset} style={motionVariables}>
-    <nav className="workbench-mode" aria-label="首页模式"><button aria-pressed={homeMode === 'workbench'} onClick={() => {setHomeMode('workbench');reset();}}>看板</button><button aria-pressed={homeMode === 'galaxy'} onClick={() => {setHomeMode('galaxy');reset();}}>星图</button></nav>
+    <nav className="workbench-mode" aria-label="页面导航">
+      <button type="button" onClick={() => switchHomeMode(workbenchVisible ? 'galaxy' : 'workbench')}>
+        <Icon name={workbenchVisible ? 'back' : 'chart'} size={16}/>
+        <span>{workbenchVisible ? graph.index.get(galaxyReturnFocus?.sel)?.module ? '返回阅读' : '返回星图' : '统计看板'}</span>
+      </button>
+    </nav>
     <Workbench graph={graph} hidden={!workbenchVisible}/>
     <div className={`galaxy-viewport ${!ready || error ? 'is-loading' : ''}`} ref={host}>
       <div className="galaxy-frame" aria-hidden="true"/>
-      {historyOpen && <ReadingTrail projection={trailProjection} route={trail} reduced={reduced} hidden={!ready || Boolean(error)}/>}
+      {historyOpen && <ReadingTrail projection={trailProjection} route={trail} reduced={reduced} hidden={workbenchVisible || !ready || Boolean(error)}/>}
       <div className="galaxy-labels">{ready && !error && labels.map(label => label.category ?
         <button key={label.id} className="galaxy-category-label" style={{left: label.x, top: label.y, opacity: label.opacity, '--group-color': label.color, pointerEvents: label.exiting ? 'none' : undefined}} onPointerEnter={() => scene.current?.hoverCategory(label.id)} onPointerLeave={() => scene.current?.hoverCategory(null)} onFocus={() => scene.current?.hoverCategory(label.id)} onBlur={() => scene.current?.hoverCategory(null)} onClick={() => focus.sel ? setReaderCluster({owner: focus.sel, value: {category: label.id}}) : setFocus({mod: label.id, sel: null})} aria-label={`查看${label.title}${label.id.startsWith('collection:') ? '目录' : '分类'}`}><i aria-hidden="true"/>{label.title}<small>{label.count}</small></button> :
         <React.Fragment key={label.id}>
@@ -289,7 +314,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
         setRelationMode(mode);
         showReaderCluster({document: node.id, direction: mode});
       }
-    }}/>} graph={graph} cluster={displayedCluster} selected={node?.id} anchorId={pinnedList?.document || shownNode?.id} reduced={reduced} getAnchor={!pinnedList?.document && timelineOpen && !focus.sel ? undefined : listAnchor}
+    }}/>} graph={graph} cluster={workbenchVisible ? null : displayedCluster} selected={node?.id} anchorId={pinnedList?.document || shownNode?.id} reduced={reduced} getAnchor={!pinnedList?.document && timelineOpen && !focus.sel ? undefined : listAnchor}
       pinned={Boolean(pinnedList)} onPin={() => {
         if (pinnedList) {
           setPinnedList(null);

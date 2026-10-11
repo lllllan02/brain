@@ -1,6 +1,7 @@
 import React from 'react';
 
 const paths = {
+  chart: 'M4 4v16h17M8 15v-4M13 15V6M18 15V9',
   pin: 'M9 3h6l-1 6 4 4v2H6v-2l4-4ZM12 15v7',
   folder: 'M3 7V5h6l2 2h10v13H3Z',
   copy: 'M9 9h12v12H9ZM5 15H3V3h12v2',

@@ -13,6 +13,7 @@
 .galaxy-page .galaxy-viewport { z-index: var(--layer-sky); }
 .galaxy-page .cluster-fan { z-index: var(--layer-list); }
 .galaxy-page .analysis-wrap { z-index: var(--layer-reader); }
+.galaxy-page .workbench-mode,
 .galaxy-page .galaxy-header,
 .galaxy-page .galaxy-views { z-index: var(--layer-navigation); }
 .neural.link-preview,

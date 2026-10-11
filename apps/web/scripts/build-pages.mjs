@@ -5,8 +5,12 @@ import {build} from 'vite';
 import {loadLibrary,safeAsset} from '../src/library.mjs';
 const app=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 
-export async function pagesLibrary(root){
+export async function pagesLibrary(root,{includeActivity=false}={}){
  const library=await loadLibrary(root),assets=new Map();
+ if(includeActivity){
+  const {activityForLibrary}=await import('../src/activity.mjs');
+  library.activity=await activityForLibrary(root,library,{publicExport:true});
+ }
  for(const doc of library.documents){
   const urls=[...doc.html.matchAll(/(?:src|href)="(\/api\/asset\?[^" ]+)"/g)];
   for(const [,url]of urls){
@@ -23,7 +27,8 @@ export async function pagesLibrary(root){
 }
 
 export async function buildPages(){
- const {library,assets}=await pagesLibrary(path.resolve(app,'../../content'));
+ const root=path.resolve(app,'../../content');
+ const {library,assets}=await pagesLibrary(root,{includeActivity:true});
  await build({root:app,mode:'pages'});
  const out=path.join(app,'dist-pages');
  await writeFile(path.join(out,'library.json'),JSON.stringify(library));

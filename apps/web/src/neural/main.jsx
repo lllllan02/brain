@@ -24,7 +24,7 @@ function App(){
  },[moveState]);
  const [reduced,setReduced]=useState(()=>matchMedia('(prefers-reduced-motion: reduce)').matches);
  useEffect(()=>{const media=matchMedia('(prefers-reduced-motion: reduce)');const change=()=>setReduced(media.matches);media.addEventListener('change',change);return()=>media.removeEventListener('change',change);},[]);
- useEffect(()=>{let active=true;const load=async()=>{if(busy.current)return;const ticket=revision.current;try{const r=await fetch(staticPages?import.meta.env.BASE_URL+'library.json':'/api/library');if(!r.ok)throw Error('无法读取文档');const next=await r.json();if(active&&ticket===revision.current&&!busy.current)setLibrary(old=>old?.version===next.version?old:next);}catch(e){if(active)setError(e.message);}};load();const timer=staticPages?null:setInterval(()=>{if(!document.hidden)load();},4000);return()=>{active=false;clearInterval(timer);};},[]);
+ useEffect(()=>{let active=true;const load=async()=>{if(busy.current)return;const ticket=revision.current;try{const r=await fetch(staticPages?import.meta.env.BASE_URL+'library.json':'/api/library');if(!r.ok)throw Error('无法读取文档');const next=await r.json();if(active&&ticket===revision.current&&!busy.current)setLibrary(old=>old?.version===next.version&&JSON.stringify(old?.activity)===JSON.stringify(next.activity)?old:next);}catch(e){if(active)setError(e.message);}};load();const timer=staticPages?null:setInterval(()=>{if(!document.hidden)load();},4000);return()=>{active=false;clearInterval(timer);};},[]);
  const move=useCallback(async(doc,collection)=>{
   if(!localEditing||busy.current)return;
   busy.current=true;revision.current++;setMoveState({id:doc.id,pending:true});
