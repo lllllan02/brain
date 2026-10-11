@@ -126,6 +126,10 @@
  .galaxy-browsing .galaxy-frame{right:min(calc(100% - 120px),calc(100% - var(--reader-left) + var(--reader-list-width) + 36px))}
  .cluster-list-header h2{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
  .cluster-list-header small{flex-shrink:0}
+ /* With the reader closed, dock its companion list at the viewport edge. */
+ .galaxy-page[data-reader-open="false"] .cluster-list{right:24px;left:auto;top:96px;width:250px}
+ .galaxy-page[data-reader-open="false"] .cluster-list:not(.cluster-list-collapsed){bottom:110px;height:auto}
+ .galaxy-page.galaxy-browsing[data-reader-open="false"] .galaxy-frame{right:292px}
 }
 
 

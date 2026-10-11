@@ -6,7 +6,7 @@
 .galaxy-page .galaxy-view-highlight{transition:transform var(--motion-layout) var(--motion-ease)}
 .galaxy-page .galaxy-view-cycle>span:not(.galaxy-view-highlight){transition:color var(--motion-feedback) ease}
 .galaxy-page .galaxy-viewport>canvas{transition:opacity var(--motion-enter) var(--motion-ease)}
-.galaxy-page .cluster-fan-lines{transition:opacity var(--motion-feedback) ease}
+.galaxy-page .cluster-fan-lines{transition:opacity var(--motion-layout) var(--motion-ease)}
 .galaxy-page .cluster-fan-lines path{animation:clusterThreadIn var(--motion-enter) var(--motion-ease) var(--fan-delay) both}
 .galaxy-page .cluster-list-item{animation:clusterCardIn var(--motion-enter) var(--motion-ease) var(--fan-delay) both}
 .galaxy-page .cluster-thread-sparks{transition:none}
@@ -37,3 +37,9 @@
 .reader-transition-stack{position:relative;height:100%;overflow:hidden;border-radius:inherit;isolation:isolate}
 .reader-snapshot{position:absolute;inset:0;pointer-events:none;z-index:1}
 .reader-snapshot *{animation:none!important;transition:none!important}
+
+/* The companion toolbar stays mounted while its reader slides in or out. */
+.cluster-list-body{display:flex;flex-direction:column;flex:1;min-height:0}
+.galaxy-page .cluster-list{transition:right var(--motion-layout) var(--motion-ease),top var(--motion-layout) var(--motion-ease),width var(--motion-layout) var(--motion-ease)}
+.galaxy-page:has(.reader-resizing) .cluster-list{transition:none}
+.galaxy-page .list-mode-indicator{transition:transform var(--motion-enter) var(--motion-ease),opacity var(--motion-feedback) ease}

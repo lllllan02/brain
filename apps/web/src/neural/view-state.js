@@ -17,3 +17,8 @@ export const validCluster = value => value === null || Boolean(value && typeof v
   && (value.value === null || (value.value && (
     typeof value.value.category === 'string' || typeof value.value.tag === 'string'
     || (typeof value.value.document === 'string' && [undefined, 'incoming', 'outgoing'].includes(value.value.direction))))));
+
+export const validPinnedList = value => value === null || Boolean(value
+  && Array.isArray(value.pinnedIds) && value.pinnedIds.every(id => typeof id === 'string')
+  && (validCluster({owner: '', value})
+    || [value.recent, value.latest].some(items => Array.isArray(items) && items.every(item => item && typeof item.id === 'string'))));

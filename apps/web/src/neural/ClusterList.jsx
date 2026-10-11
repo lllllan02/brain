@@ -12,6 +12,7 @@ const clusterKey = cluster => !cluster ? null : cluster.latest ? 'latest' : clus
 
 export function clusterDocuments(graph, cluster) {
   if (!cluster) return [];
+  if (cluster.pinnedIds) return cluster.pinnedIds.map(id => graph.index.get(id)).filter(node => node?.module);
   if (cluster.latest) return cluster.latest.map(item => graph.index.get(item.id)).filter(node => node?.module);
   if (cluster.recent) return cluster.recent.map(item => graph.index.get(item.id)).filter(node => node?.module);
   if (cluster.document) {
@@ -28,9 +29,10 @@ export function clusterDocuments(graph, cluster) {
     .sort((a, b) => a.title.localeCompare(b.title, 'zh-CN') || a.id.localeCompare(b.id));
 }
 
-export function ClusterList({graph, cluster, selected, anchorId = selected, onSelect, onClose, onClear, getAnchor, reduced, onPresenceChange, navigation}) {
+export function ClusterList({graph, cluster, selected, anchorId = selected, onSelect, onClose, onClear, getAnchor, reduced, onPresenceChange, navigation, pinned, onPin}) {
   const scroll = useRef(null), svg = useRef(null), origin = useRef(selected);
-  const {shown, ref: layer, closing} = usePresence(cluster, clusterKey(cluster), reduced, 'translateX(-12px)');
+  const layer = useRef(null);
+  const {shown, ref: body, closing} = usePresence(cluster, cluster ? 'list' : null, reduced, 'translateX(12px)', MOTION.layout);
   if (!closing && anchorId) origin.current = anchorId;
   const documents = useMemo(() => clusterDocuments(graph, shown), [graph, shown]);
   const timeline = Boolean(shown?.recent || shown?.latest);
@@ -191,9 +193,8 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
     };
   }, [selectionKey, documents, getAnchor, reduced]);
 
-  if (!shown) return navigation ? <div className="cluster-fan"><aside className="cluster-list cluster-list-collapsed" aria-label="文档列表导航"><div className="cluster-list-navigation">{navigation}</div></aside></div> : null;
-  return <div ref={layer} className={`cluster-fan${closing ? ' is-closing' : ''}`} inert={closing}>
-    <svg ref={svg} className="cluster-fan-lines" style={readingInkVariables} aria-hidden="true" key={`lines:${selectionKey}`}>
+  return <div ref={layer} className="cluster-fan">
+    {shown && <svg ref={svg} className="cluster-fan-lines" style={{...readingInkVariables, opacity: closing ? 0 : 1}} aria-hidden="true" key={`lines:${selectionKey}`}>
       {!reduced && <g className="cluster-flow-hub"><circle r="4" opacity="0"/><ellipse rx="6" ry="3" opacity="0"/></g>}
       {documents.map((node, index) => <path key={node.id} pathLength="1" className={`cluster-thread${node.id === selected ? ' is-current' : ''}`}
         style={{'--fan-delay': `${stagger(index)}ms`}}/>)}
@@ -203,11 +204,14 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
         <path className="cluster-flow-beam reading-trail-flow-aura" pathLength="1"/>
         <path className="cluster-flow-beam reading-trail-flow-core" pathLength="1"/>
       </g>)}
-    </svg>
-    <aside id={shown.latest ? 'latest-documents' : shown.recent ? 'reading-history' : undefined} className={`cluster-list${timeline ? ' cluster-history' : ''}`} aria-label={timeline ? title : `${kind} ${title} 的文档列表`}>
+    </svg>}
+    <aside id={shown?.latest ? 'latest-documents' : shown?.recent ? 'reading-history' : undefined} className={`cluster-list${timeline ? ' cluster-history' : ''}${!shown ? ' cluster-list-collapsed' : ''}`} aria-label={!shown ? '文档列表导航' : timeline ? title : `${kind} ${title} 的文档列表`}>
       {navigation && <div className="cluster-list-navigation">{navigation}</div>}
+      {shown && <div ref={body} className="cluster-list-body" inert={closing}>
       <header className="cluster-list-header"><div>{kind && <span>{kind}</span>}<h2>{title}</h2><small>{documents.length} 篇</small></div>
-        <button type="button" onClick={onClose} aria-label={timeline ? `收起${title}` : '关闭文档列表'} title="关闭列表"><Icon name="close" size={16}/></button>
+        <div className="cluster-list-actions">
+        <button type="button" onClick={onPin} aria-pressed={pinned} aria-label={pinned ? '取消固定列表' : '固定列表'} title={pinned ? '取消固定，恢复跟随当前文档' : '固定当前列表，切换文档时保持不变'}><Icon name="pin" size={14}/></button>
+        <button type="button" onClick={onClose} aria-label={timeline ? `收起${title}` : '关闭文档列表'} title="关闭列表"><Icon name="close" size={16}/></button></div>
       </header>
       <div className="cluster-list-scroll" ref={scroll} tabIndex={0} role="region" aria-label={`${title}文档，可滚动浏览`}>
         <div className="cluster-scroll-track"><div className="cluster-scroll-viewport"><div className="cluster-scroll-content">
@@ -217,13 +221,14 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
             <i className="cluster-card-port" style={collectionMarkerStyle(node.collection)} aria-hidden="true"/>
             {timeline && <small className="cluster-history-index">{index + 1}</small>}
             <span><strong>{node.title}</strong></span>
-            {timeline && node.id === selected && <small className="cluster-history-current">当前</small>}
+            {node.id === selected && <small className="cluster-history-current">当前</small>}
           </button>
         </li>)}</ul> : <p className="cluster-list-empty">{shown.latest ? '暂无有有效日期的文档' : shown.recent ? '打开文档后，这里会留下阅读足迹' : shown.document ? shown.direction === 'incoming' ? '还没有其他文档引用这篇文章' : '这篇文章没有可打开的内部链接' : '暂时没有匹配的文档'}</p>}
         </div></div></div>
       </div>
       {shown.latest && <footer className="cluster-history-footer"><span>按更新时间 · 最近 10 篇</span></footer>}
       {shown.recent && <footer className="cluster-history-footer"><span>同篇去重 · 最多 50 篇</span><button type="button" onClick={onClear} disabled={!documents.length} title="清空最近阅读记录"><Icon name="trash" size={14}/>清空</button></footer>}
+      </div>}
     </aside>
   </div>;
 }

@@ -1,20 +1,20 @@
 import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import {useViewState} from './useViewState';
-import {validCluster} from './view-state';
+import {validCluster, validPinnedList} from './view-state';
 import {collectionLabel} from '../collections.js';
 import {moduleOf} from './graph';
 import {createSearchIndex, searchDocuments} from './search.js';
 import {CONFIG, asset} from '../config';
 import {DocumentReader} from './DocumentReader';
-import {ReaderRelations} from './ReaderRelations';
+import {ListNavigation} from './ListNavigation';
 import {ClusterList, clusterDocuments} from './ClusterList';
 import {Icon} from './icons';
-import {ReadingNavigation, ReadingHistoryToggle, ReadingTrail} from './ReadingHistory';
+import {ReadingNavigation, ReadingTrail} from './ReadingHistory';
 import {latestDocuments, documentHighlight} from './latest-documents';
 import {readingTrail, readingDirection} from './reading-history';
 import {usePresence} from '../motion/usePresence';
 import {ReaderTransition} from '../motion/ReaderTransition';
-import {motionVariables} from '../motion/tokens.js';
+import {MOTION, motionVariables} from '../motion/tokens.js';
 import '../motion/motion.css';
 import '../galaxy/galaxy.css';
 
@@ -32,27 +32,27 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   const [expanded, setExpanded] = useViewState('expanded', false);
   const [grouping, setGrouping] = useViewState('grouping', 'category', value => ['category', 'collection'].includes(value));
   const [readerCluster, setReaderCluster] = useViewState('readerCluster', null, validCluster);
+  const [pinnedList, setPinnedList] = useViewState('pinnedList', null, validPinnedList);
   const [clusterVisible, setClusterVisible] = useState(false);
   const [historyOpen, setHistoryOpen] = useViewState('historyOpen', false);
   const historyToggle = useRef(null), latestToggle = useRef(null);
   const [latestOpen, setLatestOpen] = useViewState('latestOpen', false);
+  const [relationMode, setRelationMode] = useViewState('relationMode', 'outgoing', value => ['outgoing', 'incoming'].includes(value));
   const timelineOpen = historyOpen || latestOpen;
   const latest = useMemo(() => latestDocuments(graph.nodes.filter(node => node.module)), [graph]);
-  const closeLatest = () => {setLatestOpen(false);latestToggle.current?.focus({preventScroll: true});};
+  const closeLatest = () => {setPinnedList(null);setLatestOpen(false);setReaderCluster({owner: focus.sel, value: null});latestToggle.current?.focus({preventScroll: true});};
   const [trailProjection, setTrailProjection] = useState({nodes: [], edges: []});
-  const trail = useMemo(() => latestOpen ? documentHighlight(latest) : historyOpen ? readingTrail(reading.visits, new Set(graph.nodes.filter(n => n.module).map(n => n.id)), reading.recent) : null, [historyOpen, latestOpen, latest, reading.visits, reading.recent, graph]);
-  const closeHistory = () => {setHistoryOpen(false);historyToggle.current?.focus({preventScroll: true});};
+  const trail = useMemo(() => pinnedList && (pinnedList.recent || pinnedList.latest) ? documentHighlight(pinnedList.pinnedIds.map(id => ({id}))) : latestOpen ? documentHighlight(latest) : historyOpen ? readingTrail(reading.visits, new Set(graph.nodes.filter(n => n.module).map(n => n.id)), reading.recent) : null, [pinnedList, historyOpen, latestOpen, latest, reading.visits, reading.recent, graph]);
+  const closeHistory = () => {setPinnedList(null);setHistoryOpen(false);setReaderCluster({owner: focus.sel, value: null});historyToggle.current?.focus({preventScroll: true});};
   const listAnchor = useCallback(id => scene.current?.nodeAnchor(id), []);
   const previewNode = useCallback(id => scene.current?.previewNode(id), []);
-  // An explicit list (or dismissal) belongs to the document where it was chosen.
-  // All other document navigation starts with that document's outgoing links.
+  // Group filters belong to their owner; reference direction follows document navigation.
   const activeCluster = useMemo(() => {
     if (!focus.sel || timelineOpen) return null;
     if (readerCluster?.owner === focus.sel) return readerCluster.value;
-    const references = {document: focus.sel};
-    return clusterDocuments(graph, references).length ? references : null;
-  }, [graph, focus.sel, readerCluster, timelineOpen]);
-  const displayedCluster = useMemo(() => latestOpen ? {latest} : historyOpen ? {recent: reading.recent} : activeCluster, [latestOpen, latest, historyOpen, reading.recent, activeCluster]);
+    return {document: focus.sel, direction: relationMode};
+  }, [focus.sel, readerCluster, timelineOpen, relationMode]);
+  const displayedCluster = useMemo(() => pinnedList || (latestOpen ? {latest} : historyOpen ? {recent: reading.recent} : activeCluster), [pinnedList, latestOpen, latest, historyOpen, reading.recent, activeCluster]);
   const groupCluster = activeCluster?.document ? null : activeCluster;
   const [query, setQuery] = useViewState('query', ''), [searchOpen, setSearchOpen] = useViewState('searchOpen', false);
   const [searchSelection, setSearchSelection] = useState(null);
@@ -62,7 +62,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   const node = graph.index.get(focus.sel);
   const reviewNode = graph.index.get(reviewId);
   // Keep the panel in place while its contents hand off to the next document.
-  const reader = usePresence(node?.module ? {node, location: reading.location} : null, node?.module ? 'reader' : null, reduced, 'translateX(16px)');
+  const reader = usePresence(node?.module ? {node, location: reading.location} : null, node?.module ? 'reader' : null, reduced, 'translateX(calc(100% + 24px))', MOTION.layout);
   const shownNode = reader.shown?.node;
   const visualNode = node?.module ? shownNode : null;
   const visualFocus = {sel: visualNode?.id || null, mod: visualNode?.module || focus.mod};
@@ -157,6 +157,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
     scene.current?.focus(groupCluster ? null : visualFocus.sel, groupCluster ? groupCluster.category : visualFocus.mod, groupCluster?.tag, visualFocus.sel);
   }, [visualFocus.sel, visualFocus.mod, groupCluster]);
   const showReaderCluster = cluster => {
+    setPinnedList(null);
     setHistoryOpen(false); setLatestOpen(false);
     setReaderCluster({owner: focus.sel, value: cluster});
     if (expanded) {setExpanded(false);scene.current?.expand(false);}
@@ -188,7 +189,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
     window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
   }, [focus, query, setFocus, historyOpen, latestOpen]);
   const reset = () => { setQuery(''); setSearchOpen(false); searchInput.current?.blur(); setFocus({mod: null, sel: null}); scene.current?.reset(); };
-  return <section className={`galaxy-page ${node || shownNode ? 'galaxy-reading' : ''} ${displayedCluster || clusterVisible ? 'galaxy-browsing' : ''} ${timelineOpen ? 'galaxy-history-open' : ''}`} aria-label={CONFIG.brand.name} data-view={preset} style={motionVariables}>
+  return <section className={`galaxy-page ${node || shownNode ? 'galaxy-reading' : ''} ${displayedCluster || clusterVisible ? 'galaxy-browsing' : ''} ${timelineOpen ? 'galaxy-history-open' : ''}`} aria-label={CONFIG.brand.name} data-reader-open={Boolean(node?.module)} data-view={preset} style={motionVariables}>
     <div className={`galaxy-viewport ${!ready || error ? 'is-loading' : ''}`} ref={host}>
       <div className="galaxy-frame" aria-hidden="true"/>
       {historyOpen && <ReadingTrail projection={trailProjection} route={trail} reduced={reduced} hidden={!ready || Boolean(error)}/>}
@@ -252,8 +253,6 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
     </div>
     {status.shown && <div className="galaxy-status" role="status"><span ref={status.ref}>{status.shown}</span></div>}
     <nav className="galaxy-views" aria-label="星空视图">
-      <ReadingHistoryToggle open={historyOpen} toggleRef={historyToggle} onToggle={() => {setLatestOpen(false);setHistoryOpen(value => !value);}}/>
-      <ReadingHistoryToggle label="最新文档" icon="calendar" controls="latest-documents" open={latestOpen} toggleRef={latestToggle} onToggle={() => {setHistoryOpen(false);setLatestOpen(value => !value);}}/>
       {[['category', '分类', 'grid'], ['collection', '目录', 'folder']].map(([mode, title, icon]) => <button key={mode} className="galaxy-category-toggle" aria-pressed={expanded && grouping === mode} disabled={!ready || Boolean(error)} title={expanded && grouping === mode ? '收回整体星云' : `按${title}展开星云`} onClick={() => {
         const next = !expanded || grouping !== mode;
         setGrouping(mode); setExpanded(next);
@@ -261,8 +260,23 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       }}><Icon name={icon} size={15}/><span>{title}</span></button>)}
 
     </nav>
-    <ClusterList navigation={node && <ReaderRelations graph={graph} node={node} module={moduleOf(graph,node)} cluster={timelineOpen ? null : activeCluster} onChoose={showReaderCluster}/>} graph={graph} cluster={displayedCluster} selected={node?.id} anchorId={shownNode?.id} reduced={reduced} getAnchor={timelineOpen && !focus.sel ? undefined : listAnchor}
-      onPresenceChange={setClusterVisible} onSelect={id => go(id, !timelineOpen)} onClear={reading.clear} onClose={() => latestOpen ? closeLatest() : historyOpen ? closeHistory() : setReaderCluster({owner: focus.sel, value: null})}/>
+    <ClusterList navigation={<ListNavigation graph={graph} node={pinnedList?.document ? graph.index.get(pinnedList.document) : node} cluster={displayedCluster} historyRef={historyToggle} latestRef={latestToggle} onChoose={mode => {
+      const activeMode = displayedCluster?.latest ? 'latest' : displayedCluster?.recent ? 'recent' : displayedCluster?.document ? displayedCluster.direction || 'outgoing' : null;
+      if (mode === activeMode) return;
+      setPinnedList(null);
+      setHistoryOpen(mode === 'recent'); setLatestOpen(mode === 'latest');
+      if (mode === 'outgoing' || mode === 'incoming') {
+        setRelationMode(mode);
+        showReaderCluster({document: node.id, direction: mode});
+      }
+    }}/>} graph={graph} cluster={displayedCluster} selected={node?.id} anchorId={pinnedList?.document || shownNode?.id} reduced={reduced} getAnchor={!pinnedList?.document && timelineOpen && !focus.sel ? undefined : listAnchor}
+      pinned={Boolean(pinnedList)} onPin={() => {
+        if (pinnedList) {
+          setPinnedList(null);
+          if (pinnedList.document && focus.sel) setReaderCluster({owner: focus.sel, value: {document: focus.sel, direction: relationMode}});
+        } else if (displayedCluster) setPinnedList({...displayedCluster, pinnedIds: clusterDocuments(graph, displayedCluster).map(item => item.id)});
+      }}
+      onPresenceChange={setClusterVisible} onSelect={id => go(id, !timelineOpen)} onClear={() => {setPinnedList(null);reading.clear();}} onClose={() => {setPinnedList(null);latestOpen ? closeLatest() : historyOpen ? closeHistory() : setReaderCluster({owner: focus.sel, value: null});}}/>
     {shownNode && <div ref={reader.ref} inert={reader.closing} className="analysis-wrap reader-shell">
       <ReaderTransition documentId={shownNode.id} reduced={reduced}>
       <DocumentReader collectionAction={collectionAction} navigation={<ReadingNavigation graph={graph} reading={reading} onTravel={reading.travel}/>} onResize={syncReaderLayout} key={shownNode.id} reduced={reduced} onPreview={previewNode} graph={graph} node={shownNode} readingLocation={reader.shown.location} onReadingScroll={reading.saveScroll} module={moduleOf(graph, shownNode)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>

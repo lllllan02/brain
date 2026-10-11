@@ -3,7 +3,7 @@ import {MOTION} from './tokens.js';
 
 // Retain outgoing content until its actual animation completes. Reversals sample
 // the visible frame before cancelling, and stale completions can never replace a newer choice.
-export function usePresence(value, key, reduced, offset = 'translateY(8px)') {
+export function usePresence(value, key, reduced, offset = 'translateY(8px)', duration) {
   const [retained, setRetained] = useState(() => ({value, key}));
   const snapshot = useRef(value), mountedKey = useRef(null);
   const ref = useRef(null), animation = useRef(null), mounted = useRef(null);
@@ -29,7 +29,7 @@ export function usePresence(value, key, reduced, offset = 'translateY(8px)') {
     animation.current?.cancel();
     const target = closing ? {opacity: 0, transform: offset} : {opacity: 1, transform: 'none'};
     const next = element.animate([from, target], {
-      duration: closing ? MOTION.exit : MOTION.enter, easing: MOTION.ease, fill: 'both',
+      duration: duration ?? (closing ? MOTION.exit : MOTION.enter), easing: MOTION.ease, fill: 'both',
     });
     animation.current = next;
     next.finished.then(() => {
@@ -39,7 +39,7 @@ export function usePresence(value, key, reduced, offset = 'translateY(8px)') {
         setRetained(latest.current);
       }
     }, () => {});
-  }, [key, retained.key, reduced, offset]);
+  }, [key, retained.key, reduced, offset, duration]);
   useLayoutEffect(() => () => animation.current?.cancel(), []);
   return {shown, ref, closing};
 }

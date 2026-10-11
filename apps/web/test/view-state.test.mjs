@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readViewState, writeViewState, validSize, validCluster} from '../src/neural/view-state.js';
+import {readViewState, writeViewState, validSize, validCluster, validPinnedList} from '../src/neural/view-state.js';
 
 const read = (raw, fallback, valid) => readViewState('test', fallback, valid, {getItem: () => raw}, '/brain/');
 test('状态损坏、类型不符和存储拒绝访问时回退，不影响阅读', () => {
@@ -23,4 +23,13 @@ test('不同站点路径的界面记忆隔离', () => {
   readViewState('expanded', false, v => typeof v === 'boolean', storage, '/');
   readViewState('expanded', false, v => typeof v === 'boolean', storage, '/brain/');
   assert.notEqual(keys[0], keys[1]);
+});
+
+ test('固定列表恢复原始来源和有序文档，拒绝不完整快照', () => {
+  const pinned = {document: 'source', direction: 'incoming', pinnedIds: ['b', 'a']};
+  assert.deepEqual(read(JSON.stringify(pinned), null, validPinnedList), pinned);
+  for (const value of [{pinnedIds: ['a']}, {...pinned, pinnedIds: [7]}, {...pinned, direction: 'bad'}, {recent: [null], pinnedIds: []}]) {
+    assert.equal(read(JSON.stringify(value), null, validPinnedList), null);
+  }
+  assert.equal(validPinnedList({recent: [{id: 'a'}], pinnedIds: ['a']}), true);
 });
