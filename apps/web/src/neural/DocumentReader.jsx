@@ -33,7 +33,7 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
  const moveLabel=node.collection==='inbox'?`已理解，移入 ${collectionLabel('notes')}`:`重新学习，移回 ${collectionLabel('inbox')}`;
  const titleIcon=canMove?<button type="button" className="collection-toggle" title={moveLabel} aria-label={moveLabel} disabled={collectionAction.pending} aria-busy={collectionAction.pending} onClick={()=>collectionAction.move(node,node.collection==='inbox'?'notes':'inbox')}><CollectionIcon collection={node.collection}/></button>:<CollectionIcon collection={node.collection}/>;
  const relations={graph,node,module,cluster,onChoose:next=>{setFull(false);onCluster(next);}};
- const article=<MarkdownArticle html={node.html}/>;
+ const article=<MarkdownArticle html={node.html} zoomable/>;
  const externalLinks=useMemo(()=>{
   // Read rendered anchors, so code samples, internal references and attachments
   // cannot accidentally become external links. Template content stays inert.
