@@ -1,6 +1,6 @@
 ---
 title: "FastMCP：工具可见性与会话范围"
-parent: mcp
+parent: mcp-permissions
 category: "Agent"
 tags: ["MCP", "工具调用"]
 created_at: "2026-10-10"

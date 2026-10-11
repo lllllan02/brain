@@ -5,27 +5,26 @@ aliases: ["MCP", "Model Context Protocol", "模型上下文协议"]
 category: "Agent"
 tags: ["MCP", "工具调用", "协议"]
 created_at: "2026-10-09"
-updated_at: "2026-10-10"
+updated_at: "2026-10-11T10:09:20+08:00"
 ---
 
-**MCP（Model Context Protocol，模型上下文协议）是 AI 应用连接外部能力的标准协议，统一工具、数据资源和提示模板的发现与通信方式。** 提供方按协议暴露能力，AI 应用通过对应 Client 接入，减少每种集成都自行设计通信接口的工作。
+**MCP（Model Context Protocol，模型上下文协议）是 AI 应用与外部服务之间的开放通信协议，约定工具、资源和提示模板如何被发现与使用。**
 
-## 三类核心能力
+AI 应用要查询订单、读取文件或访问数据库，仍需接入实际系统。各系统的 API、参数和返回格式不同，应用往往要分别编写适配代码；换一个 AI 应用，同一套接入又可能重做。**「每个应用分别适配每个服务」带来的重复开发与维护，是 MCP 要缓解的痛点。**
 
-- Tools（工具）：执行动作，例如查询数据库、调用 API、修改文件。
-- Resources（资源）：提供可读取的上下文数据，例如文件内容、数据库结构；由应用决定如何交给模型使用。
-- Prompts（提示模板）：提供可复用的交互模板，例如代码评审或报告生成提示，可接收参数并返回消息内容。
+MCP 将接入方式统一：服务方通过 Server 暴露能力，宿主应用（Host）通过 Client 按相同约定发现、调用或读取。这样，同一个 Server 可以被多个兼容应用复用，底层业务接口的适配集中在服务端。本地通常使用 stdio，远程可使用 Streamable HTTP。
 
-三者分别提供「可执行的动作」「可读取的数据」「可复用的交互方式」，不是必须依次经过的步骤，Server 也不必全部提供。
+MCP 统一的是接入约定，具体业务与权限检查仍需实现；模型决策、上下文组织和 Agent 循环仍由宿主负责。Function Calling 让模型提出工具调用，可与 MCP 配合。只有少量固定调用时，直接使用函数或 API 也可以。
 
-## 谁与谁通信
+## 能力与使用
 
-- Host：承载 AI 功能的应用，管理模型交互、访问权限和多个 Client。
-- Client：由 Host 管理，与对应 Server 通信，获取定义、发送请求并接收结果。
-- Server：提供工具、资源或提示模板，可以是本地进程，也可以是远程服务。
+- [[mcp-capabilities|Tool、Resource 与 Prompt 的区别]]
+- [[mcp-flow|从发现到调用的完整流程]]
+- stdio 最小实现：[[mcp-server|Server]] · [[mcp-client|Client]]
+- Streamable HTTP 最小实现：[[mcp-http-server|Server]] · [[mcp-http-client|Client]]
+- [[mcp-permissions|接入授权与权限边界]]：stdio、API key、OAuth、凭据管理与下游授权
 
-MCP 使用 JSON-RPC 表达协议消息，可通过本地 stdio 或远程 Streamable HTTP 通信。它不规定应用如何调用模型、组织上下文或实现内部注册表；MCP 也不等于 Agent 或动态注册机制。角色、能力与协议范围参考 [官方架构说明](https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture)。
+## 官方资料
 
-从连接、发现到使用和更新的过程，在 [[mcp-flow|MCP 的完整交互流程]] 中展开。
-
-服务端可以选择开放哪些能力。[[fastmcp-visibility-summary|FastMCP 的可见性控制]]展示了全局与会话范围的启停规则；这是框架的管理方式，不是 MCP 要求所有工具始终可见，也不同于 Host 向模型提供哪些定义。
+- [[mcp-specification-summary|协议约定的范围]] · [[mcp-architecture-summary|架构与消息交互]] · [[mcp-tools-summary|工具参数、结果与错误]]
+- [天气工具实现示例](https://modelcontextprotocol.io/docs/2026-07-28/develop/build-server)
