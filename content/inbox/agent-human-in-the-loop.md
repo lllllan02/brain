@@ -1,5 +1,5 @@
 ---
-parent: agent-capabilities
+parent: agent
 title: "Agent 人工介入"
 aliases: ["Human-in-the-Loop", "HITL"]
 category: "Agent"

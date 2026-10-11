@@ -1,5 +1,5 @@
 ---
-parent: agent-capabilities
+parent: agent
 title: "Agent 自我纠正"
 aliases: ["Self-Correction", "Self-correction"]
 category: "Agent"

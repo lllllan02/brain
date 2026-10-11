@@ -1,5 +1,5 @@
 ---
-parent: agent-capabilities
+parent: agent
 title: "Agent Harness 是什么"
 aliases: ["Harness", "Agent Harness"]
 category: "Agent"
@@ -14,7 +14,7 @@ updated_at: "2026-10-10T21:10:22+08:00"
 
 Harness 组织[[agent-loop|执行循环]]与[[tool-calling|工具接入]]，准备[[agent-context|模型上下文]]，读取[[agent-memory|记忆]]并维护[[agent-task-state|任务状态]]。运行时再落实[[agent-guardrails|行为约束]]、[[agent-human-in-the-loop|人工介入]]和[[agent-retry|失败重试]]，用[[agent-trace-requirements|Trace]]记录实际过程。
 
-这些职责可由应用代码、框架或独立服务共同承担，不要求实现成单一组件，也不要求每个 Harness 都具备全部能力。能力如何按问题引入，由[[agent-capabilities|学习与能力扩展入口]]组织。
+这些职责可由应用代码、框架或独立服务共同承担，不要求实现成单一组件，也不要求每个 Harness 都具备全部能力。能力如何按问题引入，由[[agent|Agent 专题入口]]组织。
 
 ## 职责边界
 

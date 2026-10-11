@@ -1,5 +1,5 @@
 ---
-parent: agent-capabilities
+parent: agent
 title: "Agent 沙箱（Sandbox）"
 category: "Agent"
 tags: ["Agent", "沙箱"]

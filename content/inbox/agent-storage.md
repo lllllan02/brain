@@ -1,5 +1,5 @@
 ---
-parent: agent-capabilities
+parent: agent
 title: "Agent 的历史与状态存储"
 category: "Agent"
 tags: ["Agent", "状态管理", "持久化"]

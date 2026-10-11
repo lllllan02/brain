@@ -1,5 +1,5 @@
 ---
-parent: agent-capabilities
+parent: agent
 title: "Agent 上下文管理"
 aliases: ["Context Management", "Agent Context"]
 category: "Agent"

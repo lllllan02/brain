@@ -4,14 +4,14 @@ parent: mcp-permissions
 category: "Agent"
 tags: ["MCP", "OAuth", "授权"]
 created_at: "2026-10-11T09:58:18+08:00"
-updated_at: "2026-10-11T09:58:18+08:00"
+updated_at: "2026-10-11T10:54:33+08:00"
 ---
 
 桌面或命令行 Client 使用当前用户的权限访问远程 MCP Server 时，可以在[[mcp-http-client|HTTP Client]]上增加 OAuth 处理器：**「应用负责浏览器授权与回调，SDK 负责协议处理与令牌使用」**，后续工具调用方式不变。
 
 ## 授权怎样完成
 
-请求 Server → 收到 401 并发现授权配置 → 用户在浏览器登录、批准权限 → 回调带回授权码 → Client 换取访问令牌 → 携带令牌重新请求。
+![[assets/mcp-oauth-flow.png|MCP OAuth 接入时序图]]
 
 这是[[oauth-code|授权码流程]]。授权服务器负责登录与发令牌，MCP Server 负责校验令牌和业务权限；两者可以由同一服务方提供。浏览器回传的是临时授权码，用户密码和令牌不需要进入模型上下文。
 

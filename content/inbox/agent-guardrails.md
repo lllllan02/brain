@@ -1,5 +1,5 @@
 ---
-parent: agent-capabilities
+parent: agent
 title: "Agent 行为约束"
 aliases: ["Guardrails", "Agent Guardrails"]
 category: "Agent"

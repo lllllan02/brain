@@ -1,12 +1,12 @@
 ---
-parent: agent-capabilities
+parent: agent
 title: "Agent 与工作流有什么区别"
 category: "Agent"
 updated_at: "2026-10-09"
 tags: ["Agent", "工作流", "自主决策", "工程选型"]
 ---
 
-**[[workflow|工作流（Workflow）]]按预设规则决定执行路径，[[agent-definition-and-boundaries|Agent]] 由模型根据目标和执行结果决定下一步动作。** 核心区别是「谁决定下一步」；两者都可以调用模型。
+**[[workflow|工作流（Workflow）]]按预设规则决定执行路径，[[agent|Agent]] 由模型根据目标和执行结果决定下一步动作。** 核心区别是「谁决定下一步」；两者都可以调用模型。
 
 ## 如何选择
 

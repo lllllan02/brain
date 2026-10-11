@@ -1,5 +1,5 @@
 ---
-parent: agent-capabilities
+parent: agent
 title: "Agent 记忆（Memory）"
 aliases: ["Agent Memory"]
 category: "Agent"

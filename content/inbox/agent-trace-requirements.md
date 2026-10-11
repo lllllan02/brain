@@ -1,5 +1,5 @@
 ---
-parent: agent-capabilities
+parent: agent
 title: "Agent Trace 要记录什么"
 category: "Agent"
 updated_at: "2026-10-07"

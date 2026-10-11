@@ -1,5 +1,5 @@
 ---
-parent: agent-capabilities
+parent: agent
 title: "Agent 的 Checkpoint 与中断恢复"
 aliases: ["Agent Checkpoint", "Agent 中断恢复"]
 category: "Agent"

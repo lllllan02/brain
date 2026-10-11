@@ -1,5 +1,5 @@
 ---
-parent: agent-capabilities
+parent: agent
 title: "工具调用（Tool Calling）"
 aliases: ["Tool Calling", "Function Calling", "函数调用"]
 category: "Agent"

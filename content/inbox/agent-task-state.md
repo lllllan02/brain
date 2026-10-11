@@ -1,5 +1,5 @@
 ---
-parent: agent-capabilities
+parent: agent
 title: "Agent 任务状态管理"
 aliases: ["Agent Task State", "Task State Management"]
 category: "Agent"
