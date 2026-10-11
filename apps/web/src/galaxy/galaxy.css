@@ -146,3 +146,8 @@
 /* Directory markers share geometry and color tokens from collections.config.json. */
 .galaxy-page .cluster-card-port,.galaxy-page .cluster-list-item[aria-current="page"] .cluster-card-port{border-radius:var(--collection-radius,50%);transform:rotate(var(--collection-rotation,0deg));background:var(--collection-fill,#d0dbe7);border:1.5px solid var(--collection-color,#d0dbe7);box-shadow:0 0 0 4px color-mix(in srgb,var(--collection-color,#d0dbe7) 9%,transparent),0 0 13px color-mix(in srgb,var(--collection-color,#d0dbe7) 33%,transparent)}
 .galaxy-page .cluster-list-item[aria-current="page"] .cluster-card-port{box-shadow:0 0 0 5px color-mix(in srgb,var(--collection-color,#d0dbe7) 15%,transparent),0 0 16px color-mix(in srgb,var(--collection-color,#d0dbe7) 60%,transparent)}
+
+.has-queue-action .cluster-list-item{padding-right:38px}
+.queue-list-action{position:absolute;right:3px;top:9px;display:grid;place-items:center;width:30px;height:30px;padding:0;border:0;border-radius:6px;background:transparent;color:#899ab2;cursor:pointer}
+.queue-list-action:hover,.queue-list-action[aria-pressed=true]{color:#e4e5ff;background:#abb9d812}
+.queue-list-action:focus-visible{outline:1px solid #a8c4df;outline-offset:-2px}

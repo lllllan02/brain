@@ -2,6 +2,7 @@ import {CONTENT_COLLECTIONS,collectionLabel} from '../collections.js';
 import {useViewState} from './useViewState';
 import {CollectionIcon} from './CollectionIcon';
 import React,{useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
+import {ReadingQueueButton} from './ReadingQueueButton';
 import {Icon} from './icons';
 import {LinkPreview} from './LinkPreview';
 import {ReaderRelations} from './ReaderRelations';
@@ -12,7 +13,7 @@ import {ReaderSources} from './ReaderSources';
 import {copyDocumentMarkdown} from './document-sources.js';
 import {useToolbarTitle} from './useToolbarTitle';
 import {useReaderResize} from './useReaderResize';
-export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,onResize,reduced,readingLocation,onReadingScroll,navigation,collectionAction}){
+export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPreview,onResize,reduced,readingLocation,onReadingScroll,navigation,collectionAction,queue}){
  const ref=useRef(null);const [full,setFull]=useViewState('readerFull',false);const [copy,setCopy]=useState('');const [tocOpen,setTocOpen]=useViewState(`toc:${node.id}`,false);
  const [detailsOpen,setDetailsOpen]=useViewState(`details:${node.id}`,false);
  const [copying,setCopying]=useState(false);
@@ -32,7 +33,7 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
  const moveLabel=node.collection==='inbox'?`已理解，移入 ${collectionLabel('notes')}`:`重新学习，移回 ${collectionLabel('inbox')}`;
  const titleIcon=canMove?<button type="button" className="collection-toggle" title={moveLabel} aria-label={moveLabel} disabled={collectionAction.pending} aria-busy={collectionAction.pending} onClick={()=>collectionAction.move(node,node.collection==='inbox'?'notes':'inbox')}><CollectionIcon collection={node.collection}/></button>:<CollectionIcon collection={node.collection}/>;
  const relations={graph,node,module,cluster,onChoose:next=>{setFull(false);onCluster(next);}};
- const article=<MarkdownArticle html={node.html}/>;
+ const article=<MarkdownArticle html={node.html} graph={graph} queue={queue}/>;
  const externalLinks=useMemo(()=>{
   // Read rendered anchors, so code samples, internal references and attachments
   // cannot accidentally become external links. Template content stays inert.
@@ -63,6 +64,7 @@ export function DocumentReader({graph,node,module,cluster,onCluster,onClose,onPr
     <div className="reader-toolbar-title" aria-hidden={!toolbarTitle} inert={!toolbarTitle} title={node.title}>{titleIcon}{node.title}</div>
    </div>
    <div className="read-actions">
+    {queue&&<ReadingQueueButton queue={queue} node={node} className="icon-btn"/>}
     <button className="icon-btn" aria-label="切换专注阅读" aria-pressed={full} title={full?'退出专注阅读':'专注阅读'} onClick={()=>setFull(v=>!v)}><Icon name={full?"collapse":"expand"} size={16}/></button>
     <button className="icon-btn" aria-label="关闭文档" title="关闭文档（Esc）" onClick={onClose}><Icon name="close" size={16}/></button>
    </div>

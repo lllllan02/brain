@@ -82,3 +82,8 @@ button.read-tag{cursor:pointer;font-family:inherit;text-align:left;transition:co
 .collection-move-toast{position:fixed;z-index:100;top:24px;left:50%;max-width:min(420px,calc(100vw - 40px));padding:9px 16px;border:1px solid #ffffff18;border-radius:18px;background:#22252bf2;box-shadow:0 6px 24px #0005;color:var(--text);font-size:12px;line-height:1.6;text-align:center;overflow-wrap:anywhere;pointer-events:none;animation:collectionToast var(--toast-duration,2400ms) both}
 @keyframes collectionToast{0%{opacity:0;transform:translate(-50%,8px)}10%,85%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-6px)}}
 @media(prefers-reduced-motion:reduce){.collection-move-toast{animation:none;transform:translateX(-50%)}}
+
+.markdown .inline-queue-action{display:inline;white-space:nowrap}
+.markdown .inline-queue-button{display:inline-flex;align-items:center;justify-content:center;vertical-align:-.2em;width:22px;height:22px;margin:0 2px;padding:3px;border:0;border-radius:4px;background:transparent;color:var(--link-color,#c9b4ee);opacity:.65;cursor:pointer}
+.markdown .inline-queue-button:hover,.markdown .inline-queue-button[aria-pressed=true]{opacity:1;background:color-mix(in srgb,var(--link-color,#c9b4ee) 14%,transparent)}
+.markdown .inline-queue-button:focus-visible{opacity:1;outline:1px solid currentColor;outline-offset:1px}

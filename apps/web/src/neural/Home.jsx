@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
+import {useReadingQueue} from './useReadingQueue';
 import {useViewState} from './useViewState';
 import {validCluster, validPinnedList} from './view-state';
 import {collectionLabel} from '../collections.js';
@@ -38,7 +39,11 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   const historyToggle = useRef(null), latestToggle = useRef(null);
   const [latestOpen, setLatestOpen] = useViewState('latestOpen', false);
   const [relationMode, setRelationMode] = useViewState('relationMode', 'outgoing', value => ['outgoing', 'incoming'].includes(value));
-  const timelineOpen = historyOpen || latestOpen;
+  const queue = useReadingQueue();
+  const [queueOpen, setQueueOpen] = useViewState('queueOpen', false);
+  const queueToggle = useRef(null);
+  const closeQueue = () => {setQueueOpen(false);setReaderCluster({owner: focus.sel, value: null});queueToggle.current?.focus({preventScroll: true});};
+  const timelineOpen = historyOpen || latestOpen || queueOpen;
   const latest = useMemo(() => latestDocuments(graph.nodes.filter(node => node.module)), [graph]);
   const closeLatest = () => {setPinnedList(null);setLatestOpen(false);setReaderCluster({owner: focus.sel, value: null});latestToggle.current?.focus({preventScroll: true});};
   const [trailProjection, setTrailProjection] = useState({nodes: [], edges: []});
@@ -52,7 +57,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
     if (readerCluster?.owner === focus.sel) return readerCluster.value;
     return {document: focus.sel, direction: relationMode};
   }, [focus.sel, readerCluster, timelineOpen, relationMode]);
-  const displayedCluster = useMemo(() => pinnedList || (latestOpen ? {latest} : historyOpen ? {recent: reading.recent} : activeCluster), [pinnedList, latestOpen, latest, historyOpen, reading.recent, activeCluster]);
+  const displayedCluster = useMemo(() => pinnedList || (queueOpen ? {queue: queue.items} : latestOpen ? {latest} : historyOpen ? {recent: reading.recent} : activeCluster), [pinnedList, queueOpen, queue.items, latestOpen, latest, historyOpen, reading.recent, activeCluster]);
   const groupCluster = activeCluster?.document ? null : activeCluster;
   const [query, setQuery] = useViewState('query', ''), [searchOpen, setSearchOpen] = useViewState('searchOpen', false);
   const [searchSelection, setSearchSelection] = useState(null);
@@ -158,7 +163,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   }, [visualFocus.sel, visualFocus.mod, groupCluster]);
   const showReaderCluster = cluster => {
     setPinnedList(null);
-    setHistoryOpen(false); setLatestOpen(false);
+    setHistoryOpen(false); setLatestOpen(false); setQueueOpen(false);
     setReaderCluster({owner: focus.sel, value: cluster});
     if (expanded) {setExpanded(false);scene.current?.expand(false);}
   };
@@ -184,6 +189,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
           searchInput.current?.blur();
           return;
         }
+        if (queueOpen) {closeQueue(); return;}
         if (latestOpen) {closeLatest(); return;}
         if (historyOpen) {closeHistory(); return;}
         if (query) { setQuery(''); return; }
@@ -193,7 +199,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       }
     };
     window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
-  }, [focus, query, searchVisible, setFocus, historyOpen, latestOpen]);
+  }, [focus, query, searchVisible, setFocus, historyOpen, latestOpen, queueOpen]);
   const reset = () => { setQuery(''); setSearchOpen(false); searchInput.current?.blur(); setFocus({mod: null, sel: null}); scene.current?.reset(); };
   return <section className={`galaxy-page ${node || shownNode ? 'galaxy-reading' : ''} ${displayedCluster || clusterVisible ? 'galaxy-browsing' : ''} ${timelineOpen ? 'galaxy-history-open' : ''}`} aria-label={CONFIG.brand.name} data-reader-open={Boolean(node?.module)} data-view={preset} style={motionVariables}>
     <div className={`galaxy-viewport ${!ready || error ? 'is-loading' : ''}`} ref={host}>
@@ -266,11 +272,11 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       }}><Icon name={icon} size={15}/><span>{title}</span></button>)}
 
     </nav>
-    <ClusterList navigation={<ListNavigation graph={graph} node={pinnedList?.document ? graph.index.get(pinnedList.document) : node} cluster={displayedCluster} historyRef={historyToggle} latestRef={latestToggle} onChoose={mode => {
-      const activeMode = displayedCluster?.latest ? 'latest' : displayedCluster?.recent ? 'recent' : displayedCluster?.document ? displayedCluster.direction || 'outgoing' : null;
+    <ClusterList queue={queue} navigation={<ListNavigation graph={graph} node={pinnedList?.document ? graph.index.get(pinnedList.document) : node} cluster={displayedCluster} queueRef={queueToggle} historyRef={historyToggle} latestRef={latestToggle} onChoose={mode => {
+      const activeMode = displayedCluster?.queue ? 'queue' : displayedCluster?.latest ? 'latest' : displayedCluster?.recent ? 'recent' : displayedCluster?.document ? displayedCluster.direction || 'outgoing' : null;
       if (mode === activeMode) return;
       setPinnedList(null);
-      setHistoryOpen(mode === 'recent'); setLatestOpen(mode === 'latest');
+      setHistoryOpen(mode === 'recent'); setLatestOpen(mode === 'latest'); setQueueOpen(mode === 'queue');
       if (mode === 'outgoing' || mode === 'incoming') {
         setRelationMode(mode);
         showReaderCluster({document: node.id, direction: mode});
@@ -282,10 +288,10 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
           if (pinnedList.document && focus.sel) setReaderCluster({owner: focus.sel, value: {document: focus.sel, direction: relationMode}});
         } else if (displayedCluster) setPinnedList({...displayedCluster, pinnedIds: clusterDocuments(graph, displayedCluster).map(item => item.id)});
       }}
-      onPresenceChange={setClusterVisible} onSelect={id => go(id, !timelineOpen)} onClear={() => {setPinnedList(null);reading.clear();}} onClose={() => {setPinnedList(null);latestOpen ? closeLatest() : historyOpen ? closeHistory() : setReaderCluster({owner: focus.sel, value: null});}}/>
+      onPresenceChange={setClusterVisible} onSelect={id => go(id, !timelineOpen)} onClear={() => {setPinnedList(null);reading.clear();}} onClose={() => {setPinnedList(null);queueOpen ? closeQueue() : latestOpen ? closeLatest() : historyOpen ? closeHistory() : setReaderCluster({owner: focus.sel, value: null});}}/>
     {shownNode && <div ref={reader.ref} inert={reader.closing} className="analysis-wrap reader-shell">
       <ReaderTransition documentId={shownNode.id} reduced={reduced}>
-      <DocumentReader collectionAction={collectionAction} navigation={<ReadingNavigation graph={graph} reading={reading} onTravel={reading.travel}/>} onResize={syncReaderLayout} key={shownNode.id} reduced={reduced} onPreview={previewNode} graph={graph} node={shownNode} readingLocation={reader.shown.location} onReadingScroll={reading.saveScroll} module={moduleOf(graph, shownNode)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>
+      <DocumentReader queue={queue} collectionAction={collectionAction} navigation={<ReadingNavigation graph={graph} reading={reading} onTravel={reading.travel}/>} onResize={syncReaderLayout} key={shownNode.id} reduced={reduced} onPreview={previewNode} graph={graph} node={shownNode} readingLocation={reader.shown.location} onReadingScroll={reading.saveScroll} module={moduleOf(graph, shownNode)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>
       </ReaderTransition>
     </div>}
   </section>;
