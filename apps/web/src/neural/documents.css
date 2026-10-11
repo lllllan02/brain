@@ -48,6 +48,8 @@ button.read-tag{cursor:pointer;font-family:inherit;text-align:left;transition:co
 /* The reader stays anchored at its top-right corner while its lower-left grip moves. */
 .galaxy-page .reader-resize-handle{display:none}
 @media(min-width:901px){
+ /* Keep the scroll viewport above the grip, even while the article scrolls. */
+ .galaxy-page .document-reader .an-scroll{margin-bottom:40px}
  .galaxy-page .analysis-wrap.reader-resized{width:var(--reader-width);height:var(--reader-height);bottom:auto;transition:none}
  .galaxy-page .analysis-wrap.reader-resizing{transition:none;user-select:none}
  .galaxy-page .reader-resize-handle{display:grid;place-items:center;position:absolute;left:5px;bottom:5px;z-index:2;width:30px;height:30px;padding:0;border:1px solid transparent;border-radius:50%;background:transparent;color:#8796aa;cursor:nesw-resize;touch-action:none}

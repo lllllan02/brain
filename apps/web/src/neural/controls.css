@@ -35,8 +35,6 @@
  .galaxy-page :is(.icon-btn,.reading-navigation button,.copy-code,.reading-history-toggle,.galaxy-search-clear,.read-copy-actions button,.reader-inline-relations button,.read-tag,.read-category-link,.cluster-list-header button),.neural .link-preview-close{min-width:36px;min-height:36px}
 }
 @media(prefers-reduced-motion:reduce){.toc-chevron{transition:none}}
-/* Focus mode keeps floating relation lists from covering the article. */
-.galaxy-page:has(.analysis-wrap.full-reader) .cluster-fan{visibility:hidden;pointer-events:none}
 
 /* Reading hierarchy: context, title, source, then a single navigation rail. */
 .galaxy-page .reader-heading{margin-bottom:12px}

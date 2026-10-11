@@ -28,11 +28,16 @@ export function useReaderResize(readerRef, full, onResize) {
   const page = wrap.closest('.galaxy-page');
   const listSpace = page.classList.contains('galaxy-browsing') ? 236 : 16;
   const maxWidth = Math.max(0, rect.right - listSpace);
-  const maxHeight = Math.max(0, window.innerHeight - rect.top - 24);
-  wrap.style.setProperty('--reader-width', `${Math.min(maxWidth, Math.max(320, width))}px`);
-  wrap.style.setProperty('--reader-height', `${Math.min(maxHeight, Math.max(240, height))}px`);
+  // Reserve the search dock's actual space so the lower-left grip never
+  // slides underneath its higher stacking layer, including restored sizes.
+  const dock = page.querySelector('.galaxy-search-dock');
+  const bottom = Math.min(window.innerHeight - 24, dock ? dock.getBoundingClientRect().top - 12 : Infinity);
+  const maxHeight = Math.max(0, bottom - rect.top);
+  const nextSize = {width: Math.min(maxWidth, Math.max(320, width)), height: Math.min(maxHeight, Math.max(240, height))};
+  wrap.style.setProperty('--reader-width', `${nextSize.width}px`);
+  wrap.style.setProperty('--reader-height', `${nextSize.height}px`);
   wrap.classList.add('reader-resized');
-  if (persist) writeViewState(sizeKey, {width: Math.max(320, Math.min(maxWidth, width)), height: Math.max(240, Math.min(maxHeight, height))});
+  if (persist) writeViewState(sizeKey, nextSize);
   onResize?.();
  };
  const end = e => {

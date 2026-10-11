@@ -28,7 +28,7 @@
  .galaxy-reading .analysis-wrap{top:calc(22svh - 36px);height:auto}
  .galaxy-reading .analysis-wrap.full-reader{top:72px;height:auto}
  .galaxy-browsing .analysis-wrap{top:calc(88px + clamp(180px,30svh,280px))}
- .galaxy-browsing .analysis-wrap.full-reader{top:76px}
+ .galaxy-browsing .analysis-wrap.full-reader{top:calc(88px + clamp(180px,30svh,280px))}
 }
 
 /* A stable reading surface gives the document handoff a stationary frame. */
