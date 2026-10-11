@@ -45,7 +45,12 @@
 .cluster-fan { --fan-ink: #b9c7d6; --fan-dim: #93a0b1; }
 .cluster-card-port { background: #d0dbe7; box-shadow: 0 0 0 4px #c3d2e216, 0 0 10px #c3d2e233; }
 .cluster-list-item:hover, .cluster-list-item:focus-visible { background: var(--hover); border-color: var(--line); }
-.cluster-list-item[aria-current="page"] { color: var(--text); }
+.cluster-list-item[aria-current="page"] {
+  color: var(--text);
+  background: #cad5e31a;
+  border-color: var(--line-2);
+  box-shadow: inset 3px 0 0 var(--focus);
+}
 .cluster-list-item[aria-current="page"] .cluster-card-port { background: #edf2f8; box-shadow: 0 0 0 5px #c3d2e21a, 0 0 14px #c3d2e266; }
 
 /* Neutral article chrome; code syntax colors and broken-link warnings retain meaning. */

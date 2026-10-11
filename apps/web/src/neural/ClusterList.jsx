@@ -221,7 +221,6 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
             <i className="cluster-card-port" style={collectionMarkerStyle(node.collection)} aria-hidden="true"/>
             {timeline && <small className="cluster-history-index">{index + 1}</small>}
             <span><strong>{node.title}</strong></span>
-            {node.id === selected && <small className="cluster-history-current">当前</small>}
           </button>
         </li>)}</ul> : <p className="cluster-list-empty">{shown.latest ? '暂无有有效日期的文档' : shown.recent ? '打开文档后，这里会留下阅读足迹' : shown.document ? shown.direction === 'incoming' ? '还没有其他文档引用这篇文章' : '这篇文章没有可打开的内部链接' : '暂时没有匹配的文档'}</p>}
         </div></div></div>

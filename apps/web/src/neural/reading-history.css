@@ -9,7 +9,6 @@
 .reading-history-toggle:hover{color:#e1e9f3}
 .reading-navigation button:focus-visible,.reading-history-toggle:focus-visible,.cluster-history-footer button:focus-visible{outline:1px solid #d5bc94;outline-offset:2px}
 .cluster-history-index{color:#cdb895;flex-shrink:0;font-size:10px;font-variant-numeric:tabular-nums}
-.cluster-history-current{color:#cdb895;flex-shrink:0;font-size:9px;margin-left:auto}
 .cluster-history .cluster-list-item{gap:8px}
 .cluster-history .cluster-list-item>span{flex:1}
 .cluster-history-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 6px 0 28px;margin-top:auto;font-size:10px;color:#899ab2;flex-shrink:0}
