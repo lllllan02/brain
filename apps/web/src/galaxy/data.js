@@ -34,3 +34,11 @@ export function galaxyFocus(data, selected, category, tag = null) {
   }
   return {index, bright, links, active: index >= 0 || Boolean(category || tag)};
 }
+
+// Filtering must not change coordinates, camera framing, or cap group membership.
+export function readingFilter(data, index, grouping) {
+  const node = data.nodes[index];
+  if (!node) return null;
+  const key = grouping === 'collection' ? 'collection' : 'folderTop';
+  return new Set(data.nodes.flatMap((candidate, i) => candidate[key] === node[key] ? [i] : []));
+}

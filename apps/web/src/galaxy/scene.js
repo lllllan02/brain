@@ -9,8 +9,8 @@ import {MainThreadForceLayout} from './vendor/layout/MainThreadForceLayout';
 import {seedPosition, seedRadius} from './vendor/data/seed';
 import {STYLE_PRESETS} from './vendor/render/stylePresets';
 import {TIERS} from './vendor/quality/tiers';
-import {galaxyData, galaxyFocus} from './data';
-import {categoryLayout, interpolateCategories, categoryEase, readingNeighborhood} from './categoryLayout';
+import {galaxyData, galaxyFocus, readingFilter} from './data';
+import {categoryLayout, interpolateCategories, categoryEase} from './categoryLayout';
 import {CategoryEffects} from './categoryEffects';
 import {categoryStyle} from './categoryStyles';
 import {NebulaBackdrop} from './nebulaBackdrop';
@@ -69,7 +69,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
   const scratch = new Vector3();
 
   function updateColors() {
-    renderer.setColorFn(node => expanded
+    renderer.setColorFn(node => expanded && readingIndex < 0
       ? grouping === 'collection' ? collectionColors.get(node.collection) || neutralColor : colors.get(node.folderTop) || neutralColor
       : preset?.id === 'deepfield' ? neutralColor : colors.get(node.folderTop) || neutralColor);
     renderer.setLinkColorFn(preset?.id === 'deepfield' && !expanded ? node => colors.get(node.folderTop) || neutralColor : null);
@@ -81,11 +81,14 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     return result;
   }
   function categoryLinkOpacity(blend) {
+    if (readingIndex >= 0) blend = 0;
     // 首页分散布局的引用更长，需要补偿长度/深度衰减，避免未展开时完全隐没。
     const overviewOpacity = preset.id === 'deepfield' ? .36 : preset.look.linkOpacity * .35;
     return overviewOpacity * (1 - blend) + categoryStyle(preset.id).linkOpacity * blend;
   }
   function categorySpace(blend, from = null, progress = 1) {
+    // Reading keeps the nebula appearance even while group labels are open.
+    if (readingIndex >= 0) blend = 0;
     const style = categoryStyle(preset.id);
     const target = {
       nebula: preset.space.nebula * (1 - blend) + style.background * blend,
@@ -106,11 +109,14 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     renderer.twinkleFreq = look.twinkle;
     if (look.curve !== currentLook?.curve) renderer.setLinkCurve(look.curve);
     currentLook = look;
-    if (filteredLinks !== (blend > .005)) updateLinkFilter();
+    if (filteredLinks !== (readingIndex < 0 && blend > .005)) updateLinkFilter();
   }
   function updateLinkFilter() {
-    filteredLinks = categoryBlend > .005;
-    renderer.setLinkFilter(filteredLinks ? i => {
+    filteredLinks = readingIndex < 0 && categoryBlend > .005;
+    renderer.setLinkFilter(localReading ? i => {
+      const link = data.links[i];
+      return localReading.indices.has(link.source) && localReading.indices.has(link.target);
+    } : filteredLinks ? i => {
       const link = data.links[i], a = groupId(data.nodes[link.source]), b = groupId(data.nodes[link.target]);
       return a === b && (localReading ? localReading.indices.has(link.source) && localReading.indices.has(link.target) : !category || category.startsWith('collection:') !== (grouping === 'collection') || a === category);
     } : null);
@@ -121,7 +127,10 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     // Expanded categories stay visually independent even when a note is open.
     // The reader still exposes all actual incoming and outgoing references.
     const links = !focus.active && hovered >= 0 ? incidentLinks[hovered] : focus.links;
-    renderer.setSelectedLinks(filteredLinks
+    renderer.setSelectedLinks(localReading ? links.filter(i => {
+      const link = data.links[i];
+      return localReading.indices.has(link.source) && localReading.indices.has(link.target);
+    }) : filteredLinks
       ? focus.index >= 0 || (!focus.active && hovered >= 0) ? links.filter(i => {
         const link = data.links[i];
         return groupId(data.nodes[link.source]) === groupId(data.nodes[link.target]) && (!localReading || localReading.indices.has(link.source) && localReading.indices.has(link.target));
@@ -130,9 +139,11 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
   }
   function frameReading(point, instant = false) {
     camera.cancelMotion();
-    const radius = (localReading?.radius || 60) / Math.min(1, frameWidth / frameHeight);
+    const radius = 60 / Math.min(1, frameWidth / frameHeight);
     if (instant || reduced) camera.setInitialFraming(point, radius);
-    else camera.resetView(point, radius);
+    else camera.resetView(point, radius, () => {
+      if (!paused) camera.beginFocusOrbit(null);
+    });
   }
   function frameDestination(target, instant = false) {
     // Layout changes keep the reader's node as the camera anchor, even when
@@ -167,12 +178,20 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     updateColors();
     if (!ready || !overview) return;
     hovered = -1; hoveredCategory = null;
+    // Reading toggles only the node/link mask. Leave the camera, layout and
+    // any in-flight reading transition untouched.
+    if (readingIndex >= 0 && preserveView && !presetFrom) {
+      categoryBlend = expanded ? 1 : 0;
+      categorySpace(categoryBlend);
+      applyFocus(false);
+      return;
+    }
     const from = snapshot();
     display = new Float32Array(from);
-    const to = expanded ? clusters.positions : overview;
+    const to = expanded && readingIndex < 0 ? clusters.positions : overview;
     const anchor = preserveView ? readingIndex : -1;
     applyFocus(false);
-    const anchorView = anchor >= 0 ? camera.captureAnchorView(new Vector3().fromArray(from, anchor * 3), (localReading?.radius || 60) / Math.min(1, frameWidth / frameHeight)) : null;
+    const anchorView = anchor >= 0 ? camera.captureAnchorView(new Vector3().fromArray(from, anchor * 3), 60 / Math.min(1, frameWidth / frameHeight)) : null;
     renderer.setDisplayPositions(display);
     if (anchor >= 0 || preserveView && clusters.spherical && !selected && !category && !tag) camera.cancelMotion();
     else frameDestination(to, instant);
@@ -189,7 +208,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
       transition.elapsed += dt;
       const p = Math.min(1, transition.elapsed / transition.duration);
       interpolateCategories(transition.from, transition.to, p, transition.expanding && !transition.morph, display, clusters);
-      // Move and frame the reading neighbourhood on the same animation clock.
+      // Move and frame the reading group on the same animation clock.
       if (transition.anchor >= 0) {
         camera.updateAnchorView(scratch.fromArray(display, transition.anchor * 3), transition.anchorView, categoryEase(p));
       }
@@ -200,6 +219,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
         transition = null;
         if (!expanded) renderer.refreshClusterClouds();
         applyFocus(readingIndex < 0 && !expanded && Boolean(selected || category || tag || readingTrail));
+        if (readingIndex >= 0 && !paused && !reduced) camera.beginFocusOrbit(null);
       }
     }
     effects?.update(burst, display, reduced ? 10 : dt);
@@ -229,19 +249,19 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
   }
   function applyFocus(move = false) {
     focus = galaxyFocus(data, selected, category, tag);
-    localReading = expanded && clusters && readingIndex >= 0 ? readingNeighborhood(data, clusters.positions, readingIndex, grouping) : null;
+    localReading = expanded && readingIndex >= 0 ? {indices: readingFilter(data, readingIndex, grouping), radius: 60} : null;
     const previewGroup = expanded && readingIndex < 0 && !category && !tag ? hoveredCategory : null;
     renderer.setActiveNode(readingIndex);
-    renderer.setFocus(localReading ? i => localReading.indices.has(i) ? focus.bright.has(i) || i === readingIndex ? 1 : .5 : 0 : readingTrail && trailIndices.size ? i => trailIndices.has(i) ? 1 : .16 : previewGroup ? i => groupId(data.nodes[i]) === previewGroup ? 1 : .14 : focus.active ? i => focus.bright.has(i) ? 1 : 0.28 : null);
+    renderer.setFocus(localReading ? i => localReading.indices.has(i) ? focus.bright.has(i) || i === readingIndex ? 1 : .28 : 0 : readingTrail && trailIndices.size ? i => trailIndices.has(i) ? 1 : .16 : previewGroup ? i => groupId(data.nodes[i]) === previewGroup ? 1 : .14 : focus.active ? i => focus.bright.has(i) ? 1 : 0.28 : null);
     updateLinkFilter();
-    renderer.setLinkOpacity(readingTrail ? .025 : expanded && category && focus.index < 0 ? .16 : categoryLinkOpacity(categoryBlend));
+    renderer.setLinkOpacity(readingTrail ? .025 : expanded && readingIndex < 0 && category && focus.index < 0 ? .16 : categoryLinkOpacity(categoryBlend));
     if (!ready || !move || transition) return;
-    if (expanded && readingIndex >= 0) frameReading(renderer.nodePosition(readingIndex, scratch));
-    else if (readingTrail && trailIndices.size) frame(false, [...trailIndices]);
-    else if (focus.index >= 0) {
+    if (readingTrail && trailIndices.size) frame(false, [...trailIndices]);
+    else if (readingIndex >= 0 || focus.index >= 0) {
+      const anchor = readingIndex >= 0 ? readingIndex : focus.index;
       camera.cancelMotion();
-      if (reduced) frame(true, [...focus.bright]);
-      else camera.flyTo(renderer.nodePosition(focus.index, scratch), Math.max(9, renderer.nodeRadius(focus.index)), () => {
+      if (reduced) frameReading(renderer.nodePosition(anchor, scratch), true);
+      else camera.flyTo(renderer.nodePosition(anchor, scratch), Math.max(9, renderer.nodeRadius(anchor)), () => {
         if (!paused) camera.beginFocusOrbit(null);
       });
     } else if (expanded && !category && !tag && clusters) frameDestination(clusters.positions);
@@ -416,7 +436,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     camera.cruiseEnabled = !paused && !reduced && ready && !transition && !readingTrail;
     camera.cruiseSpeed = 0.5;
     camera.update(now, dt, paused || reduced ? 0 : dt);
-    backdrop.update(renderer.camera, preset.id, categoryBlend, readingIndex >= 0, dt, reduced);
+    backdrop.update(renderer.camera, preset.id, readingIndex >= 0 ? 0 : categoryBlend, readingIndex >= 0, dt, reduced);
     renderer.render(paused || reduced ? 0 : dt, dt);
     if (readerLayoutDirty || now - labelTime > 32) { labels(Math.min((now - labelTime) / 1000, .05)); labelTime = now; readerLayoutDirty = false; }
   }
@@ -476,9 +496,11 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     resizeReader() { if (!disposed) resize(true); },
     focus(sel, mod, selectedTag = null, readingId = sel) {
       if (disposed) return;
+      const previousReading = readingIndex;
       selected = sel; category = mod; tag = selectedTag;
       readingIndex = nodeIndices.get(readingId) ?? -1;
-      applyFocus(true);
+      updateColors();
+      applyFocus(readingIndex < 0 || readingIndex !== previousReading);
     },
     setReducedMotion(value) {
       if (disposed || reduced === value) return;

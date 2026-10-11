@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createServer} from 'vite';
-import {galaxyData, galaxyFocus} from '../src/galaxy/data.js';
+import {galaxyData, galaxyFocus, readingFilter} from '../src/galaxy/data.js';
 
 const note = (id, module, deg = 0) => ({id, title:id, body:'正文', module, deg, in:0, out:deg, tags:[]});
 test('星系适配只包含文档和真实引用，保留孤立文档及稳定 ID', () => {
@@ -68,4 +68,19 @@ test('目录状态传入星图，inbox 保留目录标记且不改变真实引�
  const data=galaxyData({nodes:[{...note('a','one'),collection:'notes'},{...note('b','one'),collection:'inbox'}],links:[{a:'a',b:'b',kind:'wiki'}]});
  assert.deepEqual(data.nodes.map(n=>n.collection),['notes','inbox']);
  assert.deepEqual(data.links,[{source:0,target:1}]);
+});
+
+test('阅读筛选保留全部同组节点，不改动布局数据，分类与目录独立匹配', () => {
+  const data = {nodes: Array.from({length:300}, (_,i) => ({id:`n-${i}`, folderTop:i < 200 ? 'a' : 'b', collection:i % 2 ? 'notes' : 'inbox'})), links:[]};
+  const original = structuredClone(data);
+  const category = readingFilter(data, 0, 'category');
+  const collection = readingFilter(data, 0, 'collection');
+  assert.equal(category.size, 200);
+  assert.equal(collection.size, 150);
+  assert.ok(category.has(199));
+  assert.ok(!category.has(200));
+  assert.ok(collection.has(298));
+  assert.ok(!collection.has(199));
+  assert.equal(readingFilter(data, -1, 'category'), null);
+  assert.deepEqual(data, original);
 });
