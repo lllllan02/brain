@@ -1,0 +1,27 @@
+/* Global UI priority, shared by desktop, mobile and body-mounted previews.
+   Keep page containers free of stacking contexts so portals share this scale. */
+:root {
+  --layer-sky: 0;
+  --layer-navigation: 10;
+  --layer-list: 20;
+  --layer-reader: 30;
+  --layer-preview: 40;
+  --layer-notice: 50;
+  --layer-search: 60;
+}
+
+.galaxy-page .galaxy-viewport { z-index: var(--layer-sky); }
+.galaxy-page .cluster-fan { z-index: var(--layer-list); }
+.galaxy-page .analysis-wrap { z-index: var(--layer-reader); }
+.galaxy-page .galaxy-header,
+.galaxy-page .galaxy-views { z-index: var(--layer-navigation); }
+.neural.link-preview,
+.external-address-preview { z-index: var(--layer-preview); }
+.collection-move-toast { z-index: var(--layer-notice); }
+.galaxy-page .galaxy-search-dock { z-index: var(--layer-search); }
+
+/* An overlapping result must hide the text beneath it, including during scroll. */
+.galaxy-page .galaxy-results {
+  background: #0c1119;
+  overscroll-behavior: contain;
+}

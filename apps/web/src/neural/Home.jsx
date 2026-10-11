@@ -178,6 +178,12 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
         event.preventDefault(); searchInput.current?.focus();
       }
       if (event.key === 'Escape') {
+        if (searchVisible) {
+          event.preventDefault();
+          setSearchOpen(false);
+          searchInput.current?.blur();
+          return;
+        }
         if (latestOpen) {closeLatest(); return;}
         if (historyOpen) {closeHistory(); return;}
         if (query) { setQuery(''); return; }
@@ -187,7 +193,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       }
     };
     window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
-  }, [focus, query, setFocus, historyOpen, latestOpen]);
+  }, [focus, query, searchVisible, setFocus, historyOpen, latestOpen]);
   const reset = () => { setQuery(''); setSearchOpen(false); searchInput.current?.blur(); setFocus({mod: null, sel: null}); scene.current?.reset(); };
   return <section className={`galaxy-page ${node || shownNode ? 'galaxy-reading' : ''} ${displayedCluster || clusterVisible ? 'galaxy-browsing' : ''} ${timelineOpen ? 'galaxy-history-open' : ''}`} aria-label={CONFIG.brand.name} data-reader-open={Boolean(node?.module)} data-view={preset} style={motionVariables}>
     <div className={`galaxy-viewport ${!ready || error ? 'is-loading' : ''}`} ref={host}>

@@ -78,7 +78,10 @@
 .cluster-flow-hub circle{fill:var(--reading-core);filter:blur(3px)}
 .cluster-flow-hub ellipse{fill:none;stroke:var(--reading-aura);stroke-width:1;filter:blur(.6px)}
 @media(prefers-reduced-motion:reduce){.cluster-thread-sparks,.cluster-flow-hub{display:none}}
-.cluster-list{position:absolute;top:96px;bottom:110px;right:calc(clamp(380px,33vw,470px) + 42px);width:250px;display:flex;flex-direction:column;min-height:0;pointer-events:auto}
+.cluster-list{position:absolute;top:96px;bottom:110px;right:calc(clamp(380px,33vw,470px) + 42px);width:250px;display:flex;flex-direction:column;min-height:0;pointer-events:none}
+/* Empty space belongs to the sky. Wheel/touch events on cards still scroll
+   their native scroll ancestor; only actual controls intercept the pointer. */
+.cluster-list button{pointer-events:auto}
 .cluster-list-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 6px 12px 28px;flex-shrink:0}
 .cluster-list-header>div{display:flex;align-items:baseline;gap:8px;min-width:0}
 .cluster-list-header span,.cluster-list-header small{color:#899ab2;font-size:10px;white-space:nowrap}
