@@ -19,16 +19,18 @@ vec3 revealPosition(vec3 targetPosition) {
 export const NODE_VERTEX_SHADER = /* glsl */ `
 attribute float aSize;
 attribute float aGhost;
-attribute float aInbox;
-attribute float aReading;
+attribute vec3 aCollectionColor;
+attribute vec4 aCollectionShape; // size, halo, rays, ray stretch
+attribute float aRayAngle;
 attribute float aDim;
 attribute float aActive;
 attribute float aPreview;
 attribute float aWeight; // 0..1，按引用数归一，拉开星点的主次
 varying vec3 vColor;
 varying float vGhost;
-varying float vInbox;
-varying float vReading;
+varying vec3 vCollectionColor;
+varying vec4 vCollectionShape;
+varying float vRayAngle;
 varying float vDim;
 varying float vPointSize;
 varying float vActive;
@@ -53,8 +55,9 @@ ${REVEAL_POSITION_GLSL}
 void main() {
 	vColor = color;
 	vGhost = aGhost;
-	vInbox = aInbox;
-	vReading = aReading;
+	vCollectionColor = aCollectionColor;
+	vCollectionShape = aCollectionShape;
+	vRayAngle = aRayAngle;
 	vDim = mix(aDim, 1.0, max(aActive, aPreview));
 	vActive = aActive;
 	vPreview = aPreview;
@@ -67,7 +70,7 @@ void main() {
 	vec4 mv = modelViewMatrix * vec4(revealPosition(position), 1.0);
 	// 给光晕和星芒留出空间，亮核仍比原来的圆盘小；浅色模式维持原尺寸。
 	float projectedSize = aSize * uSizeMul * uPixelScale / max(-mv.z, 1.0) * mix(1.6, 1.0, uLightMode);
-	vPointSize = min(max(projectedSize, uMinPoint * mix(0.74, 1.5, aWeight) * (1.0 - uLightMode)) * mix(1.0, 0.90, aInbox) * max(mix(1.0, 1.6, aActive), 1.0 + aPreview * (0.55 + uPreviewPulse * 0.65)), uMaxPoint);
+	vPointSize = min(max(projectedSize, uMinPoint * mix(0.74, 1.5, aWeight) * (1.0 - uLightMode)) * aCollectionShape.x * max(mix(1.0, 1.6, aActive), 1.0 + aPreview * (0.55 + uPreviewPulse * 0.65)), uMaxPoint);
 	gl_PointSize = vPointSize;
 	gl_Position = projectionMatrix * mv;
 }
@@ -76,8 +79,9 @@ void main() {
 export const NODE_FRAGMENT_SHADER = /* glsl */ `
 varying vec3 vColor;
 varying float vGhost;
-varying float vInbox;
-varying float vReading;
+varying vec3 vCollectionColor;
+varying vec4 vCollectionShape;
+varying float vRayAngle;
 varying float vDim;
 varying float vPointSize;
 varying float vActive;
@@ -95,15 +99,17 @@ void main() {
 	// 以设备像素为下限，远处的小星点和关闭 bloom 的窄屏也保留可见亮核。
 	float pixel = 1.0 / max(vPointSize, 1.0);
 	// 菱形轮廓专属于可阅读的文档，背景星仍是无轮廓的小光点。
-	float coreWidth = mix(0.11, 0.13, vActive) * mix(1.0, 0.90, vInbox);
+	float coreWidth = mix(0.11, 0.13, vActive) * vCollectionShape.x;
 	float core = 1.0 - smoothstep(coreWidth - pixel, coreWidth + pixel, abs(uv.x) + abs(uv.y));
 	float halo = exp(-dot(uv, uv) * mix(42.0, 30.0, vActive)) * mix(mix(0.08, 0.22, vDim), 0.42, vActive);
 	halo += vPreview * exp(-dot(uv, uv) * 25.0) * (0.3 + uPreviewPulse * 0.65);
 	float rayWidth = max(0.014, pixel * 0.65);
 	// 远景仍是一颗星；靠近后外部导读的横向衍射光稍长。
 	float detail = smoothstep(10.0, 32.0, vPointSize);
-	float rays = exp(-abs(uv.x) / rayWidth - abs(uv.y) * 5.0)
-		+ exp(-abs(uv.y) / rayWidth - abs(uv.x) * mix(5.5, 3.8, vReading * mix(0.5, 1.0, detail)));
+	float rayCos = cos(vRayAngle), raySin = sin(vRayAngle);
+	vec2 rayUv = mat2(rayCos, -raySin, raySin, rayCos) * uv;
+	float rays = exp(-abs(rayUv.x) / rayWidth - abs(rayUv.y) * 5.0)
+		+ exp(-abs(rayUv.y) / rayWidth - abs(rayUv.x) * (5.5 / mix(1.0, vCollectionShape.w, mix(0.5, 1.0, detail))));
 	// 当前主星补一组很淡的斜向细芒和缓慢呼吸的星冕，与四角定位标记互不重叠。
 	vec2 diag = vec2(uv.x + uv.y, uv.x - uv.y) * 0.70710678;
 	float diagonalRays = (exp(-abs(diag.x) / rayWidth - abs(diag.y) * 9.0)
@@ -113,8 +119,8 @@ void main() {
 	float edge = 1.0 - smoothstep(0.38, 0.5, d);
 	// 引用多的星光晕更足、星芒更长，少引用的星收敛为小亮点。
 	float weightGlow = mix(mix(0.62, 1.45, vWeight), 1.0, vActive);
-	float glow = halo * mix(1.0, 0.75, vInbox) * (1.0 + vTwinkle * 0.35) * weightGlow
-		+ rays * mix(mix(0.22, 0.65, vDim), 0.85, vActive) * mix(1.0, 0.70, vInbox) * (1.0 + vTwinkle * 0.6) * weightGlow
+	float glow = halo * vCollectionShape.y * (1.0 + vTwinkle * 0.35) * weightGlow
+		+ rays * mix(mix(0.22, 0.65, vDim), 0.85, vActive) * vCollectionShape.z * (1.0 + vTwinkle * 0.6) * weightGlow
 		+ diagonalRays + corona;
 	// 阅读聚焦沿用原有明暗权重，整颗星一起淡出；通过光芒比例保留星形。
 	float starAlpha = clamp((core + glow) * edge, 0.0, 1.0) * vDim;
@@ -122,8 +128,7 @@ void main() {
 	starTint = mix(starTint, vec3(0.88, 0.94, 1.0), vPreview * 0.55);
 	// 在线性空间中保留足够色差，避免白核和 bloom 将目录色冲成白光。
 	// 目录色覆盖星核边缘及星芒，最外层仍渐变回分类色。
-	vec3 collectionTint = mix(vec3(0.90, 0.76, 0.56), vec3(0.36, 0.56, 0.82), vInbox);
-	collectionTint = mix(collectionTint, vec3(0.40, 0.72, 0.69), vReading);
+	vec3 collectionTint = vCollectionColor;
 	float collectionMask = 1.0 - smoothstep(0.28, 0.48, d);
 	starTint = mix(starTint, collectionTint, collectionMask * mix(0.94, 1.0, detail));
 	// 白光仅留在中心小点，选中时靠尺寸和光晕强调，避免整颗褪色。

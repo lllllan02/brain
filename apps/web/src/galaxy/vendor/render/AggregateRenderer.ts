@@ -1,3 +1,4 @@
+import {collectionStyle} from '../../../collections.js';
 import {MOTION, damp} from '../../../motion/tokens.js';
 import {
 	ACESFilmicToneMapping,
@@ -216,8 +217,10 @@ export class AggregateRenderer {
 		this.nodeTargetPositions = new Float32Array(n * 3);
 		this.fitWeights = new Float32Array(n);
 		const ghost = new Float32Array(n);
-		const inbox = new Float32Array(n);
-		const reading = new Float32Array(n);
+		const collectionColors = new Float32Array(n * 3);
+		const collectionShapes = new Float32Array(n * 4);
+		const rayAngles = new Float32Array(n);
+		const collectionColor = new Color();
 		this.sizes = new Float32Array(n);
 		this.dimCurrent = new Float32Array(n).fill(1);
 		this.dimTarget = new Float32Array(n).fill(1);
@@ -225,8 +228,10 @@ export class AggregateRenderer {
 			const node = data.nodes[i];
 			if (!node) continue;
 			ghost[i] = node.unresolved ? 1 : 0;
-			inbox[i] = node.inbox ? 1 : 0;
-			reading[i] = node.collection === 'readings' ? 1 : 0;
+			const style = collectionStyle(node.collection);
+			collectionColor.set(style.color).toArray(collectionColors, i * 3);
+			collectionShapes.set([style.node.size, style.node.halo, style.node.rays, style.node.rayStretch], i * 4);
+			rayAngles[i] = style.node.rayAngle * Math.PI / 180;
 			this.fitWeights[i] = node.degree;
 			this.sizes[i] = this.computeSize(node);
 		}
@@ -240,8 +245,9 @@ export class AggregateRenderer {
 		this.nodeGeometry.setAttribute('color', new BufferAttribute(new Float32Array(n * 3), 3));
 		this.nodeGeometry.setAttribute('aSize', new BufferAttribute(this.sizes, 1));
 		this.nodeGeometry.setAttribute('aGhost', new BufferAttribute(ghost, 1));
-		this.nodeGeometry.setAttribute('aInbox', new BufferAttribute(inbox, 1));
-		this.nodeGeometry.setAttribute('aReading', new BufferAttribute(reading, 1));
+		this.nodeGeometry.setAttribute('aCollectionColor', new BufferAttribute(collectionColors, 3));
+		this.nodeGeometry.setAttribute('aCollectionShape', new BufferAttribute(collectionShapes, 4));
+		this.nodeGeometry.setAttribute('aRayAngle', new BufferAttribute(rayAngles, 1));
 		this.nodeGeometry.setAttribute('aDim', new BufferAttribute(this.dimCurrent, 1));
 		this.nodeGeometry.setAttribute('aActive', new BufferAttribute(new Float32Array(n), 1));
 		this.nodeGeometry.setAttribute('aPreview', new BufferAttribute(new Float32Array(n), 1));

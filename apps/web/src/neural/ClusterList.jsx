@@ -1,6 +1,6 @@
 import {readViewState, writeViewState} from './view-state';
 import {Icon} from './icons';
-import {collectionLabel} from '../collections.js';
+import {collectionLabel, collectionMarkerStyle} from '../collections.js';
 import React, {useEffect, useLayoutEffect, useMemo, useRef} from 'react';
 
 import {readingFlow, READING_FLOW, READING_INK, readingInkVariables, launchAccent, launchWake} from '../motion/reading-flow.js';
@@ -214,7 +214,7 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
         {documents.length ? <ul key={selectionKey}>{documents.map((node, index) => <li key={node.id}>
           <button type="button" className="cluster-list-item" style={{'--fan-delay': `${stagger(index)}ms`}}
             aria-current={node.id === selected ? 'page' : undefined} onClick={() => onSelect(node.id)}>
-            <i className={`cluster-card-port${node.collection === 'inbox' ? ' is-inbox' : node.collection === 'readings' ? ' is-reading' : ''}`} aria-hidden="true"/>
+            <i className="cluster-card-port" style={collectionMarkerStyle(node.collection)} aria-hidden="true"/>
             {timeline && <small className="cluster-history-index">{index + 1}</small>}
             <span><strong>{node.title}</strong></span>
             {timeline && node.id === selected && <small className="cluster-history-current">当前</small>}

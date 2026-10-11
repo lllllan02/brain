@@ -8,7 +8,6 @@ export function galaxyData(graph) {
     collection: node.collection,
     degree: node.deg, inDegree: node.in, outDegree: node.out,
     fileSize: new TextEncoder().encode(node.body || '').length,
-    inbox: node.collection === 'inbox',
     tags: node.tags || [], unresolved: false, tag: false,
   }));
   const links = graph.links.filter(link => link.kind === 'wiki' && indices.has(link.a) && indices.has(link.b))

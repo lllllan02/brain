@@ -38,10 +38,10 @@ test('分类、目录和标签列表展示全部匹配文档，与星图聚焦�
   const {buildGraph}=await server.ssrLoadModule('/src/neural/graph.js');
   const {clusterDocuments}=await server.ssrLoadModule('/src/neural/ClusterList.jsx');
   const {galaxyData,galaxyFocus}=await import('../src/galaxy/data.js');
-  const documents=Array.from({length:80},(_,i)=>({id:`note-${i}`,title:`笔记 ${i}`,body:'',collection:i<30?'inbox':i<60?'notes':'readings',category:i<65?'数据库':'系统',tags:i%2?['共享']:['共享扩展'],references:[],backlinks:[]}));
+  const documents=Array.from({length:80},(_,i)=>({id:`note-${i}`,title:`笔记 ${i}`,body:'',collection:i<30?'inbox':i<60?'notes':i<70?'readings':'glossary',category:i<65?'数据库':'系统',tags:i%2?['共享']:['共享扩展'],references:[],backlinks:[]}));
   const graph=buildGraph({documents}), data=galaxyData(graph);
   const category=graph.modules.find(m=>m.title==='数据库').id;
-  for (const [cluster,count] of [[{category},65],[{tag:'共享'},40],[{tag:'不存在'},0],[{category:'collection:inbox'},30],[{category:'collection:notes'},30],[{category:'collection:readings'},20]]) {
+  for (const [cluster,count] of [[{category},65],[{tag:'共享'},40],[{tag:'不存在'},0],[{category:'collection:inbox'},30],[{category:'collection:notes'},30],[{category:'collection:readings'},10],[{category:'collection:glossary'},10]]) {
    const rows=clusterDocuments(graph,cluster), focus=galaxyFocus(data,null,cluster.category,cluster.tag);
    assert.equal(rows.length,count);
    assert.deepEqual(new Set(rows.map(n=>n.id)),new Set([...focus.bright].map(i=>data.nodes[i].id)));

@@ -1,5 +1,5 @@
 import {starCluster} from './starCluster.js';
-import {collectionLabel} from '../collections.js';
+import {collectionLabel, collectionRegistry} from '../collections.js';
 import {MOTION, smooth} from '../motion/tokens.js';
 import {Color, Vector3} from 'three';
 import {AggregateRenderer} from './vendor/render/AggregateRenderer';
@@ -38,7 +38,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     const color = new Color(module.color), hsl = {}; color.getHSL(hsl);
     return [module.id, color.setHSL(hsl.h, 0.32, 0.70)];
   }));
-  const collectionColors = new Map([['inbox', new Color('#a2c5ea')], ['notes', new Color('#f3e2c5')], ['readings', new Color('#aadcd8')]]);
+  const collectionColors = new Map(collectionRegistry.collections.map(entry => [entry.id, new Color(entry.color)]));
   const neutralColor = new Color('#c7d3e4');
   let layout, preset, width = 1, height = 1, frameWidth = 1, frameHeight = 1, disposed = false;
   let ready = false, paused = reduced, selected = null, category = null, tag = null;

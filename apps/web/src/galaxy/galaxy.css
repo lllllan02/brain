@@ -116,8 +116,6 @@
 
 .neural.loading-screen{background:#000003;color:#adb9c9}
 
-/* Folder provenance is a quiet shape cue, independent of focus brightness. */
-.cluster-card-port.is-inbox,.cluster-list-item[aria-current="page"] .cluster-card-port.is-inbox{background:transparent;border:1.5px solid #c2cbef}
 
 /* Keep the title column beside the real reading edge rather than its default width. */
 @media(min-width:901px){
@@ -130,10 +128,14 @@
  .cluster-list-header small{flex-shrink:0}
 }
 
-.cluster-card-port.is-reading{border-radius:1px;transform:rotate(45deg)}
 
 @media(max-width:480px){.galaxy-views{top:64px}.galaxy-views .galaxy-category-toggle{margin-right:5px}}
 
 .galaxy-category-label{display:flex;align-items:center;gap:8px}
 .galaxy-category-label>i{width:5px;height:5px;border-radius:50%;background:var(--group-color);box-shadow:0 0 8px var(--group-color)}
 .galaxy-category-label>small{color:var(--group-color);font:10px system-ui;letter-spacing:0;opacity:.8}
+
+
+/* Directory markers share geometry and color tokens from collections.config.json. */
+.galaxy-page .cluster-card-port,.galaxy-page .cluster-list-item[aria-current="page"] .cluster-card-port{border-radius:var(--collection-radius,50%);transform:rotate(var(--collection-rotation,0deg));background:var(--collection-fill,#d0dbe7);border:1.5px solid var(--collection-color,#d0dbe7);box-shadow:0 0 0 4px color-mix(in srgb,var(--collection-color,#d0dbe7) 9%,transparent),0 0 13px color-mix(in srgb,var(--collection-color,#d0dbe7) 33%,transparent)}
+.galaxy-page .cluster-list-item[aria-current="page"] .cluster-card-port{box-shadow:0 0 0 5px color-mix(in srgb,var(--collection-color,#d0dbe7) 15%,transparent),0 0 16px color-mix(in srgb,var(--collection-color,#d0dbe7) 60%,transparent)}
