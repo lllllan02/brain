@@ -43,7 +43,7 @@ tags: ["知识库", "元数据", "命名", "链接维护"]
 | `updated_at` | 正文最后实质变更时间，格式同上 | 新文及实质更新时记录；格式、属性名或路径变化不刷新 |
 | `type` / `classes` | 文档类型；新文优先单值 type，如 `concept`、`practice`、`article`、`overview`；已有 classes 是类型列表 | 有分类需求时使用，同一文档不重复维护两者 |
 | `description` | 一句话摘要，文本 | 正文开头不足以支持预览或展示时使用，避免重复维护同一摘要 |
-| `source` / `url` | 外部出处；推荐 `source: "https://…"`，可写 `source: "[原文标题](https://…)"`，多个来源使用字符串列表；兼容出处文本及 `url` / `URL` | 标题下方展示来源，HTTP(S) 地址可点击；正文不重复独立的来源行，必要的章节引用与适用条件仍留正文 |
+| `source` / `url` | 外部出处；推荐 `source: "https://…"`，可写 `source: "[原文标题](https://…)"`，多个来源使用字符串列表；兼容出处文本及 `url` / `URL` | 仅 readings 外部导读填写；inbox、notes 不填 `source` 或用 `url` / `URL` 替代。来源在标题下展示，必要的正文引用仍可保留 |
 | `status` | 工作状态，文本，如 `draft`、`review`、`done` | 有实际草稿、核查或处理流程时使用，不作为事实可信度或掌握程度 |
 | `cssclasses` | 样式名称列表，用于 Obsidian CSS 片段 | 需要单篇特殊显示样式时使用 |
 
