@@ -26,7 +26,9 @@ function loadEngine() {
 // replacement article or reuse an SVG ID from the reader / another preview.
 export function renderDiagrams(article: HTMLElement) {
   let cancelled = false;
-  const blocks = [...article.querySelectorAll('.diagram-block')];
+  const blocks = [...article.querySelectorAll('.diagram-block')].filter(
+    (block) => !block.querySelector('.diagram-canvas svg'),
+  );
   const ready = (async () => {
     if (!blocks.length) return;
     let mermaid;

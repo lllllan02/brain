@@ -7,7 +7,6 @@ type LoadState =
 export type LibrarySnapshot = LoadState & {
   moveState: MoveState;
   revision: number;
-  pendingLibrary: Library | null;
 };
 interface Transport {
   fetch(signal: AbortSignal): Promise<Library>;
@@ -23,7 +22,6 @@ export function createLibraryStore(transport: Transport) {
     error: '',
     moveState: { status: 'idle', pending: false },
     revision: 0,
-    pendingLibrary: null,
   };
   const listeners = new Set<() => void>();
   let active = false,
@@ -59,15 +57,21 @@ export function createLibraryStore(transport: Transport) {
         old?.version === next.version &&
         old.activity?.version === next.activity?.version &&
         JSON.stringify(old.activity) === JSON.stringify(next.activity);
-      const pending = snapshot.pendingLibrary;
-      const pendingLibrary =
-        !old || unchanged
-          ? null
-          : pending?.version === next.version &&
-              JSON.stringify(pending.activity) === JSON.stringify(next.activity)
-            ? pending
-            : next;
-      publish({ ...snapshot, status: 'ready', library: old ?? next, pendingLibrary, error: '' });
+      const previous = new Map(old?.documents.map((doc) => [doc.id, doc]));
+      const library = !old
+        ? next
+        : unchanged
+          ? old
+          : {
+              ...next,
+              documents: next.documents.map((doc) => {
+                const existing = previous.get(doc.id);
+                return existing && JSON.stringify(existing) === JSON.stringify(doc)
+                  ? existing
+                  : doc;
+              }),
+            };
+      publish({ ...snapshot, status: 'ready', library, error: '' });
     } catch (error) {
       if (!active || epoch !== generation || ticket !== revision || controller.signal.aborted)
         return;
@@ -102,18 +106,6 @@ export function createLibraryStore(transport: Transport) {
       invalidate();
     },
     refresh,
-    applyUpdate() {
-      if (!active || !snapshot.pendingLibrary || snapshot.moveState.pending || snapshot.error)
-        return;
-      invalidate();
-      publish({
-        ...snapshot,
-        status: 'ready',
-        library: snapshot.pendingLibrary,
-        pendingLibrary: null,
-        revision,
-      });
-    },
     clearMove() {
       if (!snapshot.moveState.pending)
         publish({ ...snapshot, moveState: { status: 'idle', pending: false } });
@@ -130,7 +122,6 @@ export function createLibraryStore(transport: Transport) {
         publish({
           status: 'ready',
           library,
-          pendingLibrary: null,
           error: '',
           revision: ++revision,
           moveState: { status: 'success', pending: false, id, collection },

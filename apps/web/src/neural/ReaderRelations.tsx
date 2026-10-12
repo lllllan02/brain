@@ -29,7 +29,7 @@ export function ReaderRelations({
   );
   const outgoing = cluster?.document === node.id && cluster.direction !== 'incoming';
   const incoming = cluster?.document === node.id && cluster.direction === 'incoming';
-  const category = cluster?.category === module!.id;
+  const category = Boolean(module && cluster?.category === module.id);
   const tags = node.tags || [];
   const choose = (next: Cluster | null, active: boolean) => onChoose(active ? null : next);
   if (section === 'context')
@@ -41,7 +41,8 @@ export function ReaderRelations({
           title={`分类：${node.category || '未分类'}`}
           aria-label={`查看分类 ${node.category || '未分类'} 的列表`}
           aria-pressed={category}
-          onClick={() => choose({ category: module!.id }, category)}
+          disabled={!module}
+          onClick={() => module && choose({ category: module.id }, category)}
         >
           {node.category || '未分类'}
         </button>

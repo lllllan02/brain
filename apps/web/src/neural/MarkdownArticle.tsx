@@ -1,7 +1,8 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { type ViewerImage, ImageViewer, imageForViewer } from './ImageViewer.tsx';
 import { renderDiagrams } from './diagrams.ts';
 import './diagrams.css';
+import { createArticlePatcher } from './patch-article.ts';
 import { decorateExternalLinks } from './external-links.ts';
 
 export const MarkdownArticle = memo(function MarkdownArticle({
@@ -12,9 +13,13 @@ export const MarkdownArticle = memo(function MarkdownArticle({
   zoomable?: boolean;
 }) {
   const ref = useRef<HTMLElement>(null);
+  const patch = useRef<ReturnType<typeof createArticlePatcher> | null>(null);
+  useLayoutEffect(() => {
+    patch.current ??= createArticlePatcher(ref.current!);
+    patch.current(html);
+  }, [html]);
   const [image, setImage] = useState<ViewerImage | null>(null);
   useEffect(() => {
-    setImage(null);
     decorateExternalLinks(ref.current!, import.meta.env.BASE_URL);
     const rendering = renderDiagrams(ref.current!);
     let cancelled = false;
@@ -48,13 +53,7 @@ export const MarkdownArticle = memo(function MarkdownArticle({
   };
   return (
     <>
-      <article
-        className="markdown"
-        ref={ref}
-        onClick={open}
-        onKeyDown={open}
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
+      <article className="markdown" ref={ref} onClick={open} onKeyDown={open} />
       {image && <ImageViewer image={image} onClose={() => setImage(null)} />}
     </>
   );

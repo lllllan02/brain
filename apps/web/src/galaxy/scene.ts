@@ -59,7 +59,7 @@ import { MainThreadForceLayout } from './vendor/layout/MainThreadForceLayout.ts'
 import { seedPosition, seedRadius } from './vendor/data/seed.ts';
 import { STYLE_PRESETS } from './vendor/render/stylePresets.ts';
 import { TIERS } from './vendor/quality/tiers.ts';
-import { galaxyData, galaxyFocus, readingFilter } from './data.ts';
+import { galaxyData, galaxyTopologyKey, galaxyFocus, readingFilter } from './data.ts';
 import { categoryLayout, interpolateCategories, categoryEase } from './categoryLayout.ts';
 import { CategoryEffects } from './categoryEffects.ts';
 import { categoryStyle } from './categoryStyles.ts';
@@ -76,7 +76,8 @@ export function createGalaxy(
   reduced: boolean,
   initialPreset = 'deepfield',
 ) {
-  const data = galaxyData(graph);
+  let data = galaxyData(graph);
+  let queuedGraph: ReaderGraph | null = null;
   const nodeIndices = new Map(data.nodes.map((node, i) => [node.id, i]));
   const incidentLinks: number[][] = data.nodes.map(() => []);
   data.links.forEach((link, i) => {
@@ -85,7 +86,7 @@ export function createGalaxy(
   });
   const framingRegion = container.querySelector('.galaxy-frame') || container;
   const radius = Math.max(45, seedRadius(data.nodes.length));
-  const positions = new Float32Array(data.nodes.length * 3);
+  let positions = new Float32Array(data.nodes.length * 3);
   data.nodes.forEach((node, i) => positions.set(seedPosition(node.id, radius), i * 3));
   const renderer = new AggregateRenderer(container, radius);
   const backdrop = new NebulaBackdrop(renderer.sceneRoot);
@@ -121,6 +122,7 @@ export function createGalaxy(
     selected: string | null = null,
     category: string | null = null,
     tag: string | null = null;
+  let readingDocumentId: string | null = null;
   let readingIndex = -1,
     preparedReading = -1;
   let localReading: { indices: Set<number>; radius: number } | null = null;
@@ -779,6 +781,7 @@ export function createGalaxy(
       previous = 0;
       return;
     }
+    if (queuedGraph && ready && !transition && !renderer.revealing) updateGraph(queuedGraph);
     const dt = previous ? Math.min((now - previous) / 1000, MOTION.maxFrame / 1000) : 0;
     previous = now;
     if (workerDeadline && now > workerDeadline && !layout?.isSettled()) fallback();
@@ -957,6 +960,124 @@ export function createGalaxy(
     canvas.remove();
   }
   camera.setReducedMotion(reduced);
+  function updateGraph(next: ReaderGraph) {
+    if (disposed) return;
+    // Finish initial loading or a user-triggered mode transition before reconciling data.
+    if (!ready || transition || renderer.revealing) {
+      queuedGraph = next;
+      return;
+    }
+    queuedGraph = null;
+    const nextData = galaxyData(next);
+    const structural = galaxyTopologyKey(data) !== galaxyTopologyKey(nextData);
+    const byId = new Map(nextData.nodes.map((node) => [node.id, node]));
+    const groupsChanged =
+      structural ||
+      data.nodes.some((node) => {
+        const updated = byId.get(node.id)!;
+        return node.folderTop !== updated.folderTop || node.collection !== updated.collection;
+      });
+    const unchanged =
+      !structural &&
+      data.nodes.every((node) => JSON.stringify(node) === JSON.stringify(byId.get(node.id)));
+    graph = next;
+    settledLayouts.set(graph, overviewCache);
+    if (unchanged) return;
+    colors.clear();
+    for (const module of graph.modules) {
+      const color = new Color(module.color),
+        hsl = { h: 0, s: 0, l: 0 };
+      color.getHSL(hsl);
+      colors.set(module.id, color.setHSL(hsl.h, 0.32, 0.7));
+    }
+    if (structural) {
+      const previousPositions = snapshot();
+      const previousOverview = overview;
+      const previousNodes = new Map(data.nodes.map((node, i) => [node.id, i]));
+      const previewId = data.nodes[previewIndex]?.id;
+      layout?.dispose();
+      layout = null;
+      workerDeadline = 0;
+      positions = new Float32Array(nextData.nodes.length * 3);
+      nextData.nodes.forEach((node, i) => {
+        const old = previousNodes.get(node.id);
+        if (old !== undefined)
+          positions.set(previousPositions.subarray(old * 3, old * 3 + 3), i * 3);
+        else {
+          const neighbor = nextData.links.find(
+            (link) =>
+              (link.source === i && previousNodes.has(nextData.nodes[link.target].id)) ||
+              (link.target === i && previousNodes.has(nextData.nodes[link.source].id)),
+          );
+          const neighborId =
+            neighbor &&
+            nextData.nodes[neighbor.source === i ? neighbor.target : neighbor.source].id;
+          const anchor = neighborId ? previousNodes.get(neighborId) : undefined;
+          const point = seedPosition(node.id, anchor === undefined ? radius : 16);
+          if (anchor !== undefined)
+            for (let axis = 0; axis < 3; axis++)
+              point[axis] += previousPositions[anchor * 3 + axis];
+          positions.set(point, i * 3);
+        }
+      });
+      // Clear old overrides/indices before resizing GPU buffers, all within the same frame.
+      renderer.setSelectedLinks([], []);
+      renderer.setLinkFilter(null);
+      renderer.setDisplayPositions(null);
+      data = nextData;
+      nodeIndices.clear();
+      data.nodes.forEach((node, i) => nodeIndices.set(node.id, i));
+      incidentLinks.length = 0;
+      data.nodes.forEach(() => incidentLinks.push([]));
+      data.links.forEach((link, i) => {
+        incidentLinks[link.source].push(i);
+        if (link.target !== link.source) incidentLinks[link.target].push(i);
+      });
+      readingIndex = nodeIndices.get(readingDocumentId!) ?? -1;
+      previewIndex = nodeIndices.get(previewId!) ?? -1;
+      preparedReading = -1;
+      hovered = -1;
+      trailIndices = new Set(
+        readingTrail?.nodes.flatMap((node) => {
+          const i = nodeIndices.get(node.id);
+          return i === undefined ? [] : [i];
+        }),
+      );
+      renderer.setData(data, positions);
+      display = new Float32Array(positions);
+      renderer.setDisplayPositions(display);
+      renderer.setPreviewNode(previewIndex, !reduced);
+      overview = new Float32Array(positions);
+      if (previousOverview)
+        data.nodes.forEach((node, i) => {
+          const old = previousNodes.get(node.id);
+          if (old !== undefined)
+            overview!.set(previousOverview.subarray(old * 3, old * 3 + 3), i * 3);
+        });
+      pendingOverview = null;
+      presetFrom = null;
+      overviewCache.clear();
+      overviewCache.set(preset.id, overview);
+    } else {
+      for (const node of data.nodes) Object.assign(node, byId.get(node.id));
+      renderer.updateNodeAppearance();
+    }
+    settledLayouts.set(graph, overviewCache);
+    if (overview && groupsChanged) {
+      clusters = categoryLayout(data, overview, {
+        aspect: frameWidth / frameHeight,
+        elevation: preset.frameElevDeg || 18,
+        preset: preset.id,
+        grouping,
+      });
+      retireEffects();
+      effects = new CategoryEffects(renderer.sceneRoot, clusters.groups, data, colors);
+    }
+    updateColors();
+    applyFocus(false);
+    if (structural) renderer.refreshClusterClouds();
+    // Data changes never reset the camera, canvas, entry clock, or current node positions.
+  }
   renderer.setReducedMotion(reduced);
   try {
     resize();
@@ -967,37 +1088,7 @@ export function createGalaxy(
     throw error;
   }
   return {
-    updateGraph(next: ReaderGraph) {
-      if (disposed) return;
-      graph = next;
-      settledLayouts.set(graph, overviewCache);
-      const nextNodes = new Map(galaxyData(graph).nodes.map((node) => [node.id, node]));
-      let changed = false;
-      for (const node of data.nodes) {
-        const nextNode = nextNodes.get(node.id)!;
-        if (node.collection !== nextNode.collection || node.fileSize !== nextNode.fileSize) {
-          node.collection = nextNode.collection;
-          node.fileSize = nextNode.fileSize;
-          changed = true;
-        }
-      }
-      if (!changed) return;
-      renderer.updateNodeAppearance();
-      if (overview) {
-        clusters = categoryLayout(data, overview, {
-          aspect: frameWidth / frameHeight,
-          elevation: preset.frameElevDeg || 18,
-          preset: preset.id,
-          grouping,
-        });
-        retireEffects();
-        effects = new CategoryEffects(renderer.sceneRoot, clusters.groups, data, colors);
-      }
-      updateColors();
-      applyFocus(false);
-      if (expanded && readingIndex < 0 && grouping === 'collection')
-        expand(true, false, true, true);
-    },
+    updateGraph,
     readingTrail(value: ReadingTrail | null) {
       if (disposed) return;
       const wasLive = readingTrail?.live;
@@ -1047,7 +1138,8 @@ export function createGalaxy(
       selected = sel;
       category = mod;
       tag = selectedTag;
-      readingIndex = nodeIndices.get(readingId!) ?? -1;
+      readingDocumentId = readingId;
+      readingIndex = nodeIndices.get(readingDocumentId!) ?? -1;
       const arrived = preparedReading === readingIndex && preparedReading >= 0;
       if (readingIndex !== previousReading) preparedReading = -1;
       updateColors();

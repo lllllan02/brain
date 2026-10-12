@@ -85,13 +85,13 @@ test('阅读筛选保留全部同组节点，不改动布局数据，分类与�
   assert.deepEqual(data, original);
 });
 
-test('目录迁移与文档重排复用场景，结构或布局输入变化使场景失效', async () => {
-  const {galaxySceneKey}=await import('../src/galaxy/data.ts');
+test('节点重排和元数据变化不重建图形缓冲，增删节点或引用更新缓冲', async () => {
+  const {galaxyTopologyKey}=await import('../src/galaxy/data.ts');
   const graph={nodes:[{...note('a','one'),collection:'inbox'},{...note('b','one'),collection:'notes'}],links:[{a:'a',b:'b',kind:'wiki'}],modules:[]};
-  const moved=structuredClone(graph);moved.nodes[0].collection='notes';moved.nodes[0].body += '移动后改写的相对引用';moved.nodes.reverse();
-  assert.equal(galaxySceneKey(graph),galaxySceneKey(moved));
-  for(const mutate of [v=>v.nodes.pop(),v=>v.links=[],v=>v.nodes[0].module='two',v=>v.nodes[0].title='新标题']) {
-    const next=structuredClone(graph);mutate(next);assert.notEqual(galaxySceneKey(graph),galaxySceneKey(next));
+  const moved=structuredClone(graph);moved.nodes[0].collection='notes';moved.nodes[0].module='two';moved.nodes[0].title='新标题';moved.nodes[0].body += '移动后改写的相对引用';moved.nodes.reverse();
+  assert.equal(galaxyTopologyKey(galaxyData(graph)),galaxyTopologyKey(galaxyData(moved)));
+  for(const mutate of [v=>v.nodes.pop(),v=>v.links=[]]) {
+    const next=structuredClone(graph);mutate(next);assert.notEqual(galaxyTopologyKey(galaxyData(graph)),galaxyTopologyKey(galaxyData(next)));
   }
 });
 

@@ -1,5 +1,4 @@
-import { useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react';
-import { galaxySceneKey } from '../galaxy/data.ts';
+import { useLayoutEffect, useRef, useState, type RefObject } from 'react';
 import type { createGalaxy, GalaxyLabel } from '../galaxy/scene.ts';
 import type { Focus, ReaderGraph } from '../types/graph.ts';
 import type {
@@ -45,7 +44,6 @@ export function useGalaxyScene({
   clearCluster.current = onClearCluster;
   const latestGraph = useRef(graph);
   latestGraph.current = graph;
-  const sceneKey = useMemo(() => galaxySceneKey(graph), [graph]);
   const [branchesReady, setBranchesReady] = useState(false);
   const [labels, setLabels] = useState<GalaxyLabel[]>([]);
   const [ready, setReady] = useState(false),
@@ -146,7 +144,7 @@ export function useGalaxyScene({
       instance?.dispose();
       scene.current = null;
     };
-  }, [sceneKey, workbenchVisible]);
+  }, [workbenchVisible]);
   useLayoutEffect(() => {
     scene.current?.updateGraph(graph);
   }, [graph]);

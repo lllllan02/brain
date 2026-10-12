@@ -24,18 +24,13 @@ export function galaxyData(graph: ReaderGraph): GraphData {
   return { nodes, links };
 }
 
-// Collection moves change appearance and filters, not the force-layout inputs.
-// Compare by ID: moving a file may also reorder the library's document array.
-export function galaxySceneKey(graph: ReaderGraph): string {
-  const data = galaxyData(graph);
+// Order-independent identity of the GPU node/link buffers; metadata needs no rebuild.
+export function galaxyTopologyKey(data: GraphData): string {
   return JSON.stringify({
-    nodes: data.nodes
-      .map((node) => ({ ...node, collection: undefined, fileSize: undefined }))
-      .sort((a, b) => a.id.localeCompare(b.id)),
+    nodes: data.nodes.map((node) => node.id).sort(),
     links: data.links
       .map((link) => JSON.stringify([data.nodes[link.source].id, data.nodes[link.target].id]))
       .sort(),
-    modules: graph.modules,
   });
 }
 
