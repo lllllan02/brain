@@ -2,20 +2,45 @@
   "schema": 1,
   "startedAt": "2026-10-11T16:39:46.530Z",
   "documents": {
+    "async-messaging": {
+      "title": "异步消息（Asynchronous Messaging）",
+      "collection": "glossary",
+      "digest": "a4e71f72c797393ee672598cc3a5544057c112eabd115546deb34feb862e83cb"
+    },
+    "event-replay": {
+      "title": "事件重放（Event Replay）",
+      "collection": "glossary",
+      "digest": "4f0d9f286bb8bccec8db169744e2bf3f8072079e84428c09b0ddf0e549662abc"
+    },
     "json-rpc": {
       "title": "JSON-RPC（基于 JSON 的远程过程调用协议）",
       "collection": "glossary",
       "digest": "5e1a497fcf8595b8d22471687494e5e852605412792b3bd67bc85000d1be0839"
+    },
+    "load-leveling": {
+      "title": "削峰填谷（Load Leveling）",
+      "collection": "glossary",
+      "digest": "a41201612e866bf27b591c9718b3de543d759ef7f925887f63e3b217740f3fc2"
     },
     "multiway-balanced-search-tree": {
       "title": "多路平衡查找树（Multiway Balanced Search Tree）",
       "collection": "glossary",
       "digest": "2479e90b0636230fbee41437b3a9c9c2078d8184c25677f911151164b6bc7432"
     },
+    "publish-subscribe": {
+      "title": "发布订阅（Publish–Subscribe）",
+      "collection": "glossary",
+      "digest": "57ed705b66b9b9db1177dfe37489f7201e204ddacd2b103e54df2d74befe46c2"
+    },
     "stdio": {
       "title": "Stdio（标准输入输出）",
       "collection": "glossary",
       "digest": "0db666afe585f5dbde78805d4cf7682e2cf4af8eaced31aac535fb235e040585"
+    },
+    "stream-processing": {
+      "title": "流处理（Stream Processing）",
+      "collection": "glossary",
+      "digest": "1d2a4dcb79731ed2aa74e9a10c86dc53c4be75f231d19ea5eb92df0f2d2c60ec"
     },
     "agent-checkpoint-recovery": {
       "title": "Agent 的 Checkpoint 与中断恢复",
@@ -562,30 +587,15 @@
       "collection": "inbox",
       "digest": "def582d644634c9e180b9006a4aab71f3b12c5a8778d65c96765d8eff15db962"
     },
-    "kafka-delivery-semantics": {
-      "title": "Kafka 投递语义",
-      "collection": "inbox",
-      "digest": "546d1552885c41f1ba4fe68b8ef6f23357896cd8ab1fbbfd962852f5d7f9d176"
-    },
-    "kafka-lag-investigation": {
-      "title": "Kafka 积压排查",
-      "collection": "inbox",
-      "digest": "c3ab57ce258ea7d6787c06426b1b4c4fc78a26b83b6ce18ce071257a4b455800"
-    },
-    "kafka-partitions-ordering": {
-      "title": "Kafka 分区与顺序",
-      "collection": "inbox",
-      "digest": "412267b9ddc599f8615c9d14953cbe99c22677ea369a44444a0aeb793dd6cdd6"
-    },
-    "kafka-retention": {
-      "title": "Kafka 日志保留与重放",
-      "collection": "inbox",
-      "digest": "1a5ac329e1d58d4f82d4ebceb9387a83e1bce41bcc47a38b0a50d9e3840c861e"
-    },
-    "kafka": {
+    "kafka-overview": {
       "title": "Kafka",
       "collection": "inbox",
-      "digest": "052367cbeed26c4f05b099592fd281c8ccccb52e7543bed06ac98f12f2ded738"
+      "digest": "6f3f5893554a66f69c2290ce555836592e206760faf792608817be0cb9329b40"
+    },
+    "kafka-topics-partitions": {
+      "title": "Kafka Topic 与分区",
+      "collection": "inbox",
+      "digest": "eb41faa4392bf0bfe87479e53eb02cbe9eb88c3ca0421bcad5df03f3f1c6b4c5"
     },
     "leader-election": {
       "title": "选主（Leader Election）",
@@ -652,20 +662,25 @@
       "collection": "inbox",
       "digest": "55aeef50f71edfb209b1c37ca0b86756c7a8ff23e266213945097d9179244e6a"
     },
-    "mysql-indexes": {
-      "title": "MySQL 索引",
-      "collection": "inbox",
-      "digest": "62174047ae97ef8a9c0917c76e5cd27854530d88e33182d9bac1c2ada97b7f46"
-    },
     "mysql-overview": {
       "title": "MySQL",
       "collection": "inbox",
-      "digest": "1ac3f8660e379a287d4c9ebaedb17b37d1c992440705fba3e2d550d55cf6ed93"
+      "digest": "b0379c690a58ea09f4c28e30b8560d4e19a7cc1ebf8f2fd533b685eaa63f599d"
+    },
+    "mysql-query-execution": {
+      "title": "MySQL 的 SQL 执行流程",
+      "collection": "inbox",
+      "digest": "4adcd99649da0c6d11140bae25ceebbc7c917ab98fca85736d5b5af21106d9d9"
     },
     "mysql-specialized-indexes": {
       "title": "全文、空间与多值索引",
       "collection": "inbox",
       "digest": "908aa10c90a8d9b1443170c7ed65cf0d01a3eed27f505529619410bbb030b543"
+    },
+    "mysql-storage-layout": {
+      "title": "InnoDB 的表空间、页与行记录",
+      "collection": "inbox",
+      "digest": "79d859b8fb04688f9f1ecbfe60769489011b38b02ef43777f122e3fbed73582f"
     },
     "nacos": {
       "title": "Nacos",
@@ -770,7 +785,7 @@
     "queue-backlog-capacity": {
       "title": "消息积压（Backlog）",
       "collection": "inbox",
-      "digest": "a9b2946f781fb2b946e49650aa89fd52a581329f7ab8b687fa17b1bc0530e19b"
+      "digest": "7ac9f6d5adf17be715339b6ce878064e516c949846e64cacb548e1d96cd916e2"
     },
     "quorum": {
       "title": "Quorum（法定人数）与多数派",
@@ -1102,11 +1117,6 @@
       "collection": "inbox",
       "digest": "843d6b2c499dda6249a77a8ddca19323f0ca08f152df37dc336ad2d43b58771a"
     },
-    "wal": {
-      "title": "WAL（预写日志）",
-      "collection": "inbox",
-      "digest": "c9c510a981d83102a087f50d57e88f2a93a37af31ecbfc70436f38901808e06b"
-    },
     "watch": {
       "title": "Watch（监听机制）",
       "collection": "inbox",
@@ -1252,6 +1262,16 @@
       "collection": "notes",
       "digest": "5ac79b829cdf11cf252fffcb3677be3cc416e003de6f3da995c228a613bd9b19"
     },
+    "kafka-event-model": {
+      "title": "Kafka 事件与记录",
+      "collection": "notes",
+      "digest": "7cb2f516c2a6489f7c0d4d353de94c673393c5f3fd41104dd873f2bcf4d7058a"
+    },
+    "kafka-use-cases": {
+      "title": "Kafka 使用场景与选型",
+      "collection": "notes",
+      "digest": "894d1cba3d002cbc88dfad2c06698ac6a2ee5cfe1c97b09d7f6272ac547d6770"
+    },
     "mcp-capabilities": {
       "title": "MCP 的 Tool、Resource 与 Prompt 有什么区别",
       "collection": "notes",
@@ -1302,6 +1322,16 @@
       "collection": "notes",
       "digest": "0b8b7de2d26355dd631c709102350b0d74d987fb5f6d0b471643c2a4f0d08fe1"
     },
+    "mysql-buffer-pool-lifecycle": {
+      "title": "InnoDB 缓冲池与脏页写回",
+      "collection": "notes",
+      "digest": "36225e5b69ebdc425ee1ddb41e66ffd6e9ffb5ea50ded6e0a5970fb18631b56f"
+    },
+    "mysql-buffer-replacement": {
+      "title": "InnoDB 的 LRU 与扫描污染",
+      "collection": "notes",
+      "digest": "fa38564968231a346783310ba9fb9d20e6bbed4bf43f1c80b5433a1f718bcd33"
+    },
     "mysql-clustered-index": {
       "title": "InnoDB 的聚簇索引与二级索引",
       "collection": "notes",
@@ -1326,6 +1356,16 @@
       "title": "深分页优化",
       "collection": "notes",
       "digest": "5b05859618db53ce6a6ef22b28271a699fa5f2122e5424806c498027ca84b619"
+    },
+    "mysql-dirty-page-flushing": {
+      "title": "InnoDB 脏页写回与检查点",
+      "collection": "notes",
+      "digest": "33c48f9a6a1107fa9c345d4fdaf5cf2cf6dfb6cf05d2bba98ad80241461b30f7"
+    },
+    "mysql-doublewrite": {
+      "title": "InnoDB 双写缓冲（Doublewrite Buffer）",
+      "collection": "notes",
+      "digest": "773122e548113124c328774a1efa616c16248a7635ded0b88a96bb723c392aa7"
     },
     "mysql-index-access-cost": {
       "title": "索引选择",
@@ -1402,10 +1442,20 @@
       "collection": "notes",
       "digest": "3d2dc95533ec06d9d6d681b7219f43573e1473d0a6b9910b4fc246bbb71513f2"
     },
+    "mysql-indexes": {
+      "title": "MySQL 索引",
+      "collection": "notes",
+      "digest": "62174047ae97ef8a9c0917c76e5cd27854530d88e33182d9bac1c2ada97b7f46"
+    },
     "mysql-prefix-index": {
       "title": "前缀索引（Prefix Index）",
       "collection": "notes",
       "digest": "4d8a44b4e8eda2052ce3b971ba51dbb2bc9605442333fbbc69ae4b3b76fc32dc"
+    },
+    "mysql-read-ahead": {
+      "title": "InnoDB 预读（Read-Ahead）",
+      "collection": "notes",
+      "digest": "256f839b37d49053e0f7900ab0647b59b3537998bb652c928f0bc6fee976e4fc"
     },
     "mysql-row-overflow": {
       "title": "溢出页",
@@ -1486,6 +1536,11 @@
       "title": "工具执行调度",
       "collection": "notes",
       "digest": "722a88a826be1beb74eef10464702ca5e7ca373ae22b125066ac0b0a194e5552"
+    },
+    "wal": {
+      "title": "WAL（预写日志）",
+      "collection": "notes",
+      "digest": "8d193edf78919ecef88b67dc1533d5488804f6fe812930bd69a043179e196e63"
     },
     "anthropic-advanced-tool-use-summary": {
       "title": "Anthropic：工具搜索、程序调用与使用示例",
@@ -1717,6 +1772,21 @@
       "collection": "readings",
       "digest": "4a2abd1c334d00c1fee02df8dcf90c4785768f86eea6b47538b33760f59cbed5"
     },
+    "kafka-learning-resources": {
+      "title": "Kafka 学习资料导读",
+      "collection": "readings",
+      "digest": "a15df68ed1710c1d59dd07f3e7dc0d9f8a2b8e9f015b6560b426398634d1be1a"
+    },
+    "kafka-model-sources": {
+      "title": "Kafka 定位与事件建模导读",
+      "collection": "readings",
+      "digest": "81fda697cc06867c73b05c1c3d52ecd93037aa8e3d86df10683c97fbd453754c"
+    },
+    "kafka-selection-sources": {
+      "title": "Kafka 与同类消息队列选型导读",
+      "collection": "readings",
+      "digest": "d78e0d44c62771d68fd135e748cb02ec668ab9bfac79a3ae93923eeac2ae1a71"
+    },
     "langchain-context-engineering-summary": {
       "title": "LangChain：写入、选择、压缩与隔离上下文",
       "collection": "readings",
@@ -1797,20 +1867,30 @@
       "collection": "readings",
       "digest": "5424328634cedff3491236d857bd70320c7acd3d8537d0af108ef69786570325"
     },
+    "messaging-patterns-sources": {
+      "title": "消息通信与事件处理模式导读",
+      "collection": "readings",
+      "digest": "a843399e2d6f7ca6c33a101d6b557804b6554bd909b09b1300213b12568c2547"
+    },
     "mysql-learning-resources": {
       "title": "MySQL 学习资料导读",
       "collection": "readings",
       "digest": "20b16a84d615998af847d2fcb89bace831e103c0fe5f723db17c29e1c8d6d5fc"
     },
+    "mysql-manual-buffer-pool": {
+      "title": "MySQL 官方手册导读：缓存保留与页面写回",
+      "collection": "readings",
+      "digest": "3c135277ad53da7991ca773b6427a98947da1d33daac689716661c01ffc23ac9"
+    },
     "mysql-manual-queries": {
       "title": "MySQL 官方手册导读：查询与索引",
       "collection": "readings",
-      "digest": "4a3e1a69f0802659317f6b9da7e84d34315a5c53279da954994e0caf789f9bc6"
+      "digest": "cb975b520657a01fd934e73f3285dbea588c2f84973f97fb1029f4ad207431eb"
     },
     "mysql-manual-recovery": {
       "title": "MySQL 官方手册导读：日志、复制与恢复",
       "collection": "readings",
-      "digest": "59b54677ed78cb05fdc46fed9cb1dbeb6f2538d7a986c9d4817a58f005821a48"
+      "digest": "b6aa06ff4b8c03ba13870883b10343b9d419ab7a1c0c9da39ec035f08a996ded"
     },
     "mysql-manual-transactions": {
       "title": "MySQL 官方手册导读：事务与锁",
@@ -1821,6 +1901,11 @@
       "title": "MySQL 分页优化资料导读",
       "collection": "readings",
       "digest": "ad1e06a902377c9d8c99376d0fd76ddfb6b02f500e63ec2aba75dc87ec5da435"
+    },
+    "mysql-scan-resistance-readings": {
+      "title": "InnoDB 扫描抗性：图解与实验导读",
+      "collection": "readings",
+      "digest": "acc049e4511e67bda600c7e27cbfb13b4f2aef395b74fb08c32cadb00798d646"
     },
     "openai-agents-architecture-summary": {
       "title": "OpenAI Agents API：Harness、执行环境与应用的分工",
@@ -1976,6 +2061,11 @@
       "title": "VictoriaMetrics：WaitGroup：计数、唤醒与对齐",
       "collection": "readings",
       "digest": "dd0182e6f7caebd7211bbf64a0c6d0c7efafb841e90c0499b7c5e440bcb06a9c"
+    },
+    "wal-official-docs": {
+      "title": "WAL 官方文档导读：持久化顺序、提交与恢复",
+      "collection": "readings",
+      "digest": "69f3397093ffd8c0c1d1c98d6513f9df97843be5bd466b053eb6513ca0ca150a"
     }
   },
   "images": {
@@ -2202,6 +2292,17 @@
       },
       "collections": []
     },
+    "assets/kafka-topics-partitions": {
+      "title": "kafka-topics-partitions",
+      "files": {
+        "assets/kafka-topics-partitions.excalidraw": "11f8f5e80138a8fd6ce6b4467d21e3be98f38338d5fe310e4c64b6fe7a33616d",
+        "assets/kafka-topics-partitions.png": "da5267d5fa326b8d545d16ad87267d903f74ca8d9ab4493333447bd32de92280",
+        "assets/kafka-topics-partitions.svg": "aba67d46732f484c13fc4569dc962e515b61277374f88d2239bea1a2673b650f"
+      },
+      "collections": [
+        "inbox"
+      ]
+    },
     "assets/mcp-flow": {
       "title": "mcp-flow",
       "files": {
@@ -2240,6 +2341,61 @@
         "assets/mysql-bplus-pages.excalidraw": "8894d1226f50b7b27be7f37e8d7092b2ae181bc28d608976a0b57862b7710504",
         "assets/mysql-bplus-pages.png": "53c2a534f86b5a6f40a8ad32ab0a59395033db86a8c9e42db41ac4842e722f9b",
         "assets/mysql-bplus-pages.svg": "6c8655d41504fc6106ca05958342481a424871a88325e51a11d1c2d3a54b77be"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/mysql-buffer-pool-lifecycle": {
+      "title": "mysql-buffer-pool-lifecycle",
+      "files": {
+        "assets/mysql-buffer-pool-lifecycle.excalidraw": "d78a48045a4ae184abbd00dba2717d26be1ab2d5b10e1dd6a4256153d56d7fc0",
+        "assets/mysql-buffer-pool-lifecycle.png": "008b7a1e6c1c73030d96ae7276428e9dc81da34f5fdd7f7f5b94dbfe53140e9d",
+        "assets/mysql-buffer-pool-lifecycle.svg": "79b1bcde99cf8fc69db022be6d69dccfbaf2ef983b66f2e5b818ea9e9740e243"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/mysql-dirty-page-flushing": {
+      "title": "mysql-dirty-page-flushing",
+      "files": {
+        "assets/mysql-dirty-page-flushing.excalidraw": "493d2dc24f917c9d8b4dde299beb14d84308ee94aa97547da44f7cf408a89b6a",
+        "assets/mysql-dirty-page-flushing.png": "c90a44da66d88fd653e272c23e96e28f4b1ef6a41bf94b6a5c42a99e6d280b1c",
+        "assets/mysql-dirty-page-flushing.svg": "02c1e35baaa89a8a8d73dd22a55e91d432b8ac02e24381d19982b66622985629"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/mysql-doublewrite": {
+      "title": "mysql-doublewrite",
+      "files": {
+        "assets/mysql-doublewrite.excalidraw": "1784294362c139c78e4ca7a95d16c0b5c2a73a2194829662beead1bbc39cdd51",
+        "assets/mysql-doublewrite.png": "950acce0aa710adf5695154f5b1c980f16048fb16426104bcd477406f1cd9e87",
+        "assets/mysql-doublewrite.svg": "7ae4f3f53e667b8a317ca32fe277a4a7cacd9550a079cd3854fb2ed7751a6cc6"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/mysql-lru-scan-resistance": {
+      "title": "mysql-lru-scan-resistance",
+      "files": {
+        "assets/mysql-lru-scan-resistance.excalidraw": "8733509e34a597c2c15d33ff413691e4e437543e05414c46e79615a3503037b0",
+        "assets/mysql-lru-scan-resistance.png": "315399f469d940f2d275f26d787ade737b19e76967888527be8562c190bea5f6",
+        "assets/mysql-lru-scan-resistance.svg": "722bc3f2a7210f0cecdc7f12eb330153aabd91df7cf468579cd46298145b85c9"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/mysql-read-ahead": {
+      "title": "mysql-read-ahead",
+      "files": {
+        "assets/mysql-read-ahead.excalidraw": "41d4ffe64c7f9c72358f3504073b611b6441236bee9aff6fadb3b1260462b1f1",
+        "assets/mysql-read-ahead.png": "bd2809ea71ec6c60f2dceccc4613d498bb714eb76f88c7829de2e2c0bb2559c8",
+        "assets/mysql-read-ahead.svg": "9b5857f29a0588047652406a094c9a05cdd99896f742d32d627ffa84fd1a5300"
       },
       "collections": [
         "notes"
@@ -2361,6 +2517,17 @@
         "assets/tool-scheduling.excalidraw": "025f593d6825061a2612360d0ccddd8cc73c7f52a5100cbec603435f89ee34a7",
         "assets/tool-scheduling.png": "ac160d2595ef93ac62f991abe34dbf2c9c7a4ed951f208fa6c77262fbac5e38a",
         "assets/tool-scheduling.svg": "83b2eaadf2a95d352859760c0f0aaec31262993282238965ccf779e015163c27"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/wal-process": {
+      "title": "wal-process",
+      "files": {
+        "assets/wal-process.excalidraw": "a9d0c8a7a8b081228528041b5b8f7c38943d3a4ee895561061936aaea186eceb",
+        "assets/wal-process.png": "59113278ef7a78426734e3bdd629e89d9c23e01e56c5f90c5d809f4daf3c6ee8",
+        "assets/wal-process.svg": "3be2258e1479a2537604c8ea420431a356bdb89a4ee813544cbaf4ad6a181322"
       },
       "collections": [
         "notes"
@@ -12831,6 +12998,1572 @@
       ],
       "source": "observed",
       "docId": "mysql-indexes"
+    },
+    {
+      "id": "f4107495-5a81-44b1-b3b4-19a37a2e57e2",
+      "kind": "updated",
+      "entity": "doc:mysql-overview",
+      "title": "MySQL",
+      "time": "2026-10-12T10:59:37.996Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-overview"
+    },
+    {
+      "id": "93bee7a2-3db5-4cdd-af57-3eba0f4e65e8",
+      "kind": "moved",
+      "entity": "doc:mysql-indexes",
+      "title": "MySQL 索引",
+      "time": "2026-10-12T11:00:59.448Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-indexes",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "2a963e7b-91fe-4b2f-a8b0-122bd01f0a4f",
+      "kind": "created",
+      "entity": "doc:mysql-buffer-pool-lifecycle",
+      "title": "InnoDB 缓冲池与脏页写回",
+      "time": "2026-10-12T11:06:12.225Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-buffer-pool-lifecycle"
+    },
+    {
+      "id": "11210370-4ba4-4442-9668-5a5e5904ab48",
+      "kind": "updated",
+      "entity": "doc:mysql-overview",
+      "title": "MySQL",
+      "time": "2026-10-12T11:06:12.225Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-overview"
+    },
+    {
+      "id": "bd28e51d-048f-4605-9dcb-f3d7c380db3c",
+      "kind": "created",
+      "entity": "doc:mysql-query-execution",
+      "title": "MySQL 的 SQL 执行流程",
+      "time": "2026-10-12T11:06:12.225Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-query-execution"
+    },
+    {
+      "id": "505c987f-07c9-47ff-b734-061c526c205d",
+      "kind": "created",
+      "entity": "doc:mysql-storage-layout",
+      "title": "InnoDB 的表空间、页与行记录",
+      "time": "2026-10-12T11:06:12.225Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-storage-layout"
+    },
+    {
+      "id": "182ec029-ebc8-4a40-aea0-6a8c3ff747a2",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-queries",
+      "title": "MySQL 官方手册导读：查询与索引",
+      "time": "2026-10-12T11:06:12.225Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-queries"
+    },
+    {
+      "id": "b177d55e-d869-4fef-81f6-7add9e3faaaf",
+      "kind": "updated",
+      "entity": "doc:mysql-buffer-pool-lifecycle",
+      "title": "InnoDB 缓冲池与脏页写回",
+      "time": "2026-10-12T11:33:40.311Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-buffer-pool-lifecycle"
+    },
+    {
+      "id": "e549299a-3f36-49e9-9c5e-7e3e8f255e36",
+      "kind": "created",
+      "entity": "doc:mysql-buffer-replacement",
+      "title": "InnoDB 的 LRU 与扫描污染",
+      "time": "2026-10-12T11:33:40.311Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-buffer-replacement"
+    },
+    {
+      "id": "c2a89ff1-42d1-4333-8ec4-95c166ff85d2",
+      "kind": "created",
+      "entity": "doc:mysql-dirty-page-flushing",
+      "title": "InnoDB 脏页写回与检查点",
+      "time": "2026-10-12T11:33:40.311Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-dirty-page-flushing"
+    },
+    {
+      "id": "cc74ae40-2c05-493f-b280-1ec6370ec324",
+      "kind": "created",
+      "entity": "doc:mysql-doublewrite",
+      "title": "InnoDB 双写缓冲（Doublewrite Buffer）",
+      "time": "2026-10-12T11:33:40.311Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-doublewrite"
+    },
+    {
+      "id": "dd85f697-e747-4292-8da6-4e3f39f6bdc8",
+      "kind": "created",
+      "entity": "doc:mysql-read-ahead",
+      "title": "InnoDB 预读（Read-Ahead）",
+      "time": "2026-10-12T11:33:40.311Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-read-ahead"
+    },
+    {
+      "id": "c7e54cf0-6005-4eb0-8acd-06bd166c6546",
+      "kind": "created",
+      "entity": "doc:mysql-manual-buffer-pool",
+      "title": "MySQL 官方手册导读：缓存保留与页面写回",
+      "time": "2026-10-12T11:33:40.311Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-buffer-pool"
+    },
+    {
+      "id": "f4f66872-ea8b-4614-8539-c2f9c0b2021a",
+      "kind": "image-created",
+      "entity": "image:assets/mysql-buffer-pool-lifecycle",
+      "title": "mysql-buffer-pool-lifecycle",
+      "time": "2026-10-12T11:38:33.968Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/mysql-buffer-pool-lifecycle.excalidraw"
+      ]
+    },
+    {
+      "id": "cfcd809c-c18e-4560-8a23-4826ff4a7954",
+      "kind": "image-format",
+      "entity": "image:assets/mysql-buffer-pool-lifecycle",
+      "title": "mysql-buffer-pool-lifecycle",
+      "time": "2026-10-12T11:38:53.931Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/mysql-buffer-pool-lifecycle.png",
+        "assets/mysql-buffer-pool-lifecycle.svg"
+      ]
+    },
+    {
+      "id": "a0d7aaa4-0e1a-4917-bbb1-217f827cd1ba",
+      "kind": "updated",
+      "entity": "doc:mysql-buffer-pool-lifecycle",
+      "title": "InnoDB 缓冲池与脏页写回",
+      "time": "2026-10-12T11:39:10.044Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-buffer-pool-lifecycle"
+    },
+    {
+      "id": "cb5620b2-cfac-4609-a412-2cd28c757335",
+      "kind": "updated",
+      "entity": "doc:mysql-buffer-pool-lifecycle",
+      "title": "InnoDB 缓冲池与脏页写回",
+      "time": "2026-10-12T11:39:49.973Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-buffer-pool-lifecycle"
+    },
+    {
+      "id": "2d872b00-d462-4dbb-80d9-d8cc24940424",
+      "kind": "created",
+      "entity": "doc:kafka-overview",
+      "title": "Kafka",
+      "time": "2026-10-12T11:40:22.035Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "kafka-overview"
+    },
+    {
+      "id": "69dde078-f5e3-4827-bf3a-e287de8e22ba",
+      "kind": "updated",
+      "entity": "doc:queue-backlog-capacity",
+      "title": "消息积压（Backlog）",
+      "time": "2026-10-12T11:40:22.035Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "queue-backlog-capacity"
+    },
+    {
+      "id": "de69bb35-f874-4473-bcc2-eda73b603aa6",
+      "kind": "created",
+      "entity": "doc:kafka-learning-resources",
+      "title": "Kafka 学习资料导读",
+      "time": "2026-10-12T11:40:22.035Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "kafka-learning-resources"
+    },
+    {
+      "id": "1ba0f6e4-8fbd-4d7d-a7a7-f4df9eb4d9c8",
+      "kind": "updated",
+      "entity": "doc:kafka-learning-resources",
+      "title": "Kafka 学习资料导读",
+      "time": "2026-10-12T11:40:50.023Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "kafka-learning-resources"
+    },
+    {
+      "id": "14d78200-f0c7-47db-b6f0-c04c6df5566a",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-buffer-pool-lifecycle",
+      "title": "mysql-buffer-pool-lifecycle",
+      "time": "2026-10-12T11:43:55.553Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-buffer-pool-lifecycle.excalidraw"
+      ]
+    },
+    {
+      "id": "8f7b79d1-19ef-452c-8ba2-8adcfd74aaf9",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-buffer-pool-lifecycle",
+      "title": "mysql-buffer-pool-lifecycle",
+      "time": "2026-10-12T11:44:07.621Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-buffer-pool-lifecycle.png",
+        "assets/mysql-buffer-pool-lifecycle.svg"
+      ]
+    },
+    {
+      "id": "4f17f285-bcde-4396-a183-309b04db347a",
+      "kind": "updated",
+      "entity": "doc:mysql-buffer-pool-lifecycle",
+      "title": "InnoDB 缓冲池与脏页写回",
+      "time": "2026-10-12T11:44:39.686Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-buffer-pool-lifecycle"
+    },
+    {
+      "id": "8682b403-ae9e-4063-8de8-79f78b68a83f",
+      "kind": "created",
+      "entity": "doc:kafka-event-model",
+      "title": "Kafka 事件与记录",
+      "time": "2026-10-12T11:48:30.890Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "kafka-event-model"
+    },
+    {
+      "id": "006516e0-1f14-4712-bc61-47d86b867563",
+      "kind": "created",
+      "entity": "doc:kafka-topics-partitions",
+      "title": "Kafka Topic 与分区",
+      "time": "2026-10-12T11:48:30.890Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "kafka-topics-partitions"
+    },
+    {
+      "id": "62130a96-320a-4564-a49b-fc19043087e7",
+      "kind": "created",
+      "entity": "doc:kafka-use-cases",
+      "title": "Kafka 使用场景与选型",
+      "time": "2026-10-12T11:48:30.890Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "kafka-use-cases"
+    },
+    {
+      "id": "8c7f24da-d21c-4715-94c9-e0c630c73419",
+      "kind": "created",
+      "entity": "doc:kafka-model-sources",
+      "title": "Kafka 定位与事件建模导读",
+      "time": "2026-10-12T11:48:30.890Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "kafka-model-sources"
+    },
+    {
+      "id": "553b73b2-b290-4684-a985-ea971dac1c26",
+      "kind": "updated",
+      "entity": "doc:kafka-overview",
+      "title": "Kafka",
+      "time": "2026-10-12T11:49:10.879Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "kafka-overview"
+    },
+    {
+      "id": "2503d7e8-b7fc-4a69-a3fd-5df1b76b4ca6",
+      "kind": "updated",
+      "entity": "doc:kafka-learning-resources",
+      "title": "Kafka 学习资料导读",
+      "time": "2026-10-12T11:49:10.879Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "kafka-learning-resources"
+    },
+    {
+      "id": "a70a3e3b-b663-4d2e-9eab-7f946eabc897",
+      "kind": "updated",
+      "entity": "doc:mysql-buffer-replacement",
+      "title": "InnoDB 的 LRU 与扫描污染",
+      "time": "2026-10-12T11:51:38.872Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-buffer-replacement"
+    },
+    {
+      "id": "70b4926e-2c0f-404d-9131-cbe9dc84f6b3",
+      "kind": "created",
+      "entity": "doc:mysql-scan-resistance-readings",
+      "title": "InnoDB 扫描抗性：图解与实验导读",
+      "time": "2026-10-12T11:51:38.872Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-scan-resistance-readings"
+    },
+    {
+      "id": "3d1b8b1a-4ddb-4831-992a-003c84ebbfbc",
+      "kind": "updated",
+      "entity": "doc:mysql-buffer-replacement",
+      "title": "InnoDB 的 LRU 与扫描污染",
+      "time": "2026-10-12T11:55:02.843Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-buffer-replacement"
+    },
+    {
+      "id": "7b91e036-ea25-455c-ba9b-bfca2fdbf55e",
+      "kind": "updated",
+      "entity": "doc:wal",
+      "title": "WAL（预写日志）",
+      "time": "2026-10-12T11:55:54.837Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "wal"
+    },
+    {
+      "id": "061dfe80-4681-46c2-b228-6fe9bba3e92f",
+      "kind": "created",
+      "entity": "doc:wal-official-docs",
+      "title": "WAL 官方文档导读：持久化顺序、提交与恢复",
+      "time": "2026-10-12T11:55:54.837Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "wal-official-docs"
+    },
+    {
+      "id": "4b8b5278-f897-4853-bbcd-46ac4891940e",
+      "kind": "image-created",
+      "entity": "image:assets/wal-process",
+      "title": "wal-process",
+      "time": "2026-10-12T11:55:54.837Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/wal-process.excalidraw"
+      ]
+    },
+    {
+      "id": "f2f2f5da-6e54-4378-8158-695fc809b281",
+      "kind": "updated",
+      "entity": "doc:mysql-buffer-replacement",
+      "title": "InnoDB 的 LRU 与扫描污染",
+      "time": "2026-10-12T11:56:02.937Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-buffer-replacement"
+    },
+    {
+      "id": "92ffbd55-7fc0-43ac-9a32-dc24af15f107",
+      "kind": "image-format",
+      "entity": "image:assets/wal-process",
+      "title": "wal-process",
+      "time": "2026-10-12T11:56:34.742Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/wal-process.png",
+        "assets/wal-process.svg"
+      ]
+    },
+    {
+      "id": "3f7d617d-6d84-4998-97bc-8e3b0a04c851",
+      "kind": "updated",
+      "entity": "doc:wal",
+      "title": "WAL（预写日志）",
+      "time": "2026-10-12T11:57:18.885Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "wal"
+    },
+    {
+      "id": "0e8965c5-f573-4545-b648-ec5b94290631",
+      "kind": "image-updated",
+      "entity": "image:assets/wal-process",
+      "title": "wal-process",
+      "time": "2026-10-12T11:57:18.885Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/wal-process.excalidraw"
+      ]
+    },
+    {
+      "id": "d6158e19-f152-4176-8b51-dcde2bcf1036",
+      "kind": "image-updated",
+      "entity": "image:assets/wal-process",
+      "title": "wal-process",
+      "time": "2026-10-12T11:57:22.701Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/wal-process.png",
+        "assets/wal-process.svg"
+      ]
+    },
+    {
+      "id": "ffafb96c-f47e-4115-96f2-9cfa78b322c8",
+      "kind": "updated",
+      "entity": "doc:mysql-buffer-replacement",
+      "title": "InnoDB 的 LRU 与扫描污染",
+      "time": "2026-10-12T12:30:09.030Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-buffer-replacement"
+    },
+    {
+      "id": "64df9cc4-421d-4b61-84a6-21300c99f71c",
+      "kind": "image-created",
+      "entity": "image:assets/mysql-lru-scan-resistance",
+      "title": "mysql-lru-scan-resistance",
+      "time": "2026-10-12T12:30:09.030Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-lru-scan-resistance.excalidraw",
+        "assets/mysql-lru-scan-resistance.png",
+        "assets/mysql-lru-scan-resistance.svg"
+      ]
+    },
+    {
+      "id": "a9f936d9-d992-4275-b535-399fcd8763f1",
+      "kind": "updated",
+      "entity": "doc:mysql-buffer-replacement",
+      "title": "InnoDB 的 LRU 与扫描污染",
+      "time": "2026-10-12T12:32:26.882Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-buffer-replacement"
+    },
+    {
+      "id": "3aef6ca3-2a1e-4401-9359-d72fc9d12541",
+      "kind": "moved",
+      "entity": "doc:mysql-buffer-replacement",
+      "title": "InnoDB 的 LRU 与扫描污染",
+      "time": "2026-10-12T12:33:04.204Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-buffer-replacement",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "349e0e6d-e21f-4e3c-b0e6-8cca78128dd1",
+      "kind": "image-created",
+      "entity": "image:assets/mysql-read-ahead",
+      "title": "mysql-read-ahead",
+      "time": "2026-10-12T12:35:18.755Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/mysql-read-ahead.excalidraw"
+      ]
+    },
+    {
+      "id": "fe4ed0b0-40b3-49f2-8d44-8ce32bfad3d1",
+      "kind": "image-format",
+      "entity": "image:assets/mysql-read-ahead",
+      "title": "mysql-read-ahead",
+      "time": "2026-10-12T12:35:38.766Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/mysql-read-ahead.png",
+        "assets/mysql-read-ahead.svg"
+      ]
+    },
+    {
+      "id": "e8ef059b-f8cb-40f8-9521-538b282c89a6",
+      "kind": "updated",
+      "entity": "doc:mysql-read-ahead",
+      "title": "InnoDB 预读（Read-Ahead）",
+      "time": "2026-10-12T12:36:04.720Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-read-ahead"
+    },
+    {
+      "id": "9379b781-3dfa-4a02-97d9-7c6d86c38f61",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-buffer-pool",
+      "title": "MySQL 官方手册导读：缓存保留与页面写回",
+      "time": "2026-10-12T12:36:04.720Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-buffer-pool"
+    },
+    {
+      "id": "bcd1abc4-142c-40a0-b144-a5227685db4d",
+      "kind": "updated",
+      "entity": "doc:wal",
+      "title": "WAL（预写日志）",
+      "time": "2026-10-12T12:36:32.703Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "wal"
+    },
+    {
+      "id": "fd700bea-6ae9-4453-858a-2623e00ee9fb",
+      "kind": "image-updated",
+      "entity": "image:assets/wal-process",
+      "title": "wal-process",
+      "time": "2026-10-12T12:36:32.703Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/wal-process.excalidraw"
+      ]
+    },
+    {
+      "id": "85158e7c-cb09-45b9-99c5-24e926ff8b88",
+      "kind": "image-updated",
+      "entity": "image:assets/wal-process",
+      "title": "wal-process",
+      "time": "2026-10-12T12:36:52.605Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/wal-process.png",
+        "assets/wal-process.svg"
+      ]
+    },
+    {
+      "id": "c5502582-c233-4dfd-acf2-f29590815cd4",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-read-ahead",
+      "title": "mysql-read-ahead",
+      "time": "2026-10-12T12:40:14.765Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-read-ahead.excalidraw"
+      ]
+    },
+    {
+      "id": "1e3ae996-55e0-4db9-a273-d28489d26219",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-read-ahead",
+      "title": "mysql-read-ahead",
+      "time": "2026-10-12T12:40:30.739Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-read-ahead.png",
+        "assets/mysql-read-ahead.svg"
+      ]
+    },
+    {
+      "id": "5343a65e-fb1b-44cd-88b3-5d58ebf77245",
+      "kind": "created",
+      "entity": "doc:async-messaging",
+      "title": "异步消息（Asynchronous Messaging）",
+      "time": "2026-10-12T12:40:38.869Z",
+      "collections": [
+        "glossary"
+      ],
+      "source": "observed",
+      "docId": "async-messaging"
+    },
+    {
+      "id": "8dcaf241-6944-4374-8ea8-4b4b48280abb",
+      "kind": "created",
+      "entity": "doc:event-replay",
+      "title": "事件重放（Event Replay）",
+      "time": "2026-10-12T12:40:38.869Z",
+      "collections": [
+        "glossary"
+      ],
+      "source": "observed",
+      "docId": "event-replay"
+    },
+    {
+      "id": "648f3990-b5e4-48cd-88e8-d9b384c7b1c8",
+      "kind": "created",
+      "entity": "doc:load-leveling",
+      "title": "削峰填谷（Load Leveling）",
+      "time": "2026-10-12T12:40:38.869Z",
+      "collections": [
+        "glossary"
+      ],
+      "source": "observed",
+      "docId": "load-leveling"
+    },
+    {
+      "id": "e029a981-2b94-42ba-b484-79c84d279433",
+      "kind": "created",
+      "entity": "doc:publish-subscribe",
+      "title": "发布订阅（Publish–Subscribe）",
+      "time": "2026-10-12T12:40:38.869Z",
+      "collections": [
+        "glossary"
+      ],
+      "source": "observed",
+      "docId": "publish-subscribe"
+    },
+    {
+      "id": "d01d1eac-76d1-4515-ae41-665d9f5d53df",
+      "kind": "created",
+      "entity": "doc:stream-processing",
+      "title": "流处理（Stream Processing）",
+      "time": "2026-10-12T12:40:38.869Z",
+      "collections": [
+        "glossary"
+      ],
+      "source": "observed",
+      "docId": "stream-processing"
+    },
+    {
+      "id": "61982448-cce3-4439-86a8-d605402a6a1a",
+      "kind": "updated",
+      "entity": "doc:kafka-use-cases",
+      "title": "Kafka 使用场景与选型",
+      "time": "2026-10-12T12:40:38.869Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "kafka-use-cases"
+    },
+    {
+      "id": "e7298bc3-c0d1-4250-b4cc-53b4540da363",
+      "kind": "created",
+      "entity": "doc:messaging-patterns-sources",
+      "title": "消息通信与事件处理模式导读",
+      "time": "2026-10-12T12:40:38.869Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "messaging-patterns-sources"
+    },
+    {
+      "id": "7f6d9481-f69e-4e3f-af49-08b8ccdb58bf",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-read-ahead",
+      "title": "mysql-read-ahead",
+      "time": "2026-10-12T12:41:14.731Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-read-ahead.excalidraw"
+      ]
+    },
+    {
+      "id": "3533ebf0-6981-4776-a5af-c25dc98e6c77",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-read-ahead",
+      "title": "mysql-read-ahead",
+      "time": "2026-10-12T12:41:26.748Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-read-ahead.png",
+        "assets/mysql-read-ahead.svg"
+      ]
+    },
+    {
+      "id": "41871d5d-afaf-45ab-ba89-704f567c95c7",
+      "kind": "updated",
+      "entity": "doc:mysql-read-ahead",
+      "title": "InnoDB 预读（Read-Ahead）",
+      "time": "2026-10-12T12:41:52.719Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-read-ahead"
+    },
+    {
+      "id": "4675fa44-b3e1-4e6a-bfeb-7c05af893df7",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-buffer-pool",
+      "title": "MySQL 官方手册导读：缓存保留与页面写回",
+      "time": "2026-10-12T12:41:52.719Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-buffer-pool"
+    },
+    {
+      "id": "3a7eb552-422e-4d95-af95-9d3e3a96d09c",
+      "kind": "image-updated",
+      "entity": "image:assets/wal-process",
+      "title": "wal-process",
+      "time": "2026-10-12T12:42:16.650Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/wal-process.excalidraw"
+      ]
+    },
+    {
+      "id": "242fe15f-679e-4a6c-adf9-2ff08181a4ce",
+      "kind": "image-updated",
+      "entity": "image:assets/wal-process",
+      "title": "wal-process",
+      "time": "2026-10-12T12:42:32.592Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/wal-process.png",
+        "assets/wal-process.svg"
+      ]
+    },
+    {
+      "id": "6268bb49-c822-4300-94ed-f0d369b7131a",
+      "kind": "updated",
+      "entity": "doc:wal",
+      "title": "WAL（预写日志）",
+      "time": "2026-10-12T12:43:16.714Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "wal"
+    },
+    {
+      "id": "a6cb2550-ff04-4623-aa78-d5395a70cb65",
+      "kind": "updated",
+      "entity": "doc:wal-official-docs",
+      "title": "WAL 官方文档导读：持久化顺序、提交与恢复",
+      "time": "2026-10-12T12:43:16.714Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "wal-official-docs"
+    },
+    {
+      "id": "1b02ab50-e63f-4182-8fc9-fb135aa07c0c",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-read-ahead",
+      "title": "mysql-read-ahead",
+      "time": "2026-10-12T12:46:44.576Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-read-ahead.excalidraw"
+      ]
+    },
+    {
+      "id": "d9c8d3c3-7791-44e3-9d19-ef8329bb125d",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-read-ahead",
+      "title": "mysql-read-ahead",
+      "time": "2026-10-12T12:47:04.618Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-read-ahead.png",
+        "assets/mysql-read-ahead.svg"
+      ]
+    },
+    {
+      "id": "1044f382-d5f3-4d7a-a6ca-8b685fd7ed6a",
+      "kind": "updated",
+      "entity": "doc:mysql-read-ahead",
+      "title": "InnoDB 预读（Read-Ahead）",
+      "time": "2026-10-12T12:47:52.742Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-read-ahead"
+    },
+    {
+      "id": "069fd764-cbb5-4947-a7bb-06ad9d0c2456",
+      "kind": "moved",
+      "entity": "doc:mysql-read-ahead",
+      "title": "InnoDB 预读（Read-Ahead）",
+      "time": "2026-10-12T12:49:19.715Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-read-ahead",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "096c9393-3af1-43eb-b505-2c0649634b6c",
+      "kind": "updated",
+      "entity": "doc:kafka-overview",
+      "title": "Kafka",
+      "time": "2026-10-12T12:49:46.889Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "kafka-overview"
+    },
+    {
+      "id": "b24fcad0-9c61-4d22-b16e-8da802b53d2f",
+      "kind": "updated",
+      "entity": "doc:kafka-use-cases",
+      "title": "Kafka 使用场景与选型",
+      "time": "2026-10-12T12:49:46.889Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "kafka-use-cases"
+    },
+    {
+      "id": "2bf3b7e5-c351-4130-a461-5c93170e95c2",
+      "kind": "updated",
+      "entity": "doc:kafka-model-sources",
+      "title": "Kafka 定位与事件建模导读",
+      "time": "2026-10-12T12:49:46.889Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "kafka-model-sources"
+    },
+    {
+      "id": "5822e6c8-a472-4ca3-8071-8ac4b80f801e",
+      "kind": "created",
+      "entity": "doc:kafka-selection-sources",
+      "title": "Kafka 与同类消息队列选型导读",
+      "time": "2026-10-12T12:49:46.889Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "kafka-selection-sources"
+    },
+    {
+      "id": "6fb095c9-d128-4f20-b136-1ee15fb482bb",
+      "kind": "image-created",
+      "entity": "image:assets/mysql-dirty-page-flushing",
+      "title": "mysql-dirty-page-flushing",
+      "time": "2026-10-12T12:52:26.713Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/mysql-dirty-page-flushing.excalidraw"
+      ]
+    },
+    {
+      "id": "58b7b2fb-3ee0-4bd4-b3dd-cdfd37808be4",
+      "kind": "image-created",
+      "entity": "image:assets/mysql-doublewrite",
+      "title": "mysql-doublewrite",
+      "time": "2026-10-12T12:52:26.713Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/mysql-doublewrite.excalidraw"
+      ]
+    },
+    {
+      "id": "c6ec254d-2897-4e9c-9ecf-5b15f7e0ebaa",
+      "kind": "moved",
+      "entity": "doc:kafka-use-cases",
+      "title": "Kafka 使用场景与选型",
+      "time": "2026-10-12T12:52:40.350Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "kafka-use-cases",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "6652e0d7-ca16-4252-bef9-d806c557335e",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-dirty-page-flushing",
+      "title": "mysql-dirty-page-flushing",
+      "time": "2026-10-12T12:53:14.748Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/mysql-dirty-page-flushing.excalidraw"
+      ]
+    },
+    {
+      "id": "fcc8cf0b-794c-4633-b1c9-fc41886bad76",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-doublewrite",
+      "title": "mysql-doublewrite",
+      "time": "2026-10-12T12:53:14.748Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/mysql-doublewrite.excalidraw"
+      ]
+    },
+    {
+      "id": "c237b954-c0c7-465f-b700-7509442cb1cd",
+      "kind": "image-format",
+      "entity": "image:assets/mysql-dirty-page-flushing",
+      "title": "mysql-dirty-page-flushing",
+      "time": "2026-10-12T12:53:38.752Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/mysql-dirty-page-flushing.png",
+        "assets/mysql-dirty-page-flushing.svg"
+      ]
+    },
+    {
+      "id": "d74b3957-1024-41d6-8da4-5ac9d6316806",
+      "kind": "image-format",
+      "entity": "image:assets/mysql-doublewrite",
+      "title": "mysql-doublewrite",
+      "time": "2026-10-12T12:53:38.752Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/mysql-doublewrite.png",
+        "assets/mysql-doublewrite.svg"
+      ]
+    },
+    {
+      "id": "d956fdfe-01ff-4d26-927f-bd216d5bdd2f",
+      "kind": "image-updated",
+      "entity": "image:assets/wal-process",
+      "title": "wal-process",
+      "time": "2026-10-12T12:54:58.845Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/wal-process.excalidraw"
+      ]
+    },
+    {
+      "id": "98ffbabb-758b-49df-a84f-771e718c37d8",
+      "kind": "updated",
+      "entity": "doc:mysql-dirty-page-flushing",
+      "title": "InnoDB 脏页写回与检查点",
+      "time": "2026-10-12T12:55:22.890Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-dirty-page-flushing"
+    },
+    {
+      "id": "fd61968b-d58c-4abd-b80d-2ee9863209df",
+      "kind": "updated",
+      "entity": "doc:mysql-doublewrite",
+      "title": "InnoDB 双写缓冲（Doublewrite Buffer）",
+      "time": "2026-10-12T12:55:22.890Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-doublewrite"
+    },
+    {
+      "id": "8945649b-4878-49fd-8c73-6a8fe450752f",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-buffer-pool",
+      "title": "MySQL 官方手册导读：缓存保留与页面写回",
+      "time": "2026-10-12T12:55:22.890Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-buffer-pool"
+    },
+    {
+      "id": "97ccf01d-e1ac-4199-a6b0-e7f24d9760ab",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-dirty-page-flushing",
+      "title": "mysql-dirty-page-flushing",
+      "time": "2026-10-12T12:55:22.890Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-dirty-page-flushing.excalidraw"
+      ]
+    },
+    {
+      "id": "eaf80a3d-6c04-4085-96d4-98f997d9f5b8",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-doublewrite",
+      "title": "mysql-doublewrite",
+      "time": "2026-10-12T12:55:22.890Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-doublewrite.excalidraw"
+      ]
+    },
+    {
+      "id": "0378c0a5-02c1-4f7c-96ed-5985e77bd01c",
+      "kind": "image-updated",
+      "entity": "image:assets/wal-process",
+      "title": "wal-process",
+      "time": "2026-10-12T12:55:22.890Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/wal-process.png",
+        "assets/wal-process.svg"
+      ]
+    },
+    {
+      "id": "b58b3f2a-50e6-45c9-b848-83d8b278a857",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-doublewrite",
+      "title": "mysql-doublewrite",
+      "time": "2026-10-12T12:55:46.750Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-doublewrite.png",
+        "assets/mysql-doublewrite.svg"
+      ]
+    },
+    {
+      "id": "e687e7ff-2d76-4ae3-afbf-a2f99c99a988",
+      "kind": "updated",
+      "entity": "doc:wal",
+      "title": "WAL（预写日志）",
+      "time": "2026-10-12T12:55:53.096Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "wal"
+    },
+    {
+      "id": "a3b78465-b04b-44ad-a300-3e1b6757e543",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-dirty-page-flushing",
+      "title": "mysql-dirty-page-flushing",
+      "time": "2026-10-12T12:55:53.096Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-dirty-page-flushing.png",
+        "assets/mysql-dirty-page-flushing.svg"
+      ]
+    },
+    {
+      "id": "26d1786b-12be-4c55-9919-0f1564db3d38",
+      "kind": "moved",
+      "entity": "doc:kafka-event-model",
+      "title": "Kafka 事件与记录",
+      "time": "2026-10-12T12:55:59.533Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "kafka-event-model",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "f4688518-93f6-4ef4-aac7-0d97510fa1ac",
+      "kind": "updated",
+      "entity": "doc:mysql-dirty-page-flushing",
+      "title": "InnoDB 脏页写回与检查点",
+      "time": "2026-10-12T12:56:46.863Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-dirty-page-flushing"
+    },
+    {
+      "id": "60b63997-d0d1-42c1-ac23-ea26876dba1d",
+      "kind": "image-created",
+      "entity": "image:assets/kafka-topics-partitions",
+      "title": "kafka-topics-partitions",
+      "time": "2026-10-12T12:58:42.739Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/kafka-topics-partitions.excalidraw"
+      ]
+    },
+    {
+      "id": "7fb9b4e1-8010-4ec3-9e78-8698c58445db",
+      "kind": "image-format",
+      "entity": "image:assets/kafka-topics-partitions",
+      "title": "kafka-topics-partitions",
+      "time": "2026-10-12T12:59:22.793Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/kafka-topics-partitions.png",
+        "assets/kafka-topics-partitions.svg"
+      ]
+    },
+    {
+      "id": "0eff771e-2d89-4c5f-9be1-b4b27a613c48",
+      "kind": "updated",
+      "entity": "doc:kafka-overview",
+      "title": "Kafka",
+      "time": "2026-10-12T12:59:46.924Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "kafka-overview"
+    },
+    {
+      "id": "f8c10547-efa1-41ea-a660-a98933dcc0a4",
+      "kind": "updated",
+      "entity": "doc:kafka-topics-partitions",
+      "title": "Kafka Topic 与分区",
+      "time": "2026-10-12T12:59:46.924Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "kafka-topics-partitions"
+    },
+    {
+      "id": "145cf768-cc91-4f19-9dcb-20dee2ffff06",
+      "kind": "image-updated",
+      "entity": "image:assets/wal-process",
+      "title": "wal-process",
+      "time": "2026-10-12T13:00:54.841Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/wal-process.excalidraw"
+      ]
+    },
+    {
+      "id": "ba99669a-a728-4d10-bc4e-71a78c906e61",
+      "kind": "updated",
+      "entity": "doc:wal",
+      "title": "WAL（预写日志）",
+      "time": "2026-10-12T13:01:02.913Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "wal"
+    },
+    {
+      "id": "24563d83-f252-4e88-93ec-81778fe6db43",
+      "kind": "image-updated",
+      "entity": "image:assets/wal-process",
+      "title": "wal-process",
+      "time": "2026-10-12T13:01:14.714Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/wal-process.png",
+        "assets/wal-process.svg"
+      ]
+    },
+    {
+      "id": "d85230e0-cc27-424b-89d8-31ab534d284b",
+      "kind": "image-updated",
+      "entity": "image:assets/wal-process",
+      "title": "wal-process",
+      "time": "2026-10-12T13:01:54.723Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/wal-process.excalidraw"
+      ]
+    },
+    {
+      "id": "40f92fcd-311b-4609-b9c1-5a19826dbe78",
+      "kind": "image-updated",
+      "entity": "image:assets/wal-process",
+      "title": "wal-process",
+      "time": "2026-10-12T13:02:10.789Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/wal-process.png",
+        "assets/wal-process.svg"
+      ]
+    },
+    {
+      "id": "613690f7-55bd-44ba-9c8b-4018e7776656",
+      "kind": "moved",
+      "entity": "doc:mysql-dirty-page-flushing",
+      "title": "InnoDB 脏页写回与检查点",
+      "time": "2026-10-12T13:03:02.913Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-dirty-page-flushing",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "3e0dff5f-f2d4-4b56-9dbd-db2d11c547d9",
+      "kind": "updated",
+      "entity": "doc:wal",
+      "title": "WAL（预写日志）",
+      "time": "2026-10-12T13:07:50.930Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "wal"
+    },
+    {
+      "id": "f92f8738-a293-4ab4-94a3-fcf0d5befe0e",
+      "kind": "updated",
+      "entity": "doc:wal",
+      "title": "WAL（预写日志）",
+      "time": "2026-10-12T13:08:06.861Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "wal"
+    },
+    {
+      "id": "85e22859-c2a5-46d4-b40d-5b7a7182d99e",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-doublewrite",
+      "title": "mysql-doublewrite",
+      "time": "2026-10-12T13:10:14.702Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-doublewrite.excalidraw"
+      ]
+    },
+    {
+      "id": "18855327-e2ce-4e7c-a6d0-f87459dec322",
+      "kind": "updated",
+      "entity": "doc:wal",
+      "title": "WAL（预写日志）",
+      "time": "2026-10-12T13:10:22.898Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "wal"
+    },
+    {
+      "id": "9fcb2b0f-fdd3-47e6-aadb-781d52dc8e3f",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-doublewrite",
+      "title": "mysql-doublewrite",
+      "time": "2026-10-12T13:10:34.710Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-doublewrite.png",
+        "assets/mysql-doublewrite.svg"
+      ]
+    },
+    {
+      "id": "f280f706-7fa5-4f20-b4ed-7380d03a601b",
+      "kind": "moved",
+      "entity": "doc:wal",
+      "title": "WAL（预写日志）",
+      "time": "2026-10-12T13:10:45.428Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "wal",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "e74258c3-cf74-48d3-a5eb-1f79a2706aad",
+      "kind": "updated",
+      "entity": "doc:mysql-doublewrite",
+      "title": "InnoDB 双写缓冲（Doublewrite Buffer）",
+      "time": "2026-10-12T13:11:06.891Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-doublewrite"
+    },
+    {
+      "id": "2b1adc80-2de0-4d58-a2e7-b1bf78d21a9e",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-recovery",
+      "title": "MySQL 官方手册导读：日志、复制与恢复",
+      "time": "2026-10-12T13:11:06.891Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-recovery"
+    },
+    {
+      "id": "0a8f9b74-3945-425b-8f4f-15e0da499b2c",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-doublewrite",
+      "title": "mysql-doublewrite",
+      "time": "2026-10-12T13:12:02.739Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-doublewrite.excalidraw"
+      ]
+    },
+    {
+      "id": "de4a872d-732b-4f70-9bec-2d3cb04be7f5",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-doublewrite",
+      "title": "mysql-doublewrite",
+      "time": "2026-10-12T13:12:22.744Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-doublewrite.png",
+        "assets/mysql-doublewrite.svg"
+      ]
+    },
+    {
+      "id": "c9e93cd5-801b-4604-bf2f-2e6022fc16d6",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-doublewrite",
+      "title": "mysql-doublewrite",
+      "time": "2026-10-12T13:19:58.787Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-doublewrite.excalidraw"
+      ]
+    },
+    {
+      "id": "647f3c3e-233d-47fb-a488-b6c6e956fed6",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-doublewrite",
+      "title": "mysql-doublewrite",
+      "time": "2026-10-12T13:20:10.746Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-doublewrite.png",
+        "assets/mysql-doublewrite.svg"
+      ]
+    },
+    {
+      "id": "83074382-e0d3-42f1-8326-337d0ea87513",
+      "kind": "updated",
+      "entity": "doc:mysql-doublewrite",
+      "title": "InnoDB 双写缓冲（Doublewrite Buffer）",
+      "time": "2026-10-12T13:20:54.868Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-doublewrite"
+    },
+    {
+      "id": "d785f1ab-92d2-4def-b02f-ce3bfd0e4fec",
+      "kind": "moved",
+      "entity": "doc:mysql-doublewrite",
+      "title": "InnoDB 双写缓冲（Doublewrite Buffer）",
+      "time": "2026-10-12T13:23:31.998Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-doublewrite",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "a5c1d0b8-b4c1-4cd8-8277-82b9f219c18e",
+      "kind": "moved",
+      "entity": "doc:mysql-buffer-pool-lifecycle",
+      "title": "InnoDB 缓冲池与脏页写回",
+      "time": "2026-10-12T13:23:48.951Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-buffer-pool-lifecycle",
+      "from": "inbox",
+      "to": "notes"
     }
   ]
 }

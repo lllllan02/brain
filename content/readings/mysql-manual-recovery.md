@@ -5,9 +5,10 @@ parent: mysql-overview
 type: "article"
 tags: ["MySQL", "持久化", "binlog", "数据恢复"]
 created_at: "2026-10-12T14:03:16+08:00"
-updated_at: "2026-10-12T14:03:16+08:00"
+updated_at: "2026-10-12T21:11:03+08:00"
 source:
   - "https://dev.mysql.com/doc/refman/8.4/en/innodb-redo-log.html"
+  - "https://www.percona.com/blog/innodb-double-write/"
   - "https://dev.mysql.com/doc/refman/8.4/en/innodb-recovery.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/binary-log.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/replication.html"
@@ -19,6 +20,8 @@ MySQL 8.4 手册把实例崩溃恢复、复制和备份恢复分开介绍，因�
 ## Redo 怎样参与本机恢复
 
 [Redo Log](https://dev.mysql.com/doc/refman/8.4/en/innodb-redo-log.html)记录数据修改所需的重做信息。异常退出前，某些修改还没有完成数据文件写入，重启时可据此重做；日志随着修改追加，旧部分随检查点推进而回收。它面向当前实例的数据恢复，不是可任意回放全部历史的永久档案。
+
+补充机制解释：Peter Zaitsev 的 [InnoDB Double Write](https://www.percona.com/blog/innodb-double-write/) 指出，Redo 中的页定位与操作信息需要内部一致的页作为应用基础。完整旧页可以重做，但部分写入造成的结构不一致不能等同于“只是少做了几项修改”；Redo 也不是每次修改后的整页备份。双写副本未完成时保留原页，目标页写坏时则用有效副本恢复。该文发表于 2006 年，这里只引用恢复前提与写入顺序，不沿用其旧版存储布局、容量或性能数字；当前双写文件和模式以 [[mysql-manual-buffer-pool#写回过程的完整性|MySQL 8.4 手册]]为准。
 
 [InnoDB Recovery](https://dev.mysql.com/doc/refman/8.4/en/innodb-recovery.html)说明重启后的恢复还要处理未提交事务：应用必要的 Redo，并回滚应撤销的修改。因而「存在重做日志」本身不能证明事务已经提交。Undo 所提供的撤销与历史版本信息则用于回滚和一致性读，两类日志不能互相替代。
 

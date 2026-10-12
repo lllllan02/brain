@@ -5,8 +5,17 @@ parent: mysql-overview
 type: "article"
 tags: ["MySQL", "索引", "执行计划", "SQL优化"]
 created_at: "2026-10-12T14:03:16+08:00"
-updated_at: "2026-10-12T17:56:27+08:00"
+updated_at: "2026-10-12T19:05:16+08:00"
 source:
+  - "https://dev.mysql.com/doc/refman/8.4/en/innodb-performance-midpoint_insertion.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/connection-access.html"
+  - "https://github.com/mysql/mysql-server/blob/8.4/sql/sql_parse.cc"
+  - "https://github.com/mysql/mysql-server/blob/8.4/sql/sql_select.cc"
+  - "https://dev.mysql.com/doc/refman/8.4/en/execution-plan-information.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/innodb-file-space.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/innodb-file-per-table-tablespaces.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/innodb-buffer-pool-flushing.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/innodb-checkpoints.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/derived-table-optimization.html"
   - "https://dev.mysql.com/doc/c-api/8.4/en/mysql-use-result.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/innodb-consistent-read.html"
@@ -54,6 +63,28 @@ MySQL 8.4 手册把「写出查询」「理解数据组织」「观察执行计�
 [Tutorial](https://dev.mysql.com/doc/refman/8.4/en/tutorial.html)通过创建和使用一个简单数据库，组织连接、建表、载入数据、筛选、排序、NULL、计数与多表查询；常见查询示例还包括分组最大值、外键和自增列。它适合定位 SQL 基础，复杂类型与优化规则需要转到专门章节。
 
 [InnoDB 简介](https://dev.mysql.com/doc/refman/8.4/en/innodb-introduction.html)说明它是 8.4 默认存储引擎，提供事务、回滚、崩溃恢复、行级锁和一致性读。SQL 查询最终需要访问它管理的记录；[Buffer Pool](https://dev.mysql.com/doc/refman/8.4/en/innodb-buffer-pool.html)按页缓存表和索引数据，常用页可直接从内存访问。因此，分析一次查询既要看访问哪些记录，也要考虑页面是否已在缓存中。
+
+## SQL 从文本到执行计划
+
+[连接认证](https://dev.mysql.com/doc/refman/8.4/en/connection-access.html)说明，新连接先校验身份与账号状态，接受连接后等待请求；连接成功并不取消后续语句权限检查。
+
+[8.4 的 sql_parse.cc](https://github.com/mysql/mysql-server/blob/8.4/sql/sql_parse.cc)中，`dispatch_sql_command()` 解析文本并把语法结构交给后续执行。[sql_select.cc](https://github.com/mysql/mysql-server/blob/8.4/sql/sql_select.cc)中，普通未准备语句先进入 `prepare()`；`execute_inner()` 再调用查询表达式的 `optimize()` 与 `execute()`。这些位置支持「解析、准备、优化、执行」的职责划分，不代表所有语句、预处理语句和异常路径都严格复用同一条调用链。
+
+[执行计划概述](https://dev.mysql.com/doc/refman/8.4/en/execution-plan-information.html)说明优化器结合表、列、索引和条件选择操作集合。Server 层据此组织访问，具体取行通过引擎完成；部分过滤可下推，分工边界应结合本篇 ICP 章节理解。
+
+## 表空间怎样组织页面
+
+[独立表空间](https://dev.mysql.com/doc/refman/8.4/en/innodb-file-per-table-tablespaces.html)把单张表的数据与索引放在一个 `.ibd` 文件中，默认启用；[文件空间管理](https://dev.mysql.com/doc/refman/8.4/en/innodb-file-space.html)还说明系统和通用表空间可共享容纳多表。因此「表」「表空间」「数据文件」不能无条件一一等同。
+
+空间管理章节按页、区和段说明分配方式：默认页为 16 KB，此时 64 页组成一个区；索引叶子与非叶子分别使用段，段增长时可以先分配零散页，再分配整区。这些单位解决空间管理，行和索引条目怎样放入页仍需结合聚簇索引与行格式说明，不能仅按容器层级推导记录布局。
+
+## 缓冲池与数据页写回
+
+[Buffer Pool](https://dev.mysql.com/doc/refman/8.4/en/innodb-buffer-pool.html)将访问过的表与索引数据按页留在内存，并使用分为新、旧部分的 LRU 变体管理缓存。新读页从旧区入口加入，后续是否提升需结合访问及[扫描抗性设置](https://dev.mysql.com/doc/refman/8.4/en/innodb-performance-midpoint_insertion.html)；其目的在于保留常用页，不能理解成所有扫描都会完全避免缓存污染。
+
+[刷脏说明](https://dev.mysql.com/doc/refman/8.4/en/innodb-buffer-pool-flushing.html)将脏页定义为已修改但未写回数据文件的页，由后台清理线程安排写回。脏页比例、可用页需求和 Redo 压力影响刷脏；为复用旧日志空间，需要先写回仍依赖那部分日志的修改。写回不足会积累压力，过多又占用业务所需的 I/O。
+
+[检查点](https://dev.mysql.com/doc/refman/8.4/en/innodb-checkpoints.html)使用分批刷页的模糊检查点机制，避免一次写完全部缓冲池；恢复从检查点向后应用日志。结合 [[mysql-manual-recovery#Redo 怎样参与本机恢复|Redo 与恢复]]可知，数据页写回进度与事务提交状态是不同问题，不能据此推断页内所有修改均已提交。
 
 ## 索引怎样找到记录
 
