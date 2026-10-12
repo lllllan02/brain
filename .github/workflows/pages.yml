@@ -27,6 +27,10 @@ jobs:
         working-directory: apps/web
       - run: npm test
         working-directory: apps/web
+      - run: npx playwright install --with-deps chromium
+        working-directory: apps/web
+      - run: npm run test:e2e
+        working-directory: apps/web
       - run: npm run build:pages
         working-directory: apps/web
       - uses: actions/upload-pages-artifact@v3

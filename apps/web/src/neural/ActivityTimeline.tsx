@@ -1,6 +1,6 @@
 import type { ReaderGraph } from '../types/graph.ts';
 import type { LibraryActivity } from '../types/library.ts';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { collectionRegistry, collectionLabel } from '../collections.ts';
 import {
   ACTIVITY_KINDS,

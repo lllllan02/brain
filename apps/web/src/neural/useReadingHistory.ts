@@ -1,3 +1,4 @@
+import { validReadingSession } from './view-state.ts';
 import type { ReaderGraph } from '../types/graph.ts';
 import type { ReadingEntry, TrailSegment } from '../types/reading.ts';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -31,26 +32,13 @@ const write = (storage: 'localStorage' | 'sessionStorage', key: string, value: u
 
 function initialHistory(): { entries: ReadingEntry[]; cursor: number } {
   try {
-    const saved = JSON.parse(read('sessionStorage', storageKey) ?? 'null') as {
-      entries: ReadingEntry[];
-      cursor: number;
-    };
+    const saved: unknown = JSON.parse(read('sessionStorage', storageKey) ?? 'null');
+    if (!validReadingSession(saved)) throw Error('Invalid reading session');
     const key = history.state?.horizonReading;
     const cursor = saved?.entries?.findIndex(
       (entry) => entry.key === key && entry.url === location.hash,
     );
-    if (
-      cursor >= 0 &&
-      saved.entries.every(
-        (e) =>
-          typeof e.key === 'string' &&
-          typeof e.url === 'string' &&
-          (e.id === null || typeof e.id === 'string') &&
-          (e.scroll === null || Number.isFinite(e.scroll)),
-      )
-    ) {
-      return { ...saved, cursor };
-    }
+    if (cursor >= 0) return { entries: saved.entries, cursor };
   } catch {
     /* Start a new navigation session after malformed or obsolete storage. */
   }

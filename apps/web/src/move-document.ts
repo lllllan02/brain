@@ -1,3 +1,4 @@
+import { record } from './data/validation.ts';
 import type { ParsedDocument, LibraryDocument } from './types/library.ts';
 import type { IncomingMessage } from 'node:http';
 interface MarkdownToken {
@@ -204,10 +205,9 @@ async function replaceFile(file: string, content: string, expected: string) {
   }
 }
 
-export async function moveDocument(
-  root: string,
-  { id, collection, version }: { id?: string; collection?: string; version?: string } = {},
-) {
+export async function moveDocument(root: string, input: unknown = {}) {
+  if (!record(input)) throw new MoveError('移动参数无效。', 400);
+  const { id, collection, version } = input;
   if (
     typeof id !== 'string' ||
     typeof collection !== 'string' ||

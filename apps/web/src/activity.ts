@@ -1,3 +1,5 @@
+import { array, dictionary, object, number, nullable, string } from './data/validation.ts';
+import { isActivityEvent } from './data/library-schema.ts';
 import type {
   Library,
   LibraryDocument,
@@ -120,23 +122,24 @@ function publicActivity(
   );
   return { startedAt: state.startedAt, events, version: hash(JSON.stringify(events)) };
 }
+const validState = object<ActivityState>({
+  schema: number,
+  startedAt: nullable(string),
+  documents: dictionary(object({ title: string, collection: string, digest: string })),
+  images: dictionary(
+    object<ImageSnapshot>({ title: string, files: dictionary(string), collections: array(string) }),
+  ),
+  events: array(isActivityEvent),
+});
 async function readState(file: string): Promise<ActivityState | null> {
   try {
     if (!(await lstat(file)).isFile()) throw Error('活动记录不是普通文件');
-    const state = JSON.parse(await readFile(file, 'utf8')) as ActivityState;
+    const state: unknown = JSON.parse(await readFile(file, 'utf8'));
     if (
+      !validState(state) ||
       state.schema !== 1 ||
-      !state.documents ||
-      !state.images ||
-      !Array.isArray(state.events) ||
-      !state.events.every(
-        (e) =>
-          typeof e.id === 'string' &&
-          typeof e.entity === 'string' &&
-          typeof e.title === 'string' &&
-          Array.isArray(e.collections) &&
-          Number.isFinite(documentTime(e.time)),
-      )
+      (state.startedAt !== null && !Number.isFinite(documentTime(state.startedAt))) ||
+      !state.events.every((event) => Number.isFinite(documentTime(event.time)))
     )
       throw Error('活动记录格式无效');
     return state;

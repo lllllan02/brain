@@ -82,3 +82,22 @@ test('北京时间跨日、周一边界、闰年和重复活动口径',()=>{
   assert.equal(summaryCounts(events,'2026-10-01','2026-10-12').learned,1);
   assert.equal(summaryCounts(events,'2026-10-01','2026-10-12').updated,1);
 });
+
+test('活动记录深层字段损坏时报告错误并保留原文件', async t => {
+  const root=await fixture(t);
+  await writeFile(path.join(root,'inbox/a.md'),raw);
+  await observe(root);
+  const file=path.join(root,'.activity.json');
+  const original=JSON.parse(await readFile(file,'utf8'));
+  for(const mutate of [
+    s=>s.documents.a=null,
+    s=>s.images.test={title:'x',files:[],collections:['notes']},
+    s=>s.events[0].collections=[1],
+    s=>s.events[0].kind='unknown',
+    s=>s.events[0]=null,
+  ]) {
+    const value=structuredClone(original);mutate(value);const broken=JSON.stringify(value);
+    await writeFile(file,broken);assert.ok((await observe(root)).error);
+    assert.equal(await readFile(file,'utf8'),broken);
+  }
+});

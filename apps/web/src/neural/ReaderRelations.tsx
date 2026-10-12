@@ -1,6 +1,6 @@
 import type { ReaderGraph, ReaderNode, ReaderModule } from '../types/graph.ts';
 import type { Cluster } from '../types/reading.ts';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { Icon } from './icons.tsx';
 import { ReaderParent } from './ReaderParent.tsx';
 import { clusterDocuments } from './ClusterList.tsx';

@@ -54,7 +54,7 @@ export class ReaderTransition extends Component<{
   }
 
   componentDidUpdate(
-    previous: Readonly<ReaderTransition['props']>,
+    _previous: Readonly<ReaderTransition['props']>,
     _state: unknown,
     snapshot: ReturnType<ReaderTransition['getSnapshotBeforeUpdate']>,
   ) {

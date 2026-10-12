@@ -1,5 +1,4 @@
 import { useViewState } from './useViewState.ts';
-import React from 'react';
 import { Icon } from './icons.tsx';
 import { documentSources } from './document-sources.ts';
 

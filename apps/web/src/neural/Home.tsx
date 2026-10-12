@@ -1,14 +1,17 @@
-import type { HomeProps, Flight } from '../types/ui.ts';
-import type { TrailProjection, ReaderCluster } from '../types/reading.ts';
-import type { createGalaxy, GalaxyLabel } from '../galaxy/scene.ts';
-import type { Focus, ReaderNode, ReaderGraph } from '../types/graph.ts';
-import type { Cluster, ReadingTrail as ReadingTrailData } from '../types/reading.ts';
-import type { useReadingHistory } from './useReadingHistory.ts';
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useReadingFlight } from './useReadingFlight.ts';
+import { useReaderLayout } from './useReaderLayout.ts';
+import { GalaxyLabels } from './GalaxyLabels.tsx';
+import type { HomeProps } from '../types/ui.ts';
+import type { ReaderCluster } from '../types/reading.ts';
+import type { createGalaxy } from '../galaxy/scene.ts';
+import { useGalaxyScene, type GalaxyBindings } from './useGalaxyScene.ts';
+import type { Focus, ReaderNode } from '../types/graph.ts';
+import type { Cluster } from '../types/reading.ts';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useReadingQueue } from './useReadingQueue.ts';
 import { Workbench } from './Workbench.tsx';
 import { useViewState } from './useViewState.ts';
-import { validCluster, validPinnedList } from './view-state.ts';
+import { validCluster, validPinnedList, validFocus } from './view-state.ts';
 import { collectionLabel, CONTENT_COLLECTIONS } from '../collections.ts';
 import { moduleOf, isDocumentNode } from './graph.ts';
 import { createSearchIndex, searchDocuments } from './search.ts';
@@ -27,41 +30,23 @@ import { MOTION, motionVariables } from '../motion/tokens.ts';
 import '../motion/motion.css';
 import '../galaxy/galaxy.css';
 
-export function moduleItems(graph: ReaderGraph, modId: string) {
-  return graph.nodes
-    .filter((node) => node.modules?.includes(modId))
-    .sort((a, b) => (a.type === 'overview' ? 0 : 1) - (b.type === 'overview' ? 0 : 1));
-}
-
 export function Home({ graph, focus, setFocus, reading, reduced, collectionAction }: HomeProps) {
   const host = useRef<HTMLDivElement>(null),
     scene = useRef<ReturnType<typeof createGalaxy>>(null),
     searchInput = useRef<HTMLInputElement>(null);
   const composing = useRef(false);
-  const current = useRef<{
-    focus: Focus;
-    setFocus: (focus: Focus) => void;
-    preset?: string;
-    expanded?: boolean;
-    grouping?: string;
-    groupCluster?: Cluster | null;
-    reduced?: boolean;
-    trail?: ReadingTrailData | null;
-    reading?: ReturnType<typeof useReadingHistory>;
-    visualFocus?: Focus;
-  }>({ focus, setFocus });
+  const current = useRef<GalaxyBindings>({ focus, setFocus });
   const readerTimeline = useRef<{ progress: number; animation: Animation | null }>({
     progress: 0,
     animation: null,
   });
-  const [branchesReady, setBranchesReady] = useState(false);
-  const [labels, setLabels] = useState<GalaxyLabel[]>([]),
-    [ready, setReady] = useState(false),
-    [error, setError] = useState('');
   const preset = graph.index.get(focus.sel!)?.module ? 'nebula' : 'deepfield';
   const [expanded, setExpanded] = useViewState('expanded', false);
-  const [grouping, setGrouping] = useViewState('grouping', 'category', (value) =>
-    ['category', 'collection'].includes(value),
+  const [grouping, setGrouping] = useViewState(
+    'grouping',
+    'category',
+    (value): value is string =>
+      typeof value === 'string' && ['category', 'collection'].includes(value),
   );
   const [readerCluster, setReaderCluster] = useViewState<ReaderCluster | null>(
     'readerCluster',
@@ -76,7 +61,8 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
   const [collectionFilter, setCollectionFilter] = useViewState(
     'listCollectionFilter',
     'all',
-    (value) => value === 'all' || CONTENT_COLLECTIONS.includes(value),
+    (value): value is string =>
+      typeof value === 'string' && (value === 'all' || CONTENT_COLLECTIONS.includes(value)),
   );
   const [clusterVisible, setClusterVisible] = useState(false);
   const [historyOpen, setHistoryOpen] = useViewState('historyOpen', false);
@@ -86,21 +72,25 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
   const [relationMode, setRelationMode] = useViewState<'incoming' | 'outgoing'>(
     'relationMode',
     'outgoing',
-    (value) => ['outgoing', 'incoming'].includes(value),
+    (value): value is 'incoming' | 'outgoing' => value === 'incoming' || value === 'outgoing',
   );
   const queue = useReadingQueue();
   // Always enter through the galaxy; a previous dashboard visit is not a landing preference.
   const [homeMode, setHomeMode] = useState('galaxy');
   const workbenchVisible = homeMode === 'workbench' && !focus.sel && !focus.mod;
+  const { ready, branchesReady, labels, error, trailProjection } = useGalaxyScene({
+    graph,
+    workbenchVisible,
+    host,
+    scene,
+    current,
+    readerTimeline,
+    onClearCluster: () => setReaderCluster(null),
+  });
   const [galaxyReturnFocus, setGalaxyReturnFocus] = useViewState<Focus | null>(
     'galaxyReturnFocus',
     null,
-    (value) =>
-      value === null ||
-      (typeof value === 'object' &&
-        (['sel', 'mod'] as const).every(
-          (key) => value[key] === null || typeof value[key] === 'string',
-        )),
+    validFocus,
   );
   const [queueOpen, setQueueOpen] = useViewState('queueOpen', false);
   const queueToggle = useRef<HTMLButtonElement>(null);
@@ -117,30 +107,11 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
     setReaderCluster({ owner: focus.sel, value: null });
     latestToggle.current?.focus({ preventScroll: true });
   };
-  const [flight, setFlight] = useState<Flight | null>(null);
-  const pendingFlight = useRef<{
-    key: string;
-    source: string;
-    target: string;
-    revealed?: boolean;
-    navigate(): void;
-  } | null>(null);
-  const [revealedFlight, setRevealedFlight] = useState<string | null>(null);
-  const revealFlight = useCallback((key: string) => {
-    const pending = pendingFlight.current;
-    if (!pending || pending.key !== key || pending.revealed) return;
-    pending.revealed = true;
-    setRevealedFlight(key);
-    pending.navigate();
-  }, []);
-  const finishFlight = useCallback((key: string) => {
-    const pending = pendingFlight.current;
-    if (!pending || pending.key !== key) return;
-    pendingFlight.current = null;
-    setFlight(null);
-    if (!pending.revealed) pending.navigate();
-  }, []);
-  const [trailProjection, setTrailProjection] = useState<TrailProjection>({ nodes: [], edges: [] });
+  const { flight, revealedFlight, revealFlight, finishFlight, selectWithFlight } = useReadingFlight(
+    scene,
+    focus.sel,
+    reduced,
+  );
   const liveTrail = useMemo(
     () => (focus.sel ? activeReadingTrail(reading.path, reading.hop) : null),
     [focus.sel, reading.path, reading.hop],
@@ -234,33 +205,23 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
   const visualNode = node?.module ? shownNode : null;
   const visualFocus = { sel: visualNode?.id || null, mod: visualNode?.module || focus.mod };
   current.current.visualFocus = visualFocus;
-  const syncReaderLayout = useCallback(() => {
-    const panel = reader.ref.current;
-    if (!panel) return;
-    const page = panel.closest<HTMLElement>('.galaxy-page')!;
-    page.style.setProperty('--reader-left', `${panel.offsetLeft}px`);
-    page.style.setProperty('--reader-top', `${panel.offsetTop}px`);
-    page.style.setProperty('--reader-height', `${panel.offsetHeight}px`);
-    // A pointer-driven layout already supplies each intermediate size. Publish
-    // the list position and camera projection together, without another tween.
-    if (panel.matches('.reader-resized, .reader-resizing')) scene.current?.resizeReader();
-  }, [reader.ref]);
+  useLayoutEffect(() => scene.current?.preset(preset), [preset]);
+  useEffect(() => {
+    scene.current?.pause(reduced);
+  }, [reduced, ready]);
+  useEffect(() => scene.current?.setReducedMotion(reduced), [reduced]);
   useLayoutEffect(() => {
-    const panel = reader.ref.current;
-    if (!panel) return;
-    const page = panel.closest<HTMLElement>('.galaxy-page')!;
-    syncReaderLayout();
-    const observer = new ResizeObserver(syncReaderLayout);
-    observer.observe(panel);
-    window.addEventListener('resize', syncReaderLayout);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('resize', syncReaderLayout);
-      ['--reader-left', '--reader-top', '--reader-height'].forEach((name) =>
-        page.style.removeProperty(name),
-      );
-    };
-  }, [shownNode?.id, syncReaderLayout]);
+    scene.current?.readingTrail(trail);
+  }, [trail]);
+  useLayoutEffect(() => {
+    scene.current?.focus(
+      groupCluster ? null : visualFocus.sel,
+      groupCluster ? (groupCluster.category ?? null) : visualFocus.mod,
+      groupCluster?.tag,
+      visualFocus.sel,
+    );
+  }, [visualFocus.sel, visualFocus.mod, groupCluster]);
+  const syncReaderLayout = useReaderLayout(reader.ref, scene, shownNode?.id);
   const review = usePresence<ReaderNode | null, HTMLButtonElement>(
     reviewNode?.module ? reviewNode : null,
     reviewNode?.module ? reviewNode.id : null,
@@ -312,127 +273,9 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
         ? '正在展开星系…'
         : null);
   const status = usePresence(statusText, statusText, reduced, 'none');
-  useLayoutEffect(() => {
-    // The dashboard needs no WebGL scene. Dispose it on entry and create it
-    // only for the galaxy/reader; pause() stops motion, not rendering.
-    setReady(false);
-    setBranchesReady(false);
-    setLabels([]);
-    readerTimeline.current.progress = 0;
-    if (readerTimeline.current.animation) readerTimeline.current.animation.currentTime = 0;
-    if (workbenchVisible) return;
-    let active = true,
-      instance: ReturnType<typeof createGalaxy> | undefined;
-    setError('');
-    import('../galaxy/scene.ts')
-      .then(({ createGalaxy }) => {
-        if (!active) return;
-        instance = createGalaxy(
-          host.current!,
-          graph,
-          {
-            onLabels: (next) => {
-              if (active) setLabels(next);
-            },
-            onTrail: (next) => {
-              if (active) setTrailProjection(next);
-            },
-            onReady: (value) => {
-              if (active) setReady(value);
-            },
-            onBranchesReady: (value) => {
-              if (!active) return;
-              if (!value) {
-                readerTimeline.current.progress = 0;
-                if (readerTimeline.current.animation)
-                  readerTimeline.current.animation.currentTime = 0;
-              }
-              setBranchesReady(value);
-            },
-            onEntryProgress: (progress) => {
-              if (!active) return;
-              readerTimeline.current.progress = progress;
-              if (readerTimeline.current.animation)
-                readerTimeline.current.animation.currentTime = progress * MOTION.morph;
-            },
-            onError: (message) => {
-              if (active) {
-                setError(message);
-                readerTimeline.current.progress = 1;
-                if (readerTimeline.current.animation)
-                  readerTimeline.current.animation.currentTime = MOTION.morph;
-              }
-            },
-            onReset: () => {
-              setReaderCluster(null);
-              current.current.setFocus({ mod: null, sel: null });
-            },
-            onSelect: (id) => {
-              setReaderCluster(null);
-              const navigation = current.current.reading!;
-              const ancestor = navigation.path.slice(-3, -1).findLast((entry) => entry.id === id);
-              if (ancestor && id !== current.current.focus.sel && current.current.trail?.live) {
-                navigation.returnTo(ancestor.key);
-                return;
-              }
-              const target = graph.index.get(id);
-              if (target?.module) current.current.setFocus({ mod: target.module, sel: id });
-            },
-          },
-          current.current.reduced!,
-          current.current.preset,
-        );
-        scene.current = instance;
-        const cluster = current.current.groupCluster;
-        instance.focus(
-          cluster ? null : current.current.visualFocus!.sel,
-          cluster ? (cluster.category ?? null) : current.current.visualFocus!.mod,
-          cluster?.tag,
-          current.current.visualFocus!.sel,
-        );
-        instance.pause(current.current.reduced!);
-        instance.expand(current.current.expanded!, current.current.grouping);
-        instance.readingTrail(current.current.trail ?? null);
-      })
-      .catch(() => {
-        if (active) {
-          setError('当前浏览器无法显示三维星云，可通过下方搜索继续阅读。');
-          readerTimeline.current.progress = 1;
-          if (readerTimeline.current.animation)
-            readerTimeline.current.animation.currentTime = MOTION.morph;
-        }
-      });
-    return () => {
-      active = false;
-      instance?.dispose();
-      scene.current = null;
-    };
-  }, [graph, workbenchVisible]);
-  useLayoutEffect(() => scene.current?.preset(preset), [preset]);
-  useEffect(() => {
-    scene.current?.pause(reduced);
-  }, [reduced, ready]);
-  useEffect(() => scene.current?.setReducedMotion(reduced), [reduced]);
-  useLayoutEffect(() => {
-    scene.current?.readingTrail(trail);
-  }, [trail]);
   useEffect(() => {
     if (!focus.sel) setReaderCluster(null);
-    const pending = pendingFlight.current;
-    if (pending && (pending.revealed ? pending.target : pending.source) !== focus.sel) {
-      pendingFlight.current = null;
-      setFlight(null);
-      scene.current?.cancelReadingTravel();
-    }
   }, [focus.sel]);
-  useLayoutEffect(() => {
-    scene.current?.focus(
-      groupCluster ? null : visualFocus.sel,
-      groupCluster ? (groupCluster.category ?? null) : visualFocus.mod,
-      groupCluster?.tag,
-      visualFocus.sel,
-    );
-  }, [visualFocus.sel, visualFocus.mod, groupCluster]);
   const showReaderCluster = (cluster: Cluster | null) => {
     setPinnedList(null);
     setHistoryOpen(false);
@@ -567,87 +410,15 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
             hidden={workbenchVisible || !ready || Boolean(error)}
           />
         )}
-        <div className="galaxy-labels">
-          {ready &&
-            !error &&
-            labels.map((label) =>
-              label.category ? (
-                <button
-                  key={label.id}
-                  className="galaxy-category-label"
-                  style={{
-                    left: label.x,
-                    top: label.y,
-                    opacity: label.opacity,
-                    '--group-color': label.color,
-                    pointerEvents: label.exiting ? 'none' : undefined,
-                  }}
-                  onPointerEnter={() => scene.current?.hoverCategory(label.id)}
-                  onPointerLeave={() => scene.current?.hoverCategory(null)}
-                  onFocus={() => scene.current?.hoverCategory(label.id)}
-                  onBlur={() => scene.current?.hoverCategory(null)}
-                  onClick={() =>
-                    focus.sel
-                      ? setReaderCluster({ owner: focus.sel, value: { category: label.id } })
-                      : setFocus({ mod: label.id, sel: null })
-                  }
-                  aria-label={`查看${label.title}${label.id.startsWith('collection:') ? '目录' : '分类'}`}
-                >
-                  <i aria-hidden="true" />
-                  {label.title}
-                  <small>{label.count}</small>
-                </button>
-              ) : (
-                <React.Fragment key={label.id}>
-                  {label.current && (
-                    <svg
-                      className="galaxy-current-marker"
-                      aria-hidden="true"
-                      viewBox="-20 -20 40 40"
-                      style={{
-                        left: label.x,
-                        top: label.y,
-                        opacity: label.opacity,
-                        pointerEvents: label.exiting ? 'none' : undefined,
-                      }}
-                    >
-                      <path d="M -8 -17 H -17 V -8 M 8 -17 H 17 V -8 M -8 17 H -17 V 8 M 8 17 H 17 V 8" />
-                    </svg>
-                  )}
-                  {label.path ? (
-                    <button
-                      type="button"
-                      className="galaxy-label is-path"
-                      title={`返回：${label.title}`}
-                      tabIndex={label.exiting ? -1 : 0}
-                      onClick={() => {
-                        const entry = reading.path
-                          .slice(-3, -1)
-                          .findLast((item) => item.id === label.id);
-                        if (entry) reading.returnTo(entry.key);
-                      }}
-                      style={{
-                        left: label.x,
-                        top: label.y,
-                        opacity: label.opacity,
-                        pointerEvents: label.exiting ? 'none' : undefined,
-                      }}
-                    >
-                      {label.title}
-                    </button>
-                  ) : (
-                    <span
-                      className={`galaxy-label${label.current ? ' is-current' : ''}${label.preview ? ' is-preview' : ''}`}
-                      aria-hidden="true"
-                      style={{ left: label.x, top: label.y, opacity: label.opacity }}
-                    >
-                      {label.title}
-                    </span>
-                  )}
-                </React.Fragment>
-              ),
-            )}
-        </div>
+        <GalaxyLabels
+          labels={labels}
+          ready={ready && !error}
+          scene={scene}
+          focus={focus}
+          reading={reading}
+          setFocus={setFocus}
+          setReaderCluster={setReaderCluster}
+        />
       </div>
       <header className="galaxy-header">
         <a
@@ -915,41 +686,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
             });
         }}
         onPresenceChange={setClusterVisible}
-        onSelect={(id, card) => {
-          if (
-            !reduced &&
-            focus.sel &&
-            id !== focus.sel &&
-            card &&
-            scene.current?.prepareReadingTravel(id)
-          ) {
-            const title = card.querySelector('strong') || card;
-            const box = title.getBoundingClientRect(),
-              style = getComputedStyle(title);
-            const key = crypto.randomUUID();
-            pendingFlight.current = {
-              key,
-              source: focus.sel,
-              target: id,
-              navigate: () => go(id, !timelineOpen),
-            };
-            setFlight({
-              key,
-              id,
-              title: title.textContent!,
-              x: box.x + box.width / 2,
-              y: box.y + box.height / 2,
-              width: box.width,
-              fontSize: style.fontSize,
-              fontFamily: style.fontFamily,
-              color: style.color,
-            });
-            return;
-          }
-          pendingFlight.current = null;
-          setFlight(null);
-          go(id, !timelineOpen);
-        }}
+        onSelect={(id, card) => selectWithFlight(id, card, () => go(id, !timelineOpen))}
         onClear={() => {
           setPinnedList(null);
           reading.clear();

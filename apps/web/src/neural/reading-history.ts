@@ -1,3 +1,4 @@
+import { object, string, nullable, number } from '../data/validation.ts';
 import type {
   ReadingEntry,
   Visit,
@@ -109,21 +110,11 @@ export function parseReadingRoute(hash: string) {
   }
 }
 
+const validVisit = object<Visit>({ key: string, id: string, from: nullable(string), time: number });
 export function readVisits(raw: string | null): Visit[] {
   try {
-    const value = JSON.parse(raw ?? 'null');
-    return Array.isArray(value)
-      ? value
-          .filter(
-            (v) =>
-              v &&
-              typeof v.key === 'string' &&
-              typeof v.id === 'string' &&
-              (v.from === null || typeof v.from === 'string') &&
-              Number.isFinite(v.time),
-          )
-          .slice(-HISTORY_LIMIT)
-      : [];
+    const value: unknown = JSON.parse(raw ?? 'null');
+    return Array.isArray(value) ? value.filter(validVisit).slice(-HISTORY_LIMIT) : [];
   } catch {
     return [];
   }

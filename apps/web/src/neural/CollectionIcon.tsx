@@ -1,4 +1,3 @@
-import React from 'react';
 import { collectionIcons } from '../collections.ts';
 
 export function CollectionIcon({ collection }: { collection?: string }) {

@@ -1,5 +1,5 @@
 import type { LibraryDocument, LibraryActivity } from './library.ts';
-export interface ReaderNode extends Partial<LibraryDocument> {
+interface NodeBase {
   id: string;
   title: string;
   kind: string;
@@ -58,5 +58,15 @@ export interface Focus {
   mod: string | null;
 }
 
-/** Document nodes are created from the complete file-derived record. */
-export type ReaderDocumentNode = ReaderNode & LibraryDocument & { module: string };
+/** Structural nodes never carry document data; document nodes always carry a complete record. */
+export type ReaderDocumentNode = NodeBase &
+  LibraryDocument & {
+    nodeType: 'document';
+    module: string;
+    modules: string[];
+    folder: string;
+  };
+export type ReaderStructuralNode = NodeBase & { nodeType: 'core' | 'folder'; module?: never } & {
+  [K in Exclude<keyof LibraryDocument, keyof NodeBase>]?: never;
+};
+export type ReaderNode = ReaderDocumentNode | ReaderStructuralNode;

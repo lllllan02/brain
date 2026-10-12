@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
-import { transformWithEsbuild } from 'vite';
+import { fileURLToPath } from 'node:url';
+import { build } from 'esbuild';
 
 async function client(t, { pages = false, hostname = '127.0.0.1', fetch }) {
   const originals = ['location', 'fetch'].map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]);
@@ -13,10 +13,12 @@ async function client(t, { pages = false, hostname = '127.0.0.1', fetch }) {
   });
   Object.defineProperty(globalThis, 'location', { configurable: true, value: { protocol: 'http:', hostname } });
   globalThis.fetch = fetch;
-  const source = await readFile(new URL('../src/data/library-client.ts', import.meta.url), 'utf8');
-  const { code } = await transformWithEsbuild(source, 'library-client.ts', {
+  const result = await build({
+    entryPoints: [fileURLToPath(new URL('../src/data/library-client.ts', import.meta.url))],
+    bundle: true, write: false, format: 'esm', platform: 'browser',
     define: { __STATIC_PAGES__: String(pages), 'import.meta.env.BASE_URL': '"/horizon/"' },
   });
+  const code = result.outputFiles[0].text;
   return import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}#${Math.random()}`);
 }
 
@@ -30,7 +32,9 @@ test('本地文档请求保留接口、移动参数与服务端错误', async t 
       : { ok: false, json: async () => ({ error: '文件已修改' }) };
   } });
   assert.equal(api.localEditing, true);
-  assert.deepEqual(await api.fetchLibrary(), library);
+  const controller = new AbortController();
+  assert.deepEqual(await api.fetchLibrary(controller.signal), library);
+  assert.equal(requests[0][1].signal, controller.signal);
   assert.equal(requests[0][0], '/api/library');
   assert.deepEqual(await api.moveLibraryDocument('note', 'notes', 'v1'), library);
   assert.deepEqual(requests[1], ['/api/documents/move', {
@@ -44,7 +48,7 @@ test('Pages 在本机预览也保持只读，静态地址包含部署前缀', as
   let url;
   const api = await client(t, { pages: true, fetch: async target => {
     url = target;
-    return { ok: true, json: async () => ({ documents: [] }) };
+    return { ok: true, json: async () => ({ documents: [], version: 'v1' }) };
   } });
   assert.equal(api.localEditing, false);
   await api.fetchLibrary();
@@ -55,4 +59,11 @@ test('远程地址不启用移动，读取失败保留错误提示', async t => 
   const api = await client(t, { hostname: 'example.com', fetch: async () => ({ ok: false }) });
   assert.equal(api.localEditing, false);
   await assert.rejects(api.fetchLibrary(), /无法读取文档/);
+});
+
+
+test('读取与移动均拒绝不符合文档契约的成功响应', async t => {
+  const api = await client(t, {fetch:async()=>({ok:true,json:async()=>({version:'v1',documents:[{id:'broken'}]})})});
+  await assert.rejects(api.fetchLibrary(),/文档数据格式无效/);
+  await assert.rejects(api.moveLibraryDocument('broken','notes','v1'),/文档数据格式无效/);
 });

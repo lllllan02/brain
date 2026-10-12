@@ -1,5 +1,4 @@
 import type { LibraryDocument } from '../types/library.ts';
-import React from 'react';
 import { Icon } from './icons.tsx';
 
 export function ReaderParent({ parent }: { parent?: LibraryDocument['parent'] }) {

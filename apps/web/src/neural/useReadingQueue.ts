@@ -5,9 +5,13 @@ const storageKey = `horizon:reading-queue:v1:${globalThis.location?.pathname || 
 
 function readQueue(): { id: string }[] {
   try {
-    const value = JSON.parse(localStorage.getItem(storageKey) ?? 'null');
+    const value: unknown = JSON.parse(localStorage.getItem(storageKey) ?? 'null');
     return Array.isArray(value)
-      ? [...new Set(value.filter((id) => typeof id === 'string' && id))].map((id) => ({ id }))
+      ? [
+          ...new Set(
+            value.filter((id: unknown): id is string => typeof id === 'string' && id.length > 0),
+          ),
+        ].map((id) => ({ id }))
       : [];
   } catch {
     return [];

@@ -31,11 +31,23 @@ tags: ["知识库", "图谱", "Markdown", "服务启动", "GitHub-Pages"]
 
 ## 开发与类型检查
 
-应用使用 React、Vite 和 TypeScript。`src/neural/main.tsx` 负责页面组合，`src/neural/useLibrary.ts` 管理文档加载、轮询与移动状态，`src/data/library-client.ts` 统一接口请求；文档、图谱、阅读状态与组件契约集中在 `src/types/`。本地服务入口为 `server.ts`，静态导出入口为 `scripts/build-pages.ts`，通过 `node --import tsx` 运行，不依赖 Node 原生 TypeScript 支持。根目录的 `node scripts/retrieve.mjs` 命令保持不变，通过桥接模块复用同一套解析实现。
+应用使用 React、Vite 和 TypeScript。`src/neural/main.tsx` 负责页面组合，`src/neural/useLibrary.ts` 连接 React 与 `src/data/library-store.ts` 的加载、轮询和移动状态，`src/data/library-client.ts` 统一接口请求；文档、图谱、阅读状态与组件契约集中在 `src/types/`。本地服务入口为 `server.ts`，静态导出入口为 `scripts/build-pages.ts`，通过 `node --import tsx` 运行，不依赖 Node 原生 TypeScript 支持。根目录检索入口为 `scripts/retrieve.ts`，通过 `npm --silent --prefix apps/web run retrieve -- <子命令>` 执行，直接导入共享解析模块。
 
 在 `apps/web/` 运行 `npm run typecheck` 检查类型，`npm test` 运行回归测试，`npm run format:check` 检查格式，`npm run format` 格式化自有代码。`npm run build` 和 `npm run build:pages` 均先检查类型再构建。第三方移植代码保留原有排版。
 
-类型检查覆盖应用、服务与构建脚本，启用完整 `strict` 模式（包含 `noImplicitAny`、`strictNullChecks`）。文档结点与导航结点、DOM 引用、异步状态和可空数据均通过共享类型或使用位置的约束表达。迁移保留既有界面、文件内容来源与行为。
+类型检查覆盖应用、服务、构建脚本、根目录检索实现和 TypeScript 测试，启用完整 `strict` 模式（包含 `noImplicitAny`、`strictNullChecks`），并检查未使用的局部变量与参数。文档结点与导航结点、DOM 引用、异步状态和可空数据均通过共享类型或使用位置的约束表达。迁移保留既有界面、文件内容来源与行为。
+
+接口 JSON 和浏览器记忆从 `unknown` 开始校验，文档库的嵌套字段由 `src/data/library-schema.ts` 检查；损坏的界面记忆回退到默认值。图谱以 `nodeType` 区分完整文档与结构节点，移动操作以 `status` 区分空闲、处理中、成功和失败。读取请求不重叠，移动和卸载会取消旧读取，迟到结果不能覆盖新状态。
+
+本地服务通过 `createLibraryLoader` 缓存文件解析结果，每轮检查文件路径、大小、inode、mtime 和 ctime。未变化时复用快照；出现新增、修改、删除或移动时重新生成全部引用关系，避免别名、parent 与入站引用失效。失败的解析不会写入缓存。条件请求使用包含文档和活动版本的 ETag，内容未变时返回 304。静态导出、文件移动校验和检索命令仍使用独立的完整加载，正文只保存在 Markdown 文件中。
+
+首页的场景创建与释放放在 `useGalaxyScene.ts`，星点标签放在 `GalaxyLabels.tsx`，面板尺寸同步与卡片阅读过渡分别放在 `useReaderLayout.ts`、`useReadingFlight.ts`。修改这些模块仍需按下文的整屏验收要求核对共同进度。
+
+浏览器回归使用 Playwright：首次运行 `npx playwright install chromium`，随后运行 `npm run test:e2e`。默认预览端口为 4176，端口占用时可通过 `HORIZON_E2E_PORT` 指定其他本地端口；测试结束会关闭临时服务并删除样例目录。测试在临时目录生成两篇样例文档并构建真实 Pages 应用，不读取或修改私人笔记；覆盖宽屏、窄屏、减少动态效果、搜索、双链跳转、历史导航、阅读刷新、看板往返、阅读过渡、四类 Mermaid 图表与损坏记忆回退。测试截图和失败追踪位于被 Git 忽略的 `test-results/`。浏览器回归用于验证交互，不能替代整屏目视检查。
+
+检索命令以 `scripts/retrieve.ts` 为唯一实现，根目录运行 `npm --silent --prefix apps/web run retrieve -- query <词...>`；`make search q="..."`、`make index`、`make lint` 调用同一入口。`--silent` 去掉 npm 启动提示，便于直接解析 JSON 输出。参数错误返回 2，巡检发现错误或目标不存在返回 1，正常完成返回 0；`--limit` 必须为正整数，检索以 `--` 开头的文字时放在单独的 `--` 后面。CLI 复用 Markdown 解析和反链生成，关闭代码高亮，普通查询跳过反链计算，检索排序和片段格式保持一致。
+
+项目级升级应沿入口、共享模块、脚本、测试、构建与使用说明检查调用链。保持功能不变不等于保留旧文件名或旧命令；没有实际外部兼容需求时，直接更新调用方并删除旧入口，不能仅为省去文档更新而保留适配层。
 
 三维场景通过动态导入加载，Three.js 核心和 WebGL 渲染分别分包；Mermaid 仍只在正文包含图表时加载，共享代码按上游模块分包。`scripts/bundle-budget.ts` 在构建时检查普通 JS 包不超过 500 KB，并拒绝 Three.js 或 Mermaid 进入入口的静态依赖。上游预打包的 Mermaid 解析器与 ELK 引擎分别保留 700 KB、1.5 MB 上限；它们仍可能触发 Vite 默认的 500 KB 提示，不提高该阈值，也不通过删除图表类型减小体积。构建产物中的 `bundle-report.json` 记录实际大小、上限与入口静态依赖，超出预算会阻断构建。
 
@@ -106,7 +118,7 @@ Galaxy View 源码固定到提交 `b49b60cb04687783153f24ff7f9b0a0af59334af`，�
 
 从用户本机的 `~/github/neural-creator-dashboard` Git 仓库克隆独立副本后引入原代码。该仓库 origin 指向目标 GitHub 仓库，克隆时工作目录无未提交改动。基准提交为 `769d690fa1c06d985926d8f16772d15514b718e1`；本次 GitHub HTTPS 直接克隆仍因 HTTP/2 连接错误失败，未核验远端是否存在更晚提交。
 
-- 早期曾适配 `src/neural/Home.tsx`、`NetworkCanvas.tsx`、`neural.css`、`theme.ts`、`icons.tsx`，以及原项目的光球视频、封面和头像。当前 `Home.tsx` 已替换为三维入口；旧 Canvas 和素材保留来源记录，不参与首页渲染。
+- 早期曾适配 `src/neural/Home.tsx`、`NetworkCanvas.tsx`、`neural.css`、`theme.ts`、`icons.tsx`，以及原项目的光球视频、封面和头像。当前 `Home.tsx` 已替换为三维入口；旧 Canvas 实现和二维布局已移除，历史来源与许可证记录保留。
 - 替换：`graph.ts` 仅使用实际文档、主题归属与真实双链；`main.tsx` 只提供本地阅读导航；`DocumentReader.tsx` 提供 Markdown 正文与引用入口。
 - 未引入：示例数据、作品指标、账号快照、创作计划、选题管理、草稿编辑、推测共振关系与本地创作存储。
 - 已移除前两版独立绘制的 `app.js`、`cosmos.js` 和 `style.css`。
@@ -148,7 +160,7 @@ Galaxy View 源码固定到提交 `b49b60cb04687783153f24ff7f9b0a0af59334af`，�
 
 ## 文档与边界
 
-文档按约定平铺在配置启用的 `content/<id>/` 目录，默认包括 notes、inbox、readings 与 glossary；启用的目录均可搜索和阅读，读取器兼容递归读取。未配置或已停用的目录不收录。启用的目录都为空时，页面显示空状态。目录来源由路径生成，无需额外元数据；Notes 近核偏香槟白、Inbox 偏雾蓝、Readings 偏灰青且横向星芒稍长，Glossary 近核偏淡紫且星芒呈斜向，四者保留白亮星核，Inbox 星点稍小、星芒较弱，仅搜索结果的辅助文字显示 Notes / Inbox / Readings / Glossary，阅读卡片、滚动后的顶部标题与悬浮预览的标题前复用正文内部链接的目录图标；列表端点使用实心圆 / 空心圆 / 实心菱形 / 空心菱形区分 Notes / Inbox / Readings / Glossary。title 缺省时显示文件名；别名参与检索，type 优先、兼容 classes；摘要缺省取正文开头，未知日期不补造。Agent 用的只读检索层 `scripts/retrieve.mjs` 复用本目录 `library.mjs` 的解析逻辑，覆盖相同的已启用目录范围，实时生成不落盘。
+文档按约定平铺在配置启用的 `content/<id>/` 目录，默认包括 notes、inbox、readings 与 glossary；启用的目录均可搜索和阅读，读取器兼容递归读取。未配置或已停用的目录不收录。启用的目录都为空时，页面显示空状态。目录来源由路径生成，无需额外元数据；Notes 近核偏香槟白、Inbox 偏雾蓝、Readings 偏灰青且横向星芒稍长，Glossary 近核偏淡紫且星芒呈斜向，四者保留白亮星核，Inbox 星点稍小、星芒较弱，仅搜索结果的辅助文字显示 Notes / Inbox / Readings / Glossary，阅读卡片、滚动后的顶部标题与悬浮预览的标题前复用正文内部链接的目录图标；列表端点使用实心圆 / 空心圆 / 实心菱形 / 空心菱形区分 Notes / Inbox / Readings / Glossary。title 缺省时显示文件名；别名参与检索，type 优先、兼容 classes；摘要缺省取正文开头，未知日期不补造。Agent 用的只读检索层 `scripts/retrieve.ts` 复用`src/library.ts` 的解析逻辑，覆盖相同的已启用目录范围，实时生成不落盘。
 
 有清晰上下级关系时填写 `parent: agent-sandbox`，直接使用单个主要上级的文件名（不含 .md），界面自动读取其标题。可附带章节，如 `parent: sandbox-implementations#方案与用法`，兼容已有双链与显示名。阅读面板在顶部工具栏的分类旁显示可点击的上级入口；这条关系同时参与图谱、反向链接与检索校验。parent 不是必填属性，无明确上级时省略，不填列表。目标缺失、锚点缺失、歧义、自引用与循环关系会报告问题。
 
@@ -183,4 +195,4 @@ npm --prefix apps/web run preview:pages
 
 静态产物位于 `apps/web/dist-pages/`，包含与本地一致的正文、属性、搜索数据与引用关系，无需本地文档接口。预览地址为 `http://127.0.0.1:4174`。正文引用的有效附件会一并复制并改写为静态地址，沿用本地的附件目录与格式限制。
 
-推送 `main` 后，`.github/workflows/pages.yml` 自动安装依赖、导出并部署。先检查代码格式并运行测试，再进行类型检查与静态构建；任一检查失败都会阻断部署。测试使用独立样例，不依赖知识库中的固定文章或引用数量。仓库 Settings → Pages 的 Source 设为 GitHub Actions。发布地址为 [视界](https://lllllan02.github.io/brain/)。页面只读，文档更新仍直接修改源文件。
+推送 `main` 后，`.github/workflows/pages.yml` 自动安装依赖、导出并部署。先检查代码格式并运行单元、接口和浏览器回归测试，再进行类型检查与静态构建；任一检查失败都会阻断部署。测试使用独立样例，不依赖知识库中的固定文章或引用数量。仓库 Settings → Pages 的 Source 设为 GitHub Actions。发布地址为 [视界](https://lllllan02.github.io/brain/)。页面只读，文档更新仍直接修改源文件。

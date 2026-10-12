@@ -180,7 +180,11 @@ function parentCycle(doc: ParsedDocument, documents: ParsedDocument[]) {
   }
   return false;
 }
-export function renderDocument(doc: ParsedDocument, documents: ParsedDocument[]): LibraryDocument {
+export function renderDocument(
+  doc: ParsedDocument,
+  documents: ParsedDocument[],
+  { highlightCode = true } = {},
+): LibraryDocument {
   const toc: Heading[] = [],
     references: Reference[] = [],
     issues: LibraryDocument['issues'] = [],
@@ -285,12 +289,12 @@ export function renderDocument(doc: ParsedDocument, documents: ParsedDocument[])
           return `<div class="code-block diagram-block"><div class="code-header"><span>Mermaid</span><button type="button" class="copy-code" title="复制源码" aria-label="复制源码"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="copy-glyph" d="M9 9h12v12H9ZM5 15H3V3h12v2"/><path class="copied-glyph" d="m5 12 4 4L19 6"/></svg></button></div><p class="diagram-status" role="status">正在绘制图表…</p><div class="diagram-canvas" hidden tabindex="0" role="region" aria-label="图表，可横向滚动"></div><details class="diagram-source" open><summary>查看源码</summary><pre><code>${escape(code)}</code></pre></details></div>`;
         }
         const value =
-          lang && hljs.getLanguage(lang)
+          highlightCode && lang && hljs.getLanguage(lang)
             ? hljs.highlight(code, { language: lang }).value
             : escape(code);
         return `<div class="code-block"><div class="code-header"><span>${escape(lang || 'text')}</span><button type="button" class="copy-code" title="复制代码" aria-label="复制代码"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="copy-glyph" d="M9 9h12v12H9ZM5 15H3V3h12v2"/><path class="copied-glyph" d="m5 12 4 4L19 6"/></svg></button></div><pre><code>${value}</code></pre></div>`;
       },
-      link(href: string, title: string | null, text: string) {
+      link(href: string, _title: string | null, text: string) {
         if (/^(https?:|mailto:)/i.test(href))
           return `<a href="${escape(href)}" target="_blank" rel="noopener noreferrer">${text} ↗</a>`;
         if (href.startsWith('#'))
@@ -301,7 +305,7 @@ export function renderDocument(doc: ParsedDocument, documents: ParsedDocument[])
           return `<a href="/api/asset?path=${encodeURIComponent(href)}&from=${encodeURIComponent(doc.path)}" target="_blank" rel="noopener">${text} ↗</a>`;
         return wiki(decodeURIComponent(href), text.replace(/<[^>]*>/g, ''), false);
       },
-      image(href: string, title: string | null, text: string) {
+      image(href: string, _title: string | null, text: string) {
         if (/^(https?:|data:|javascript:)/i.test(href))
           return `<span class="broken-link">外部图片：${escape(text)}</span>`;
         return `<img loading="lazy" src="/api/asset?path=${encodeURIComponent(href)}&from=${encodeURIComponent(doc.path)}" alt="${escape(text)}">`;
@@ -342,32 +346,91 @@ export function renderDocument(doc: ParsedDocument, documents: ParsedDocument[])
   const html = Parser.parse(Lexer.lex(doc.body, options), options);
   return { ...doc, html, toc, references, issues, parent };
 }
+async function libraryFiles(root: string) {
+  return (await Promise.all(CONTENT_COLLECTIONS.map((dir) => walk(root, dir)))).flat().sort();
+}
+
 export async function loadLibrary(root: string): Promise<Library> {
-  const files = (await Promise.all(CONTENT_COLLECTIONS.map((dir) => walk(root, dir))))
-    .flat()
-    .sort();
-  const docs = await Promise.all(
-    files.map(async (file) => {
-      const absolute = path.join(root, file);
-      const [raw, info] = await Promise.all([readFile(absolute, 'utf8'), stat(absolute)]);
-      return {
-        ...parseDocument(raw, file),
-        modified: new Date(Math.floor(info.mtimeMs / 1000) * 1000).toISOString(),
-      };
-    }),
-  );
+  // One-shot consumers (export and file moves) always receive their own fresh snapshot.
+  const load = createLibraryLoader(root);
+  return load();
+}
+
+/** Process-local read cache. Changes rebuild every relation, including inbound links and aliases. */
+export function createLibraryLoader(root: string) {
+  let cache = new Map<string, { stamp: string; document: ParsedDocument }>();
+  let library: Library | null = null;
+  let pending: Promise<Library> | null = null;
+  const load = async (): Promise<Library> => {
+    const files = await libraryFiles(root);
+    const next = new Map<string, { stamp: string; document: ParsedDocument }>();
+    const docs = await Promise.all(
+      files.map(async (file) => {
+        const absolute = path.join(root, file);
+        const info = await stat(absolute, { bigint: true });
+        // ctime and inode detect same-size replacements even when an editor preserves mtime.
+        const stamp = `${info.dev}:${info.ino}:${info.size}:${info.mtimeNs}:${info.ctimeNs}`;
+        const previous = cache.get(file);
+        const entry =
+          previous?.stamp === stamp
+            ? previous
+            : {
+                stamp,
+                document: {
+                  ...parseDocument(await readFile(absolute, 'utf8'), file),
+                  modified: new Date(Number(info.mtimeNs / 1000000000n) * 1000).toISOString(),
+                },
+              };
+        next.set(file, entry);
+        return entry.document;
+      }),
+    );
+    if (
+      library &&
+      next.size === cache.size &&
+      files.every((file) => next.get(file) === cache.get(file))
+    )
+      return library;
+    const result = assembleLibrary(docs);
+    // Publish only after all parsing and relation checks succeed; errors never poison the cache.
+    cache = next;
+    library = result;
+    return result;
+  };
+  return () => {
+    if (!pending)
+      pending = load().finally(() => {
+        pending = null;
+      });
+    return pending;
+  };
+}
+
+function assembleLibrary(docs: ParsedDocument[]): Library {
   const ids = new Set<string>();
   for (const d of docs) {
     if (ids.has(d.id)) throw new Error(`文档文件名重复：${d.id}`);
     ids.add(d.id);
   }
-  const documents = docs.map((d) => renderDocument(d, docs));
-  for (const d of documents)
-    d.backlinks = documents
-      .filter((other) => other.id !== d.id && other.references.some((r) => r.id === d.id))
-      .map((other) => other.id);
+  const documents = attachBacklinks(docs.map((d) => renderDocument(d, docs)));
   return {
     version: createHash('sha256').update(JSON.stringify(documents)).digest('hex').slice(0, 16),
     documents,
   };
+}
+
+/** Build inbound links in document order, counting each source once per target. */
+export function attachBacklinks<T extends Pick<LibraryDocument, 'id' | 'references'>>(
+  documents: T[],
+): (T & { backlinks: string[] })[] {
+  const incoming = new Map<string, string[]>();
+  for (const doc of documents) {
+    for (const id of new Set(doc.references.map((ref) => ref.id))) {
+      if (id === doc.id) continue;
+      const sources = incoming.get(id) ?? [];
+      sources.push(doc.id);
+      incoming.set(id, sources);
+    }
+  }
+  return documents.map((doc) => ({ ...doc, backlinks: [...(incoming.get(doc.id) ?? [])] }));
 }

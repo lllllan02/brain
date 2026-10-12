@@ -11,7 +11,18 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["vite/client", "node"]
+    "types": ["vite/client", "node"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
-  "include": ["src", "server.ts", "scripts", "vite.config.ts"]
+  "include": [
+    "src",
+    "server.ts",
+    "scripts",
+    "vite.config.ts",
+    "playwright.config.ts",
+    "e2e",
+    "../../scripts/**/*.ts",
+    "test/**/*.ts"
+  ]
 }

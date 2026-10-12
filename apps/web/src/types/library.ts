@@ -63,9 +63,8 @@ export interface Library {
   activity?: LibraryActivity;
   public?: boolean;
 }
-export interface MoveState {
-  pending: boolean;
-  id?: string;
-  collection?: string;
-  error?: string;
-}
+export type MoveState =
+  | { status: 'idle'; pending: false; id?: never; collection?: never; error?: never }
+  | { status: 'pending'; pending: true; id: string; collection?: never; error?: never }
+  | { status: 'success'; pending: false; id: string; collection: string; error?: never }
+  | { status: 'error'; pending: false; id: string; error: string; collection?: never };

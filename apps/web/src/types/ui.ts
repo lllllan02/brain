@@ -4,9 +4,9 @@ import type { MoveState } from './library.ts';
 import type { Cluster, ReadingQueue, Point } from './reading.ts';
 import type { useReadingHistory } from '../neural/useReadingHistory.ts';
 export type ReadingController = ReturnType<typeof useReadingHistory>;
-export interface CollectionAction extends MoveState {
+export type CollectionAction = MoveState & {
   move(doc: ReaderNode, collection: string): Promise<void>;
-}
+};
 export interface HomeProps {
   graph: ReaderGraph;
   focus: Focus;

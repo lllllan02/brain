@@ -1,116 +1,160 @@
 import type { Library } from './src/types/library.ts';
 import http from 'node:http';
+import { createHash } from 'node:crypto';
 import { CONFIG } from './src/config.ts';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readFile } from 'node:fs/promises';
 import { createServer as createViteServer } from 'vite';
-import { loadLibrary, safeAsset } from './src/library.ts';
+import { createLibraryLoader, safeAsset } from './src/library.ts';
 import { activityForLibrary } from './src/activity.ts';
 import { moveDocument, MoveError, isLocalWriteRequest } from './src/move-document.ts';
-let queue: Promise<unknown> = Promise.resolve();
-const serialize = <T>(task: () => Promise<T>): Promise<T> => {
-  const result = queue.then(task);
-  queue = result.catch(() => {});
-  return result;
-};
-const dir = path.dirname(fileURLToPath(import.meta.url)),
-  root = path.resolve(dir, '../../content');
-const withActivity = async (library: Library) => ({
-  ...library,
-  activity: await activityForLibrary(root, library, { observe: true }),
-});
-const mime: Record<string, string> = {
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.webp': 'image/webp',
-  '.gif': 'image/gif',
-  '.pdf': 'application/pdf',
-  '.mp3': 'audio/mpeg',
-  '.mp4': 'video/mp4',
-};
-const headers = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' };
-const server = http.createServer(async (req, res) => {
-  try {
-    const url = new URL(req.url || '/', 'http://localhost');
-    if (url.pathname === '/api/library') {
-      if (req.method !== 'GET') {
-        res.writeHead(405);
-        return res.end();
+const dir = path.dirname(fileURLToPath(import.meta.url));
+export async function startServer({
+  root = path.resolve(dir, '../../content'),
+  port = Number(process.env.PORT || 4173),
+  optimizeDependencies = true,
+} = {}) {
+  let queue: Promise<unknown> = Promise.resolve();
+  const serialize = <T>(task: () => Promise<T>): Promise<T> => {
+    const result = queue.then(task);
+    queue = result.catch(() => {});
+    return result;
+  };
+  const readLibrary = createLibraryLoader(root);
+  const withActivity = async (library: Library) => ({
+    ...library,
+    activity: await activityForLibrary(root, library, { observe: true }),
+  });
+  const mime: Record<string, string> = {
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.webp': 'image/webp',
+    '.gif': 'image/gif',
+    '.pdf': 'application/pdf',
+    '.mp3': 'audio/mpeg',
+    '.mp4': 'video/mp4',
+  };
+  const headers = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' };
+  const server = http.createServer(async (req, res) => {
+    try {
+      const url = new URL(req.url || '/', 'http://localhost');
+      if (url.pathname === '/api/library') {
+        if (req.method !== 'GET') {
+          res.writeHead(405);
+          return res.end();
+        }
+        const library = await serialize(async () => withActivity(await readLibrary()));
+        const etag =
+          '"' +
+          createHash('sha256')
+            .update(library.version)
+            .update(JSON.stringify(library.activity ?? null))
+            .digest('hex') +
+          '"';
+        const readHeaders = { ...headers, 'Cache-Control': 'private, no-cache', ETag: etag };
+        if (req.headers['if-none-match'] === etag) {
+          res.writeHead(304, readHeaders);
+          return res.end();
+        }
+        res.writeHead(200, { ...readHeaders, 'Content-Type': 'application/json; charset=utf-8' });
+        return res.end(JSON.stringify(library));
       }
-      res.writeHead(200, { ...headers, 'Content-Type': 'application/json; charset=utf-8' });
-      return res.end(
-        JSON.stringify(await serialize(async () => withActivity(await loadLibrary(root)))),
-      );
-    }
-    if (url.pathname === '/api/documents/move') {
-      if (req.method !== 'POST') {
-        res.writeHead(405, headers);
-        return res.end();
+      if (url.pathname === '/api/documents/move') {
+        if (req.method !== 'POST') {
+          res.writeHead(405, headers);
+          return res.end();
+        }
+        if (!isLocalWriteRequest(req)) {
+          res.writeHead(403, headers);
+          return res.end(JSON.stringify({ error: '只允许本地页面执行文件移动。' }));
+        }
+        let body = '';
+        for await (const chunk of req) {
+          body += chunk;
+          if (Buffer.byteLength(body) > 4096) throw new MoveError('请求过大。', 413);
+        }
+        let input: unknown;
+        try {
+          input = JSON.parse(body);
+        } catch {
+          throw new MoveError('请求格式无效。', 400);
+        }
+        const library = await serialize(async () => {
+          await withActivity(await readLibrary());
+          return withActivity(await moveDocument(root, input));
+        });
+        res.writeHead(200, { ...headers, 'Content-Type': 'application/json; charset=utf-8' });
+        return res.end(JSON.stringify(library));
       }
-      if (!isLocalWriteRequest(req)) {
-        res.writeHead(403, headers);
-        return res.end(JSON.stringify({ error: '只允许本地页面执行文件移动。' }));
+      if (url.pathname === '/api/asset') {
+        const asset = await safeAsset(
+          root,
+          url.searchParams.get('path') || '',
+          url.searchParams.get('from') || '',
+        );
+        const type = asset && mime[path.extname(asset.file).toLowerCase()];
+        if (!type) {
+          res.writeHead(404, headers);
+          return res.end('未找到');
+        }
+        res.writeHead(200, {
+          ...headers,
+          'Content-Type': type,
+          'Content-Security-Policy': "default-src 'none'; sandbox",
+        });
+        return res.end(await readFile(asset.file));
       }
-      let body = '';
-      for await (const chunk of req) {
-        body += chunk;
-        if (Buffer.byteLength(body) > 4096) throw new MoveError('请求过大。', 413);
-      }
-      let input;
-      try {
-        input = JSON.parse(body);
-      } catch {
-        throw new MoveError('请求格式无效。', 400);
-      }
-      const library = await serialize(async () => {
-        await withActivity(await loadLibrary(root));
-        return withActivity(await moveDocument(root, input));
+      vite.middlewares(req, res, () => {
+        res.writeHead(404);
+        res.end();
       });
-      res.writeHead(200, { ...headers, 'Content-Type': 'application/json; charset=utf-8' });
-      return res.end(JSON.stringify(library));
-    }
-    if (url.pathname === '/api/asset') {
-      const asset = await safeAsset(
-        root,
-        url.searchParams.get('path') || '',
-        url.searchParams.get('from') || '',
-      );
-      const type = asset && mime[path.extname(asset.file).toLowerCase()];
-      if (!type) {
-        res.writeHead(404, headers);
-        return res.end('未找到');
-      }
-      res.writeHead(200, {
+    } catch (e) {
+      console.error(e);
+      res.writeHead(e instanceof MoveError ? e.status : 500, {
         ...headers,
-        'Content-Type': type,
-        'Content-Security-Policy': "default-src 'none'; sandbox",
+        'Content-Type': 'application/json',
       });
-      return res.end(await readFile(asset.file));
+      res.end(
+        JSON.stringify({
+          error: e instanceof MoveError ? e.message : '操作失败，请检查本地终端。',
+        }),
+      );
     }
-    vite.middlewares(req, res, () => {
-      res.writeHead(404);
-      res.end();
+  });
+  const vite = await createViteServer({
+    root: dir,
+    configFile: false,
+    optimizeDeps: optimizeDependencies ? undefined : { noDiscovery: true, include: [] },
+    server: { middlewareMode: true, hmr: { server }, fs: { allow: [dir] } },
+    appType: 'spa',
+  });
+  await new Promise<void>((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(port, '127.0.0.1', () => {
+      server.off('error', reject);
+      resolve();
     });
-  } catch (e) {
-    console.error(e);
-    res.writeHead(e instanceof MoveError ? e.status : 500, {
-      ...headers,
-      'Content-Type': 'application/json',
-    });
-    res.end(
-      JSON.stringify({ error: e instanceof MoveError ? e.message : '操作失败，请检查本地终端。' }),
-    );
-  }
-});
-const vite = await createViteServer({
-  root: dir,
-  configFile: false,
-  server: { middlewareMode: true, hmr: { server }, fs: { allow: [dir] } },
-  appType: 'spa',
-});
-const port = Number(process.env.PORT || 4173);
-server.listen(port, '127.0.0.1', () =>
-  console.log(`${CONFIG.brand.name} / ${CONFIG.brand.nameEn} · http://127.0.0.1:${port}`),
-);
+  }).catch(async (error) => {
+    await vite.close();
+    throw error;
+  });
+  return {
+    server,
+    async close() {
+      await vite.close();
+      if (server.listening)
+        await new Promise<void>((resolve, reject) => {
+          server.close((error) => (error ? reject(error) : resolve()));
+          server.closeAllConnections();
+        });
+    },
+  };
+}
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const { server } = await startServer();
+  const address = server.address();
+  if (address && typeof address !== 'string')
+    console.log(`${CONFIG.brand.name} / ${CONFIG.brand.nameEn} · http://127.0.0.1:${address.port}`);
+}

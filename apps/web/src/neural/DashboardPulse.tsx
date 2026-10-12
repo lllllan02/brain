@@ -1,7 +1,7 @@
-import type { ReaderGraph, ReaderNode } from '../types/graph.ts';
+import type { ReaderGraph } from '../types/graph.ts';
 import type { ReadingQueue } from '../types/reading.ts';
 import type { ReadingController } from '../types/ui.ts';
-import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { activityDay } from './activity-model.ts';
 import { dashboardPulse, dashboardComparison } from './dashboard-model.ts';
 import { CollectionIcon } from './CollectionIcon.tsx';

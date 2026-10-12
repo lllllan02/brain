@@ -1,5 +1,4 @@
 import type { ListNavigationProps, RollerOption } from '../types/ui.ts';
-import React from 'react';
 import { RollerSelect } from './RollerSelect.tsx';
 import { CONTENT_COLLECTIONS, collectionLabel } from '../collections.ts';
 import { clusterDocuments } from './ClusterList.tsx';

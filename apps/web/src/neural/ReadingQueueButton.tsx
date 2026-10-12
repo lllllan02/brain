@@ -1,5 +1,4 @@
 import type { ReadingQueue } from '../types/reading.ts';
-import React from 'react';
 import { Icon } from './icons.tsx';
 
 export function ReadingQueueButton({

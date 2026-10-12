@@ -1,5 +1,5 @@
 import type { Flight, NodeAnchor } from '../types/ui.ts';
-import React, { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { cardFlight } from './card-flight.ts';
 import './card-to-star.css';
 

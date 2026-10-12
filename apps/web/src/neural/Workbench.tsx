@@ -1,7 +1,7 @@
 import type { ReaderGraph } from '../types/graph.ts';
 import type { ReadingQueue } from '../types/reading.ts';
 import type { useReadingHistory } from './useReadingHistory.ts';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import './workbench.css';
 import { CONFIG } from '../config.ts';
 import { ActivityTimeline } from './ActivityTimeline.tsx';

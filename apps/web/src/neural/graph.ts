@@ -1,9 +1,9 @@
 import type { Library } from '../types/library.ts';
 import type { ReaderGraph, ReaderNode, ReaderLink, ReaderDocumentNode } from '../types/graph.ts';
-import { T } from './theme.ts';
+import { GRAPH_COLORS } from './theme.ts';
 
 export function isDocumentNode(node: ReaderNode | null | undefined): node is ReaderDocumentNode {
-  return Boolean(node?.module && node.html !== undefined);
+  return node?.nodeType === 'document';
 }
 
 // Every topic comes from the single category property; tags do not determine groups.
@@ -48,19 +48,20 @@ export function buildGraph(library: Library): ReaderGraph {
     modules.map((m) => [m.id, { color: m.color, filter: m.filter, flip: m.flip }]),
   );
   const kinds = {
-    core: { label: '知识宇宙', en: 'Cosmos', color: T.kinds.core },
-    folder: { label: '主题', en: 'Topic', color: T.kinds.folder },
+    core: { label: '知识宇宙', en: 'Cosmos', color: GRAPH_COLORS.core },
+    folder: { label: '主题', en: 'Topic', color: GRAPH_COLORS.folder },
     ...Object.fromEntries(
       modules.map((m) => [m.kind, { label: m.title, en: m.en, color: m.color }]),
     ),
   };
   const nodes: ReaderNode[] = [
-    { id: 'core', kind: 'core', title: '知识宇宙', body: '', tags: [] },
+    { id: 'core', kind: 'core', nodeType: 'core', title: '知识宇宙', tags: [] },
     ...modules.map((m) => ({
       id: m.folder,
       title: m.title,
       angle: m.angle,
       kind: 'folder',
+      nodeType: 'folder' as const,
       tags: [],
     })),
   ];
@@ -69,6 +70,7 @@ export function buildGraph(library: Library): ReaderGraph {
       module = modules.find((m) => m.id === ids[0])!;
     nodes.push({
       ...doc,
+      nodeType: 'document',
       kind: module.kind,
       module: module.id,
       modules: ids,
@@ -149,116 +151,4 @@ function rng(seed: string) {
   let s = 0;
   for (const c of seed) s = (s * 31 + c.charCodeAt(0)) >>> 0;
   return () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296;
-}
-const rad = (d: number) => (d * Math.PI) / 180;
-
-export function forceLayout(graph: ReaderGraph) {
-  // Positions are initialized below before the force iterations.
-  const N = graph.nodes as (ReaderNode & { x: number; y: number; vx: number; vy: number })[],
-    idx = graph.index as Map<string, (typeof N)[number]>;
-  const FOLDERS = graph.modules.map((m) => ({ id: m.folder, angle: m.angle }));
-  const CONTENT = new Set(graph.modules.map((m) => m.kind));
-  const anchor = (id: string) => {
-    const n = idx.get(id)!;
-    const f = FOLDERS.find((f) => f.id === n.folder || f.id === id);
-    return f ? [Math.cos(rad(f.angle)), Math.sin(rad(f.angle))] : null;
-  };
-  for (const n of N) {
-    const r = rng(n.id),
-      a = anchor(n.id);
-    const R =
-      n.kind === 'core'
-        ? 0
-        : n.kind === 'folder'
-          ? n.level
-            ? 300
-            : 210
-          : CONTENT.has(n.kind)
-            ? 330
-            : 420;
-    const base = a ? Math.atan2(a[1], a[0]) : r() * Math.PI * 2;
-    const ang = base + (r() - 0.5) * (a ? 1.1 : 6.28);
-    n.x = Math.cos(ang) * R * (0.8 + r() * 0.4);
-    n.y = Math.sin(ang) * R * (0.8 + r() * 0.4);
-    n.vx = 0;
-    n.vy = 0;
-  }
-  const rest: Record<string, number> = {
-    contain: 120,
-    wiki: 95,
-    source: 90,
-    tag: 52,
-    mention: 135,
-    resonance: 170,
-  };
-  const strength: Record<string, number> = {
-    contain: 0.05,
-    wiki: 0.06,
-    source: 0.08,
-    tag: 0.09,
-    mention: 0.018,
-    resonance: 0.006,
-  };
-  for (let it = 0; it < 520; it++) {
-    const alpha = 1 - it / 520;
-    for (let i = 0; i < N.length; i++)
-      for (let j = i + 1; j < N.length; j++) {
-        const A = N[i],
-          B = N[j];
-        let dx = B.x - A.x,
-          dy = B.y - A.y,
-          d2 = dx * dx + dy * dy || 0.01;
-        const charge =
-          (A.kind === 'tag' || B.kind === 'tag' ? 900 : 2600) *
-          (A.kind === 'folder' && B.kind === 'folder' ? 3 : 1);
-        const f = (charge / d2) * alpha,
-          d = Math.sqrt(d2);
-        dx /= d;
-        dy /= d;
-        A.vx -= dx * f;
-        A.vy -= dy * f;
-        B.vx += dx * f;
-        B.vy += dy * f;
-      }
-    for (const l of graph.links) {
-      const A = idx.get(l.a)!,
-        B = idx.get(l.b)!;
-      const dx = B.x - A.x,
-        dy = B.y - A.y,
-        d = Math.hypot(dx, dy) || 0.01;
-      const k = (d - rest[l.kind]) * strength[l.kind] * alpha;
-      A.vx += (dx / d) * k;
-      A.vy += (dy / d) * k;
-      B.vx -= (dx / d) * k;
-      B.vy -= (dy / d) * k;
-    }
-    for (const n of N) {
-      const a = anchor(n.id);
-      if (n.kind === 'folder' && a) {
-        const R = n.level ? 300 : 230;
-        n.vx += (a[0] * R - n.x) * 0.04;
-        n.vy += (a[1] * R - n.y) * 0.04;
-      } else if (a && CONTENT.has(n.kind)) {
-        n.vx += (a[0] * 380 - n.x) * 0.006;
-        n.vy += (a[1] * 380 - n.y) * 0.006;
-      } else if (a) {
-        n.vx += (a[0] * 300 - n.x) * 0.004;
-        n.vy += (a[1] * 300 - n.y) * 0.004;
-      }
-      n.vx -= n.x * 0.002;
-      n.vy -= n.y * 0.002;
-      if (n.kind === 'core') {
-        n.x = 0;
-        n.y = 0;
-        n.vx = 0;
-        n.vy = 0;
-        continue;
-      }
-      n.x += n.vx;
-      n.y += n.vy;
-      n.vx *= 0.55;
-      n.vy *= 0.55;
-    }
-  }
-  return Object.fromEntries(N.map((n) => [n.id, [n.x, n.y * 0.82]]));
 }

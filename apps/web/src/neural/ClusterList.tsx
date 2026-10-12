@@ -157,7 +157,7 @@ export function ClusterList({
     scroll.current.scrollTop = readViewState(
       `listScroll:${selectionKey}`,
       0,
-      (value) => Number.isFinite(value) && value >= 0,
+      (value): value is number => typeof value === 'number' && Number.isFinite(value) && value >= 0,
     );
   }, [selectionKey]);
 
@@ -187,7 +187,7 @@ export function ClusterList({
     scroller.scrollTop = readViewState(
       `listScroll:${selectionKey}`,
       0,
-      (value) => Number.isFinite(value) && value >= 0,
+      (value): value is number => typeof value === 'number' && Number.isFinite(value) && value >= 0,
     );
     const paths = svg.current!.querySelectorAll<SVGElement>('.cluster-thread');
     const sparks = svg.current!.querySelectorAll<SVGElement>('.cluster-thread-sparks');
@@ -266,7 +266,7 @@ export function ClusterList({
         wave.setAttribute('ry', String(3 + accent.wave * 13));
         wave.style.opacity = String(accent.flash * 0.5);
       }
-      rows.forEach(({ row, path, glow, beams, wake, ripples }, i) => {
+      rows.forEach(({ path, glow, beams, wake, ripples }, i) => {
         const port = ports[i];
         const endY = port.top + port.height / 2 - scrollDelta;
         if (!path) return;

@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import type { Library, MoveState } from '../types/library.ts';
+import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 import type { ReaderNode } from '../types/graph.ts';
+import { createLibraryStore } from '../data/library-store.ts';
 import {
   staticPages,
   localEditing,
@@ -8,70 +8,42 @@ import {
   moveLibraryDocument,
 } from '../data/library-client.ts';
 
-// Keep polling, moves and their revision guard in one lifecycle.
 export function useLibrary() {
-  const [library, setLibrary] = useState<Library | null>(null),
-    [error, setError] = useState('');
-  const revision = useRef(0),
-    busy = useRef(false);
-  const [moveState, setMoveState] = useState<MoveState>({ pending: false });
+  const [store] = useState(() =>
+    createLibraryStore({ fetch: fetchLibrary, move: moveLibraryDocument }),
+  );
+  const { library, error, moveState, revision } = useSyncExternalStore(
+    store.subscribe,
+    store.getSnapshot,
+  );
   useEffect(() => {
-    if (moveState.pending || !moveState.id) return;
-    const timer = setTimeout(() => setMoveState({ pending: false }), moveState.error ? 4500 : 2400);
-    return () => clearTimeout(timer);
-  }, [moveState]);
-  useEffect(() => {
-    let active = true;
-    const load = async () => {
-      if (busy.current) return;
-      const ticket = revision.current;
-      try {
-        const next = await fetchLibrary();
-        if (active && ticket === revision.current && !busy.current)
-          setLibrary((old) =>
-            old?.version === next.version &&
-            JSON.stringify(old?.activity) === JSON.stringify(next.activity)
-              ? old
-              : next,
-          );
-      } catch (e) {
-        if (active) setError(e instanceof Error ? e.message : String(e));
-      }
-    };
-    load();
+    store.start();
     const timer = staticPages
       ? null
       : setInterval(() => {
-          if (!document.hidden) load();
+          if (!document.hidden) void store.refresh();
         }, 4000);
     return () => {
-      active = false;
+      store.stop();
       if (timer !== null) clearInterval(timer);
     };
-  }, []);
+  }, [store]);
+  useEffect(() => {
+    if (moveState.status === 'idle' || moveState.status === 'pending') return;
+    const timer = setTimeout(store.clearMove, moveState.status === 'error' ? 4500 : 2400);
+    return () => clearTimeout(timer);
+  }, [store, moveState]);
   const move = useCallback(
     async (doc: ReaderNode, collection: string) => {
-      if (!localEditing || busy.current) return;
-      busy.current = true;
-      revision.current++;
-      setMoveState({ id: doc.id, pending: true });
-      try {
-        const next = await moveLibraryDocument(doc.id, collection, library!.version);
-        setLibrary(next);
-        setMoveState({ id: doc.id, pending: false, collection });
-      } catch (error) {
-        setMoveState({
-          id: doc.id,
-          pending: false,
-          error: error instanceof Error ? error.message : String(error),
-        });
-      } finally {
-        busy.current = false;
-        revision.current++;
-      }
+      if (localEditing) await store.move(doc.id, collection);
     },
-    [library],
+    [store],
   );
-  const collectionAction = localEditing ? { ...moveState, move } : null;
-  return { library, error, moveState, collectionAction, revision };
+  return {
+    library,
+    error,
+    moveState,
+    collectionAction: localEditing ? { ...moveState, move } : null,
+    revision: { current: revision },
+  };
 }

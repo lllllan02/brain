@@ -7,3 +7,5 @@ build/
 !.env.example
 .obsidian/
 dist-pages/
+test-results/
+playwright-report/

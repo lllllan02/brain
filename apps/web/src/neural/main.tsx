@@ -1,7 +1,7 @@
 import { useLibrary } from './useLibrary.ts';
 import type { Focus } from '../types/graph.ts';
 import { CONTENT_COLLECTIONS, collectionLabel } from '../collections.ts';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { buildGraph, moduleOf } from './graph.ts';
 import { Home } from './Home.tsx';
