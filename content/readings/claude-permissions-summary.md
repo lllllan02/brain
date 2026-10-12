@@ -4,17 +4,19 @@ parent: agent-guardrails
 category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10"
-updated_at: "2026-10-10"
+updated_at: "2026-10-12T12:25:42+08:00"
 source: "[Configure permissions](https://code.claude.com/docs/en/agent-sdk/permissions)"
 ---
 
-**权限结果由多层规则共同决定，审批回调只处理尚未被前面步骤决定的调用。** 本文按 2026-10-10 官方文档整理，具体顺序属于该 SDK 的实现。
+**权限结果由多层规则共同决定，审批回调只处理尚未被前面步骤决定的调用。** 本文按 2026-10-12 官方文档核对，具体顺序属于该 SDK 的实现，未运行验证。
 
 ## 判断顺序
 
 Hooks → deny 规则 → ask 规则 → 权限模式 → allow 规则 → `canUseTool` 回调。
 
 这不是所有调用都会走完的流水线：拒绝规则可以阻止执行，ask 规则转入确认，提前自动批准的调用则可能跳过回调。Hook 返回允许也不会跳过后续 deny、ask 检查。
+
+运行模式也会影响能否询问：`dontAsk` 会拒绝原本需要确认的调用；`bypassPermissions` 仍受前置 deny、ask 规则与 Hook 约束。权限不足、未匹配 allow 或进入 ask 分支，都不能脱离模式直接推断最终结果。
 
 ## 两个容易误解的地方
 

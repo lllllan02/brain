@@ -1192,46 +1192,6 @@
       "collection": "inbox",
       "digest": "a0614dfb848704ac767353604a4fae4014b35c3a20d2385fc53cc6ef80f94897"
     },
-    "tool-calling-flow": {
-      "title": "工具调用流程",
-      "collection": "inbox",
-      "digest": "2d33c802e54497059c1e32696cc57c22a1c0de284d867a93dd04f90fbe0cc09b"
-    },
-    "tool-calling": {
-      "title": "工具调用（Tool Calling）",
-      "collection": "inbox",
-      "digest": "c467d94347be52fc35da6400dbebd6990af33fa2312c36d641cfa57d0d29e458"
-    },
-    "tool-interface-design": {
-      "title": "工具接口设计",
-      "collection": "inbox",
-      "digest": "d771f73558ef7d2b31a4ed06656a04848e5ed6f0e7b7d9289fe4df5fd31c3334"
-    },
-    "tool-permission-design": {
-      "title": "工具调用的权限规则设计",
-      "collection": "inbox",
-      "digest": "5a2a13ea817c14b0cb1253df1ab0cfc6463e209d30183548a88572ea4afdf031"
-    },
-    "tool-permissions": {
-      "title": "工具调用的权限与审批",
-      "collection": "inbox",
-      "digest": "28c861abc6410ce5c1617951432fda0ad09b9fbd3f0d0755707723fb769d86f9"
-    },
-    "tool-registry": {
-      "title": "工具注册中心（Tool Registry）",
-      "collection": "inbox",
-      "digest": "6395aed9f3a762f11516bd1a71dd905b7578b60e2c01a6526d4238ac9a67a74f"
-    },
-    "tool-scheduler-example": {
-      "title": "工具调度的最小实现",
-      "collection": "inbox",
-      "digest": "e4fb9041708ceab4024bddaeb01f784861d051d9a9f5cc9e59aceef86b1312ad"
-    },
-    "tool-scheduling": {
-      "title": "工具执行调度",
-      "collection": "inbox",
-      "digest": "cae74c7cf072673456f0cf4950af9e26cb0ac1e4ec951930bb0e07f88f430fd2"
-    },
     "total-order": {
       "title": "全序性（Total Order）",
       "collection": "inbox",
@@ -1400,7 +1360,7 @@
     "mcp-capabilities": {
       "title": "MCP 的 Tool、Resource 与 Prompt 有什么区别",
       "collection": "notes",
-      "digest": "3bb3d3c2248ce9b3704e69a24b915106d74435732b2d9656809100da6a9b6ca2"
+      "digest": "b5815356b2da7fe527cf3150015feed34de4ec9b385dc309323e5db521be8467"
     },
     "mcp-client": {
       "title": "MCP Client 的最小实现（stdio）",
@@ -1408,9 +1368,9 @@
       "digest": "1b5cc5089bb3e4b539e27df968d7ff60beec5547f902f957a82ef009a297bd30"
     },
     "mcp-flow": {
-      "title": "MCP 的完整交互流程",
+      "title": "MCP 的完整接入流程",
       "collection": "notes",
-      "digest": "2b078f0eeb5d3238ee99202f7fb3614ce08ca262648f784d18b4dbf3ce298e4b"
+      "digest": "4a476631e905a4597e0aafa28b68dfbb027e59bcaa345c909d9f6d85513ee616"
     },
     "mcp-http-client": {
       "title": "MCP Client 的最小实现（Streamable HTTP）",
@@ -1440,7 +1400,7 @@
     "mcp": {
       "title": "MCP（模型上下文协议）",
       "collection": "notes",
-      "digest": "93c5280a94be0a851ee3babaf7cfbf5c9c88bcee591852109bf0a5ab28455ff4"
+      "digest": "fe2407dd013b58a988488db072dbcd2a7b01205971b28a5e4e79915f4dacea7c"
     },
     "plan-and-execute": {
       "title": "Plan-and-Execute（先规划再执行）",
@@ -1467,15 +1427,55 @@
       "collection": "notes",
       "digest": "eaebdb2ef03328bc36d949b751ee028a4bcffa44f1b2ba344e23d27253877b7a"
     },
+    "tool-calling-flow": {
+      "title": "工具调用流程",
+      "collection": "notes",
+      "digest": "4481acba819fd4e8ec8cbd27e13e929933bef50507f7f4ecbb785223f20def9e"
+    },
     "tool-calling-go": {
       "title": "普通工具调用的 Go 最小实现",
       "collection": "notes",
       "digest": "4dbde2641878b52933137945e1525f887c8f1ab64c29d561eb5561c1e04fb5a5"
     },
+    "tool-calling": {
+      "title": "工具调用（Tool Calling）",
+      "collection": "notes",
+      "digest": "33e7aa006ca7268f4c4826f804d045e631151be75e1a5cf5c9e642b292b17aa2"
+    },
+    "tool-interface-design": {
+      "title": "工具接口设计",
+      "collection": "notes",
+      "digest": "13c61eee72bac478abd37e6c6cce96888693e461486d767147dc75685eb358b7"
+    },
     "tool-loading": {
       "title": "工具按需加载",
       "collection": "notes",
-      "digest": "458c97e31b48a9c461420647be487670e076e2e62e7845e0645c26c5b1bb747e"
+      "digest": "1995d08f9f24929daa1ad95404e1e11415588433a54eac689b755a674a88354e"
+    },
+    "tool-permission-design": {
+      "title": "工具调用的权限规则设计",
+      "collection": "notes",
+      "digest": "d09e2e9ad9514c148a9a7826b5d3dabb8d351f1fdec0673fd23874723bbc185d"
+    },
+    "tool-permissions": {
+      "title": "工具调用的权限与审批",
+      "collection": "notes",
+      "digest": "832645e5f8478756f2af9e532f0b9e229a0f8e4ec6b17933bb8d39914df671fc"
+    },
+    "tool-registry": {
+      "title": "工具注册与调用分发",
+      "collection": "notes",
+      "digest": "fd442f6d04d96a11cda9360555e70405f329200619762172e8b8d609bae40bb6"
+    },
+    "tool-scheduler-example": {
+      "title": "工具调度的最小实现",
+      "collection": "notes",
+      "digest": "a0897d6ef496a4df0b5a9c19b5e032f56aa03b232bcd0dc82395402b0aa4d6ba"
+    },
+    "tool-scheduling": {
+      "title": "工具执行调度",
+      "collection": "notes",
+      "digest": "722a88a826be1beb74eef10464702ca5e7ca373ae22b125066ac0b0a194e5552"
     },
     "anthropic-advanced-tool-use-summary": {
       "title": "Anthropic：工具搜索、程序调用与使用示例",
@@ -1520,12 +1520,12 @@
     "anthropic-tool-design-summary": {
       "title": "Anthropic：如何设计有效的 Agent 工具",
       "collection": "readings",
-      "digest": "7f9b6c186c0c6380f5f1a91809a16693af7a6b9eeb4c1a989ea3af7b5e243e8b"
+      "digest": "3ca1be063f9d87977bf005e9afe6dde541ef6a6aba254b465b208a7616333c66"
     },
     "aws-agentcore-authorization-summary": {
       "title": "AWS AgentCore：把身份与工具参数交给授权策略",
       "collection": "readings",
-      "digest": "ee0c41ab463fd57af0a3deeaf421ec2a02b0a71cfc6b06f0a852be3fc71eb419"
+      "digest": "1e5f9ffb6b9df1c7481ae276481af0d9c396d7a5e780408e80c03a91f7c339f3"
     },
     "aws-idempotent-retries-summary": {
       "title": "AWS：用幂等 API 保证重试安全",
@@ -1565,7 +1565,7 @@
     "claude-permissions-summary": {
       "title": "Claude Agent SDK：权限规则如何决定工具调用",
       "collection": "readings",
-      "digest": "da5e649d6e5801cb817f4049c79ed603fffd7af2e7b986118ba5bc26f4bfd9f7"
+      "digest": "e27f0fa2d71bf3883575ffd73dd041afa34e0e4e56888e4161f72306163b85d8"
     },
     "claude-sandbox-devcontainer": {
       "title": "Claude Code 的 Bash 沙箱与 devcontainer 有何区别",
@@ -1747,6 +1747,11 @@
       "collection": "readings",
       "digest": "0554b4d6959aed6e1c96279e1167b40034a48aee5fafb6ed16be90267ee60939"
     },
+    "langgraph-tool-execution-summary": {
+      "title": "LangGraph：同轮工具执行与结果回传",
+      "collection": "readings",
+      "digest": "b355aa1f2f7a18f83c93af4e474092ab5eee77b9e1c4173af8568e912db114c6"
+    },
     "langmem-summarization-summary": {
       "title": "LangMem：用运行摘要延续长会话",
       "collection": "readings",
@@ -1755,7 +1760,7 @@
     "llmcompiler-summary": {
       "title": "LLMCompiler：按依赖调度工具调用",
       "collection": "readings",
-      "digest": "a706a2ca2340906462afb63a3d42f3b873eb3615c194f68df775c6a2ed3e2e81"
+      "digest": "09c91aba6da11ed7e73f955e2d3b5a4523f96c5017dcb2adb095e7080e32ec07"
     },
     "manus-context-engineering-summary": {
       "title": "Manus：上下文怎样影响成本与行动",
@@ -1765,7 +1770,12 @@
     "mcp-architecture-summary": {
       "title": "MCP 官方架构：发现、调用与通知",
       "collection": "readings",
-      "digest": "321b5f531bde1e7ef0b04c8755272fb4343e00eaaa79d3e1d6602cd904b11a2a"
+      "digest": "8851b51ccc95d1c99de1ce078432562c65353fc294f301e43ca1180e6b54b181"
+    },
+    "mcp-resources-prompts-summary": {
+      "title": "MCP Resources 与 Prompts：数据读取与消息模板",
+      "collection": "readings",
+      "digest": "0fbdd636dacf5c01ce808c9e59f18b0dfe0aa44efc1a0057b356e3cab95e3c6c"
     },
     "mcp-specification-summary": {
       "title": "MCP 官方规范：协议约定的范围",
@@ -1775,7 +1785,7 @@
     "mcp-tools-summary": {
       "title": "MCP Tools：定义、结果与错误",
       "collection": "readings",
-      "digest": "b92cd6ee33997784503857d6624183176e322012752f841883f7499f63ebb20f"
+      "digest": "5424328634cedff3491236d857bd70320c7acd3d8537d0af108ef69786570325"
     },
     "openai-agents-architecture-summary": {
       "title": "OpenAI Agents API：Harness、执行环境与应用的分工",
@@ -1786,6 +1796,11 @@
       "title": "OpenAI：用会话 ID 保存与读取历史",
       "collection": "readings",
       "digest": "f012f8997c8447e49b67e11aea21fbf593d54a57d093d67d0a596919dc6fd65b"
+    },
+    "openai-function-design-summary": {
+      "title": "OpenAI：怎样定义易于使用的函数工具",
+      "collection": "readings",
+      "digest": "49f85d5ea6290917ac0f6935b518ff4c195cb04097e5f0f99face292272fecca"
     },
     "openai-guardrails-summary": {
       "title": "OpenAI：自动检查与工具审批",
@@ -1818,14 +1833,14 @@
       "digest": "02724c40244a40d409c834fbb694116bc9a693dfff70b0b3d82f0f1c1e27257c"
     },
     "openfga-agent-authorization-summary": {
-      "title": "OpenFGA：Agent 授权关系与动态条件",
+      "title": "OpenFGA：Agent 授权关系、条件与变更管理",
       "collection": "readings",
-      "digest": "9f063cc71fb43845a2f7e9f9e228d3046c8e88c3d3191d142c621b63f2500b1d"
+      "digest": "3805c047f03cba1caf367dc095ad3788e6fbfa18941a2a59d9f5a3998e895ff1"
     },
     "permit-agent-approvals-summary": {
       "title": "Permit：Agent 授权与审批如何组合",
       "collection": "readings",
-      "digest": "cf3c7a85355a8426690b19be4a490f22ae1b74807f892fbdb39259328a823817"
+      "digest": "341f73d1e1848305ccccea5d977e1f854fb84be5bf1c9006267d3168724394ae"
     },
     "pi-compaction-summary": {
       "title": "Pi：用摘要与保留边界重建上下文",
@@ -1845,12 +1860,12 @@
     "pydantic-tool-execution-summary": {
       "title": "Pydantic AI：工具并发、失败反馈与取消",
       "collection": "readings",
-      "digest": "71358440bfc70e2eb74d78718c1677e5a2c2dfb8229ced823a5f3883e9fd5f40"
+      "digest": "ef3d61213d4b5f3617b8881717af1360667d059963d1a5bdcba9f1464b738fad"
     },
     "pydantic-toolsets-summary": {
       "title": "Pydantic AI：工具集如何组合、筛选与执行",
       "collection": "readings",
-      "digest": "f2e66885f9d2120165a0bccb92f4e739af90a009d376ef3cf181b76d37e53c9d"
+      "digest": "238a5e9248c8173a6cc62935d03713dadf6b00905b4ae9b6423859ff1aab4382"
     },
     "react-paper-summary": {
       "title": "ReAct 论文：让推理与行动相互提供信息",
@@ -2147,6 +2162,17 @@
       },
       "collections": []
     },
+    "assets/mcp-flow": {
+      "title": "mcp-flow",
+      "files": {
+        "assets/mcp-flow.excalidraw": "5353e374815aa15502f7c3eccff0bbabc309fb1384d7c21f522ccb2c75a48ad4",
+        "assets/mcp-flow.png": "a2c0f29dbdc84b78ceb7048fde537dd10ffb27a0c11b5b5a0296edd6185db199",
+        "assets/mcp-flow.svg": "d73dc7e1bea2f2738ea0d75a9a7a05878e085f36bb30dc3ffe09bb20363975ed"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
     "assets/mcp-oauth-flow": {
       "title": "mcp-oauth-flow",
       "files": {
@@ -2155,6 +2181,17 @@
       },
       "collections": [
         "inbox"
+      ]
+    },
+    "assets/mcp-overview": {
+      "title": "mcp-overview",
+      "files": {
+        "assets/mcp-overview.excalidraw": "c9b8d5e9ee3af00ac6a4f966e38bb292334be5bdc63d8f6ec776fe3518f25d29",
+        "assets/mcp-overview.png": "aa4ac49c6dcdd7192b20b917ce3978139bd820467267e6b60c2eaaa0a90aa58b",
+        "assets/mcp-overview.svg": "18fe5fadc5e23e4bff8841ee039af642f6337c2b885b1b9e1d27e76ce0f47370"
+      },
+      "collections": [
+        "notes"
       ]
     },
     "assets/plan-and-execute-flow": {
@@ -2201,12 +2238,78 @@
         "notes"
       ]
     },
+    "assets/tool-calling-flow": {
+      "title": "tool-calling-flow",
+      "files": {
+        "assets/tool-calling-flow.excalidraw": "0b874451e871a9de5940233cba0aa8c40dbc2f2cc4c6dbaa2c8d62207dd52bea",
+        "assets/tool-calling-flow.png": "105fa86095778768509fc66703bdadc9a366d7d6a6bf3b0d9234a3d8b4acf2bd",
+        "assets/tool-calling-flow.svg": "c19d7290934809877843f2b83c5888ced7cc957f6164709609ee2bd1e98a5183"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/tool-calling-overview": {
+      "title": "tool-calling-overview",
+      "files": {
+        "assets/tool-calling-overview.excalidraw": "585758dbd2a407fa51fdf649956e532b8f80b21c68d08997f385f95b391ee97f",
+        "assets/tool-calling-overview.png": "3cd30bf220facb88a2d894a712eff5cc1d860923a1b512591616e1a409069d73",
+        "assets/tool-calling-overview.svg": "c893d680b802dc8c11ab3741ca9a7f7e1463845d15959a94be6c3be285359d80"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
     "assets/tool-loading": {
       "title": "tool-loading",
       "files": {
         "assets/tool-loading.excalidraw": "b27a1955f717489581251ac78c0ee75df708b9674dbe04ecc9b4823259b0ad34",
         "assets/tool-loading.png": "268dca876c5e31289eac0d0ecfaa83b9ac9d25e5140d072cad9eb7e9bfde7456",
         "assets/tool-loading.svg": "9dc6bd3a9f77fc19cc3a1bdebbb716e27132b75be1aac1940c87ab1ce50e86c6"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/tool-permission-design": {
+      "title": "tool-permission-design",
+      "files": {
+        "assets/tool-permission-design.excalidraw": "f7d697fe155a81cc59ecdd996323c16a0ad3c83e2bfe3480722a860ba0d2dbf2",
+        "assets/tool-permission-design.png": "be8b60cfc88a5c6244c014feab5c57f67ff894e18f54297ee7f1baa9e755f03e",
+        "assets/tool-permission-design.svg": "9bc8af21ec94a42a898d166e17d91492b3ab6effd958949d95e026b2ced2c28e"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/tool-permissions": {
+      "title": "tool-permissions",
+      "files": {
+        "assets/tool-permissions.excalidraw": "9e65c707cdc8da593e71252bcb9ee9cbef587a780d59ed5c7e625429c9aefe38",
+        "assets/tool-permissions.png": "a666900f64f7108e595d52c67571d180fa1e2e52be4c1e8cac536856f63886c7",
+        "assets/tool-permissions.svg": "78a250e50f136df1c63380e85c57e28f9c84c73a387a91be5a5106d0d9d8f604"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/tool-registry": {
+      "title": "tool-registry",
+      "files": {
+        "assets/tool-registry.excalidraw": "35890587bdb6a758726ce807c4fda0d58ba590c890f61e2ce29a8f696fa3e5be",
+        "assets/tool-registry.png": "6c5e0d29712e169038db597ba6629bbc61c64794ac62b3b121d006e2c3a66a8f",
+        "assets/tool-registry.svg": "c2e14dc04eb132c3fc436bdf13a27aa3eb7c9fc36e9a6d240976187554bb4288"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/tool-scheduling": {
+      "title": "tool-scheduling",
+      "files": {
+        "assets/tool-scheduling.excalidraw": "025f593d6825061a2612360d0ccddd8cc73c7f52a5100cbec603435f89ee34a7",
+        "assets/tool-scheduling.png": "ac160d2595ef93ac62f991abe34dbf2c9c7a4ed951f208fa6c77262fbac5e38a",
+        "assets/tool-scheduling.svg": "83b2eaadf2a95d352859760c0f0aaec31262993282238965ccf779e015163c27"
       },
       "collections": [
         "notes"
@@ -9294,6 +9397,1465 @@
       ],
       "source": "observed",
       "docId": "agent-feedback-mechanisms",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "5700930e-93b3-4833-8668-6ce022747fc1",
+      "kind": "updated",
+      "entity": "doc:tool-calling-flow",
+      "title": "工具调用流程",
+      "time": "2026-10-12T03:47:18.707Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-calling-flow"
+    },
+    {
+      "id": "d6be43b6-5530-47fe-80b4-79a2d228e062",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用（Tool Calling）",
+      "time": "2026-10-12T03:47:18.707Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
+    },
+    {
+      "id": "d9813c7d-51ed-44e4-9d39-e1d3f052a1be",
+      "kind": "image-created",
+      "entity": "image:assets/tool-calling-flow",
+      "title": "tool-calling-flow",
+      "time": "2026-10-12T03:50:00.253Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-calling-flow.excalidraw"
+      ]
+    },
+    {
+      "id": "a2cddfb6-d90d-423e-ba87-4d09380906a2",
+      "kind": "updated",
+      "entity": "doc:tool-calling-flow",
+      "title": "工具调用流程",
+      "time": "2026-10-12T03:50:27.825Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-calling-flow"
+    },
+    {
+      "id": "86a09986-58f6-4f60-a312-1c74536deee9",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用（Tool Calling）",
+      "time": "2026-10-12T03:50:27.825Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
+    },
+    {
+      "id": "73d3da57-8f4d-472b-892d-6b5a46f39321",
+      "kind": "image-format",
+      "entity": "image:assets/tool-calling-flow",
+      "title": "tool-calling-flow",
+      "time": "2026-10-12T03:50:47.876Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-calling-flow.png",
+        "assets/tool-calling-flow.svg"
+      ]
+    },
+    {
+      "id": "dc9ea79a-7a40-47bf-9d2a-34dec8d451c6",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-calling-flow",
+      "title": "tool-calling-flow",
+      "time": "2026-10-12T03:51:27.902Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-calling-flow.excalidraw"
+      ]
+    },
+    {
+      "id": "ffe98ac6-1430-438e-8d46-352cb0ce0c8d",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-calling-flow",
+      "title": "tool-calling-flow",
+      "time": "2026-10-12T03:51:31.870Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-calling-flow.png",
+        "assets/tool-calling-flow.svg"
+      ]
+    },
+    {
+      "id": "a02b4e98-ecb1-4791-bea0-9af65176ceed",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-calling-flow",
+      "title": "tool-calling-flow",
+      "time": "2026-10-12T03:53:48.333Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-calling-flow.excalidraw"
+      ]
+    },
+    {
+      "id": "394aee13-f780-4746-a810-9c627010eea4",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-calling-flow",
+      "title": "tool-calling-flow",
+      "time": "2026-10-12T03:53:57.162Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-calling-flow.png",
+        "assets/tool-calling-flow.svg"
+      ]
+    },
+    {
+      "id": "3a57e304-32ca-4739-92a1-3a27af37fb60",
+      "kind": "updated",
+      "entity": "doc:tool-calling-flow",
+      "title": "工具调用流程",
+      "time": "2026-10-12T03:54:36.801Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-calling-flow"
+    },
+    {
+      "id": "ddebdc0e-b2f7-4bc6-a263-b6c4790810b9",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-calling-flow",
+      "title": "tool-calling-flow",
+      "time": "2026-10-12T03:54:36.801Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-calling-flow.excalidraw"
+      ]
+    },
+    {
+      "id": "5a94f1a1-d14a-4710-9e99-14e01d21eef5",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-calling-flow",
+      "title": "tool-calling-flow",
+      "time": "2026-10-12T03:54:40.732Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-calling-flow.png",
+        "assets/tool-calling-flow.svg"
+      ]
+    },
+    {
+      "id": "c1608fd3-86b5-4d79-88b0-76e0c112ab38",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-calling-flow",
+      "title": "tool-calling-flow",
+      "time": "2026-10-12T03:56:04.748Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-calling-flow.excalidraw"
+      ]
+    },
+    {
+      "id": "265bf02d-ede6-474b-a2b1-05b677fb739d",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-calling-flow",
+      "title": "tool-calling-flow",
+      "time": "2026-10-12T03:56:08.645Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-calling-flow.png",
+        "assets/tool-calling-flow.svg"
+      ]
+    },
+    {
+      "id": "86caf107-a225-4fec-820e-51deaed46a69",
+      "kind": "moved",
+      "entity": "doc:tool-calling-flow",
+      "title": "工具调用流程",
+      "time": "2026-10-12T03:56:57.738Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-calling-flow",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "bda73226-37a7-44c3-a85c-7a2f8b5e8264",
+      "kind": "updated",
+      "entity": "doc:tool-interface-design",
+      "title": "工具接口设计",
+      "time": "2026-10-12T03:58:55.960Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-interface-design"
+    },
+    {
+      "id": "30ea2130-e11d-4284-b5c7-8c71e441457c",
+      "kind": "updated",
+      "entity": "doc:tool-interface-design",
+      "title": "工具接口设计",
+      "time": "2026-10-12T04:00:35.975Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-interface-design"
+    },
+    {
+      "id": "85e0e7bf-2b06-41ba-850c-517f7825da79",
+      "kind": "updated",
+      "entity": "doc:anthropic-tool-design-summary",
+      "title": "Anthropic：如何设计有效的 Agent 工具",
+      "time": "2026-10-12T04:00:35.975Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-tool-design-summary"
+    },
+    {
+      "id": "480ff447-b1f9-4149-96e5-1410da1efb93",
+      "kind": "created",
+      "entity": "doc:openai-function-design-summary",
+      "title": "OpenAI：怎样定义易于使用的函数工具",
+      "time": "2026-10-12T04:00:35.975Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openai-function-design-summary"
+    },
+    {
+      "id": "3747c9ab-33f4-4922-9495-bdae9de13419",
+      "kind": "updated",
+      "entity": "doc:openai-function-design-summary",
+      "title": "OpenAI：怎样定义易于使用的函数工具",
+      "time": "2026-10-12T04:01:04.435Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openai-function-design-summary"
+    },
+    {
+      "id": "f1c9b2a5-2302-4650-8784-23c678abd0e6",
+      "kind": "updated",
+      "entity": "doc:tool-interface-design",
+      "title": "工具接口设计",
+      "time": "2026-10-12T04:02:40.057Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-interface-design"
+    },
+    {
+      "id": "9fd058be-cde0-4f74-8e1b-75c9bd3f24f4",
+      "kind": "moved",
+      "entity": "doc:tool-interface-design",
+      "title": "工具接口设计",
+      "time": "2026-10-12T04:03:35.398Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-interface-design",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "adcb2a56-bca8-4510-9077-14452f3548cc",
+      "kind": "moved",
+      "entity": "doc:mcp-flow",
+      "title": "MCP 的完整交互流程",
+      "time": "2026-10-12T04:05:15.064Z",
+      "collections": [
+        "notes",
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mcp-flow",
+      "from": "notes",
+      "to": "inbox"
+    },
+    {
+      "id": "f4e3937b-4529-425c-9225-ab4191fa9758",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用（Tool Calling）",
+      "time": "2026-10-12T04:06:41.801Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
+    },
+    {
+      "id": "d985c728-b2b6-4ed2-b41f-2889a1068971",
+      "kind": "updated",
+      "entity": "doc:tool-registry",
+      "title": "工具注册与调用分发",
+      "time": "2026-10-12T04:06:41.801Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-registry"
+    },
+    {
+      "id": "4eb21fe7-7315-48eb-86f6-63278b78c852",
+      "kind": "updated",
+      "entity": "doc:tool-scheduler-example",
+      "title": "工具调度的最小实现",
+      "time": "2026-10-12T04:06:41.801Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduler-example"
+    },
+    {
+      "id": "ae535b9d-6726-4182-89ad-d328474f59f6",
+      "kind": "updated",
+      "entity": "doc:tool-loading",
+      "title": "工具按需加载",
+      "time": "2026-10-12T04:06:41.801Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-loading"
+    },
+    {
+      "id": "075f579c-8ff1-4478-b6fc-9fbed7fdfb40",
+      "kind": "updated",
+      "entity": "doc:mcp-tools-summary",
+      "title": "MCP Tools：定义、结果与错误",
+      "time": "2026-10-12T04:06:41.801Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mcp-tools-summary"
+    },
+    {
+      "id": "54e1a829-7d39-49de-9a45-1bcdfd0cf6e5",
+      "kind": "updated",
+      "entity": "doc:pydantic-toolsets-summary",
+      "title": "Pydantic AI：工具集如何组合、筛选与执行",
+      "time": "2026-10-12T04:06:41.801Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "pydantic-toolsets-summary"
+    },
+    {
+      "id": "14557c1f-c554-4048-9aea-69ca17b3277e",
+      "kind": "moved",
+      "entity": "doc:mcp",
+      "title": "MCP（模型上下文协议）",
+      "time": "2026-10-12T04:07:56.721Z",
+      "collections": [
+        "notes",
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mcp",
+      "from": "notes",
+      "to": "inbox"
+    },
+    {
+      "id": "e34f33fc-e7ea-4c8c-bb30-7a8f4106960f",
+      "kind": "updated",
+      "entity": "doc:mcp-architecture-summary",
+      "title": "MCP 官方架构：发现、调用与通知",
+      "time": "2026-10-12T04:09:26.497Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mcp-architecture-summary"
+    },
+    {
+      "id": "dd83b978-01ab-4eb5-886e-ac1521395706",
+      "kind": "updated",
+      "entity": "doc:tool-registry",
+      "title": "工具注册与调用分发",
+      "time": "2026-10-12T04:09:50.492Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-registry"
+    },
+    {
+      "id": "1341412a-2acd-4a49-aea5-7bba46088ce1",
+      "kind": "updated",
+      "entity": "doc:tool-interface-design",
+      "title": "工具接口设计",
+      "time": "2026-10-12T04:09:50.492Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-interface-design"
+    },
+    {
+      "id": "d91f9865-a087-4ffb-9649-4ab1cd99a169",
+      "kind": "updated",
+      "entity": "doc:mcp-flow",
+      "title": "MCP 的完整接入流程",
+      "time": "2026-10-12T04:10:34.574Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mcp-flow"
+    },
+    {
+      "id": "9b42094e-5fb2-4430-93de-2e2fc07d9a1f",
+      "kind": "image-created",
+      "entity": "image:assets/mcp-flow",
+      "title": "mcp-flow",
+      "time": "2026-10-12T04:10:34.574Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/mcp-flow.excalidraw"
+      ]
+    },
+    {
+      "id": "5da65db9-9531-4470-826d-0dde2ec5d668",
+      "kind": "image-format",
+      "entity": "image:assets/mcp-flow",
+      "title": "mcp-flow",
+      "time": "2026-10-12T04:10:50.466Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mcp-flow.png",
+        "assets/mcp-flow.svg"
+      ]
+    },
+    {
+      "id": "15c66565-2ee4-4b9d-9d5d-3791868de027",
+      "kind": "updated",
+      "entity": "doc:tool-interface-design",
+      "title": "工具接口设计",
+      "time": "2026-10-12T04:11:42.496Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-interface-design"
+    },
+    {
+      "id": "657c0009-bb69-47a4-8159-918adf9986ec",
+      "kind": "image-created",
+      "entity": "image:assets/tool-registry",
+      "title": "tool-registry",
+      "time": "2026-10-12T04:14:22.530Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-registry.excalidraw"
+      ]
+    },
+    {
+      "id": "f95612a5-1edb-48a0-930f-edd06871e348",
+      "kind": "image-format",
+      "entity": "image:assets/tool-registry",
+      "title": "tool-registry",
+      "time": "2026-10-12T04:14:30.412Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-registry.png",
+        "assets/tool-registry.svg"
+      ]
+    },
+    {
+      "id": "cb050fbe-e312-4a09-be14-3c17d6ce28b0",
+      "kind": "updated",
+      "entity": "doc:tool-registry",
+      "title": "工具注册与调用分发",
+      "time": "2026-10-12T04:15:18.435Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-registry"
+    },
+    {
+      "id": "e9e7e129-0246-4754-a23d-95b649d50842",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-registry",
+      "title": "tool-registry",
+      "time": "2026-10-12T04:15:18.435Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-registry.excalidraw"
+      ]
+    },
+    {
+      "id": "9e335992-464e-40be-bd0f-3a2fbdb437c6",
+      "kind": "updated",
+      "entity": "doc:mcp-flow",
+      "title": "MCP 的完整接入流程",
+      "time": "2026-10-12T04:15:42.669Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mcp-flow"
+    },
+    {
+      "id": "c4ef539f-8b3c-41e1-8e16-2c7e1ce0f9f8",
+      "kind": "image-updated",
+      "entity": "image:assets/mcp-flow",
+      "title": "mcp-flow",
+      "time": "2026-10-12T04:15:42.669Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mcp-flow.excalidraw",
+        "assets/mcp-flow.png",
+        "assets/mcp-flow.svg"
+      ]
+    },
+    {
+      "id": "9da9f2b7-92b5-4491-976f-17deb031cb69",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-registry",
+      "title": "tool-registry",
+      "time": "2026-10-12T04:15:42.669Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-registry.png",
+        "assets/tool-registry.svg"
+      ]
+    },
+    {
+      "id": "9bdb4c04-904e-465c-9c98-dd57478efe15",
+      "kind": "moved",
+      "entity": "doc:mcp-flow",
+      "title": "MCP 的完整接入流程",
+      "time": "2026-10-12T04:16:22.167Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp-flow",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "f18c62e1-ac5d-461d-9226-24df1b350f73",
+      "kind": "updated",
+      "entity": "doc:mcp",
+      "title": "MCP（模型上下文协议）",
+      "time": "2026-10-12T04:19:56.654Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mcp"
+    },
+    {
+      "id": "2a8e54f7-cfe1-4b7b-a3a7-7d24cfdf1e6c",
+      "kind": "updated",
+      "entity": "doc:tool-registry",
+      "title": "工具注册与调用分发",
+      "time": "2026-10-12T04:19:56.654Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-registry"
+    },
+    {
+      "id": "a85f9ad9-1d2c-4e18-b87b-a13a28eae247",
+      "kind": "moved",
+      "entity": "doc:tool-registry",
+      "title": "工具注册与调用分发",
+      "time": "2026-10-12T04:21:10.045Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-registry",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "ab8e87eb-052c-470b-88e0-8e606a650900",
+      "kind": "updated",
+      "entity": "doc:mcp",
+      "title": "MCP（模型上下文协议）",
+      "time": "2026-10-12T04:23:56.981Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mcp"
+    },
+    {
+      "id": "a370be13-b0c4-4ca2-b2fa-fe3a34fa8c93",
+      "kind": "image-created",
+      "entity": "image:assets/mcp-overview",
+      "title": "mcp-overview",
+      "time": "2026-10-12T04:23:56.981Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mcp-overview.excalidraw",
+        "assets/mcp-overview.png",
+        "assets/mcp-overview.svg"
+      ]
+    },
+    {
+      "id": "fd0a0dd3-5544-4b71-8555-05849fb0c185",
+      "kind": "moved",
+      "entity": "doc:mcp",
+      "title": "MCP（模型上下文协议）",
+      "time": "2026-10-12T04:26:12.824Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "a9d104e8-761e-47c4-a21d-3c29bcd46471",
+      "kind": "updated",
+      "entity": "doc:tool-permissions",
+      "title": "工具调用的权限与审批",
+      "time": "2026-10-12T04:26:36.649Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-permissions"
+    },
+    {
+      "id": "9a5f779c-da57-4b19-82bb-1d3e6f268c5c",
+      "kind": "updated",
+      "entity": "doc:claude-permissions-summary",
+      "title": "Claude Agent SDK：权限规则如何决定工具调用",
+      "time": "2026-10-12T04:26:36.649Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-permissions-summary"
+    },
+    {
+      "id": "fd8a4a1b-5e78-4d8a-907d-af00eab37c3f",
+      "kind": "updated",
+      "entity": "doc:permit-agent-approvals-summary",
+      "title": "Permit：Agent 授权与审批如何组合",
+      "time": "2026-10-12T04:26:36.649Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "permit-agent-approvals-summary"
+    },
+    {
+      "id": "a6d77b83-0da8-4f9d-8d43-bab8f3d792bf",
+      "kind": "updated",
+      "entity": "doc:tool-permissions",
+      "title": "工具调用的权限与审批",
+      "time": "2026-10-12T04:27:28.853Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-permissions"
+    },
+    {
+      "id": "e7528244-2ba5-45d4-bb42-9b22666c88ca",
+      "kind": "updated",
+      "entity": "doc:mcp-capabilities",
+      "title": "MCP 的 Tool、Resource 与 Prompt 有什么区别",
+      "time": "2026-10-12T04:27:56.647Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp-capabilities"
+    },
+    {
+      "id": "4fa64af1-486a-494a-a4a6-d40b8aa1ce6d",
+      "kind": "updated",
+      "entity": "doc:mcp",
+      "title": "MCP（模型上下文协议）",
+      "time": "2026-10-12T04:27:56.647Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp"
+    },
+    {
+      "id": "1c5ab008-7f54-4ab2-81fa-3d50022bfd44",
+      "kind": "created",
+      "entity": "doc:mcp-resources-prompts-summary",
+      "title": "MCP Resources 与 Prompts：数据读取与消息模板",
+      "time": "2026-10-12T04:27:56.647Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mcp-resources-prompts-summary"
+    },
+    {
+      "id": "b9be63ac-1af8-4e98-bbaa-b29ef3589e6f",
+      "kind": "updated",
+      "entity": "doc:mcp-tools-summary",
+      "title": "MCP Tools：定义、结果与错误",
+      "time": "2026-10-12T04:27:56.647Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mcp-tools-summary"
+    },
+    {
+      "id": "f5ba804e-5cac-4ec7-9a06-1e64d30414ac",
+      "kind": "updated",
+      "entity": "doc:tool-permissions",
+      "title": "工具调用的权限与审批",
+      "time": "2026-10-12T04:28:32.609Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-permissions"
+    },
+    {
+      "id": "831a4634-ea2a-4d14-8ef6-031ae79980bd",
+      "kind": "updated",
+      "entity": "doc:aws-agentcore-authorization-summary",
+      "title": "AWS AgentCore：把身份与工具参数交给授权策略",
+      "time": "2026-10-12T04:34:49.076Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "aws-agentcore-authorization-summary"
+    },
+    {
+      "id": "ed4b344c-7b6f-4c68-b87c-389984fed2b0",
+      "kind": "updated",
+      "entity": "doc:openfga-agent-authorization-summary",
+      "title": "OpenFGA：Agent 授权关系、条件与变更管理",
+      "time": "2026-10-12T04:34:49.076Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openfga-agent-authorization-summary"
+    },
+    {
+      "id": "090bfa6a-8680-4769-8174-dcf0c222476d",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用（Tool Calling）",
+      "time": "2026-10-12T04:36:40.260Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
+    },
+    {
+      "id": "af2b73ae-3a4d-4427-88a4-8229a8e4f4f6",
+      "kind": "updated",
+      "entity": "doc:tool-permission-design",
+      "title": "工具调用的权限规则设计",
+      "time": "2026-10-12T04:36:40.260Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-permission-design"
+    },
+    {
+      "id": "93916bdd-90c0-4068-9a67-55b1c3b0c287",
+      "kind": "updated",
+      "entity": "doc:tool-permissions",
+      "title": "工具调用的权限与审批",
+      "time": "2026-10-12T04:36:40.260Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-permissions"
+    },
+    {
+      "id": "5695f65f-2b33-4b1b-8028-aa99684e2820",
+      "kind": "updated",
+      "entity": "doc:tool-scheduling",
+      "title": "工具执行调度",
+      "time": "2026-10-12T04:36:40.260Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduling"
+    },
+    {
+      "id": "e3e3c4e4-a5c8-4eae-88c1-560b4297f6d4",
+      "kind": "created",
+      "entity": "doc:langgraph-tool-execution-summary",
+      "title": "LangGraph：同轮工具执行与结果回传",
+      "time": "2026-10-12T04:36:40.260Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langgraph-tool-execution-summary"
+    },
+    {
+      "id": "c1d6a690-b67f-4dff-8cb4-02af60dc25c3",
+      "kind": "updated",
+      "entity": "doc:llmcompiler-summary",
+      "title": "LLMCompiler：按依赖调度工具调用",
+      "time": "2026-10-12T04:36:40.260Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "llmcompiler-summary"
+    },
+    {
+      "id": "364a3f4a-409f-46e5-adfc-b6edda6ee95c",
+      "kind": "updated",
+      "entity": "doc:pydantic-tool-execution-summary",
+      "title": "Pydantic AI：工具并发、失败反馈与取消",
+      "time": "2026-10-12T04:36:40.260Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "pydantic-tool-execution-summary"
+    },
+    {
+      "id": "4030521d-fb8b-4264-99fd-4dac86b18ae4",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用（Tool Calling）",
+      "time": "2026-10-12T04:38:40.613Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
+    },
+    {
+      "id": "d6d0ddab-5f3e-47de-8ffd-c6e8c763146a",
+      "kind": "updated",
+      "entity": "doc:tool-scheduler-example",
+      "title": "工具调度的最小实现",
+      "time": "2026-10-12T04:38:40.613Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduler-example"
+    },
+    {
+      "id": "3b461de0-1af4-45ca-9a1d-d0977c7fd2b6",
+      "kind": "updated",
+      "entity": "doc:tool-scheduling",
+      "title": "工具执行调度",
+      "time": "2026-10-12T04:38:40.613Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduling"
+    },
+    {
+      "id": "27247186-d12b-4c5d-98a1-03d52458db70",
+      "kind": "updated",
+      "entity": "doc:tool-permission-design",
+      "title": "工具调用的权限规则设计",
+      "time": "2026-10-12T04:41:42.440Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-permission-design"
+    },
+    {
+      "id": "cb559a71-b972-41cf-8722-795d46dd1e94",
+      "kind": "updated",
+      "entity": "doc:tool-permissions",
+      "title": "工具调用的权限与审批",
+      "time": "2026-10-12T04:41:42.440Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-permissions"
+    },
+    {
+      "id": "dbb1276e-7651-45eb-84c6-1a8e6911966d",
+      "kind": "image-created",
+      "entity": "image:assets/tool-permissions",
+      "title": "tool-permissions",
+      "time": "2026-10-12T04:47:44.022Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-permissions.excalidraw",
+        "assets/tool-permissions.png",
+        "assets/tool-permissions.svg"
+      ]
+    },
+    {
+      "id": "afb46fcd-f280-4da7-a7f4-d3b60e2fe5d7",
+      "kind": "image-created",
+      "entity": "image:assets/tool-scheduling",
+      "title": "tool-scheduling",
+      "time": "2026-10-12T04:47:44.022Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-scheduling.excalidraw",
+        "assets/tool-scheduling.png",
+        "assets/tool-scheduling.svg"
+      ]
+    },
+    {
+      "id": "85ac4cd4-1d1a-4701-9d30-51091b6ad75c",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-scheduling",
+      "title": "tool-scheduling",
+      "time": "2026-10-12T04:50:16.047Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-scheduling.excalidraw",
+        "assets/tool-scheduling.png",
+        "assets/tool-scheduling.svg"
+      ]
+    },
+    {
+      "id": "041c7b51-b44f-4e77-99ed-161592232f28",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-permissions",
+      "title": "tool-permissions",
+      "time": "2026-10-12T04:50:48.143Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-permissions.excalidraw"
+      ]
+    },
+    {
+      "id": "871566f6-92c2-4d61-87d7-ebf30ddb159a",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-permissions",
+      "title": "tool-permissions",
+      "time": "2026-10-12T04:51:32.207Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-permissions.png",
+        "assets/tool-permissions.svg"
+      ]
+    },
+    {
+      "id": "5d05f8f2-d0be-4dd8-b3d9-79a7e278e451",
+      "kind": "updated",
+      "entity": "doc:tool-scheduler-example",
+      "title": "工具调度的最小实现",
+      "time": "2026-10-12T04:55:32.416Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduler-example"
+    },
+    {
+      "id": "ab51b888-e192-45d0-8507-b8af8fee4811",
+      "kind": "updated",
+      "entity": "doc:tool-scheduling",
+      "title": "工具执行调度",
+      "time": "2026-10-12T04:55:32.416Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduling"
+    },
+    {
+      "id": "e884ece0-8a79-4796-9ba8-de916da7855d",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-permissions",
+      "title": "tool-permissions",
+      "time": "2026-10-12T04:55:32.416Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-permissions.excalidraw",
+        "assets/tool-permissions.png",
+        "assets/tool-permissions.svg"
+      ]
+    },
+    {
+      "id": "1b881d15-b7fa-441f-a17b-ee0d307d8d33",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-scheduling",
+      "title": "tool-scheduling",
+      "time": "2026-10-12T04:55:32.416Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-scheduling.excalidraw",
+        "assets/tool-scheduling.png",
+        "assets/tool-scheduling.svg"
+      ]
+    },
+    {
+      "id": "2422ab25-eff1-4ceb-b2ca-e60291adc062",
+      "kind": "updated",
+      "entity": "doc:tool-scheduling",
+      "title": "工具执行调度",
+      "time": "2026-10-12T04:57:30.453Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduling"
+    },
+    {
+      "id": "b6cb1a13-62b2-43d3-af72-9e21fbd0b181",
+      "kind": "updated",
+      "entity": "doc:tool-permissions",
+      "title": "工具调用的权限与审批",
+      "time": "2026-10-12T04:59:25.499Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-permissions"
+    },
+    {
+      "id": "3cef8074-70dc-41d1-9130-d2bccc99913f",
+      "kind": "updated",
+      "entity": "doc:tool-permissions",
+      "title": "工具调用的权限与审批",
+      "time": "2026-10-12T05:00:58.074Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-permissions"
+    },
+    {
+      "id": "027b4059-e846-4b6f-93df-3c9af324d91d",
+      "kind": "updated",
+      "entity": "doc:tool-scheduler-example",
+      "title": "工具调度的最小实现",
+      "time": "2026-10-12T05:00:58.074Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduler-example"
+    },
+    {
+      "id": "52e601f6-6801-4439-b372-469af5a64aec",
+      "kind": "updated",
+      "entity": "doc:tool-scheduling",
+      "title": "工具执行调度",
+      "time": "2026-10-12T05:00:58.074Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduling"
+    },
+    {
+      "id": "55d312cd-8665-4a84-bbfe-f3e99829758c",
+      "kind": "updated",
+      "entity": "doc:llmcompiler-summary",
+      "title": "LLMCompiler：按依赖调度工具调用",
+      "time": "2026-10-12T05:00:58.074Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "llmcompiler-summary"
+    },
+    {
+      "id": "65bb7882-9c5d-4477-8a5d-94ccf7e0537d",
+      "kind": "updated",
+      "entity": "doc:pydantic-tool-execution-summary",
+      "title": "Pydantic AI：工具并发、失败反馈与取消",
+      "time": "2026-10-12T05:00:58.074Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "pydantic-tool-execution-summary"
+    },
+    {
+      "id": "44f58b6b-5fe2-4c86-b390-a73a3fb3a26c",
+      "kind": "updated",
+      "entity": "doc:tool-scheduler-example",
+      "title": "工具调度的最小实现",
+      "time": "2026-10-12T05:01:22.171Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduler-example"
+    },
+    {
+      "id": "923eaecb-3de5-42ea-8f22-cf9ac1d6d81b",
+      "kind": "updated",
+      "entity": "doc:tool-permissions",
+      "title": "工具调用的权限与审批",
+      "time": "2026-10-12T05:01:46.076Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-permissions"
+    },
+    {
+      "id": "e5276ce7-c80c-4c27-bc03-8030ffced29d",
+      "kind": "updated",
+      "entity": "doc:tool-scheduler-example",
+      "title": "工具调度的最小实现",
+      "time": "2026-10-12T05:01:46.076Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduler-example"
+    },
+    {
+      "id": "1811ba31-fffd-46fe-9c43-196bce1dfc9d",
+      "kind": "updated",
+      "entity": "doc:tool-permissions",
+      "title": "工具调用的权限与审批",
+      "time": "2026-10-12T05:01:57.387Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-permissions"
+    },
+    {
+      "id": "2f53b8f4-3853-49ea-a521-3b2c402626bf",
+      "kind": "moved",
+      "entity": "doc:tool-scheduler-example",
+      "title": "工具调度的最小实现",
+      "time": "2026-10-12T05:04:38.090Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduler-example",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "f4e1bc86-4af4-45aa-b97c-294d5b30b439",
+      "kind": "moved",
+      "entity": "doc:tool-scheduling",
+      "title": "工具执行调度",
+      "time": "2026-10-12T05:04:50.865Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduling",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "d7ab1610-78a1-48de-8fd9-9e08126911df",
+      "kind": "image-created",
+      "entity": "image:assets/tool-permission-design",
+      "title": "tool-permission-design",
+      "time": "2026-10-12T05:12:19.516Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-permission-design.excalidraw",
+        "assets/tool-permission-design.png",
+        "assets/tool-permission-design.svg"
+      ]
+    },
+    {
+      "id": "b7b27fbf-417b-478b-9e1f-41848c693d33",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-permission-design",
+      "title": "tool-permission-design",
+      "time": "2026-10-12T05:14:10.230Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-permission-design.excalidraw"
+      ]
+    },
+    {
+      "id": "e9aacc1b-f4a3-4ba7-90f0-21bec1c6267f",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-permission-design",
+      "title": "tool-permission-design",
+      "time": "2026-10-12T05:14:29.455Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-permission-design.png",
+        "assets/tool-permission-design.svg"
+      ]
+    },
+    {
+      "id": "f1b5d23e-a130-4b6c-9950-6537a426739f",
+      "kind": "updated",
+      "entity": "doc:tool-permission-design",
+      "title": "工具调用的权限规则设计",
+      "time": "2026-10-12T05:17:01.463Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-permission-design"
+    },
+    {
+      "id": "464b32ef-f203-4b7a-8008-636fe2208800",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-permission-design",
+      "title": "tool-permission-design",
+      "time": "2026-10-12T05:20:01.461Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-permission-design.excalidraw"
+      ]
+    },
+    {
+      "id": "c437a46d-d04d-4d38-aaa1-b7b957bba2fc",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-permission-design",
+      "title": "tool-permission-design",
+      "time": "2026-10-12T05:20:21.449Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-permission-design.png",
+        "assets/tool-permission-design.svg"
+      ]
+    },
+    {
+      "id": "a33e4368-26ec-44c6-bae5-545e111da428",
+      "kind": "updated",
+      "entity": "doc:tool-permission-design",
+      "title": "工具调用的权限规则设计",
+      "time": "2026-10-12T05:21:17.602Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-permission-design"
+    },
+    {
+      "id": "8e090dd4-f319-4954-a97a-a85a9539c5ed",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-permission-design",
+      "title": "tool-permission-design",
+      "time": "2026-10-12T05:21:17.602Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-permission-design.excalidraw",
+        "assets/tool-permission-design.png",
+        "assets/tool-permission-design.svg"
+      ]
+    },
+    {
+      "id": "2ea7316a-9059-41bd-97dd-0fc468a31d09",
+      "kind": "updated",
+      "entity": "doc:tool-permission-design",
+      "title": "工具调用的权限规则设计",
+      "time": "2026-10-12T05:24:50.196Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-permission-design"
+    },
+    {
+      "id": "a2171627-35de-44bb-9733-410ef0605c57",
+      "kind": "moved",
+      "entity": "doc:tool-permission-design",
+      "title": "工具调用的权限规则设计",
+      "time": "2026-10-12T05:25:51.723Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-permission-design",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "6535aa0b-ec8a-47fb-b6aa-fc56673e6397",
+      "kind": "moved",
+      "entity": "doc:tool-permissions",
+      "title": "工具调用的权限与审批",
+      "time": "2026-10-12T05:25:59.756Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-permissions",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "1971f4ab-47cf-45bd-8dbe-4885f5a0d9cc",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用（Tool Calling）",
+      "time": "2026-10-12T05:29:52.129Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
+    },
+    {
+      "id": "f57f5a1e-1123-4b26-9f27-773aec5c561d",
+      "kind": "image-created",
+      "entity": "image:assets/tool-calling-overview",
+      "title": "tool-calling-overview",
+      "time": "2026-10-12T05:49:08.339Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-calling-overview.excalidraw",
+        "assets/tool-calling-overview.png",
+        "assets/tool-calling-overview.svg"
+      ]
+    },
+    {
+      "id": "66c09e5f-9d05-4d18-89ed-bbbec46304c6",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用（Tool Calling）",
+      "time": "2026-10-12T05:50:04.759Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
+    },
+    {
+      "id": "10aa7c3d-46e1-462c-8027-1267d5ba9c97",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用（Tool Calling）",
+      "time": "2026-10-12T05:51:05.125Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
+    },
+    {
+      "id": "9b1a6fe3-05a9-4398-bde4-5d7d200b9849",
+      "kind": "moved",
+      "entity": "doc:tool-calling",
+      "title": "工具调用（Tool Calling）",
+      "time": "2026-10-12T05:51:38.889Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-calling",
       "from": "inbox",
       "to": "notes"
     }

@@ -4,10 +4,11 @@ parent: tool-scheduling
 category: "Agent"
 tags: ["Agent", "工具调用"]
 created_at: "2026-10-10"
-updated_at: "2026-10-10"
+updated_at: "2026-10-12T13:00:57+08:00"
 source:
   - "[作者项目与 README](https://github.com/SqueezeAILab/LLMCompiler)"
   - "[ICML 2024 论文](https://arxiv.org/abs/2312.04511)"
+  - "[TaskFetchingUnit 源码](https://github.com/SqueezeAILab/LLMCompiler/blob/main/src/llm_compiler/task_fetching_unit.py)"
 ---
 
 **LLMCompiler 让模型先生成带依赖的工具调用计划，再由程序调度执行，从而减少逐次调用模型的开销，并让独立任务并行。**
@@ -27,6 +28,14 @@ source:
 **规划与执行还可以重叠。** 流式规划让已生成且依赖就绪的任务立即启动，不必等待整张图，从而隐藏一部分规划耗时。[流式规划](https://arxiv.org/html/2312.04511v3#S4.SS2)
 
 如果执行流程要根据中间结果才能确定，则将结果交回规划器，生成新一轮任务与依赖；这是动态重规划，解决的是初始计划不能预知全部后续步骤的问题。[动态重规划](https://arxiv.org/html/2312.04511v3#S3.SS4)
+
+依赖派发与整批等待的区别可以用一个推导例子说明：A、B 独立，C 只依赖 A；A 完成后，C 即可就绪，不必等较慢的 B。这里的「就绪」仅表示计划中的前置条件已满足，应用仍需自行考虑资源冲突、权限和容量。论文的依赖图及性能实验不能作为这些约束已被保障的证据。
+
+## 源码怎样判断可执行
+
+`TaskFetchingUnit` 为调用保存 `dependencies` 和完成事件。`_get_all_executable_tasks` 筛出所有前置事件已置位的剩余调用；`_run_task` 先替换参数里的结果占位符，执行后保存 observation，再设置完成事件。`schedule` 创建异步任务，并以 0.01 秒间隔重复检查，不等待无关分支。
+
+这份实现采用轮询；也可以由完成事件唤醒调度循环，这是应用实现上的选择。该文件没有完整的容量、资源互斥或失败状态管理；异常时完成事件可能无法置位，不能直接当作生产调度器。依据 2026-10-12 查阅的 `main` 分支，未运行源码。
 
 ## 实验说明了什么
 
