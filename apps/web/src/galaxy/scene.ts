@@ -967,6 +967,37 @@ export function createGalaxy(
     throw error;
   }
   return {
+    updateGraph(next: ReaderGraph) {
+      if (disposed) return;
+      graph = next;
+      settledLayouts.set(graph, overviewCache);
+      const nextNodes = new Map(galaxyData(graph).nodes.map((node) => [node.id, node]));
+      let changed = false;
+      for (const node of data.nodes) {
+        const nextNode = nextNodes.get(node.id)!;
+        if (node.collection !== nextNode.collection || node.fileSize !== nextNode.fileSize) {
+          node.collection = nextNode.collection;
+          node.fileSize = nextNode.fileSize;
+          changed = true;
+        }
+      }
+      if (!changed) return;
+      renderer.updateNodeAppearance();
+      if (overview) {
+        clusters = categoryLayout(data, overview, {
+          aspect: frameWidth / frameHeight,
+          elevation: preset.frameElevDeg || 18,
+          preset: preset.id,
+          grouping,
+        });
+        retireEffects();
+        effects = new CategoryEffects(renderer.sceneRoot, clusters.groups, data, colors);
+      }
+      updateColors();
+      applyFocus(false);
+      if (expanded && readingIndex < 0 && grouping === 'collection')
+        expand(true, false, true, true);
+    },
     readingTrail(value: ReadingTrail | null) {
       if (disposed) return;
       const wasLive = readingTrail?.live;

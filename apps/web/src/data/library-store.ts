@@ -4,7 +4,11 @@ type LoadState =
   | { status: 'loading'; library: null; error: '' }
   | { status: 'error'; library: null; error: string }
   | { status: 'ready'; library: Library; error: string };
-export type LibrarySnapshot = LoadState & { moveState: MoveState; revision: number };
+export type LibrarySnapshot = LoadState & {
+  moveState: MoveState;
+  revision: number;
+  pendingLibrary: Library | null;
+};
 interface Transport {
   fetch(signal: AbortSignal): Promise<Library>;
   move(id: string, collection: string, version: string): Promise<Library>;
@@ -19,6 +23,7 @@ export function createLibraryStore(transport: Transport) {
     error: '',
     moveState: { status: 'idle', pending: false },
     revision: 0,
+    pendingLibrary: null,
   };
   const listeners = new Set<() => void>();
   let active = false,
@@ -26,6 +31,12 @@ export function createLibraryStore(transport: Transport) {
     revision = 0;
   let request: AbortController | null = null;
   const publish = (next: LibrarySnapshot) => {
+    if (
+      Object.keys(next).every(
+        (key) => next[key as keyof LibrarySnapshot] === snapshot[key as keyof LibrarySnapshot],
+      )
+    )
+      return;
     snapshot = next;
     listeners.forEach((listener) => listener());
   };
@@ -44,13 +55,19 @@ export function createLibraryStore(transport: Transport) {
       const next = await transport.fetch(controller.signal);
       if (!active || epoch !== generation || ticket !== revision) return;
       const old = snapshot.library;
-      const library =
+      const unchanged =
         old?.version === next.version &&
         old.activity?.version === next.activity?.version &&
-        JSON.stringify(old.activity) === JSON.stringify(next.activity)
-          ? old
-          : next;
-      publish({ ...snapshot, status: 'ready', library, error: '' });
+        JSON.stringify(old.activity) === JSON.stringify(next.activity);
+      const pending = snapshot.pendingLibrary;
+      const pendingLibrary =
+        !old || unchanged
+          ? null
+          : pending?.version === next.version &&
+              JSON.stringify(pending.activity) === JSON.stringify(next.activity)
+            ? pending
+            : next;
+      publish({ ...snapshot, status: 'ready', library: old ?? next, pendingLibrary, error: '' });
     } catch (error) {
       if (!active || epoch !== generation || ticket !== revision || controller.signal.aborted)
         return;
@@ -85,6 +102,18 @@ export function createLibraryStore(transport: Transport) {
       invalidate();
     },
     refresh,
+    applyUpdate() {
+      if (!active || !snapshot.pendingLibrary || snapshot.moveState.pending || snapshot.error)
+        return;
+      invalidate();
+      publish({
+        ...snapshot,
+        status: 'ready',
+        library: snapshot.pendingLibrary,
+        pendingLibrary: null,
+        revision,
+      });
+    },
     clearMove() {
       if (!snapshot.moveState.pending)
         publish({ ...snapshot, moveState: { status: 'idle', pending: false } });
@@ -101,6 +130,7 @@ export function createLibraryStore(transport: Transport) {
         publish({
           status: 'ready',
           library,
+          pendingLibrary: null,
           error: '',
           revision: ++revision,
           moveState: { status: 'success', pending: false, id, collection },

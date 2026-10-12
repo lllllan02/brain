@@ -6,6 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readFile } from 'node:fs/promises';
 import { createServer as createViteServer } from 'vite';
+import { createReaderFrontend } from './src/reader-frontend.ts';
 import { createLibraryLoader, safeAsset } from './src/library.ts';
 import { activityForLibrary } from './src/activity.ts';
 import { moveDocument, MoveError, isLocalWriteRequest } from './src/move-document.ts';
@@ -14,6 +15,7 @@ export async function startServer({
   root = path.resolve(dir, '../../content'),
   port = Number(process.env.PORT || 4173),
   optimizeDependencies = true,
+  development = false,
 } = {}) {
   let queue: Promise<unknown> = Promise.resolve();
   const serialize = <T>(task: () => Promise<T>): Promise<T> => {
@@ -106,7 +108,8 @@ export async function startServer({
         });
         return res.end(await readFile(asset.file));
       }
-      vite.middlewares(req, res, () => {
+      if (reader) return await reader.handle(req, res);
+      vite!.middlewares(req, res, () => {
         res.writeHead(404);
         res.end();
       });
@@ -123,13 +126,16 @@ export async function startServer({
       );
     }
   });
-  const vite = await createViteServer({
-    root: dir,
-    configFile: false,
-    optimizeDeps: optimizeDependencies ? undefined : { noDiscovery: true, include: [] },
-    server: { middlewareMode: true, hmr: { server }, fs: { allow: [dir] } },
-    appType: 'spa',
-  });
+  const reader = development ? null : await createReaderFrontend(dir);
+  const vite = !development
+    ? null
+    : await createViteServer({
+        root: dir,
+        configFile: false,
+        optimizeDeps: optimizeDependencies ? undefined : { noDiscovery: true, include: [] },
+        server: { middlewareMode: true, hmr: { server }, fs: { allow: [dir] } },
+        appType: 'spa',
+      });
   await new Promise<void>((resolve, reject) => {
     server.once('error', reject);
     server.listen(port, '127.0.0.1', () => {
@@ -137,24 +143,34 @@ export async function startServer({
       resolve();
     });
   }).catch(async (error) => {
-    await vite.close();
+    await vite?.close();
+    await reader?.close();
     throw error;
   });
   return {
     server,
     async close() {
-      await vite.close();
+      await vite?.close();
       if (server.listening)
         await new Promise<void>((resolve, reject) => {
           server.close((error) => (error ? reject(error) : resolve()));
           server.closeAllConnections();
         });
+      await reader?.close();
     },
   };
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const { server } = await startServer();
+  const development = process.argv.includes('--dev');
+  if (!development) console.log('正在构建稳定阅读页面…');
+  const { server, close } = await startServer({ development });
+  for (const signal of ['SIGINT', 'SIGTERM'] as const)
+    process.once(signal, () => {
+      void close().then(() => process.exit(0));
+    });
   const address = server.address();
   if (address && typeof address !== 'string')
-    console.log(`${CONFIG.brand.name} / ${CONFIG.brand.nameEn} · http://127.0.0.1:${address.port}`);
+    console.log(
+      `${CONFIG.brand.name} / ${CONFIG.brand.nameEn} · ${development ? '开发模式' : '稳定阅读'} · http://127.0.0.1:${address.port}`,
+    );
 }

@@ -15,7 +15,8 @@ import './controls.css';
 import './layers.css';
 document.title = CONFIG.brand.name;
 function App() {
-  const { library, error, moveState, collectionAction, revision } = useLibrary();
+  const { library, error, moveState, collectionAction, revision, hasUpdate, applyUpdate } =
+    useLibrary();
   const [reduced, setReduced] = useState(
     () => matchMedia('(prefers-reduced-motion: reduce)').matches,
   );
@@ -62,6 +63,20 @@ function App() {
         reading={reading}
         reduced={reduced}
       />
+      {(hasUpdate || error) && (
+        <div className="library-update-notice" role="status">
+          <span>{error ? '暂时无法同步，仍显示已加载内容' : '有内容更新'}</span>
+          {hasUpdate && (
+            <button
+              type="button"
+              disabled={moveState.pending || Boolean(error)}
+              onClick={applyUpdate}
+            >
+              更新内容
+            </button>
+          )}
+        </div>
+      )}
       {moveState.id && !moveState.pending && (
         <div
           key={revision.current}

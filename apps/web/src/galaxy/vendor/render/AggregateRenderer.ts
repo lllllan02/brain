@@ -599,6 +599,24 @@ export class AggregateRenderer {
 		return this.reveal !== null;
 	}
 
+	/** Update node appearance without rebuilding geometry or replaying entry. */
+	updateNodeAppearance(): void {
+		if (!this.nodeGeometry) return;
+		const colors = this.nodeGeometry.getAttribute('aCollectionColor') as BufferAttribute;
+		const shapes = this.nodeGeometry.getAttribute('aCollectionShape') as BufferAttribute;
+		const angles = this.nodeGeometry.getAttribute('aRayAngle') as BufferAttribute;
+		const color = new Color();
+		this.data.nodes.forEach((node, i) => {
+			const style = collectionStyle(node.collection);
+			color.set(style.color);
+			colors.setXYZ(i, color.r, color.g, color.b);
+			shapes.setXYZW(i, style.node.size, style.node.halo, style.node.rays, style.node.rayStretch);
+			angles.setX(i, style.node.rayAngle * Math.PI / 180);
+		});
+		colors.needsUpdate = shapes.needsUpdate = angles.needsUpdate = true;
+		this.setSizeMode(this.sizeMode);
+	}
+
 	/** 配色/视觉方向变化时重算颜色（不动坐标） */
 	recolor(): void {
 		if (!this.nodeGeometry || !this.linkGeometry) return;

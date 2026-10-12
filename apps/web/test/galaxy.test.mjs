@@ -84,3 +84,42 @@ test('阅读筛选保留全部同组节点，不改动布局数据，分类与�
   assert.equal(readingFilter(data, -1, 'category'), null);
   assert.deepEqual(data, original);
 });
+
+test('目录迁移与文档重排复用场景，结构或布局输入变化使场景失效', async () => {
+  const {galaxySceneKey}=await import('../src/galaxy/data.ts');
+  const graph={nodes:[{...note('a','one'),collection:'inbox'},{...note('b','one'),collection:'notes'}],links:[{a:'a',b:'b',kind:'wiki'}],modules:[]};
+  const moved=structuredClone(graph);moved.nodes[0].collection='notes';moved.nodes[0].body += '移动后改写的相对引用';moved.nodes.reverse();
+  assert.equal(galaxySceneKey(graph),galaxySceneKey(moved));
+  for(const mutate of [v=>v.nodes.pop(),v=>v.links=[],v=>v.nodes[0].module='two',v=>v.nodes[0].title='新标题']) {
+    const next=structuredClone(graph);mutate(next);assert.notEqual(galaxySceneKey(graph),galaxySceneKey(next));
+  }
+});
+
+test('目录样式原位更新 GPU 属性，保留几何体、坐标与入场状态', async () => {
+  const server=await createServer({configFile:false,optimizeDeps:{noDiscovery:true},server:{middlewareMode:true,hmr:false,ws:false}});
+  try {
+    const {AggregateRenderer}=await server.ssrLoadModule('/src/galaxy/vendor/render/AggregateRenderer.ts');
+    const {BufferGeometry,BufferAttribute,Color}=await import('three');
+    const {collectionStyle}=await import('../src/collections.ts');
+    const renderer=Object.create(AggregateRenderer.prototype);
+    const geometry=new BufferGeometry();
+    const positions=new BufferAttribute(new Float32Array([1,2,3]),3);
+    geometry.setAttribute('position',positions);
+    geometry.setAttribute('aSize',new BufferAttribute(new Float32Array(1),1));
+    renderer.sizes=new Float32Array(1);renderer.sizeMode='uniform';
+    geometry.setAttribute('aCollectionColor',new BufferAttribute(new Float32Array(3),3));
+    geometry.setAttribute('aCollectionShape',new BufferAttribute(new Float32Array(4),4));
+    geometry.setAttribute('aRayAngle',new BufferAttribute(new Float32Array(1),1));
+    renderer.nodeGeometry=geometry;renderer.data={nodes:[{collection:'inbox'}],links:[]};
+    const reveal={progress:.5};renderer.reveal=reveal;
+    for(const collection of ['notes','inbox']) {
+      renderer.data.nodes[0].collection=collection;renderer.updateNodeAppearance();
+      const style=collectionStyle(collection),color=new Color(style.color);
+      assert.ok(Math.abs(geometry.getAttribute('aCollectionColor').getX(0)-color.r)<1e-6);
+      assert.ok(Math.abs(geometry.getAttribute('aCollectionShape').getX(0)-style.node.size)<1e-6);
+      assert.equal(renderer.nodeGeometry,geometry);assert.equal(geometry.getAttribute('position'),positions);
+      assert.deepEqual([...positions.array],[1,2,3]);assert.equal(renderer.reveal,reveal);
+    }
+    geometry.dispose();
+  } finally {await server.close();}
+});

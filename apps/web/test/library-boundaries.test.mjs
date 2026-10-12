@@ -56,6 +56,7 @@ test('失败后恢复清除错误；卸载取消读取并隔离旧生命周期�
   void store.refresh(); store.stop(); assert.equal(reads[2].signal.aborted,true);
   store.start(); reads[3].resolve({...library,version:'v3'}); await tick();
   reads[2].resolve({...library,version:'v2'}); await tick();
+  store.applyUpdate();
   assert.equal(store.getSnapshot().library.version,'v3'); store.stop();
 });
 
@@ -78,6 +79,46 @@ test('卸载前的写入迟到结果不能覆盖重新连接后的文档库', as
   store.start();await tick();const moving=store.move('example','notes');
   store.stop();version='v3';store.start();await tick();
   write.resolve({...library,version:'v2'});await moving;
+  store.applyUpdate();
   assert.equal(store.getSnapshot().library.version,'v3');
   assert.equal(store.getSnapshot().moveState.status,'idle');store.stop();
+});
+
+test('后台更新合并为最新快照，读者应用前保留同一文档库且无变化不通知', async () => {
+  let next=library;
+  const store=createLibraryStore({fetch:async()=>next,move:async()=>next});
+  let notifications=0;store.subscribe(()=>notifications++);
+  store.start();await tick();const initial=store.getSnapshot();
+  await store.refresh();assert.equal(store.getSnapshot(),initial);assert.equal(notifications,1);
+  next={...library,version:'v2'};await store.refresh();
+  assert.equal(store.getSnapshot().library,library);
+  const waiting=store.getSnapshot();await store.refresh();assert.equal(store.getSnapshot(),waiting);
+  next={...library,version:'v3'};await store.refresh();
+  assert.equal(store.getSnapshot().pendingLibrary,next);assert.equal(store.getSnapshot().library,library);
+  store.applyUpdate();assert.equal(store.getSnapshot().library,next);assert.equal(store.getSnapshot().pendingLibrary,null);
+  store.stop();
+});
+
+test('更新回退会清除提示，读取失败保留快照并阻止应用过期候选', async () => {
+  let next=library, failure=false;
+  const store=createLibraryStore({fetch:async()=>{if(failure)throw Error('offline');return next;},move:async()=>next});
+  store.start();await tick();
+  next={...library,version:'v2'};await store.refresh();
+  next=library;await store.refresh();assert.equal(store.getSnapshot().pendingLibrary,null);
+  next={...library,version:'v3'};await store.refresh();failure=true;await store.refresh();
+  store.applyUpdate();assert.equal(store.getSnapshot().library,library);
+  failure=false;await store.refresh();store.applyUpdate();assert.equal(store.getSnapshot().library,next);
+  store.stop();
+});
+
+test('主动更新取消在途旧读取；移动成功清理候选，移动期间不能应用候选', async () => {
+  let next=library, slow=false;const read=deferred(),write=deferred();let signal;
+  const store=createLibraryStore({fetch:async s=>{signal=s;return slow?read.promise:next;},move:()=>write.promise});
+  store.start();await tick();next={...library,version:'v2'};await store.refresh();
+  slow=true;void store.refresh();store.applyUpdate();assert.equal(signal.aborted,true);
+  read.resolve(library);await tick();assert.equal(store.getSnapshot().library,next);
+  slow=false;next={...library,version:'v3'};await store.refresh();
+  const moving=store.move('example','notes');store.applyUpdate();assert.equal(store.getSnapshot().library.version,'v2');
+  const moved={...library,version:'v4'};write.resolve(moved);await moving;
+  assert.equal(store.getSnapshot().pendingLibrary,null);assert.equal(store.getSnapshot().library,moved);store.stop();
 });

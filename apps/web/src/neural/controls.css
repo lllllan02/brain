@@ -147,3 +147,10 @@
 .galaxy-page .cluster-list-actions button[aria-pressed=true]{color:#f1d4a4;background:#d8b77d26;box-shadow:inset 0 0 0 1px #e1bd7955,0 0 10px #dfb67518}
 .cluster-list-actions button[aria-pressed=true] svg{transform:rotate(-35deg);filter:drop-shadow(0 0 3px #efc98b55)}
 @media(prefers-reduced-motion:reduce){.cluster-list-actions button svg{transition:none}}
+
+/* Updates never replace the page while someone is reading. */
+.library-update-notice{position:fixed;bottom:calc(78px + env(safe-area-inset-bottom));left:16px;z-index:var(--layer-notice);display:flex;align-items:center;gap:12px;max-width:calc(100vw - 32px);padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface-raised);color:var(--muted);font-size:12px}
+.library-update-notice button{min-height:32px;border:0;border-radius:4px;background:var(--hover);color:var(--text);font:inherit;cursor:pointer;white-space:nowrap}
+.library-update-notice button:focus-visible{outline:1px solid var(--text);outline-offset:2px}
+.library-update-notice button:disabled{opacity:.5;cursor:default}
+@media(max-width:900px){.library-update-notice{top:64px;bottom:auto}}

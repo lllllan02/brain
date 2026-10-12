@@ -24,6 +24,21 @@ export function galaxyData(graph: ReaderGraph): GraphData {
   return { nodes, links };
 }
 
+// Collection moves change appearance and filters, not the force-layout inputs.
+// Compare by ID: moving a file may also reorder the library's document array.
+export function galaxySceneKey(graph: ReaderGraph): string {
+  const data = galaxyData(graph);
+  return JSON.stringify({
+    nodes: data.nodes
+      .map((node) => ({ ...node, collection: undefined, fileSize: undefined }))
+      .sort((a, b) => a.id.localeCompare(b.id)),
+    links: data.links
+      .map((link) => JSON.stringify([data.nodes[link.source].id, data.nodes[link.target].id]))
+      .sort(),
+    modules: graph.modules,
+  });
+}
+
 export function galaxyFocus(
   data: GraphData,
   selected: string | null,

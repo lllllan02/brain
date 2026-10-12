@@ -12,7 +12,7 @@ export function useLibrary() {
   const [store] = useState(() =>
     createLibraryStore({ fetch: fetchLibrary, move: moveLibraryDocument }),
   );
-  const { library, error, moveState, revision } = useSyncExternalStore(
+  const { library, error, moveState, revision, pendingLibrary } = useSyncExternalStore(
     store.subscribe,
     store.getSnapshot,
   );
@@ -42,6 +42,8 @@ export function useLibrary() {
   return {
     library,
     error,
+    hasUpdate: Boolean(pendingLibrary),
+    applyUpdate: store.applyUpdate,
     moveState,
     collectionAction: localEditing ? { ...moveState, move } : null,
     revision: { current: revision },

@@ -11,7 +11,7 @@ test('本地接口条件请求、内容刷新、版本冲突和文件移动保�
   t.after(()=>rm(root,{recursive:true,force:true}));
   for(const dir of ['inbox','notes'])await mkdir(path.join(root,dir));
   const file=path.join(root,'inbox/a.md');await writeFile(file,'---\ntitle: Test\n---\nfirst');
-  const app=await startServer({root,port:0,optimizeDependencies:false});t.after(()=>app.close());
+  const app=await startServer({root,port:0,optimizeDependencies:false,development:true});t.after(()=>app.close());
   const url=`http://127.0.0.1:${app.server.address().port}`;
   const first=await fetch(url+'/api/library');const etag=first.headers.get('etag');
   const library=parseLibrary(await first.json());assert.ok(etag);

@@ -1,4 +1,5 @@
-import { useLayoutEffect, useRef, useState, type RefObject } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import { galaxySceneKey } from '../galaxy/data.ts';
 import type { createGalaxy, GalaxyLabel } from '../galaxy/scene.ts';
 import type { Focus, ReaderGraph } from '../types/graph.ts';
 import type {
@@ -42,6 +43,9 @@ export function useGalaxyScene({
 }: Options) {
   const clearCluster = useRef(onClearCluster);
   clearCluster.current = onClearCluster;
+  const latestGraph = useRef(graph);
+  latestGraph.current = graph;
+  const sceneKey = useMemo(() => galaxySceneKey(graph), [graph]);
   const [branchesReady, setBranchesReady] = useState(false);
   const [labels, setLabels] = useState<GalaxyLabel[]>([]);
   const [ready, setReady] = useState(false),
@@ -64,7 +68,7 @@ export function useGalaxyScene({
         if (!active) return;
         instance = createGalaxy(
           host.current!,
-          graph,
+          latestGraph.current,
           {
             onLabels: (next) => {
               if (active) setLabels(next);
@@ -110,7 +114,7 @@ export function useGalaxyScene({
                 navigation.returnTo(ancestor.key);
                 return;
               }
-              const target = graph.index.get(id);
+              const target = latestGraph.current.index.get(id);
               if (target?.module) current.current.setFocus({ mod: target.module, sel: id });
             },
           },
@@ -142,7 +146,10 @@ export function useGalaxyScene({
       instance?.dispose();
       scene.current = null;
     };
-  }, [graph, workbenchVisible]);
+  }, [sceneKey, workbenchVisible]);
+  useLayoutEffect(() => {
+    scene.current?.updateGraph(graph);
+  }, [graph]);
 
   return { ready, branchesReady, labels, error, trailProjection };
 }
