@@ -24,3 +24,16 @@ test('空库保留完整日期序列与空主题',()=>{
  assert.equal(result.start,'2025-12-27');assert.equal(result.activeDays,0);assert.deepEqual(result.topics,[]);
  assert.ok(result.series.every(d=>d.created===0&&d.updated===0));
 });
+
+test('周期对比排除今天，两个完整区间覆盖不足时不可比较', async()=>{
+ const {dashboardComparison}=await import('../src/neural/dashboard-model.js');
+ const activity={startedAt:'2026-09-01T00:00:00+08:00',events:[]};
+ const value=dashboardComparison(activity,[],'2026-10-12',7);
+ assert.equal(value.current.start,'2026-10-05');
+ assert.equal(value.end,'2026-10-11');
+ assert.equal(value.previous.start,'2026-09-28');
+ assert.equal(value.comparable,true);
+ assert.equal(dashboardComparison({...activity,startedAt:'2026-09-28T12:00:00+08:00'},[],'2026-10-12',7).comparable,false);
+ assert.equal(dashboardComparison({...activity,startedAt:'2026-10-01T00:00:00+08:00'},[],'2026-10-12',7).comparable,false);
+ assert.equal(dashboardComparison({...activity,error:'记录损坏'},[],'2026-10-12',7).comparable,false);
+});

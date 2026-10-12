@@ -29,3 +29,10 @@ export function dashboardPulse(activity, documents, today, days) {
     topics: [...topics].map(([name, ids]) => ({name, count: ids.size}))
       .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'zh-CN')).slice(0, 5)};
 }
+
+// Compare complete calendar days only; today's partial activity stays in the main chart.
+export function dashboardComparison(activity, documents, today, days) {
+  const current = dashboardPulse(activity, documents, shiftDay(today, -1), days);
+  const previous = dashboardPulse(activity, documents, shiftDay(today, -days - 1), days);
+  return {current, previous, end: shiftDay(today, -1), comparable: current.complete && previous.complete && Date.parse(activity.startedAt) <= Date.parse(`${previous.start}T00:00:00+08:00`)};
+}
