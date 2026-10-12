@@ -306,6 +306,20 @@ export class CameraDirector {
 		this.startTween(this.framingPosition(center, fitRadius), center.clone(), MOTION.camera, onDone);
 	}
 
+	/** Follow a reading hop while retaining the current viewing direction. */
+	followReading(center: Vector3, fitRadius: number, instant = false): void {
+		this.cancelMotion();
+		const offset = this.camera.position.clone().sub(this.controls.target);
+		if (offset.lengthSq() < 1e-6) offset.set(1, .3, .35);
+		const distance = Math.max(1, fitRadius) / Math.sin(this.camera.fov * Math.PI / 360) * 1.25;
+		const position = center.clone().add(offset.normalize().multiplyScalar(distance));
+		if (instant || this.reducedMotion) {
+			this.camera.position.copy(position);
+			this.controls.target.copy(center);
+			this.controls.update();
+		} else this.startTween(position, center.clone(), 550);
+	}
+
 	/**
 	 * 飞达节点后立即开始环绕（不等闲置 10s），且旋转方向优先扫过邻居密集的一侧
 	 * （G2 反馈：5 条链接 4 条朝南 → 先划过南方）。

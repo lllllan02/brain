@@ -42,7 +42,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
   const neutralColor = new Color('#c7d3e4');
   let layout, preset, width = 1, height = 1, frameWidth = 1, frameHeight = 1, disposed = false;
   let ready = false, paused = reduced, selected = null, category = null, tag = null;
-  let readingIndex = -1;
+  let readingIndex = -1, preparedReading = -1;
   let localReading = null;
   let previewIndex = -1;
   let readingTrail = null, trailIndices = new Set();
@@ -252,15 +252,18 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     localReading = expanded && readingIndex >= 0 ? {indices: readingFilter(data, readingIndex, grouping), radius: 60} : null;
     const previewGroup = expanded && readingIndex < 0 && !category && !tag ? hoveredCategory : null;
     renderer.setActiveNode(readingIndex);
-    renderer.setFocus(localReading ? i => localReading.indices.has(i) ? focus.bright.has(i) || i === readingIndex ? 1 : .28 : 0 : readingTrail && trailIndices.size ? i => trailIndices.has(i) ? 1 : .16 : previewGroup ? i => groupId(data.nodes[i]) === previewGroup ? 1 : .14 : focus.active ? i => focus.bright.has(i) ? 1 : 0.28 : null);
+    const weights = new Map(readingTrail?.live ? readingTrail.nodes.map(node => [nodeIndices.get(node.id), node.weight]) : []);
+    renderer.setFocus(localReading ? i => localReading.indices.has(i) ? i === readingIndex ? 1 : readingTrail?.live ? weights.get(i) ?? .28 : focus.bright.has(i) ? 1 : .28 : 0 : readingTrail?.live ? i => i === readingIndex ? 1 : weights.get(i) ?? .28 : readingTrail && trailIndices.size ? i => trailIndices.has(i) ? 1 : .16 : previewGroup ? i => groupId(data.nodes[i]) === previewGroup ? 1 : .14 : focus.active ? i => focus.bright.has(i) ? 1 : 0.28 : null);
     updateLinkFilter();
     renderer.setLinkOpacity(readingTrail ? .025 : expanded && readingIndex < 0 && category && focus.index < 0 ? .16 : categoryLinkOpacity(categoryBlend));
-    if (!ready || !move || transition) return;
-    if (readingTrail && trailIndices.size) frame(false, [...trailIndices]);
+    if (!ready || !move || transition || preparedReading >= 0) return;
+    if (readingTrail && !readingTrail.live && trailIndices.size) frame(false, [...trailIndices]);
     else if (readingIndex >= 0 || focus.index >= 0) {
       const anchor = readingIndex >= 0 ? readingIndex : focus.index;
       camera.cancelMotion();
-      if (reduced) frameReading(renderer.nodePosition(anchor, scratch), true);
+      if (readingTrail?.live) {
+        camera.followReading(renderer.nodePosition(anchor, scratch), 60 / Math.min(1, frameWidth / frameHeight), reduced);
+      } else if (reduced) frameReading(renderer.nodePosition(anchor, scratch), true);
       else camera.flyTo(renderer.nodePosition(anchor, scratch), Math.max(9, renderer.nodeRadius(anchor)), () => {
         if (!paused) camera.beginFocusOrbit(null);
       });
@@ -350,20 +353,21 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     if (readingTrail) {
       const nodes = readingTrail.nodes.flatMap(node => {
         const index = nodeIndices.get(node.id);
-        if (index === undefined) return [];
-      const point = renderer.projectNode(index, width, height);
+        if (index === undefined || localReading && !localReading.indices.has(index)) return [];
+        const point = renderer.projectNode(index, width, height);
         return point.behind ? [] : [{...node, x: point.x, y: point.y, current: index === readingIndex}];
       });
       hooks.onTrail?.({nodes, edges: readingTrail.edges, segments: readingTrail.segments});
     }
-    const chosen = [...new Set([readingIndex, focus.index, hovered, previewIndex])].filter(i => i >= 0);
+    const pathIndices = readingTrail?.live ? readingTrail.nodes.filter(node => !node.transient).map(node => nodeIndices.get(node.id)).filter(i => i !== undefined && (!localReading || localReading.indices.has(i))) : [];
+    const chosen = [...new Set([readingIndex, focus.index, hovered, previewIndex, ...pathIndices])].filter(i => i >= 0);
     const result = [];
     for (const i of chosen) {
       const p = renderer.projectNode(i, width, height);
       if (p.behind || p.x < 8 || p.x > width - 40 || p.y < 8 || p.y > height - 28) continue;
-      result.push({id: data.nodes[i].id, title: data.nodes[i].name, x: p.x, y: p.y, current: i === readingIndex, preview: i === previewIndex});
+      result.push({id: data.nodes[i].id, title: data.nodes[i].name, x: p.x, y: p.y, current: i === readingIndex, preview: i === previewIndex, path: pathIndices.includes(i) && i !== readingIndex});
     }
-    if (expanded && !transition && clusters && !readingTrail) {
+    if (expanded && !transition && clusters && (!readingTrail || readingTrail.live)) {
       const occupied = [];
       const ordered = [...clusters.groups].sort((a,b) => Number(b.id === (hoveredCategory || category)) - Number(a.id === (hoveredCategory || category)) || b.members.length - a.members.length);
       for (const group of ordered) {
@@ -488,9 +492,22 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
   return {
     readingTrail(value) {
       if (disposed) return;
+      const wasLive = readingTrail?.live;
       readingTrail = value;
       trailIndices = new Set(value?.nodes.map(node => nodeIndices.get(node.id)).filter(i => i !== undefined));
       if (!value) hooks.onTrail?.({nodes: [], edges: []});
+      applyFocus(!value?.live || !wasLive);
+    },
+    prepareReadingTravel(id) {
+      const index = nodeIndices.get(id);
+      if (disposed || !ready || transition || index === undefined) return false;
+      preparedReading = index;
+      camera.followReading(renderer.nodePosition(index, scratch), 60 / Math.min(1, frameWidth / frameHeight), reduced);
+      return true;
+    },
+    cancelReadingTravel() {
+      if (disposed || preparedReading < 0) return;
+      preparedReading = -1;
       applyFocus(true);
     },
     resizeReader() { if (!disposed) resize(true); },
@@ -499,8 +516,10 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
       const previousReading = readingIndex;
       selected = sel; category = mod; tag = selectedTag;
       readingIndex = nodeIndices.get(readingId) ?? -1;
+      const arrived = preparedReading === readingIndex && preparedReading >= 0;
+      if (readingIndex !== previousReading) preparedReading = -1;
       updateColors();
-      applyFocus(readingIndex < 0 || readingIndex !== previousReading);
+      applyFocus(!arrived && (readingIndex < 0 || readingIndex !== previousReading));
     },
     setReducedMotion(value) {
       if (disposed || reduced === value) return;
@@ -540,7 +559,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
       const rect = canvas.getBoundingClientRect();
       return {x:rect.left + (point.x + 1) * width / 2, y:rect.top + (1 - point.y) * height / 2, flowTime: renderer.readingFlowTime};
     },
-    reset() { if (!disposed) { if (readingTrail && trailIndices.size) frame(false, [...trailIndices]); else if (expanded && clusters) frameDestination(clusters.positions); else frame(); } },
+    reset() { if (!disposed) { if (readingTrail && !readingTrail.live && trailIndices.size) frame(false, [...trailIndices]); else if (expanded && clusters) frameDestination(clusters.positions); else frame(); } },
     replay() { if (!disposed && ready) { frame(); if (!reduced) renderer.playReveal(MOTION.expand); } },
     dispose,
   };

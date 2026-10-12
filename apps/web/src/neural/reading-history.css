@@ -41,3 +41,11 @@
 .galaxy-views .reading-history-toggle{display:flex;align-items:center;gap:6px;white-space:nowrap;margin-right:10px}
 .galaxy-views .reading-history-toggle[aria-expanded=true]{color:#efd7b2;border-bottom-color:#d5bc9466}
 @media(max-width:760px){.galaxy-views .reading-history-toggle{margin-right:4px;gap:4px}}
+
+
+/* Reading order is a quiet overlay on the original star positions. */
+.reading-trail.is-live .reading-trail-thread{stroke-width:1.2;stroke-opacity:.38;stroke-dasharray:3 5}
+.reading-trail.is-live .reading-trail-halo{stroke-width:4;stroke-opacity:.08}
+.galaxy-label.is-path{pointer-events:auto;border:0;border-bottom:1px solid #aac9e23d;font-family:inherit;color:#b8cddd;cursor:pointer}
+.galaxy-label.is-path:hover{color:#fff;background:#152333}
+.galaxy-label.is-path:focus-visible{outline:1px solid #b4d3eb;outline-offset:3px}

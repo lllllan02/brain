@@ -27,15 +27,15 @@ export function ReadingTrail({projection, route, reduced, hidden}) {
     const element = svg.current;
     if (!element || hidden) return;
     const initial = previousKeys.current === null;
-    const {play, settled} = trailPlayback(segments, previousKeys.current);
+    const {play, settled} = route?.live ? {play:segments, settled:route.edges} : trailPlayback(segments, previousKeys.current);
     previousKeys.current = segments.map(segment => segment.key);
     if (reduced || !play.length) return;
     element.classList.add('is-playing');
     const reveal = element.querySelector('.reading-trail-reveal');
     const head = element.querySelector('.reading-trail-head');
     const ripple = element.querySelector('.reading-trail-ripple');
-    let raf, previous = 0, elapsed = initial ? -450 : 0;
-    const duration = Math.max(260, Math.min(700, 7000 / play.length));
+    let raf, previous = 0, elapsed = initial && !route?.live ? -450 : 0;
+    const duration = route?.live ? 550 : Math.max(260, Math.min(700, 7000 / play.length));
     const ease = t => t * t * (3 - 2 * t);
     const edgeKey = edge => JSON.stringify([edge.from, edge.to]);
     const settledEdges = settled.map(edgeKey);
@@ -86,7 +86,7 @@ export function ReadingTrail({projection, route, reduced, hidden}) {
   }, [timelineKey, reduced, hidden]);
   // Reuse at most two beams, even for long histories. Read the live guide each
   // frame so camera movement never detaches a beam from its stars.
-  const beamCount = segments.length ? (segments.length < 6 ? 1 : 2) : 0;
+  const beamCount = !route?.live && segments.length ? (segments.length < 6 ? 1 : 2) : 0;
   useEffect(() => {
     const element = svg.current;
     if (!element || reduced || hidden || !beamCount) return;
@@ -132,7 +132,7 @@ export function ReadingTrail({projection, route, reduced, hidden}) {
     };
   }, [timelineKey, reduced, hidden, beamCount]);
   const nodes = new Map(projection.nodes.map(n => [n.id, n]));
-  return <svg ref={svg} className={`reading-trail${reduced ? ' is-reduced' : ''}`} aria-hidden="true" style={{visibility: hidden ? 'hidden' : undefined}}>
+  return <svg ref={svg} className={`reading-trail${route?.live ? ' is-live' : ''}${reduced ? ' is-reduced' : ''}`} aria-hidden="true" style={{visibility: hidden ? 'hidden' : undefined}}>
     <defs>
       <radialGradient id="reading-glow">
         <stop offset="0" stopColor="#dceafa" stopOpacity=".65"/>

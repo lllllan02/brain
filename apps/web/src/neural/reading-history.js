@@ -1,5 +1,37 @@
 export const HISTORY_LIMIT = 50;
 
+// The active browser branch, not the chronological list of all visits. Keep the
+// latest anchor entry for each consecutive document so return restores its scroll.
+export function activeReadingPath(entries, cursor, available) {
+  const path = [];
+  let interrupted = false;
+  for (const entry of entries.slice(0, cursor + 1)) {
+    if (!entry.id) {interrupted = true; continue;}
+    if (!available.has(entry.id)) {interrupted = true; continue;}
+    const previous = path.at(-1);
+    if (previous?.id === entry.id) path[path.length - 1] = {...entry, connected: previous.connected};
+    else path.push({...entry, connected: Boolean(previous) && !interrupted});
+    interrupted = false;
+  }
+  return path;
+}
+
+// Show only the current read and its two immediate predecessors in space.
+export function activeReadingTrail(path, hop = null) {
+  const recent = path.slice(-3), nodes = new Map(), edges = new Map();
+  recent.forEach((entry, index) => {
+    nodes.set(entry.id, {id:entry.id, key:entry.key, steps:[index + 1], weight:.6 + .4 * (index + 1) / recent.length});
+    const previous = recent[index - 1];
+    if (previous && entry.connected) {
+      const edge = {from:previous.id, to:entry.id};
+      edges.set(JSON.stringify([edge.from, edge.to]), edge);
+    }
+  });
+  // A reverse hop may start outside the shortened branch, but only for its flight.
+  if (hop && !nodes.has(hop.from)) nodes.set(hop.from, {id:hop.from, steps:[], weight:.45, transient:true});
+  return {live:true, nodes:[...nodes.values()], edges:[...edges.values()], segments:hop ? [hop] : []};
+}
+
 export function trailPlayback(segments, previousKeys) {
   if (previousKeys === null) return {play: segments, settled: []};
   const latest = segments.at(-1);

@@ -13,9 +13,10 @@ import {ClusterList, clusterDocuments} from './ClusterList';
 import {Icon} from './icons';
 import {ReadingNavigation, ReadingTrail} from './ReadingHistory';
 import {latestDocuments, documentHighlight} from './latest-documents';
-import {readingTrail, readingDirection} from './reading-history';
+import {activeReadingTrail, readingTrail, readingDirection} from './reading-history';
 import {usePresence} from '../motion/usePresence';
 import {ReaderTransition} from '../motion/ReaderTransition';
+import {CardToStar} from '../motion/CardToStar';
 import {MOTION, motionVariables} from '../motion/tokens.js';
 import '../motion/motion.css';
 import '../galaxy/galaxy.css';
@@ -51,8 +52,26 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   const timelineOpen = historyOpen || latestOpen || queueOpen;
   const latest = useMemo(() => latestDocuments(graph.nodes.filter(node => node.module)), [graph]);
   const closeLatest = () => {setPinnedList(null);setLatestOpen(false);setReaderCluster({owner: focus.sel, value: null});latestToggle.current?.focus({preventScroll: true});};
+  const [flight, setFlight] = useState(null);
+  const pendingFlight = useRef(null);
+  const [revealedFlight, setRevealedFlight] = useState(null);
+  const revealFlight = useCallback(key => {
+    const pending = pendingFlight.current;
+    if (!pending || pending.key !== key || pending.revealed) return;
+    pending.revealed = true;
+    setRevealedFlight(key);
+    pending.navigate();
+  }, []);
+  const finishFlight = useCallback(key => {
+    const pending = pendingFlight.current;
+    if (!pending || pending.key !== key) return;
+    pendingFlight.current = null;
+    setFlight(null);
+    if (!pending.revealed) pending.navigate();
+  }, []);
   const [trailProjection, setTrailProjection] = useState({nodes: [], edges: []});
-  const trail = useMemo(() => pinnedList && (pinnedList.recent || pinnedList.latest) ? documentHighlight(pinnedList.pinnedIds.map(id => ({id}))) : latestOpen ? documentHighlight(latest) : historyOpen ? readingTrail(reading.visits, new Set(graph.nodes.filter(n => n.module).map(n => n.id)), reading.recent) : null, [pinnedList, historyOpen, latestOpen, latest, reading.visits, reading.recent, graph]);
+  const liveTrail = useMemo(() => focus.sel ? activeReadingTrail(reading.path, reading.hop) : null, [focus.sel, reading.path, reading.hop]);
+  const trail = useMemo(() => pinnedList && (pinnedList.recent || pinnedList.latest) ? documentHighlight(pinnedList.pinnedIds.map(id => ({id}))) : latestOpen ? documentHighlight(latest) : historyOpen ? readingTrail(reading.visits, new Set(graph.nodes.filter(n => n.module).map(n => n.id)), reading.recent) : liveTrail, [liveTrail, pinnedList, historyOpen, latestOpen, latest, reading.visits, reading.recent, graph]);
   const closeHistory = () => {setPinnedList(null);setHistoryOpen(false);setReaderCluster({owner: focus.sel, value: null});historyToggle.current?.focus({preventScroll: true});};
   const listAnchor = useCallback(id => scene.current?.nodeAnchor(id), []);
   const previewNode = useCallback(id => scene.current?.previewNode(id), []);
@@ -129,7 +148,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       search.ref.current?.querySelector('[aria-selected="true"]')?.scrollIntoView({block: 'nearest', behavior: 'instant'});
     }
   }, [search.shown?.results, activeResultIndex, searchVisible, search.closing]);
-  const statusText = error || (!documents.length ? '还没有文档。保存笔记后，这里会亮起第一颗星。' : !ready ? '正在展开星系…' : null);
+  const statusText = error || (!documents.length ? '还没有文档。保存笔记后，这里会亮起第一颗星。' : !ready && !node?.module ? '正在展开星系…' : null);
   const status = usePresence(statusText, statusText, reduced, 'none');
   useEffect(() => {
     // The dashboard needs no WebGL scene. Dispose it on entry and create it
@@ -147,6 +166,9 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
         onReset: () => {setReaderCluster(null);current.current.setFocus({mod: null, sel: null});},
         onSelect: id => {
           setReaderCluster(null);
+          const navigation = current.current.reading;
+          const ancestor = navigation.path.slice(-3, -1).findLast(entry => entry.id === id);
+          if (ancestor && id !== current.current.focus.sel && current.current.trail?.live) {navigation.returnTo(ancestor.key); return;}
           const target = graph.index.get(id);
           if (target?.module) current.current.setFocus({mod: target.module, sel: id});
         },
@@ -166,7 +188,15 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   useEffect(() => {scene.current?.pause(reduced);}, [reduced, ready]);
   useEffect(() => scene.current?.setReducedMotion(reduced), [reduced]);
   useEffect(() => {scene.current?.readingTrail(trail);}, [trail]);
-  useEffect(() => { if (!focus.sel) setReaderCluster(null); }, [focus.sel]);
+  useEffect(() => {
+    if (!focus.sel) setReaderCluster(null);
+    const pending = pendingFlight.current;
+    if (pending && (pending.revealed ? pending.target : pending.source) !== focus.sel) {
+      pendingFlight.current = null;
+      setFlight(null);
+      scene.current?.cancelReadingTravel();
+    }
+  }, [focus.sel]);
   useEffect(() => {
     scene.current?.focus(groupCluster ? null : visualFocus.sel, groupCluster ? groupCluster.category : visualFocus.mod, groupCluster?.tag, visualFocus.sel);
   }, [visualFocus.sel, visualFocus.mod, groupCluster]);
@@ -227,24 +257,28 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       setFocus({sel, mod});
     }
   };
-  return <section className={`galaxy-page ${workbenchVisible ? 'workbench-visible' : ''} ${node || shownNode ? 'galaxy-reading' : ''} ${displayedCluster || clusterVisible ? 'galaxy-browsing' : ''} ${timelineOpen ? 'galaxy-history-open' : ''}`} aria-label={CONFIG.brand.name} data-reader-open={Boolean(node?.module)} data-view={preset} style={motionVariables}>
+  return <section className={`galaxy-page ${workbenchVisible ? 'workbench-visible' : ''} ${node || shownNode ? 'galaxy-reading' : ''} ${displayedCluster || clusterVisible ? 'galaxy-browsing' : ''} ${timelineOpen ? 'galaxy-history-open' : ''} ${flight ? revealedFlight === flight.key ? 'galaxy-handoff-revealing' : 'galaxy-handoff' : ''}`} aria-label={CONFIG.brand.name} data-reader-open={Boolean(node?.module)} data-view={preset} style={motionVariables}>
     <nav className="workbench-mode" aria-label="页面导航">
       <button type="button" onClick={() => switchHomeMode(workbenchVisible ? 'galaxy' : 'workbench')}>
         <Icon name={workbenchVisible ? 'back' : 'chart'} size={16}/>
         <span>{workbenchVisible ? graph.index.get(galaxyReturnFocus?.sel)?.module ? '返回阅读' : '返回星图' : '统计看板'}</span>
       </button>
     </nav>
+    <CardToStar flight={flight} getAnchor={listAnchor} onReveal={revealFlight} onFinish={finishFlight} reduced={reduced}/>
     <Workbench graph={graph} hidden={!workbenchVisible} reading={reading} queue={queue}/>
     <div className={`galaxy-viewport ${!ready || error ? 'is-loading' : ''}`} ref={host}>
       <div className="galaxy-frame" aria-hidden="true"/>
-      {historyOpen && <ReadingTrail projection={trailProjection} route={trail} reduced={reduced} hidden={workbenchVisible || !ready || Boolean(error)}/>}
+      {(historyOpen || trail?.live) && <ReadingTrail projection={trailProjection} route={flight && trail?.live ? {...trail, segments:[]} : trail} reduced={reduced} hidden={workbenchVisible || !ready || Boolean(error)}/>}
       <div className="galaxy-labels">{ready && !error && labels.map(label => label.category ?
         <button key={label.id} className="galaxy-category-label" style={{left: label.x, top: label.y, opacity: label.opacity, '--group-color': label.color, pointerEvents: label.exiting ? 'none' : undefined}} onPointerEnter={() => scene.current?.hoverCategory(label.id)} onPointerLeave={() => scene.current?.hoverCategory(null)} onFocus={() => scene.current?.hoverCategory(label.id)} onBlur={() => scene.current?.hoverCategory(null)} onClick={() => focus.sel ? setReaderCluster({owner: focus.sel, value: {category: label.id}}) : setFocus({mod: label.id, sel: null})} aria-label={`查看${label.title}${label.id.startsWith('collection:') ? '目录' : '分类'}`}><i aria-hidden="true"/>{label.title}<small>{label.count}</small></button> :
         <React.Fragment key={label.id}>
           {label.current && <svg className="galaxy-current-marker" aria-hidden="true" viewBox="-20 -20 40 40" style={{left: label.x, top: label.y, opacity: label.opacity, pointerEvents: label.exiting ? 'none' : undefined}}>
             <path d="M -8 -17 H -17 V -8 M 8 -17 H 17 V -8 M -8 17 H -17 V 8 M 8 17 H 17 V 8"/>
           </svg>}
-          <span className={`galaxy-label${label.current ? ' is-current' : ''}${label.preview ? ' is-preview' : ''}`} aria-hidden="true" style={{left: label.x, top: label.y, opacity: label.opacity, pointerEvents: label.exiting ? 'none' : undefined}}>{label.title}</span>
+          {label.path ? <button type="button" className="galaxy-label is-path" title={`返回：${label.title}`} tabIndex={label.exiting ? -1 : 0}
+            onClick={() => {const entry = reading.path.slice(-3, -1).findLast(item => item.id === label.id); if (entry) reading.returnTo(entry.key);}}
+            style={{left: label.x, top: label.y, opacity: label.opacity, pointerEvents: label.exiting ? 'none' : undefined}}>{label.title}</button> :
+            <span className={`galaxy-label${label.current ? ' is-current' : ''}${label.preview ? ' is-preview' : ''}`} aria-hidden="true" style={{left: label.x, top: label.y, opacity: label.opacity}}>{label.title}</span>}
         </React.Fragment>
       )}</div>
     </div>
@@ -321,7 +355,20 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
           if (pinnedList.document && focus.sel) setReaderCluster({owner: focus.sel, value: {document: focus.sel, direction: relationMode}});
         } else if (displayedCluster) setPinnedList({...displayedCluster, pinnedIds: clusterDocuments(graph, displayedCluster).map(item => item.id)});
       }}
-      onPresenceChange={setClusterVisible} onSelect={id => go(id, !timelineOpen)} onClear={() => {setPinnedList(null);reading.clear();}} onClose={() => {setPinnedList(null);queueOpen ? closeQueue() : latestOpen ? closeLatest() : historyOpen ? closeHistory() : setReaderCluster({owner: focus.sel, value: null});}}/>
+      onPresenceChange={setClusterVisible} onSelect={(id, card) => {
+        if (!reduced && focus.sel && id !== focus.sel && card && scene.current?.prepareReadingTravel(id)) {
+          const title = card.querySelector('strong') || card;
+          const box = title.getBoundingClientRect(), style = getComputedStyle(title);
+          const key = crypto.randomUUID();
+          pendingFlight.current = {key, source:focus.sel, target:id, navigate:() => go(id, !timelineOpen)};
+          setFlight({key,id,title:title.textContent,x:box.x + box.width / 2,y:box.y + box.height / 2,
+            width:box.width,fontSize:style.fontSize,fontFamily:style.fontFamily,color:style.color});
+          return;
+        }
+        pendingFlight.current = null;
+        setFlight(null);
+        go(id, !timelineOpen);
+      }} onClear={() => {setPinnedList(null);reading.clear();}} onClose={() => {setPinnedList(null);queueOpen ? closeQueue() : latestOpen ? closeLatest() : historyOpen ? closeHistory() : setReaderCluster({owner: focus.sel, value: null});}}/>
     {shownNode && <div ref={reader.ref} inert={reader.closing} className="analysis-wrap reader-shell">
       <ReaderTransition documentId={shownNode.id} reduced={reduced}>
       <DocumentReader queue={queue} collectionAction={collectionAction} navigation={<ReadingNavigation graph={graph} reading={reading} onTravel={reading.travel}/>} onResize={syncReaderLayout} key={shownNode.id} reduced={reduced} onPreview={previewNode} graph={graph} node={shownNode} readingLocation={reader.shown.location} onReadingScroll={reading.saveScroll} module={moduleOf(graph, shownNode)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>

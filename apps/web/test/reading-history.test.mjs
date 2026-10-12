@@ -126,3 +126,41 @@ test('关闭正文后继续阅读保留来源，缺失文档仍切断路径', ()
   assert.equal(readingTrail(visits, new Set(['a','b'])).edges.length, 1);
   assert.equal(readingOrigin(previous, 'missing', null), null);
 });
+
+test('常驻来路取当前历史分支，合并章节并保留各次访问的返回位置', async () => {
+  const {activeReadingPath, activeReadingTrail} = await import('../src/neural/reading-history.js');
+  const entries = ['a','a','b','c'].map((id, i) => ({id, key: String(i), scroll: i * 100}));
+  const available = new Set(['a','b','c','d']);
+  const path = activeReadingPath(entries, 3, available);
+  assert.deepEqual(path.map(e => [e.id,e.key,e.scroll]), [['a','1',100],['b','2',200],['c','3',300]]);
+  const back = activeReadingPath(entries, 2, available);
+  assert.deepEqual(back.map(e => e.id), ['a','b']);
+  const branch = activeReadingPath([...entries.slice(0, 3), {id:'d',key:'4'}], 3, available);
+  assert.deepEqual(branch.map(e => e.id), ['a','b','d']);
+  assert.deepEqual(activeReadingTrail(back).nodes.map(e => e.id), ['a','b']);
+});
+
+test('来路不连接首页或缺失文档两端，重复访问可分别返回，星图只保留最近三次阅读', async () => {
+  const {activeReadingPath, activeReadingTrail} = await import('../src/neural/reading-history.js');
+  const entries = ['a',null,'b','missing','c','a','d','e','f'].map((id,i) => ({id,key:String(i)}));
+  const available = new Set(['a','b','c','d','e','f']);
+  const path = activeReadingPath(entries, 8, available);
+  assert.deepEqual(path.map(e => e.id), ['a','b','c','a','d','e','f']);
+  assert.equal(path[1].connected, false);
+  assert.equal(path[2].connected, false);
+  const spine = activeReadingTrail(path).nodes;
+  assert.deepEqual(spine.map(e => e.id), ['d','e','f']);
+  assert.deepEqual(spine.map(e => e.key), ['6','7','8']);
+  assert.equal(activeReadingPath(entries, 0, available).length, 1);
+});
+
+test('回退只临时保留离开的节点用于反向光迹，结束后恢复三次阅读范围', async () => {
+  const {activeReadingTrail} = await import('../src/neural/reading-history.js');
+  const path = ['a','b','c'].map((id,i) => ({id,key:String(i),connected:i>0}));
+  const hop = {from:'d',to:'c',key:'reverse'};
+  const trail = activeReadingTrail(path, hop);
+  assert.deepEqual(trail.edges, [{from:'a',to:'b'},{from:'b',to:'c'}]);
+  assert.deepEqual(trail.segments, [hop]);
+  assert.equal(trail.nodes.at(-1).transient, true);
+  assert.deepEqual(activeReadingTrail(path).nodes.map(n => n.id), ['a','b','c']);
+});

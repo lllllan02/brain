@@ -1,5 +1,5 @@
-import {useCallback, useEffect, useRef, useState} from 'react';
-import {adjacentDocument, parseReadingRoute, readVisits, recordVisit, recentDocuments, rememberDocument, readingOrigin} from './reading-history.js';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {activeReadingPath, adjacentDocument, parseReadingRoute, readVisits, recordVisit, recentDocuments, rememberDocument, readingOrigin} from './reading-history.js';
 
 const storageKey = `brain:reading:v1:${location.pathname}`;
 const uid = () => crypto.randomUUID();
@@ -26,6 +26,8 @@ export function useReadingHistory(graph) {
   const model = useRef(null);
   if (!model.current) model.current = initialHistory();
   const [locationState, setLocationState] = useState(() => model.current.entries[model.current.cursor]);
+  const previousLocation = useRef(locationState);
+  const [hop, setHop] = useState(null);
   const [visits, setVisits] = useState(() => readVisits(read('localStorage', storageKey)));
   const [recent, setRecent] = useState(() => recentDocuments(readVisits(read('localStorage', `${storageKey}:recent`) ?? JSON.stringify(visits))));
   const lastRead = useRef(null), restored = useRef(false), saveTimer = useRef(null);
@@ -38,9 +40,17 @@ export function useReadingHistory(graph) {
   }, [persist]);
   const publish = useCallback(() => {
     const entry = model.current.entries[model.current.cursor];
+    const previous = previousLocation.current;
+    if (previous.id !== entry.id) setHop(previous.id && entry.id ? {from:previous.id,to:entry.id,key:uid()} : null);
+    previousLocation.current = entry;
     setLocationState({...entry});
     persist();
   }, [persist]);
+  useEffect(() => {
+    if (!hop) return;
+    const timer = setTimeout(() => setHop(null), 1400);
+    return () => clearTimeout(timer);
+  }, [hop]);
   const navigate = useCallback(url => {
     const m = model.current, current = m.entries[m.cursor];
     if (url === current.url) return;
@@ -111,6 +121,8 @@ export function useReadingHistory(graph) {
   }, [persist]);
   const available = new Set(graph?.nodes.filter(n => n.module).map(n => n.id));
   const m = model.current;
+  const path = useMemo(() => activeReadingPath(model.current.entries, model.current.cursor,
+    new Set(graph?.nodes.filter(n => n.module).map(n => n.id))), [graph, locationState.key]);
   const back = adjacentDocument(m.entries, m.cursor, -1, available);
   const forward = adjacentDocument(m.entries, m.cursor, 1, available);
   const travel = direction => {
@@ -118,7 +130,13 @@ export function useReadingHistory(graph) {
     if (target < 0) return;
     captureScroll(); history.go(target - m.cursor);
   };
+  const returnTo = key => {
+    const target = m.entries.findIndex(entry => entry.key === key && available.has(entry.id));
+    if (target < 0 || target >= m.cursor) return;
+    captureScroll(); history.go(target - m.cursor);
+  };
   return {location: {...locationState, anchor: parseReadingRoute(locationState.url).anchor}, visits, recent,
+    path, hop:hop && available.has(hop.from) && available.has(hop.to) ? hop : null, returnTo,
     navigate, saveScroll, back: back >= 0 ? m.entries[back].id : null,
     forward: forward >= 0 ? m.entries[forward].id : null, travel,
     clear() {setVisits([]); setRecent([]); lastRead.current = null;}};

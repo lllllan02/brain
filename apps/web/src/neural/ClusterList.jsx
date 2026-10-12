@@ -233,7 +233,7 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
         <div className="cluster-scroll-track"><div className="cluster-scroll-viewport"><div className="cluster-scroll-content">
         {documents.length ? <ul key={selectionKey}>{documents.map((node, index) => <li key={node.id} className={queue ? "has-queue-action" : undefined}>
           <button type="button" className="cluster-list-item" style={{'--fan-delay': `${stagger(index)}ms`}}
-            aria-current={node.id === selected ? 'page' : undefined} onClick={() => onSelect(node.id)}>
+            aria-current={node.id === selected ? 'page' : undefined} onClick={event => onSelect(node.id, event.currentTarget)}>
             <i className="cluster-card-port" style={collectionMarkerStyle(node.collection)} aria-hidden="true"/>
             {timeline && <small className="cluster-history-index">{allDocuments.indexOf(node) + 1}</small>}
             <span><strong>{node.title}</strong></span>

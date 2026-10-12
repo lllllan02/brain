@@ -1,0 +1,18 @@
+.card-flight{position:fixed;inset:0;z-index:var(--layer-preview,40);pointer-events:none;overflow:hidden}
+.card-flight>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.card-flight path{fill:none;stroke:#d5eafa;stroke-width:1.6;stroke-linecap:round;filter:drop-shadow(0 0 3px #9dc6e8)}
+.card-flight-title{position:absolute;left:0;top:0;opacity:0;line-height:1.7;text-align:left;text-shadow:0 0 12px #a6cce755;transform-origin:center;will-change:transform,opacity}
+.card-flight-star{position:absolute;left:0;top:0;width:22px;height:22px;opacity:0;background:radial-gradient(circle,#fff 0 7%,#d9f0ff 10%,#a6ceef66 24%,transparent 65%);filter:drop-shadow(0 0 6px #bddfff);will-change:transform,opacity}
+.card-flight-star:before,.card-flight-star:after{content:'';position:absolute;background:linear-gradient(transparent,#eaf7ff,transparent);left:10px;top:0;width:2px;height:22px}
+.card-flight-star:after{transform:rotate(90deg)}
+.card-flight-arrival{position:absolute;left:0;top:0;width:18px;height:18px;border:1px solid #c7e7ff88;border-radius:50%;opacity:0;box-shadow:0 0 12px #b4dfff33;will-change:transform,opacity}
+@media(prefers-reduced-motion:reduce){.card-flight{display:none}}
+
+/* The old set retires first; the incoming set unfolds during the same flight.
+   Filter opacity composes with the list's existing presence animation. */
+.cluster-list-body,.cluster-fan-lines{transition:filter 180ms ease}
+.galaxy-handoff .cluster-list-body,.galaxy-handoff .cluster-fan-lines{filter:opacity(0);pointer-events:none}
+.galaxy-handoff-revealing .cluster-list-body,.galaxy-handoff-revealing .cluster-fan-lines{animation:branchHandoff 340ms ease both}
+.galaxy-handoff-revealing .cluster-list-item,.galaxy-handoff-revealing .cluster-fan-lines path{animation-duration:300ms;animation-delay:0ms}
+@keyframes branchHandoff{from{filter:opacity(0)}to{filter:opacity(1)}}
+@media(prefers-reduced-motion:reduce){.cluster-list-body,.cluster-fan-lines{transition:none}.galaxy-handoff-revealing .cluster-list-body,.galaxy-handoff-revealing .cluster-fan-lines{animation:none}}
