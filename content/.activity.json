@@ -7,6 +7,11 @@
       "collection": "glossary",
       "digest": "5e1a497fcf8595b8d22471687494e5e852605412792b3bd67bc85000d1be0839"
     },
+    "multiway-balanced-search-tree": {
+      "title": "多路平衡查找树（Multiway Balanced Search Tree）",
+      "collection": "glossary",
+      "digest": "2479e90b0636230fbee41437b3a9c9c2078d8184c25677f911151164b6bc7432"
+    },
     "stdio": {
       "title": "Stdio（标准输入输出）",
       "collection": "glossary",
@@ -132,11 +137,6 @@
       "collection": "inbox",
       "digest": "248702953443def273012c26a6d8259a65a69b598b79f0e6caab7aa965ac5dc7"
     },
-    "binlog-recovery": {
-      "title": "Binlog 数据恢复",
-      "collection": "inbox",
-      "digest": "b82b5b7e50fb682a5e6fa64a2f70db0d22497795244e22f32606320e97abfad3"
-    },
     "bloom-filter": {
       "title": "布隆过滤器（Bloom Filter）",
       "collection": "inbox",
@@ -180,7 +180,7 @@
     "cdc": {
       "title": "CDC（变更数据捕获）",
       "collection": "inbox",
-      "digest": "5e44f9e08fd7a4a7a7c11aef7034927b2f483d6673171e02461336c0ad197f7a"
+      "digest": "bd5aa8aced61318fbf0ee041c811c634b112d2c0760b8c5508e8f68b3262deb2"
     },
     "circuit-breaker-failure-classification": {
       "title": "哪些错误应该计入熔断？",
@@ -250,22 +250,17 @@
     "database-index": {
       "title": "索引（Index）",
       "collection": "inbox",
-      "digest": "e3164f45219c1004be670fbeedcb349e9042ab82d32fa6bded5e90d6c0d6ba2c"
+      "digest": "082ea95a003c5436eea70a73d60b24c41c3b01d5a84db84c5866f1592a3c8e98"
     },
     "database-selection": {
       "title": "数据库选型",
       "collection": "inbox",
-      "digest": "260a6a4c8bd10b4f465c0b033e5bc606d9d4265172243166cddcdf4ba48f42c0"
+      "digest": "a7b54254c41c600200680ee304880aa185bf7158b04db40e699233ac2e10d256"
     },
     "database-sharding": {
       "title": "分库分表",
       "collection": "inbox",
-      "digest": "a4be01b9373037a1286118b66595c236b07c9ee5a222a0666e1e27e1456c38f7"
-    },
-    "db-connection-pool": {
-      "title": "数据库连接池排查",
-      "collection": "inbox",
-      "digest": "4b2e39a48dfebb8f37607ac88a5356ae5f7ae62780dd5ab5f28b040f9b15fbf0"
+      "digest": "f3f8a45b04c4bde52e2291514f518ff8dc5bd4e22b58ffcf26ff84953b545834"
     },
     "deletion-write-barrier": {
       "title": "删除写屏障（Deletion Barrier）",
@@ -557,11 +552,6 @@
       "collection": "inbox",
       "digest": "1c7cccebd68cab342a7c6dff049dd303fe62ba86a803e9db369e3975c5615d1a"
     },
-    "innodb": {
-      "title": "InnoDB",
-      "collection": "inbox",
-      "digest": "c3919ae45fa8b9c5fb16cc8c95e15496d5f95cb071c5afed13db9cd7378e15a5"
-    },
     "insertion-write-barrier": {
       "title": "插入写屏障（Insertion Barrier）",
       "collection": "inbox",
@@ -657,120 +647,25 @@
       "collection": "inbox",
       "digest": "b0cbb350e1f2d493efd5f00f18a5478899800ea5d064c21c68a84447eda4038c"
     },
-    "mysql-binlog": {
-      "title": "Binlog（二进制日志）",
+    "mysql-index-maintenance": {
+      "title": "索引维护",
       "collection": "inbox",
-      "digest": "49d2179528813306db1a58e8f5a5430cd0368fc548ac02d4ed4bc1c52efbb6c6"
+      "digest": "55aeef50f71edfb209b1c37ca0b86756c7a8ff23e266213945097d9179244e6a"
     },
-    "mysql-buffer-pool": {
-      "title": "Buffer Pool（缓冲池）",
+    "mysql-indexes": {
+      "title": "MySQL 索引",
       "collection": "inbox",
-      "digest": "a81661f8a4fbea26de05035805c27e7be7d33783538b2ab4e6d91e37a9ccedd1"
+      "digest": "62174047ae97ef8a9c0917c76e5cd27854530d88e33182d9bac1c2ada97b7f46"
     },
-    "mysql-clustered-index": {
-      "title": "InnoDB 聚簇索引",
-      "collection": "inbox",
-      "digest": "c12aea1064c5a334ac0c7f3e352b8ce88c5482215495c56232fe1d4cac4a2208"
-    },
-    "mysql-commit": {
-      "title": "MySQL COMMIT 与提交状态",
-      "collection": "inbox",
-      "digest": "00589916cc4df2cf0ab276ff35297fd22dce65065d4ab0de76409c065159fb08"
-    },
-    "mysql-covering-index": {
-      "title": "覆盖索引（Covering Index）",
-      "collection": "inbox",
-      "digest": "af7b0b5c6669cffb42de4bcd18e386166d6d24a98e1d29880bc979104048810f"
-    },
-    "mysql-crash-recovery": {
-      "title": "MySQL 崩溃恢复",
-      "collection": "inbox",
-      "digest": "a85f78e712f9c079d7f2cfe6f752a34b58a2792fdf438fd2cb09e1c2156d90cb"
-    },
-    "mysql-explain-auxiliary-fields": {
-      "title": "MySQL EXPLAIN 辅助字段",
-      "collection": "inbox",
-      "digest": "8d4f749d9c7abdab422bee62209a555cdc83d264d9de86f349c1260dec28bd48"
-    },
-    "mysql-explain-extra": {
-      "title": "MySQL EXPLAIN Extra",
-      "collection": "inbox",
-      "digest": "0958740e409fef42ea06b3e3fb20ec1070b29d5025e8ae173f11ae72203cc3cd"
-    },
-    "mysql-explain-id": {
-      "title": "MySQL EXPLAIN id",
-      "collection": "inbox",
-      "digest": "57d6edca7f71f66681bbacd56f3e4b6e13cc304694908a77291c6de392446119"
-    },
-    "mysql-explain-index-fields": {
-      "title": "MySQL EXPLAIN 索引相关字段",
-      "collection": "inbox",
-      "digest": "a465f7f38db5de48a04c4b4991f56e0f7622edb1a31e79e2e0ef9a77ec4a699f"
-    },
-    "mysql-explain-reading": {
-      "title": "怎么读 EXPLAIN 结果",
-      "collection": "inbox",
-      "digest": "9abfeaaae7c617f692bd376a98511b725855fe5fed345838bf60886e8e8865f0"
-    },
-    "mysql-explain-rows-filtered": {
-      "title": "MySQL EXPLAIN rows 与 filtered",
-      "collection": "inbox",
-      "digest": "30a7952f5d379972aace88f453b2024787406f60706eea185a99c24c5ef2262c"
-    },
-    "mysql-explain-select-type": {
-      "title": "MySQL EXPLAIN select_type",
-      "collection": "inbox",
-      "digest": "d13e55310331fdc49f7ee5367dc2ed6037ab9af91266dcbd2ef9b4b3e6d235ae"
-    },
-    "mysql-explain-type": {
-      "title": "MySQL EXPLAIN type",
-      "collection": "inbox",
-      "digest": "148a43a7ea193af03114f3572a873db944867f124a8293e2323c67f5ade08a39"
-    },
-    "mysql-explain": {
-      "title": "MySQL EXPLAIN",
-      "collection": "inbox",
-      "digest": "3ad6524db9b07fe99641bb6c0868bf9b49fc90158c641cc300ce14063a85d0fb"
-    },
-    "mysql-flushing": {
-      "title": "MySQL 刷盘机制",
-      "collection": "inbox",
-      "digest": "856567dc11130ed2fdebf4166cab95f8538e7946ac31d2738d4fd0cbeb2a1f85"
-    },
-    "mysql-index-condition-pushdown": {
-      "title": "索引条件下推（ICP）",
-      "collection": "inbox",
-      "digest": "59107293df8d0991a8651f7d91acdb2161d319ed88ff46fecd48a4f626c75b85"
-    },
-    "mysql-index-structure": {
-      "title": "InnoDB 索引结构（B+ 树）",
-      "collection": "inbox",
-      "digest": "7edd18b28418e7b30e220e666fc0b22de8ef2ffdafbf92db2de9ef4a0d70faac"
-    },
-    "mysql-isolation-levels": {
-      "title": "MySQL 事务隔离级别",
-      "collection": "inbox",
-      "digest": "0470a2fc15d542b203b97100bbddc2b5db340868b0bb9457c2130838838a05e8"
-    },
-    "mysql-mvcc": {
-      "title": "MySQL MVCC（多版本并发控制）",
-      "collection": "inbox",
-      "digest": "a5a6b05fd57ea0e9f149de9fd7782e1f42962c5cc1184a1be17dcaef361b59dc"
-    },
-    "mysql-redo-log": {
-      "title": "Redo Log（重做日志）",
-      "collection": "inbox",
-      "digest": "52b643fd3cc7676a94823b218f0a97479a1b71c3639745cbb9f37a808e313477"
-    },
-    "mysql-undo-log": {
-      "title": "Undo Log（回滚日志）",
-      "collection": "inbox",
-      "digest": "5fbd18a0b7d7a166684ceac8b4af7861a7fecd7f3c36467715c10a19121cc80f"
-    },
-    "mysql": {
+    "mysql-overview": {
       "title": "MySQL",
       "collection": "inbox",
-      "digest": "1aeb7f8736b700ac47a64641b7b6740c13de4afc504210e961e88eab2d2a877d"
+      "digest": "1ac3f8660e379a287d4c9ebaedb17b37d1c992440705fba3e2d550d55cf6ed93"
+    },
+    "mysql-specialized-indexes": {
+      "title": "全文、空间与多值索引",
+      "collection": "inbox",
+      "digest": "908aa10c90a8d9b1443170c7ed65cf0d01a3eed27f505529619410bbb030b543"
     },
     "nacos": {
       "title": "Nacos",
@@ -1055,7 +950,7 @@
     "relational-database": {
       "title": "关系型数据库（Relational Database）",
       "collection": "inbox",
-      "digest": "9a11ad213550475c44277c4746490552b8ec056764387298b63303adc7af80c0"
+      "digest": "1094f8bf79d5627405a86bc7bc2b9048375712d63f866ff68b1ad8f992638481"
     },
     "reverse-proxy": {
       "title": "反向代理（Reverse Proxy）",
@@ -1180,7 +1075,7 @@
     "storage-engine": {
       "title": "存储引擎（Storage Engine）",
       "collection": "inbox",
-      "digest": "7ca96a9f91965ce5abdda0db692ad15a0336a17eb22dbef78b334f853c084697"
+      "digest": "edba09ffcb032808e74586ab29156244bbaeb2d063c09a065635d425d0cad36c"
     },
     "strong-consistency": {
       "title": "强一致性（Strong Consistency）",
@@ -1210,7 +1105,7 @@
     "wal": {
       "title": "WAL（预写日志）",
       "collection": "inbox",
-      "digest": "f41c851a58da06e87daa677378ba5ef6243432f827f417e05b6c77634ac1d1eb"
+      "digest": "c9c510a981d83102a087f50d57e88f2a93a37af31ecbfc70436f38901808e06b"
     },
     "watch": {
       "title": "Watch（监听机制）",
@@ -1401,6 +1296,121 @@
       "title": "MCP（模型上下文协议）",
       "collection": "notes",
       "digest": "fe2407dd013b58a988488db072dbcd2a7b01205971b28a5e4e79915f4dacea7c"
+    },
+    "mysql-batch-reading": {
+      "title": "分批读取与导出",
+      "collection": "notes",
+      "digest": "0b8b7de2d26355dd631c709102350b0d74d987fb5f6d0b471643c2a4f0d08fe1"
+    },
+    "mysql-clustered-index": {
+      "title": "InnoDB 的聚簇索引与二级索引",
+      "collection": "notes",
+      "digest": "c1c7ed93899de2c62d50c9e7f05e3e359bf06fd3ae1a16340edd14f68220b00a"
+    },
+    "mysql-clustered-key": {
+      "title": "InnoDB 怎样选择聚簇键",
+      "collection": "notes",
+      "digest": "19e9709f4aa0af9e2d220e05ad20fa2936e4cfc57a7488a3fe2d613c5322ec3b"
+    },
+    "mysql-composite-index": {
+      "title": "联合索引与最左前缀匹配原则",
+      "collection": "notes",
+      "digest": "2da0938f52875d14844454380300fcbe336a0c1fbd2882e40277d37b127782b9"
+    },
+    "mysql-covering-index": {
+      "title": "InnoDB 的回表与覆盖索引",
+      "collection": "notes",
+      "digest": "db2ef8c166af9554c9085c77d8aa6f9223d468067f2de69c7bee32a867b5de79"
+    },
+    "mysql-deep-pagination": {
+      "title": "深分页优化",
+      "collection": "notes",
+      "digest": "5b05859618db53ce6a6ef22b28271a699fa5f2122e5424806c498027ca84b619"
+    },
+    "mysql-index-access-cost": {
+      "title": "索引选择",
+      "collection": "notes",
+      "digest": "d5f61f91fdc1f3d28ae742b933aafa8d137f68c60e01831eb54338f3d2be371a"
+    },
+    "mysql-index-access-strategies": {
+      "title": "索引合并与跳跃扫描",
+      "collection": "notes",
+      "digest": "fe19d168224c80dc6bd460262c5fef765b3d52e4bb1a3014e1c765ffd73a0659"
+    },
+    "mysql-index-btree-comparison": {
+      "title": "为什么 InnoDB 选择 B+ 树而不是经典 B 树",
+      "collection": "notes",
+      "digest": "23dd4f4735a49986f17166519bfa514ffd1e5be27399a84598894c16413aa4f4"
+    },
+    "mysql-index-classification": {
+      "title": "主键、唯一、联合与聚簇索引怎样区分",
+      "collection": "notes",
+      "digest": "bdaea539455cbf75699f887ebe0a09331c3f22a0b952f0250a2e5109fd8d3701"
+    },
+    "mysql-index-condition-pushdown": {
+      "title": "索引条件下推（ICP）",
+      "collection": "notes",
+      "digest": "29a6c7dc3492f0c0e9aa64b6ce5c2aaa00cb0ad0c2094175f5546dbed0533a0b"
+    },
+    "mysql-index-grouping": {
+      "title": "索引与分组",
+      "collection": "notes",
+      "digest": "1ea671f03c366c658bcd240d945672129a73e953de3f6d3d7904ad9acce32a51"
+    },
+    "mysql-index-hash-comparison": {
+      "title": "为什么 InnoDB 选择 B+ 树而不是哈希索引",
+      "collection": "notes",
+      "digest": "499e4437da31558d1c6ff4acfada21f7e3569859add2395ad13bb502f9bee4ba"
+    },
+    "mysql-index-height-io": {
+      "title": "为什么 B+ 树高度不等于磁盘 I/O 次数",
+      "collection": "notes",
+      "digest": "877088818bfb365f7dd35bdeb634418c6452218a836bba848d78db5521d05d53"
+    },
+    "mysql-index-height": {
+      "title": "InnoDB 为什么需要较矮的 B+ 树",
+      "collection": "notes",
+      "digest": "f95c74d0c280c27d48c684fb7513e05de0b81d3ad6e3b656cc5a077b7f8c251a"
+    },
+    "mysql-index-joins": {
+      "title": "JOIN 与索引",
+      "collection": "notes",
+      "digest": "cf8437544a8ab8797d3712c75ff2976d68dbe5e15445fadb23f1aa9e7b91a050"
+    },
+    "mysql-index-ordering": {
+      "title": "索引与排序",
+      "collection": "notes",
+      "digest": "569617ed42c291e6eb01b88ac54a7a993825cb1c501107154a693382de078092"
+    },
+    "mysql-index-page-changes": {
+      "title": "InnoDB 页分裂与页合并：变化与代价",
+      "collection": "notes",
+      "digest": "bdb265157d63ac062a5c83a5478a62a04c34f02371d23053c9ec6a639ef3945c"
+    },
+    "mysql-index-pagination": {
+      "title": "分页与索引",
+      "collection": "notes",
+      "digest": "2e1a52c21d57f7f19c24e13ef042fd854288bca41189f7f6fab0a7676b23c1c7"
+    },
+    "mysql-index-predicates": {
+      "title": "查询条件与索引定位",
+      "collection": "notes",
+      "digest": "06b34e1774a56c40ee7be4ef3936508a00785f91a32fd641e45463ed8b3d33d7"
+    },
+    "mysql-index-structure": {
+      "title": "InnoDB 的 B+ 树与数据页",
+      "collection": "notes",
+      "digest": "3d2dc95533ec06d9d6d681b7219f43573e1473d0a6b9910b4fc246bbb71513f2"
+    },
+    "mysql-prefix-index": {
+      "title": "前缀索引（Prefix Index）",
+      "collection": "notes",
+      "digest": "4d8a44b4e8eda2052ce3b971ba51dbb2bc9605442333fbbc69ae4b3b76fc32dc"
+    },
+    "mysql-row-overflow": {
+      "title": "溢出页",
+      "collection": "notes",
+      "digest": "c058f50fbdf27a53d67c73833616d91c5ab15f810ef74c6a50dcf18eb45acf07"
     },
     "plan-and-execute": {
       "title": "Plan-and-Execute（先规划再执行）",
@@ -1787,6 +1797,31 @@
       "collection": "readings",
       "digest": "5424328634cedff3491236d857bd70320c7acd3d8537d0af108ef69786570325"
     },
+    "mysql-learning-resources": {
+      "title": "MySQL 学习资料导读",
+      "collection": "readings",
+      "digest": "20b16a84d615998af847d2fcb89bace831e103c0fe5f723db17c29e1c8d6d5fc"
+    },
+    "mysql-manual-queries": {
+      "title": "MySQL 官方手册导读：查询与索引",
+      "collection": "readings",
+      "digest": "4a3e1a69f0802659317f6b9da7e84d34315a5c53279da954994e0caf789f9bc6"
+    },
+    "mysql-manual-recovery": {
+      "title": "MySQL 官方手册导读：日志、复制与恢复",
+      "collection": "readings",
+      "digest": "59b54677ed78cb05fdc46fed9cb1dbeb6f2538d7a986c9d4817a58f005821a48"
+    },
+    "mysql-manual-transactions": {
+      "title": "MySQL 官方手册导读：事务与锁",
+      "collection": "readings",
+      "digest": "faf80861b89cffde2d2567aadeb0892182fffb98671f145622273cf571b00f4d"
+    },
+    "mysql-pagination-sources": {
+      "title": "MySQL 分页优化资料导读",
+      "collection": "readings",
+      "digest": "ad1e06a902377c9d8c99376d0fd76ddfb6b02f500e63ec2aba75dc87ec5da435"
+    },
     "openai-agents-architecture-summary": {
       "title": "OpenAI Agents API：Harness、执行环境与应用的分工",
       "collection": "readings",
@@ -1831,6 +1866,11 @@
       "title": "OpenCode V2：上下文预算与压缩阈值",
       "collection": "readings",
       "digest": "02724c40244a40d409c834fbb694116bc9a693dfff70b0b3d82f0f1c1e27257c"
+    },
+    "opendsa-b-trees": {
+      "title": "OpenDSA：B 树与 B+ 树",
+      "collection": "readings",
+      "digest": "a210125214695b9f0924f184bb37113aad6632e98809f8b20e4d17d9e59f2872"
     },
     "openfga-agent-authorization-summary": {
       "title": "OpenFGA：Agent 授权关系、条件与变更管理",
@@ -2189,6 +2229,17 @@
         "assets/mcp-overview.excalidraw": "c9b8d5e9ee3af00ac6a4f966e38bb292334be5bdc63d8f6ec776fe3518f25d29",
         "assets/mcp-overview.png": "aa4ac49c6dcdd7192b20b917ce3978139bd820467267e6b60c2eaaa0a90aa58b",
         "assets/mcp-overview.svg": "18fe5fadc5e23e4bff8841ee039af642f6337c2b885b1b9e1d27e76ce0f47370"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/mysql-bplus-pages": {
+      "title": "mysql-bplus-pages",
+      "files": {
+        "assets/mysql-bplus-pages.excalidraw": "8894d1226f50b7b27be7f37e8d7092b2ae181bc28d608976a0b57862b7710504",
+        "assets/mysql-bplus-pages.png": "53c2a534f86b5a6f40a8ad32ab0a59395033db86a8c9e42db41ac4842e722f9b",
+        "assets/mysql-bplus-pages.svg": "6c8655d41504fc6106ca05958342481a424871a88325e51a11d1c2d3a54b77be"
       },
       "collections": [
         "notes"
@@ -10858,6 +10909,1928 @@
       "docId": "tool-calling",
       "from": "inbox",
       "to": "notes"
+    },
+    {
+      "id": "8834a935-058a-4f74-9d90-0634b417755b",
+      "kind": "updated",
+      "entity": "doc:cdc",
+      "title": "CDC（变更数据捕获）",
+      "time": "2026-10-12T06:13:11.354Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "cdc"
+    },
+    {
+      "id": "f2d28d6f-104c-4427-8425-7f2dc40615db",
+      "kind": "updated",
+      "entity": "doc:database-index",
+      "title": "索引（Index）",
+      "time": "2026-10-12T06:13:11.354Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "database-index"
+    },
+    {
+      "id": "b44eea1b-4199-46bb-9d79-ca4eb56e2dff",
+      "kind": "updated",
+      "entity": "doc:database-selection",
+      "title": "数据库选型",
+      "time": "2026-10-12T06:13:11.354Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "database-selection"
+    },
+    {
+      "id": "2f0740d1-b716-4eb6-9a60-00da8794cf4a",
+      "kind": "updated",
+      "entity": "doc:database-sharding",
+      "title": "分库分表",
+      "time": "2026-10-12T06:13:11.354Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "database-sharding"
+    },
+    {
+      "id": "a907bf49-806e-48fd-8496-37cc08b281e9",
+      "kind": "created",
+      "entity": "doc:mysql-overview",
+      "title": "MySQL 面试准备",
+      "time": "2026-10-12T06:13:11.354Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-overview"
+    },
+    {
+      "id": "0d85b875-0dd8-486a-b5c4-b7d624fb8f98",
+      "kind": "updated",
+      "entity": "doc:relational-database",
+      "title": "关系型数据库（Relational Database）",
+      "time": "2026-10-12T06:13:11.354Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "relational-database"
+    },
+    {
+      "id": "0553be6c-08d4-4f80-a802-181d1587d714",
+      "kind": "updated",
+      "entity": "doc:storage-engine",
+      "title": "存储引擎（Storage Engine）",
+      "time": "2026-10-12T06:13:11.354Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "storage-engine"
+    },
+    {
+      "id": "a383d7ea-b60f-47e1-84b9-8bc90b4dec3e",
+      "kind": "updated",
+      "entity": "doc:wal",
+      "title": "WAL（预写日志）",
+      "time": "2026-10-12T06:13:11.354Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "wal"
+    },
+    {
+      "id": "695cd743-4464-49c8-bf85-89e8e3e18abb",
+      "kind": "created",
+      "entity": "doc:mysql-manual-queries",
+      "title": "MySQL 官方手册导读：查询与索引",
+      "time": "2026-10-12T06:13:11.354Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-queries"
+    },
+    {
+      "id": "c3a7b415-a841-49b8-aa7f-6ac12e365c45",
+      "kind": "created",
+      "entity": "doc:mysql-manual-recovery",
+      "title": "MySQL 官方手册导读：日志、复制与恢复",
+      "time": "2026-10-12T06:13:11.354Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-recovery"
+    },
+    {
+      "id": "a5ee61e7-993f-4759-b999-b5cd64b44628",
+      "kind": "created",
+      "entity": "doc:mysql-manual-transactions",
+      "title": "MySQL 官方手册导读：事务与锁",
+      "time": "2026-10-12T06:13:11.354Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-transactions"
+    },
+    {
+      "id": "c1be7e4b-9b35-49ac-8773-930ebef2d3d9",
+      "kind": "updated",
+      "entity": "doc:mysql-overview",
+      "title": "MySQL",
+      "time": "2026-10-12T06:52:55.523Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-overview"
+    },
+    {
+      "id": "16287fb7-2828-4c3c-b48c-4f2d043fa7b9",
+      "kind": "created",
+      "entity": "doc:mysql-learning-resources",
+      "title": "MySQL 学习资料导读",
+      "time": "2026-10-12T06:52:55.523Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-learning-resources"
+    },
+    {
+      "id": "632b7773-fec3-40bc-9741-7726a5f4e5cf",
+      "kind": "updated",
+      "entity": "doc:mysql-overview",
+      "title": "MySQL",
+      "time": "2026-10-12T06:58:13.966Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-overview"
+    },
+    {
+      "id": "71b748bf-bb9c-4203-b285-6e57afa50384",
+      "kind": "created",
+      "entity": "doc:mysql-table-design",
+      "title": "MySQL 表设计",
+      "time": "2026-10-12T06:58:13.966Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-table-design"
+    },
+    {
+      "id": "0775de7f-2ed7-4113-9500-55e5cc7be8db",
+      "kind": "updated",
+      "entity": "doc:mysql-learning-resources",
+      "title": "MySQL 学习资料导读",
+      "time": "2026-10-12T06:58:13.966Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-learning-resources"
+    },
+    {
+      "id": "c2dbdd24-ee04-4942-b64f-b46392bd7f90",
+      "kind": "created",
+      "entity": "doc:mysql-indexes",
+      "title": "MySQL 索引",
+      "time": "2026-10-12T07:03:44.674Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-indexes"
+    },
+    {
+      "id": "08546669-73b4-4998-9f1e-8aad024bdcab",
+      "kind": "updated",
+      "entity": "doc:mysql-overview",
+      "title": "MySQL",
+      "time": "2026-10-12T07:03:44.674Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-overview"
+    },
+    {
+      "id": "935c61d2-426a-4052-9f8f-9594df2df12b",
+      "kind": "updated",
+      "entity": "doc:mysql-learning-resources",
+      "title": "MySQL 学习资料导读",
+      "time": "2026-10-12T07:03:44.674Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-learning-resources"
+    },
+    {
+      "id": "67380091-aa3f-42f7-9934-8888463dc91b",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-queries",
+      "title": "MySQL 官方手册导读：查询与索引",
+      "time": "2026-10-12T07:03:44.674Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-queries"
+    },
+    {
+      "id": "7509615f-6e1a-46d1-bb05-e93dce129246",
+      "kind": "updated",
+      "entity": "doc:mysql-overview",
+      "title": "MySQL",
+      "time": "2026-10-12T07:06:23.086Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-overview"
+    },
+    {
+      "id": "f39a7c08-c5b0-480d-a3a9-4f49418ccae7",
+      "kind": "updated",
+      "entity": "doc:mysql-indexes",
+      "title": "MySQL 索引",
+      "time": "2026-10-12T07:07:51.663Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-indexes"
+    },
+    {
+      "id": "a4362e50-cb74-4e3e-ac65-8d371054becb",
+      "kind": "created",
+      "entity": "doc:b-tree",
+      "title": "B 树（B-tree）",
+      "time": "2026-10-12T07:12:10.186Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "b-tree"
+    },
+    {
+      "id": "e28e7b43-4e17-45d2-a8d3-c0b90aeb5c2c",
+      "kind": "updated",
+      "entity": "doc:mysql-indexes",
+      "title": "MySQL 索引",
+      "time": "2026-10-12T07:12:10.186Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-indexes"
+    },
+    {
+      "id": "6bae04aa-278e-4824-99a4-29542280208e",
+      "kind": "created",
+      "entity": "doc:mysql-index-structure",
+      "title": "InnoDB 的 B+ 树与数据页",
+      "time": "2026-10-12T07:18:28.472Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-structure"
+    },
+    {
+      "id": "a27e4770-5277-45fc-a5bd-58f90f0f1e75",
+      "kind": "updated",
+      "entity": "doc:mysql-indexes",
+      "title": "MySQL 索引",
+      "time": "2026-10-12T07:18:28.472Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-indexes"
+    },
+    {
+      "id": "6df4a2d6-09cf-49fd-8d6f-a186b85ab2a2",
+      "kind": "updated",
+      "entity": "doc:mysql-index-structure",
+      "title": "InnoDB 的 B+ 树与数据页",
+      "time": "2026-10-12T07:21:23.482Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-structure"
+    },
+    {
+      "id": "9e3c58a3-4b00-4cf9-89c0-43cb7a1dfa1a",
+      "kind": "created",
+      "entity": "doc:mysql-clustered-index",
+      "title": "InnoDB 索引的叶子里存什么",
+      "time": "2026-10-12T07:27:28.205Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-index"
+    },
+    {
+      "id": "18315e5d-9740-4cb0-9bcd-6b2f12c2997b",
+      "kind": "created",
+      "entity": "doc:mysql-index-btree-comparison",
+      "title": "InnoDB 的 B+ 树与经典 B 树有什么区别",
+      "time": "2026-10-12T07:27:28.205Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-btree-comparison"
+    },
+    {
+      "id": "b17bc52e-2204-45bb-be3b-7ba9c4cfdb12",
+      "kind": "created",
+      "entity": "doc:mysql-index-hash-comparison",
+      "title": "B+ 树与哈希索引适合什么查询",
+      "time": "2026-10-12T07:27:28.205Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-hash-comparison"
+    },
+    {
+      "id": "1ca50a27-7079-4684-98c5-a4668aca15e8",
+      "kind": "created",
+      "entity": "doc:mysql-index-height-io",
+      "title": "为什么 B+ 树高度不等于磁盘 I/O 次数",
+      "time": "2026-10-12T07:27:28.205Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-height-io"
+    },
+    {
+      "id": "5b25a26c-f398-4b94-94e8-87d029ebf4a5",
+      "kind": "created",
+      "entity": "doc:mysql-index-height",
+      "title": "InnoDB 的 B+ 树为什么通常较矮",
+      "time": "2026-10-12T07:27:28.205Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-height"
+    },
+    {
+      "id": "59cdf0fc-f3e7-46d3-bbc5-119b4f83f2fd",
+      "kind": "created",
+      "entity": "doc:mysql-index-page-changes",
+      "title": "写入为什么会引起 InnoDB 页分裂与合并",
+      "time": "2026-10-12T07:27:28.205Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-page-changes"
+    },
+    {
+      "id": "f3150e65-f519-49c3-9a03-194d02b52f78",
+      "kind": "updated",
+      "entity": "doc:mysql-index-structure",
+      "title": "InnoDB 的 B+ 树与数据页",
+      "time": "2026-10-12T07:27:28.205Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-structure"
+    },
+    {
+      "id": "40d206a8-70d0-4a4d-a3db-a3564afa2a2d",
+      "kind": "updated",
+      "entity": "doc:mysql-indexes",
+      "title": "MySQL 索引",
+      "time": "2026-10-12T07:27:28.205Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-indexes"
+    },
+    {
+      "id": "69de238e-2279-4c0f-8b0f-6d9ac1ff4396",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-queries",
+      "title": "MySQL 官方手册导读：查询与索引",
+      "time": "2026-10-12T07:27:28.205Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-queries"
+    },
+    {
+      "id": "12bdb1bc-6ead-4808-ae20-ca30c4cfc2e0",
+      "kind": "created",
+      "entity": "doc:opendsa-b-trees",
+      "title": "OpenDSA：B 树与 B+ 树",
+      "time": "2026-10-12T07:27:28.205Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "opendsa-b-trees"
+    },
+    {
+      "id": "10922eda-ce20-43da-8977-86c60751d691",
+      "kind": "updated",
+      "entity": "doc:mysql-clustered-index",
+      "title": "InnoDB 的聚簇索引与二级索引",
+      "time": "2026-10-12T07:29:15.521Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-index"
+    },
+    {
+      "id": "63a66dd4-4214-4679-9f20-b6d41d6ff0c8",
+      "kind": "created",
+      "entity": "doc:mysql-composite-index",
+      "title": "MySQL 联合索引与最左前缀",
+      "time": "2026-10-12T07:29:15.521Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-composite-index"
+    },
+    {
+      "id": "7334013b-91b4-4d31-bef0-8d5f0c5503d3",
+      "kind": "created",
+      "entity": "doc:mysql-covering-index",
+      "title": "InnoDB 的回表与覆盖索引",
+      "time": "2026-10-12T07:29:15.521Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-covering-index"
+    },
+    {
+      "id": "1983f29f-55f0-40dd-89b2-a498f7d5fe2c",
+      "kind": "created",
+      "entity": "doc:mysql-index-access-cost",
+      "title": "MySQL 索引选择与访问成本",
+      "time": "2026-10-12T07:29:15.521Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-access-cost"
+    },
+    {
+      "id": "d7820ee8-102a-4fcb-99b1-74c4c511207b",
+      "kind": "created",
+      "entity": "doc:mysql-index-condition-pushdown",
+      "title": "索引条件下推（ICP）",
+      "time": "2026-10-12T07:29:15.521Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-condition-pushdown"
+    },
+    {
+      "id": "ca0fe31d-31e6-4e23-bd9b-6b2551acc99d",
+      "kind": "created",
+      "entity": "doc:mysql-index-design",
+      "title": "MySQL 前缀索引与设计取舍",
+      "time": "2026-10-12T07:29:15.521Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-design"
+    },
+    {
+      "id": "88fd181f-d8b6-4197-ab9c-34e6153a1dff",
+      "kind": "updated",
+      "entity": "doc:mysql-indexes",
+      "title": "MySQL 索引",
+      "time": "2026-10-12T07:29:15.521Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-indexes"
+    },
+    {
+      "id": "0e7680bd-5b5f-47d8-b2c4-6b75f3ba26ce",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-queries",
+      "title": "MySQL 官方手册导读：查询与索引",
+      "time": "2026-10-12T07:29:15.521Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-queries"
+    },
+    {
+      "id": "ecd259cd-32cd-4d2a-99c8-e4f023805b79",
+      "kind": "created",
+      "entity": "doc:multiway-balanced-search-tree",
+      "title": "多路平衡查找树（Multiway Balanced Search Tree）",
+      "time": "2026-10-12T07:33:11.935Z",
+      "collections": [
+        "glossary"
+      ],
+      "source": "observed",
+      "docId": "multiway-balanced-search-tree"
+    },
+    {
+      "id": "ed4575bd-49bb-430e-96cd-b4a723678b80",
+      "kind": "updated",
+      "entity": "doc:mysql-index-structure",
+      "title": "InnoDB 的 B+ 树与数据页",
+      "time": "2026-10-12T07:33:11.935Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-structure"
+    },
+    {
+      "id": "7c52bd43-356d-4a1b-a087-4de20d177c96",
+      "kind": "updated",
+      "entity": "doc:mysql-learning-resources",
+      "title": "MySQL 学习资料导读",
+      "time": "2026-10-12T07:33:11.935Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-learning-resources"
+    },
+    {
+      "id": "48c9d6c0-223a-4664-9516-5c7e1fba19cc",
+      "kind": "image-created",
+      "entity": "image:assets/mysql-bplus-pages",
+      "title": "mysql-bplus-pages",
+      "time": "2026-10-12T07:36:18.826Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/mysql-bplus-pages.excalidraw"
+      ]
+    },
+    {
+      "id": "fbc1fafc-27da-4193-b2ed-c661c3b4be51",
+      "kind": "image-format",
+      "entity": "image:assets/mysql-bplus-pages",
+      "title": "mysql-bplus-pages",
+      "time": "2026-10-12T07:36:46.804Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/mysql-bplus-pages.png",
+        "assets/mysql-bplus-pages.svg"
+      ]
+    },
+    {
+      "id": "4c7c1f7b-7f71-412b-9db2-be67a462feb9",
+      "kind": "updated",
+      "entity": "doc:mysql-index-structure",
+      "title": "InnoDB 的 B+ 树与数据页",
+      "time": "2026-10-12T07:37:22.839Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-structure"
+    },
+    {
+      "id": "79642081-7931-407b-b138-17fb8be7cd4e",
+      "kind": "updated",
+      "entity": "doc:mysql-index-height",
+      "title": "InnoDB 为什么需要较矮的 B+ 树",
+      "time": "2026-10-12T07:39:37.123Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-height"
+    },
+    {
+      "id": "8a2c3ea4-68c2-4403-a072-1442e9442cc0",
+      "kind": "updated",
+      "entity": "doc:mysql-index-structure",
+      "title": "InnoDB 的 B+ 树与数据页",
+      "time": "2026-10-12T07:39:37.123Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-structure"
+    },
+    {
+      "id": "9e177d37-c98e-4992-833a-bf232ff5d47e",
+      "kind": "moved",
+      "entity": "doc:mysql-index-height",
+      "title": "InnoDB 为什么需要较矮的 B+ 树",
+      "time": "2026-10-12T07:41:26.434Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-height",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "22577ee8-ada2-4e15-b06a-535a44075b35",
+      "kind": "updated",
+      "entity": "doc:mysql-clustered-index",
+      "title": "InnoDB 的聚簇索引与二级索引",
+      "time": "2026-10-12T07:41:58.259Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-index"
+    },
+    {
+      "id": "f0ae25ad-d8ad-4c74-928c-32786f1d687d",
+      "kind": "updated",
+      "entity": "doc:mysql-index-btree-comparison",
+      "title": "为什么 InnoDB 选择 B+ 树而不是经典 B 树",
+      "time": "2026-10-12T07:41:58.259Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-btree-comparison"
+    },
+    {
+      "id": "e30184f0-74be-4968-84de-1ee5c8e9e7b1",
+      "kind": "updated",
+      "entity": "doc:mysql-index-hash-comparison",
+      "title": "为什么 InnoDB 选择 B+ 树而不是哈希索引",
+      "time": "2026-10-12T07:41:58.259Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-hash-comparison"
+    },
+    {
+      "id": "3dde6d98-dc4a-466c-8cad-4c9bbcd6813b",
+      "kind": "updated",
+      "entity": "doc:mysql-index-structure",
+      "title": "InnoDB 的 B+ 树与数据页",
+      "time": "2026-10-12T07:41:58.259Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-structure"
+    },
+    {
+      "id": "a3182092-cb96-4eab-84f7-f15be8c1c2a5",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-bplus-pages",
+      "title": "mysql-bplus-pages",
+      "time": "2026-10-12T07:42:51.656Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-bplus-pages.excalidraw"
+      ]
+    },
+    {
+      "id": "5da67998-a3b2-48bf-8e66-b151e2dbe9a4",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-bplus-pages",
+      "title": "mysql-bplus-pages",
+      "time": "2026-10-12T07:42:59.648Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-bplus-pages.png",
+        "assets/mysql-bplus-pages.svg"
+      ]
+    },
+    {
+      "id": "d97a0c82-ee02-482f-b475-c0ffb64211fa",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-bplus-pages",
+      "title": "mysql-bplus-pages",
+      "time": "2026-10-12T07:43:59.630Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-bplus-pages.excalidraw"
+      ]
+    },
+    {
+      "id": "2fd0a291-e44f-4b4e-9d10-fb4a255dcbc5",
+      "kind": "image-updated",
+      "entity": "image:assets/mysql-bplus-pages",
+      "title": "mysql-bplus-pages",
+      "time": "2026-10-12T07:44:07.639Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/mysql-bplus-pages.png",
+        "assets/mysql-bplus-pages.svg"
+      ]
+    },
+    {
+      "id": "dfbef5ff-ed44-4a31-9a7e-d3879ccb5305",
+      "kind": "updated",
+      "entity": "doc:mysql-index-structure",
+      "title": "InnoDB 的 B+ 树与数据页",
+      "time": "2026-10-12T07:44:16.068Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-structure"
+    },
+    {
+      "id": "b4d187d9-590e-43ff-8d40-241f50584228",
+      "kind": "updated",
+      "entity": "doc:mysql-index-btree-comparison",
+      "title": "为什么 InnoDB 选择 B+ 树而不是经典 B 树",
+      "time": "2026-10-12T07:48:42.653Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-btree-comparison"
+    },
+    {
+      "id": "eec4eb9a-3419-410a-b881-4b7572b8f0f0",
+      "kind": "moved",
+      "entity": "doc:mysql-index-btree-comparison",
+      "title": "为什么 InnoDB 选择 B+ 树而不是经典 B 树",
+      "time": "2026-10-12T07:49:15.353Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-btree-comparison",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "0263e46a-10d4-4c3d-9f85-eda45a77ae45",
+      "kind": "updated",
+      "entity": "doc:mysql-index-hash-comparison",
+      "title": "为什么 InnoDB 选择 B+ 树而不是哈希索引",
+      "time": "2026-10-12T07:49:26.300Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-hash-comparison"
+    },
+    {
+      "id": "f3b8ec53-e306-4324-9d5d-8b903628e573",
+      "kind": "updated",
+      "entity": "doc:mysql-index-btree-comparison",
+      "title": "为什么 InnoDB 选择 B+ 树而不是经典 B 树",
+      "time": "2026-10-12T07:50:58.380Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-btree-comparison"
+    },
+    {
+      "id": "63668e52-3a10-4dd6-91a8-4b56c71996cc",
+      "kind": "moved",
+      "entity": "doc:mysql-index-hash-comparison",
+      "title": "为什么 InnoDB 选择 B+ 树而不是哈希索引",
+      "time": "2026-10-12T07:52:27.236Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-hash-comparison",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "d05918cb-8a7b-404c-9acf-9b33f567218e",
+      "kind": "updated",
+      "entity": "doc:mysql-clustered-index",
+      "title": "InnoDB 的聚簇索引与二级索引",
+      "time": "2026-10-12T07:53:06.423Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-index"
+    },
+    {
+      "id": "95a810ed-a7bb-4bae-9638-6f3801ab1133",
+      "kind": "updated",
+      "entity": "doc:mysql-index-height-io",
+      "title": "为什么 B+ 树高度不等于磁盘 I/O 次数",
+      "time": "2026-10-12T07:53:06.423Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-height-io"
+    },
+    {
+      "id": "676479a6-c0a5-40e2-8bce-379da67a09ec",
+      "kind": "updated",
+      "entity": "doc:mysql-index-page-changes",
+      "title": "写入为什么会引起 InnoDB 页分裂与合并",
+      "time": "2026-10-12T07:53:06.423Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-page-changes"
+    },
+    {
+      "id": "a170d1d4-1e57-41b7-abca-08ad1b276138",
+      "kind": "updated",
+      "entity": "doc:mysql-index-hash-comparison",
+      "title": "为什么 InnoDB 选择 B+ 树而不是哈希索引",
+      "time": "2026-10-12T07:53:06.423Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-hash-comparison"
+    },
+    {
+      "id": "ee93a7cd-7f44-4fe9-8f05-e37241e486cc",
+      "kind": "moved",
+      "entity": "doc:mysql-index-height-io",
+      "title": "为什么 B+ 树高度不等于磁盘 I/O 次数",
+      "time": "2026-10-12T07:54:16.049Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-height-io",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "40aeb305-a6b0-44c2-84d2-fb6e1580d92b",
+      "kind": "updated",
+      "entity": "doc:mysql-index-page-changes",
+      "title": "InnoDB 页分裂与页合并：变化与代价",
+      "time": "2026-10-12T07:56:33.503Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-page-changes"
+    },
+    {
+      "id": "42f8e983-d775-4855-b174-5ec69d38202f",
+      "kind": "moved",
+      "entity": "doc:mysql-index-page-changes",
+      "title": "InnoDB 页分裂与页合并：变化与代价",
+      "time": "2026-10-12T07:58:17.521Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-page-changes",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "53dd0075-946a-4a1e-bb04-4c0d076929ca",
+      "kind": "updated",
+      "entity": "doc:mysql-clustered-index",
+      "title": "InnoDB 的聚簇索引与二级索引",
+      "time": "2026-10-12T07:59:44.420Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-index"
+    },
+    {
+      "id": "f7f982d2-e766-449c-9e66-4df7aec2ff72",
+      "kind": "updated",
+      "entity": "doc:mysql-index-structure",
+      "title": "InnoDB 的 B+ 树与数据页",
+      "time": "2026-10-12T07:59:44.420Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-structure"
+    },
+    {
+      "id": "ee04d6fa-fed0-404f-be4c-512dbeeb4269",
+      "kind": "updated",
+      "entity": "doc:mysql-index-hash-comparison",
+      "title": "为什么 InnoDB 选择 B+ 树而不是哈希索引",
+      "time": "2026-10-12T07:59:44.420Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-hash-comparison"
+    },
+    {
+      "id": "bd98570b-e5f1-47fb-944b-b8cbde35c964",
+      "kind": "moved",
+      "entity": "doc:mysql-index-structure",
+      "title": "InnoDB 的 B+ 树与数据页",
+      "time": "2026-10-12T08:00:13.939Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-structure",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "b43f4c7e-1b05-4854-bd16-2b9a03cf6c84",
+      "kind": "updated",
+      "entity": "doc:mysql-clustered-index",
+      "title": "InnoDB 的聚簇索引与二级索引",
+      "time": "2026-10-12T08:18:37.627Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-index"
+    },
+    {
+      "id": "2bb6d116-f551-42b1-8ed6-f569aea95135",
+      "kind": "created",
+      "entity": "doc:mysql-clustered-key",
+      "title": "InnoDB 怎样选择聚簇键",
+      "time": "2026-10-12T08:18:37.627Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-key"
+    },
+    {
+      "id": "1ce71d5d-053c-41de-87b3-2b0d425448b3",
+      "kind": "created",
+      "entity": "doc:mysql-index-classification",
+      "title": "主键、唯一、联合与聚簇索引怎样区分",
+      "time": "2026-10-12T08:18:37.627Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-classification"
+    },
+    {
+      "id": "beeca440-ab52-4130-b4e6-163ad1040254",
+      "kind": "updated",
+      "entity": "doc:mysql-indexes",
+      "title": "MySQL 索引",
+      "time": "2026-10-12T08:18:37.627Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-indexes"
+    },
+    {
+      "id": "29e2468d-d72f-4528-9ccb-b30167572b0a",
+      "kind": "created",
+      "entity": "doc:mysql-primary-key-width",
+      "title": "为什么主键宽度会影响二级索引",
+      "time": "2026-10-12T08:18:37.627Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-primary-key-width"
+    },
+    {
+      "id": "f7341321-1d3c-4b53-ba22-89f8e2803189",
+      "kind": "created",
+      "entity": "doc:mysql-row-overflow",
+      "title": "聚簇叶子保存行记录，为什么还会有溢出页",
+      "time": "2026-10-12T08:18:37.627Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-row-overflow"
+    },
+    {
+      "id": "e26add1b-8199-4555-8aa2-76d929caf017",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-queries",
+      "title": "MySQL 官方手册导读：查询与索引",
+      "time": "2026-10-12T08:18:37.627Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-queries"
+    },
+    {
+      "id": "2d9da9f2-23a1-456e-8dff-c1e9b4c8cae8",
+      "kind": "updated",
+      "entity": "doc:mysql-covering-index",
+      "title": "InnoDB 的回表与覆盖索引",
+      "time": "2026-10-12T08:23:32.594Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-covering-index"
+    },
+    {
+      "id": "aedccb77-afe2-4e16-a816-d2dd99239b43",
+      "kind": "updated",
+      "entity": "doc:mysql-covering-index",
+      "title": "InnoDB 的回表与覆盖索引",
+      "time": "2026-10-12T08:25:10.298Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-covering-index"
+    },
+    {
+      "id": "55ff54b7-5a94-40f5-a8f2-f26dd91882a6",
+      "kind": "updated",
+      "entity": "doc:mysql-clustered-index",
+      "title": "InnoDB 的聚簇索引与二级索引",
+      "time": "2026-10-12T08:26:45.188Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-index"
+    },
+    {
+      "id": "d6c0fa4c-efde-48e6-8b3c-daea92b457bb",
+      "kind": "updated",
+      "entity": "doc:mysql-covering-index",
+      "title": "InnoDB 的回表与覆盖索引",
+      "time": "2026-10-12T08:26:45.188Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-covering-index"
+    },
+    {
+      "id": "a1d91af6-7e58-4439-bf12-41b35efa5c90",
+      "kind": "moved",
+      "entity": "doc:mysql-covering-index",
+      "title": "InnoDB 的回表与覆盖索引",
+      "time": "2026-10-12T08:30:46.249Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-covering-index",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "604841b4-e5c8-4d7a-bb15-4d3094675b34",
+      "kind": "updated",
+      "entity": "doc:mysql-clustered-index",
+      "title": "InnoDB 的聚簇索引与二级索引",
+      "time": "2026-10-12T08:33:15.162Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-index"
+    },
+    {
+      "id": "f4dd31e7-1104-4a15-8874-b9b3ea8d5802",
+      "kind": "updated",
+      "entity": "doc:mysql-covering-index",
+      "title": "InnoDB 的回表与覆盖索引",
+      "time": "2026-10-12T08:33:15.162Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-covering-index"
+    },
+    {
+      "id": "46759990-9687-409f-af38-7fb913ad9e74",
+      "kind": "moved",
+      "entity": "doc:mysql-clustered-key",
+      "title": "InnoDB 怎样选择聚簇键",
+      "time": "2026-10-12T08:34:15.601Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-key",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "63743258-ee0c-4d49-ab1f-8a0eec586c76",
+      "kind": "updated",
+      "entity": "doc:mysql-clustered-index",
+      "title": "InnoDB 的聚簇索引与二级索引",
+      "time": "2026-10-12T08:36:55.563Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-index"
+    },
+    {
+      "id": "88e3117f-8e10-41e8-9ab5-f622cd5c4102",
+      "kind": "moved",
+      "entity": "doc:mysql-index-classification",
+      "title": "主键、唯一、联合与聚簇索引怎样区分",
+      "time": "2026-10-12T08:37:39.804Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-classification",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "e7fe8810-43b1-41ab-a16b-c0b6e0376731",
+      "kind": "updated",
+      "entity": "doc:mysql-clustered-index",
+      "title": "InnoDB 的聚簇索引与二级索引",
+      "time": "2026-10-12T08:50:57.764Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-index"
+    },
+    {
+      "id": "ab8b861f-9ad6-4438-98fc-c9f098168dde",
+      "kind": "updated",
+      "entity": "doc:mysql-composite-index",
+      "title": "MySQL 联合索引与最左前缀",
+      "time": "2026-10-12T08:50:57.764Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-composite-index"
+    },
+    {
+      "id": "65c01c0d-0431-4327-b915-b4a318d15fd0",
+      "kind": "updated",
+      "entity": "doc:mysql-index-access-cost",
+      "title": "MySQL 索引选择与访问成本",
+      "time": "2026-10-12T08:50:57.764Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-access-cost"
+    },
+    {
+      "id": "dd7ef6d6-707a-4633-9cad-93eb682897b7",
+      "kind": "updated",
+      "entity": "doc:mysql-index-condition-pushdown",
+      "title": "索引条件下推（ICP）",
+      "time": "2026-10-12T08:50:57.764Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-condition-pushdown"
+    },
+    {
+      "id": "516d5ee7-33f4-4cf1-9cbb-12ea466d4645",
+      "kind": "updated",
+      "entity": "doc:mysql-index-design",
+      "title": "MySQL 前缀索引与设计取舍",
+      "time": "2026-10-12T08:50:57.764Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-design"
+    },
+    {
+      "id": "52bcd4c3-41dd-4b53-9ece-eae7ae267472",
+      "kind": "updated",
+      "entity": "doc:mysql-indexes",
+      "title": "MySQL 索引",
+      "time": "2026-10-12T08:50:57.764Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-indexes"
+    },
+    {
+      "id": "1b29bba0-d342-4e7b-b8de-06a49b88ae57",
+      "kind": "updated",
+      "entity": "doc:mysql-overview",
+      "title": "MySQL",
+      "time": "2026-10-12T08:50:57.764Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-overview"
+    },
+    {
+      "id": "ba46b576-bbb5-4ee7-ab50-2c69cb2dec05",
+      "kind": "updated",
+      "entity": "doc:mysql-row-overflow",
+      "title": "聚簇叶子保存行记录，为什么还会有溢出页",
+      "time": "2026-10-12T08:50:57.764Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-row-overflow"
+    },
+    {
+      "id": "2c7be0cf-6272-4fc3-b041-e2e4f3fedb6d",
+      "kind": "moved",
+      "entity": "doc:mysql-composite-index",
+      "title": "MySQL 联合索引与最左前缀",
+      "time": "2026-10-12T08:51:27.362Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-composite-index",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "8a0ed86c-4ca5-4895-8340-c56b4674bb3c",
+      "kind": "moved",
+      "entity": "doc:mysql-composite-index",
+      "title": "MySQL 联合索引与最左前缀",
+      "time": "2026-10-12T08:51:29.913Z",
+      "collections": [
+        "notes",
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-composite-index",
+      "from": "notes",
+      "to": "inbox"
+    },
+    {
+      "id": "803220a6-5c59-4fc3-b1ca-c18b1dd1a60b",
+      "kind": "updated",
+      "entity": "doc:mysql-clustered-index",
+      "title": "InnoDB 的聚簇索引与二级索引",
+      "time": "2026-10-12T08:56:16.445Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-index"
+    },
+    {
+      "id": "ff83949d-dff8-4299-bb26-6d954da8fcd7",
+      "kind": "updated",
+      "entity": "doc:mysql-row-overflow",
+      "title": "溢出页",
+      "time": "2026-10-12T08:56:16.445Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-row-overflow"
+    },
+    {
+      "id": "21f75acf-4dbb-4d5e-87dc-372c7e8b62cd",
+      "kind": "moved",
+      "entity": "doc:mysql-row-overflow",
+      "title": "溢出页",
+      "time": "2026-10-12T08:57:59.251Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-row-overflow",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "47f4873b-2820-4338-957d-77b0be2722de",
+      "kind": "updated",
+      "entity": "doc:mysql-clustered-index",
+      "title": "InnoDB 的聚簇索引与二级索引",
+      "time": "2026-10-12T08:59:27.703Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-index"
+    },
+    {
+      "id": "da6750f5-3953-4550-a803-5b78136b3fb2",
+      "kind": "updated",
+      "entity": "doc:mysql-clustered-index",
+      "title": "InnoDB 的聚簇索引与二级索引",
+      "time": "2026-10-12T08:59:39.701Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-index"
+    },
+    {
+      "id": "7b579643-7fb6-4fac-9e5c-594b012a9b53",
+      "kind": "moved",
+      "entity": "doc:mysql-clustered-index",
+      "title": "InnoDB 的聚簇索引与二级索引",
+      "time": "2026-10-12T09:01:15.206Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-clustered-index",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "6402a6b4-4e24-43d8-bd96-6326c547c7b8",
+      "kind": "updated",
+      "entity": "doc:mysql-composite-index",
+      "title": "联合索引与最左前缀匹配原则",
+      "time": "2026-10-12T09:08:38.132Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-composite-index"
+    },
+    {
+      "id": "afa25d19-1851-4017-a4f7-11a63f4f999b",
+      "kind": "moved",
+      "entity": "doc:mysql-composite-index",
+      "title": "联合索引与最左前缀匹配原则",
+      "time": "2026-10-12T09:09:40.327Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-composite-index",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "6251b17e-8d2d-4fd2-b5b1-e2c9e59a759d",
+      "kind": "updated",
+      "entity": "doc:mysql-index-condition-pushdown",
+      "title": "索引条件下推（ICP）",
+      "time": "2026-10-12T09:14:43.949Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-condition-pushdown"
+    },
+    {
+      "id": "a21f92ef-f4a1-4a07-9ad3-9d4687fad89c",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-queries",
+      "title": "MySQL 官方手册导读：查询与索引",
+      "time": "2026-10-12T09:14:43.949Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-queries"
+    },
+    {
+      "id": "18570874-e93d-4b3a-95b9-63f21a7245d6",
+      "kind": "updated",
+      "entity": "doc:mysql-index-condition-pushdown",
+      "title": "索引条件下推（ICP）",
+      "time": "2026-10-12T09:19:51.835Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-condition-pushdown"
+    },
+    {
+      "id": "36951c52-370f-44eb-acad-876b010788ca",
+      "kind": "moved",
+      "entity": "doc:mysql-index-condition-pushdown",
+      "title": "索引条件下推（ICP）",
+      "time": "2026-10-12T09:25:18.411Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-condition-pushdown",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "967531ab-4dfc-4b72-b58c-0277f20adc64",
+      "kind": "updated",
+      "entity": "doc:mysql-index-access-cost",
+      "title": "索引选择",
+      "time": "2026-10-12T09:32:47.846Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-access-cost"
+    },
+    {
+      "id": "3323af41-9563-41e5-9b87-72cf6102dc19",
+      "kind": "updated",
+      "entity": "doc:mysql-indexes",
+      "title": "MySQL 索引",
+      "time": "2026-10-12T09:32:47.846Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-indexes"
+    },
+    {
+      "id": "754ce059-1878-41bc-bca1-21f9fb34ebc0",
+      "kind": "created",
+      "entity": "doc:mysql-prefix-index",
+      "title": "前缀索引（Prefix Index）",
+      "time": "2026-10-12T09:32:47.846Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-prefix-index"
+    },
+    {
+      "id": "c29233a1-8407-4589-b167-2fc64a1dff6d",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-queries",
+      "title": "MySQL 官方手册导读：查询与索引",
+      "time": "2026-10-12T09:32:47.846Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-queries"
+    },
+    {
+      "id": "d709b5c2-7c87-477e-a195-692a0cf1f2fc",
+      "kind": "moved",
+      "entity": "doc:mysql-prefix-index",
+      "title": "前缀索引（Prefix Index）",
+      "time": "2026-10-12T09:34:28.248Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-prefix-index",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "52c230c4-452d-4ad0-967d-29fca178f85a",
+      "kind": "moved",
+      "entity": "doc:mysql-index-access-cost",
+      "title": "索引选择",
+      "time": "2026-10-12T09:35:47.385Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-access-cost",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "e73ec7ab-8570-4984-8ca3-08d6a03a03ed",
+      "kind": "updated",
+      "entity": "doc:mysql-indexes",
+      "title": "MySQL 索引",
+      "time": "2026-10-12T09:40:25.831Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-indexes"
+    },
+    {
+      "id": "fc40bf1b-e195-4e9f-bd1b-7ab357033723",
+      "kind": "updated",
+      "entity": "doc:mysql-learning-resources",
+      "title": "MySQL 学习资料导读",
+      "time": "2026-10-12T09:40:25.831Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-learning-resources"
+    },
+    {
+      "id": "0075bfb2-6c82-47ec-8b0e-b23a8933c0a7",
+      "kind": "created",
+      "entity": "doc:mysql-index-access-strategies",
+      "title": "索引合并与跳跃扫描",
+      "time": "2026-10-12T09:50:21.469Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-access-strategies"
+    },
+    {
+      "id": "8e4c73f0-bad9-4788-90a8-e18b26ee4956",
+      "kind": "created",
+      "entity": "doc:mysql-index-grouping",
+      "title": "索引与分组",
+      "time": "2026-10-12T09:50:21.469Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-grouping"
+    },
+    {
+      "id": "c353b5a3-8950-4b89-bcaf-714893dc320e",
+      "kind": "created",
+      "entity": "doc:mysql-index-joins",
+      "title": "JOIN 与索引",
+      "time": "2026-10-12T09:50:21.469Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-joins"
+    },
+    {
+      "id": "5d58a4e2-7ec7-4e28-9147-3cb9de78db9e",
+      "kind": "created",
+      "entity": "doc:mysql-index-maintenance",
+      "title": "索引维护",
+      "time": "2026-10-12T09:50:21.469Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-maintenance"
+    },
+    {
+      "id": "ae8caa3c-b73d-4d4b-b811-18b9016bd88c",
+      "kind": "created",
+      "entity": "doc:mysql-index-ordering",
+      "title": "索引与排序",
+      "time": "2026-10-12T09:50:21.469Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-ordering"
+    },
+    {
+      "id": "eab72436-b70a-4f57-8056-88fa707b8106",
+      "kind": "created",
+      "entity": "doc:mysql-index-pagination",
+      "title": "分页与索引",
+      "time": "2026-10-12T09:50:21.469Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-pagination"
+    },
+    {
+      "id": "4bb75b79-5e4b-4174-bfa3-6633860df77a",
+      "kind": "created",
+      "entity": "doc:mysql-index-predicates",
+      "title": "查询条件与索引定位",
+      "time": "2026-10-12T09:50:21.469Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-predicates"
+    },
+    {
+      "id": "7efc1d90-b5f8-40db-9ac8-140e0687078b",
+      "kind": "updated",
+      "entity": "doc:mysql-indexes",
+      "title": "MySQL 索引",
+      "time": "2026-10-12T09:50:21.469Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-indexes"
+    },
+    {
+      "id": "c56559fe-6091-417a-ab68-fd6eca42604c",
+      "kind": "created",
+      "entity": "doc:mysql-specialized-indexes",
+      "title": "全文、空间与多值索引",
+      "time": "2026-10-12T09:50:21.469Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-specialized-indexes"
+    },
+    {
+      "id": "d521ce89-2558-4d69-81fe-4a9a3d434b2f",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-queries",
+      "title": "MySQL 官方手册导读：查询与索引",
+      "time": "2026-10-12T09:50:21.469Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-queries"
+    },
+    {
+      "id": "39944f0a-5517-4e35-8fb9-e21b39bfcce1",
+      "kind": "moved",
+      "entity": "doc:mysql-index-predicates",
+      "title": "查询条件与索引定位",
+      "time": "2026-10-12T09:53:10.584Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-predicates",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "4f13603c-dca0-4ec5-a344-714d65facc3d",
+      "kind": "moved",
+      "entity": "doc:mysql-index-ordering",
+      "title": "索引与排序",
+      "time": "2026-10-12T09:55:36.535Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-ordering",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "76b4bb8f-d9ca-4f82-8e0a-3aa863f149c6",
+      "kind": "created",
+      "entity": "doc:mysql-batch-reading",
+      "title": "分批读取与导出",
+      "time": "2026-10-12T09:57:57.740Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-batch-reading"
+    },
+    {
+      "id": "94afebeb-d1d3-4774-a4b7-c91b7fcd143f",
+      "kind": "created",
+      "entity": "doc:mysql-deep-pagination",
+      "title": "深分页优化",
+      "time": "2026-10-12T09:57:57.740Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-deep-pagination"
+    },
+    {
+      "id": "ba3bae1a-a863-43b1-a956-fbc514ab44bb",
+      "kind": "updated",
+      "entity": "doc:mysql-index-pagination",
+      "title": "分页与索引",
+      "time": "2026-10-12T09:57:57.740Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-pagination"
+    },
+    {
+      "id": "b750861a-5921-46c5-9f17-52fd1352c361",
+      "kind": "moved",
+      "entity": "doc:mysql-index-grouping",
+      "title": "索引与分组",
+      "time": "2026-10-12T09:58:17.399Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-grouping",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "0f4d30b7-b3b2-416c-af1b-be2d8a6f9ee6",
+      "kind": "updated",
+      "entity": "doc:mysql-batch-reading",
+      "title": "分批读取与导出",
+      "time": "2026-10-12T09:58:37.832Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-batch-reading"
+    },
+    {
+      "id": "584df383-2558-42fb-8758-68e13f9ab96a",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-queries",
+      "title": "MySQL 官方手册导读：查询与索引",
+      "time": "2026-10-12T09:58:37.832Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-queries"
+    },
+    {
+      "id": "a50f2fcd-8799-404e-bf29-544d059374ea",
+      "kind": "updated",
+      "entity": "doc:mysql-index-pagination",
+      "title": "分页与索引",
+      "time": "2026-10-12T10:02:01.552Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-pagination"
+    },
+    {
+      "id": "f7074c9e-41f0-4b4d-8091-b95acc65ecd5",
+      "kind": "updated",
+      "entity": "doc:mysql-deep-pagination",
+      "title": "深分页优化",
+      "time": "2026-10-12T10:06:21.669Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-deep-pagination"
+    },
+    {
+      "id": "7ab68aa8-b791-4299-b4ca-a86072ef645d",
+      "kind": "created",
+      "entity": "doc:mysql-pagination-sources",
+      "title": "MySQL 分页优化资料导读",
+      "time": "2026-10-12T10:06:21.669Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-pagination-sources"
+    },
+    {
+      "id": "42b8867e-36c5-4cba-b2b8-4c303a86b8e1",
+      "kind": "moved",
+      "entity": "doc:mysql-deep-pagination",
+      "title": "深分页优化",
+      "time": "2026-10-12T10:09:09.077Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-deep-pagination",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "61304df5-29dd-4477-8044-dfb1dd0318ce",
+      "kind": "moved",
+      "entity": "doc:mysql-batch-reading",
+      "title": "分批读取与导出",
+      "time": "2026-10-12T10:10:14.917Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-batch-reading",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "d2f8fbce-6473-4bed-a8a6-cabc3020f193",
+      "kind": "moved",
+      "entity": "doc:mysql-index-pagination",
+      "title": "分页与索引",
+      "time": "2026-10-12T10:10:21.429Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-pagination",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "e730c9a4-cd77-4d6d-9e58-1eead4eec7c2",
+      "kind": "moved",
+      "entity": "doc:mysql-index-joins",
+      "title": "JOIN 与索引",
+      "time": "2026-10-12T10:13:06.785Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-joins",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "58aa4a11-c0d3-4552-9caa-00977ad134f9",
+      "kind": "moved",
+      "entity": "doc:mysql-index-access-strategies",
+      "title": "索引合并与跳跃扫描",
+      "time": "2026-10-12T10:14:34.460Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-access-strategies",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "7da1789c-fe0d-4f45-9916-8ec350c60677",
+      "kind": "updated",
+      "entity": "doc:mysql-indexes",
+      "title": "MySQL 索引",
+      "time": "2026-10-12T10:17:57.802Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-indexes"
     }
   ]
 }

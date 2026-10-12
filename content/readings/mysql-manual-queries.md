@@ -5,13 +5,46 @@ parent: mysql-overview
 type: "article"
 tags: ["MySQL", "索引", "执行计划", "SQL优化"]
 created_at: "2026-10-12T14:03:16+08:00"
-updated_at: "2026-10-12T14:03:16+08:00"
+updated_at: "2026-10-12T17:56:27+08:00"
 source:
+  - "https://dev.mysql.com/doc/refman/8.4/en/derived-table-optimization.html"
+  - "https://dev.mysql.com/doc/c-api/8.4/en/mysql-use-result.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/innodb-consistent-read.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/create-table.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/tutorial.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/innodb-introduction.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/innodb-index-types.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/innodb-physical-structure.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/innodb-buffer-pool.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/multiple-column-indexes.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/explain.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/index-condition-pushdown-optimization.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/range-optimization.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/index-btree-hash.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/index-page-merge-threshold.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/innodb-row-format.html"
+  - "https://github.com/mysql/mysql-server/blob/8.4/storage/innobase/btr/btr0btr.cc"
+  - "https://dev.mysql.com/doc/refman/8.4/en/innodb-multi-versioning.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/order-by-optimization.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/column-indexes.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/optimization-indexes.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/table-scan-avoidance.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/explain-output.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/create-index.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/cost-model.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/type-conversion.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/descending-indexes.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/group-by-optimization.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/limit-optimization.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/nested-loop-joins.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/hash-joins.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/invisible-indexes.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/innodb-online-ddl-operations.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/innodb-online-ddl-limitations.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/index-merge-optimization.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/fulltext-search.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/innodb-fulltext-index.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/spatial-index-optimization.html"
 ---
 
 MySQL 8.4 手册把「写出查询」「理解数据组织」「观察执行计划」分在不同章节。本篇节选这条阅读路径，帮助理解索引为什么影响查询成本，不是整本手册摘要，也不提供面试题频率统计。
@@ -24,14 +57,116 @@ MySQL 8.4 手册把「写出查询」「理解数据组织」「观察执行计�
 
 ## 索引怎样找到记录
 
-[索引物理结构](https://dev.mysql.com/doc/refman/8.4/en/innodb-physical-structure.html)按树和页解释常规索引，记录位于叶子页。手册在这里使用 B-tree 名称；面试中常讨论的 B+ 树重点在于内部节点导航、叶子保存记录及有序访问，不应把树高直接当作实际磁盘读取次数。
+[索引物理结构](https://dev.mysql.com/doc/refman/8.4/en/innodb-physical-structure.html)按树和页解释常规索引，记录位于叶子页。默认索引页大小为 16 KB，在实例初始化时确定。手册使用 B-tree 名称；[官方 8.4 源码的 Node pointers 注释](https://github.com/mysql/mysql-server/blob/8.4/storage/innobase/btr/btr0btr.cc)进一步说明：叶子页保存索引记录，非叶子层保存用于导航的键前缀与子页号。这是区分内部页和叶子页的实现依据。由页容量有限可以推导，导航条目越宽，一页能连接的子页通常越少；树高不能仅由行数确定。
 
-[聚簇与二级索引](https://dev.mysql.com/doc/refman/8.4/en/innodb-index-types.html)进一步区分：聚簇索引保存行数据；定义主键时使用主键，否则依次选择合适的非空唯一索引或生成隐藏聚簇索引。二级索引记录包含索引列和主键值，需要其他行数据时，再按主键查聚簇索引。这解释了回表的额外访问，以及宽主键为什么增加二级索引空间。
+[聚簇与二级索引](https://dev.mysql.com/doc/refman/8.4/en/innodb-index-types.html)进一步区分：聚簇索引保存行数据；定义主键时使用主键，否则选择首个所有列均声明 NOT NULL 的唯一索引；两者都没有时，以 6 字节递增行 ID 建立隐藏索引 `GEN_CLUST_INDEX`。二级索引记录包含索引列和主键值，需要其他行数据时，再按主键查聚簇索引。这解释了回表的额外访问，以及宽主键为什么增加二级索引空间。实际二级记录补存尚未包含的主键列，已在索引中的主键列不重复保存。
+
+## 索引约束与列组合
+
+[CREATE TABLE 的索引定义](https://dev.mysql.com/doc/refman/8.4/en/create-table.html)说明，主键唯一且非空，一张表只能有一个；主键也可以由多列组成。唯一索引允许可空列出现多个 NULL，普通索引不增加唯一约束。多列唯一索引约束组合值，所以单列值可重复。这些定义描述约束与列组合，应与聚簇、二级的存储组织分别理解。
+
+## 长字段与页外存储
+
+[行格式](https://dev.mysql.com/doc/refman/8.4/en/innodb-row-format.html)说明，长可变字段可能使用页外存储；保存行记录不等于所有列的全部字节都在一个叶子页中。`DYNAMIC` 可将长字段值完整存到页外，聚簇记录只留 20 字节指针；`COMPACT` 的相应页外字段保留 768 字节前缀和指针。是否外置取决于页大小和整行大小，不能仅凭字段类型判断。外置减少长字段对叶子页空间的占用，但读取这些字段还需访问溢出页。
+
+## 联合索引的定位与排序
 
 [联合索引](https://dev.mysql.com/doc/refman/8.4/en/multiple-column-indexes.html)用姓名索引说明列顺序的意义：索引按组合键排序，可以利用完整组合或最左前缀定位。将它类比为 `(user_id, created_at)`，可理解先固定用户、再找时间范围的访问方式；这是用于学习的类比例子，未运行测试。最左前缀描述定位能力，不能单凭缺少前导列就断言索引在任何执行方式下都毫无作用。
 
+[范围优化](https://dev.mysql.com/doc/refman/8.4/en/range-optimization.html)进一步区分扫描区间与完整过滤条件：能够形成索引区间的条件用于定位，其余条件仍需检查。不能把某列未参与区间构造理解成该列在过滤或覆盖中也没有作用。
+
+范围章节用「首列等值、第二列范围、第三列另有条件」说明：构造扫描区间不等于完成全部过滤。还介绍了有限条件下的 Skip Scan：枚举缺失前导列的不同值，再逐段做范围扫描；它不是任意查询都能使用的通用替代。
+
+[ORDER BY 优化](https://dev.mysql.com/doc/refman/8.4/en/order-by-optimization.html)说明，前导列固定为常量时，后续列的顺序可能直接用于排序；能否省去额外排序还取决于列顺序、方向和访问成本。这里可推导，联合索引列顺序应围绕查询整体设计，不能只按各列区分度排列。
+
+## 索引条件下推与覆盖访问
+
+[索引条件下推（ICP）](https://dev.mysql.com/doc/refman/8.4/en/index-condition-pushdown-optimization.html)在需要读取完整行时，把可仅凭索引列判断的部分条件交给存储引擎。引擎先读索引条目并判断，只有通过的候选才继续取完整行；InnoDB 的这种优化用于二级索引。它减少取行次数，与从索引直接取得全部所需列的覆盖访问有不同目的。手册用邮编定位、姓氏条件先过滤、地址条件取行后检查的例子说明这一路径。
+
+手册将无 ICP 的路径明确写为「引擎读取索引条目并取得行 → Server 层判断条件」；采用 ICP 时，Server 层先把可在索引上判断的条件交给引擎，引擎只对通过者取行，再由 Server 层检查剩余条件。用于定位扫描范围的条件与这些剩余过滤条件应分开理解：索引有某列，不代表该列的过滤已在取行前执行。
+
+ICP 的适用边界包括：需要读取完整行、使用受支持的访问方式；InnoDB 中用于二级索引，虚拟生成列上的二级索引不支持，涉及子查询或存储函数的条件也不能直接下推。不能把所有索引上过滤都称为 ICP。
+
+[多版本与二级索引](https://dev.mysql.com/doc/refman/8.4/en/innodb-multi-versioning.html)补充覆盖访问的边界：二级记录带删除标记，或二级页被较新事务更新时，可能需要到聚簇记录核对事务可见性并读取历史版本。因此「列已覆盖」不保证运行时始终零聚簇访问。
+
+[EXPLAIN 输出](https://dev.mysql.com/doc/refman/8.4/en/explain-output.html)区分 `Using index`（索引提供所需列）和 `Using index condition`（先检查索引条目，再决定是否取行）。这些标记说明访问方式，不是耗时结论。
+
+## 前缀索引与维护成本
+
+[列索引](https://dev.mysql.com/doc/refman/8.4/en/column-indexes.html)说明，字符串索引可只保存开头一段，以减少索引体积；搜索值超过这段长度时，索引先排除不匹配候选，再检查完整值。非二进制字符串的前缀长度按字符指定，二进制字符串按字节指定，存储上限仍按字节计算。
+
+结合 ORDER BY 章节可知，前缀相同的不同完整字符串无法靠该索引区分后续顺序，因此它不能独自完成完整列排序；同理，未保存的后缀也不能从前缀条目还原。不要把「字符串截取前缀」与「联合索引从左起若干列」混为一谈。
+
+[CREATE INDEX 的唯一索引规则](https://dev.mysql.com/doc/refman/8.4/en/create-index.html)明确，指定前缀的 UNIQUE 索引要求前缀范围内唯一。因此，两个非空完整值即使不同，只要前缀相同也会发生唯一约束冲突，不能把它等同于完整值的唯一索引。
+
+[索引优化概述](https://dev.mysql.com/doc/refman/8.4/en/optimization-indexes.html)强调，多余索引占空间，且增加增删改的维护成本。结合联合索引、覆盖访问与排序规则，设计需要比较减少的扫描和取行工作，是否抵得上额外空间及写入成本；不存在所有业务通用的列顺序或索引数量。
+
+## 树索引与哈希的适用范围
+
+[官方比较](https://dev.mysql.com/doc/refman/8.4/en/index-btree-hash.html)说明，树索引支持等值与范围定位，哈希索引只适用于相应的等值比较，不能借助键顺序加速排序。该比较尤其针对可以选择这两类索引的 MEMORY 引擎，不意味着 InnoDB 的常规索引可以直接切换为 HASH。
+
+## 页分裂与合并
+
+[官方源码注释](https://github.com/mysql/mysql-server/blob/8.4/storage/innobase/btr/btr0btr.cc)说明叶子分裂涉及选择分裂点、分配新页、补充上层导航项和搬移记录；文件页分配注释只说尽量让叶子页在磁盘上连续，并不保证物理连续。分裂是维护有序结构的写入成本，不能理解成每次插入都会发生。
+
+[合并阈值](https://dev.mysql.com/doc/refman/8.4/en/index-page-merge-threshold.html)说明，删除或记录缩短使页填充低于阈值时，InnoDB 尝试与相邻页合并，默认阈值为 50%。这是尝试条件，不能写成低于一半必然立即合并；合并后很快又分裂也可能增加开销。索引物理结构章节说明插入顺序影响页填充，顺序插入与随机插入不能假定有相同空间利用率。
+
 ## 怎样知道优化器实际选了什么
+
+[优化器成本模型](https://dev.mysql.com/doc/refman/8.4/en/cost-model.html)按操作代价估算计划成本，包括读取内存或磁盘中的页、计算行条件和比较键等。成本常量与预计工作量服务于计划比较，不是对真实耗时的承诺；由此可理解，统计估算偏差与运行环境差异都可能影响选择效果。
+
+[全表扫描的选择](https://dev.mysql.com/doc/refman/8.4/en/table-scan-avoidance.html)列举了小表、匹配范围太大、键区分度低等情况：经索引反复取行可能比扫描整表更贵。手册也建议在统计分布不准确时更新统计信息，说明优化器依赖估算，选择并非永远正确。不能用固定命中百分比替代实际成本判断。
 
 [EXPLAIN](https://dev.mysql.com/doc/refman/8.4/en/explain.html)提供优化器的执行计划，支持表格、JSON 和 TREE 等表示。它帮助检查表访问顺序和索引选择；有候选索引不代表优化器一定采用，统计信息也会影响选择。
 
 普通 EXPLAIN 展示计划与估算；`EXPLAIN ANALYZE` 会实际运行受支持的语句，再给出实际行数、循环次数和耗时，便于比较预期与现实。阅读重点是「访问多少数据、重复执行多少次、时间花在哪里」，不能只根据某个标记给整条 SQL 判定快慢。使用 ANALYZE 时要意识到它会执行语句；本导读没有运行 SQL，也不把文档示例当作本地性能结论。
+
+EXPLAIN 输出中的 `key` 表示所选索引，`type=index` 仍可能遍历整棵索引；`rows` 与 `filtered` 是估算，后者表示条件过滤后保留的比例。判断回表代价需结合索引覆盖情况与取行路径，不能将某一列直接当成回表次数；实测则结合 ANALYZE 的实际行数、循环和时间，区分扫描量与最终返回量。
+
+## 查询条件与索引定位
+
+[范围优化](https://dev.mysql.com/doc/refman/8.4/en/range-optimization.html)从条件提取键值区间，区间可比完整条件宽，扫描后仍需过滤。以常量开头且不以前置通配符开头的 LIKE 可参与范围构造；这不等于所有 LIKE 都能定位。
+
+[类型转换](https://dev.mysql.com/doc/refman/8.4/en/type-conversion.html)说明，字符串列与数值比较时，多个不同字符串可能转成同一数字，不能按原字符串索引快速查找该值。转换影响的不仅是计划，也可能是比较结果，因此改写前要确认业务语义。
+
+[函数索引](https://dev.mysql.com/doc/refman/8.4/en/create-index.html)保存表达式计算值，表达式需额外括号，且受生成列允许的函数与表达式限制。这是普通列索引不能直接定位计算结果时的一种方案，不是任意函数查询都能无条件提速。
+
+## 排序与分组的索引访问
+
+[ORDER BY](https://dev.mysql.com/doc/refman/8.4/en/order-by-optimization.html)用前导列固定为常量的例子说明后续列有序；混合升降序需匹配索引方向或其整体反向。[降序索引](https://dev.mysql.com/doc/refman/8.4/en/descending-indexes.html)允许按 DESC 存储键值。能提供顺序仍需比较取行成本；filesort 表示额外排序，可能在内存完成，不等同于写磁盘。
+
+[GROUP BY](https://dev.mysql.com/doc/refman/8.4/en/group-by-optimization.html)区分松散与紧凑扫描：前者在适用条件下只取每组少量键，例如最左分组前缀后紧跟 MIN/MAX 的列；后者读取所选范围内的键，再利用连续分组。列序、常量条件、完整列索引及聚合函数共同限制优化，不能从“有分组列索引”推断扫描量必然很小。MySQL 8.4 不再为 GROUP BY 隐式保证排序。
+
+## 分页与连接的工作量
+
+[LIMIT](https://dev.mysql.com/doc/refman/8.4/en/limit-optimization.html)说明，有序索引可帮助尽早取得所需结果；若仍需 filesort，限制返回数量并不消除前面的候选读取。排序值相同时，未被 ORDER BY 区分的行可按不同顺序返回，因此稳定分页需要完整排序边界。把偏移改成上一页键值条件，是结合该规则与范围定位作出的应用推导，并非手册保证的固定耗时方案。
+
+[嵌套循环](https://dev.mysql.com/doc/refman/8.4/en/nested-loop-joins.html)将外层每行传入内层继续查找，内层因而可能反复访问；适合的连接索引可减少每轮候选。与此同时，[哈希连接](https://dev.mysql.com/doc/refman/8.4/en/hash-joins.html)可在无合适连接索引等场景使用，不能把“无索引”一律写成嵌套循环重扫。应结合计划中的算法、行数与循环次数解释工作量。
+
+## 分页与结果读取
+
+[派生表优化](https://dev.mysql.com/doc/refman/8.4/en/derived-table-optimization.html)区分合并与物化；子查询含 LIMIT 时不能合并到外层查询块。由此可用子查询先确定一页 ID，再关联原表取列，但外层输出顺序仍应由外层 ORDER BY 保证。这支持延迟取行的改写，不表示子查询里的 OFFSET 扫描已经消失。
+
+[mysql_use_result()](https://dev.mysql.com/doc/c-api/8.4/en/mysql-use-result.html)不先把整个结果集读入客户端缓存，而由 mysql_fetch_row() 逐行获取，客户端主要保留当前行与通信缓冲。结果未处理完前不能在同一连接执行其他查询，消费结束后需释放结果。这说明非缓冲读取降低的是客户端结果缓存开销，不能据此推断服务端扫描、排序或网络传输量也减少。
+
+[一致性读](https://dev.mysql.com/doc/refman/8.4/en/innodb-consistent-read.html)说明，REPEATABLE READ 下同一事务的一致性读复用首次一致性读建立的快照；READ COMMITTED 下每次一致性读使用新快照。不同请求或不同事务不会因携带相同游标就自动共享快照。[多版本机制](https://dev.mysql.com/doc/refman/8.4/en/innodb-multi-versioning.html)保留一致性读需要的旧版本，因此长时间保持读取事务也会影响历史版本的清理。
+
+## 索引变更与可见性
+
+[在线 DDL 操作表](https://dev.mysql.com/doc/refman/8.4/en/innodb-online-ddl-operations.html)说明，新增普通二级索引支持 INPLACE、通常不重建表，并允许并发 DML，但不是 INSTANT。主键变更会重新组织行数据，全文与空间索引也有不同限制。[DDL 限制](https://dev.mysql.com/doc/refman/8.4/en/innodb-online-ddl-limitations.html)指出，结束阶段需要排他元数据锁，已有事务可能让操作等待；“在线”不等于无锁或无资源成本。
+
+[不可见索引](https://dev.mysql.com/doc/refman/8.4/en/invisible-indexes.html)让优化器默认忽略某索引，同时保留其存储、维护与唯一约束。它适合评估不使用索引的查询影响，并可恢复可见；不能模拟真正删除后的全部写入收益，显式或隐式主键也不能被设为不可见。
+
+## 扩展索引访问策略
+
+[Index Merge](https://dev.mysql.com/doc/refman/8.4/en/index-merge-optimization.html)合并同表多个范围扫描，可执行并集、交集或其组合；它不合并多表扫描，也不等于建立联合索引。手册列出 OR 查询作为典型候选，具体算法有条件限制和合并成本。
+
+[Skip Scan](https://dev.mysql.com/doc/refman/8.4/en/range-optimization.html)通过枚举缺失的前导键值，对后续列分别执行范围扫描。适用条件包括单表、只引用索引列、无 GROUP BY 或 DISTINCT、后续键范围条件等；EXPLAIN 的 `Using index for skip scan` 表示采用该策略。它保留联合索引原有列序，以多次定位绕过缺少前导条件的问题。
+
+## 专用索引
+
+[InnoDB 全文索引](https://dev.mysql.com/doc/refman/8.4/en/innodb-fulltext-index.html)保存词项与文档位置的对应关系；[全文查询](https://dev.mysql.com/doc/refman/8.4/en/fulltext-search.html)使用 MATCH AGAINST，受分词、停用词和词长等规则影响，提供 ngram 分词器支持中文等语言。它服务于词项检索，不应被当作任意子串匹配的等价替换。
+
+[空间索引](https://dev.mysql.com/doc/refman/8.4/en/spatial-index-optimization.html)要求几何列非空；优化器使用时还要求明确 SRID，按空间参考系统进行包围矩形比较。结合 R-tree 结构可理解其筛选空间候选的作用，精确几何关系仍按所用空间函数判断。
+
+[CREATE INDEX 的多值索引](https://dev.mysql.com/doc/refman/8.4/en/create-index.html)将 JSON 数组中多个元素映射到同一行，以 `CAST(... AS ... ARRAY)` 指定索引元素类型，支持适用条件下的 MEMBER OF、JSON_CONTAINS 和 JSON_OVERLAPS。它与提取单个 JSON 标量的表达式索引不同，数组越长也可能带来更多索引维护工作。
