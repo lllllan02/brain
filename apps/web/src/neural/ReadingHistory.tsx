@@ -1,3 +1,6 @@
+import type { ReaderGraph } from '../types/graph.ts';
+import type { ReadingController } from '../types/ui.ts';
+import type { TrailEdge } from '../types/reading.ts';
 import type { TrailProjection, ReadingTrail as ReadingTrailData } from '../types/reading.ts';
 import React, { useEffect, useRef } from 'react';
 import { Icon } from './icons.tsx';
@@ -5,7 +8,15 @@ import { trailPlayback, trailPath } from './reading-history.ts';
 import './reading-history.css';
 import { beamEnvelope } from '../motion/reading-flow.ts';
 
-export function ReadingNavigation({ graph, reading, onTravel }) {
+export function ReadingNavigation({
+  graph,
+  reading,
+  onTravel,
+}: {
+  graph: ReaderGraph;
+  reading: ReadingController;
+  onTravel(direction: number): void;
+}) {
   return (
     <nav className="reading-navigation" aria-label="阅读导航">
       <button
@@ -41,6 +52,13 @@ export function ReadingHistoryToggle({
   label = '最近阅读',
   icon = 'history',
   controls = 'reading-history',
+}: {
+  open: boolean;
+  onToggle(): void;
+  toggleRef: React.RefObject<HTMLButtonElement | null>;
+  label?: string;
+  icon?: string;
+  controls?: string;
 }) {
   return (
     <button
@@ -74,8 +92,8 @@ export function ReadingTrail({
   reduced: boolean;
   hidden: boolean;
 }) {
-  const svg = useRef(null),
-    previousKeys = useRef(null);
+  const svg = useRef<SVGSVGElement>(null),
+    previousKeys = useRef<string[] | null>(null);
   const segments = route?.segments || [];
   const timelineKey = JSON.stringify(segments.map((s) => s.key));
   useEffect(() => {
@@ -88,17 +106,17 @@ export function ReadingTrail({
     previousKeys.current = segments.map((segment) => segment.key);
     if (reduced || !play.length) return;
     element.classList.add('is-playing');
-    const reveal = element.querySelector('.reading-trail-reveal');
-    const head = element.querySelector('.reading-trail-head');
-    const ripple = element.querySelector('.reading-trail-ripple');
-    let raf,
+    const reveal = element.querySelector<SVGPathElement>('.reading-trail-reveal')!;
+    const head = element.querySelector<SVGCircleElement>('.reading-trail-head')!;
+    const ripple = element.querySelector<SVGCircleElement>('.reading-trail-ripple')!;
+    let raf: number,
       previous = 0,
       elapsed = initial && !route?.live ? -450 : 0;
     const duration = route?.live ? 550 : Math.max(260, Math.min(700, 7000 / play.length));
-    const ease = (t) => t * t * (3 - 2 * t);
-    const edgeKey = (edge) => JSON.stringify([edge.from, edge.to]);
+    const ease = (t: number) => t * t * (3 - 2 * t);
+    const edgeKey = (edge: TrailEdge) => JSON.stringify([edge.from, edge.to]);
     const settledEdges = settled.map(edgeKey);
-    const tick = (now) => {
+    const tick = (now: number) => {
       const dt = previous ? Math.min(80, now - previous) : 0;
       previous = now;
       if (!document.hidden) elapsed += dt;
@@ -107,29 +125,32 @@ export function ReadingTrail({
       const seen = new Set([...settledEdges, ...play.slice(0, completed).map(edgeKey)]);
       const activeEdge = play[completed] && edgeKey(play[completed]);
       const handoff = ease(Math.min(1, Math.max(0, (progress - completed - 0.7) / 0.3)));
-      element.querySelectorAll('.reading-trail-edge').forEach((path) => {
-        path.style.opacity = seen.has(path.dataset.edge)
+      element.querySelectorAll<SVGPathElement>('.reading-trail-edge').forEach((path) => {
+        path.style.opacity = seen.has(path.dataset.edge!)
           ? '1'
           : path.dataset.edge === activeEdge
             ? String(handoff)
             : '0';
       });
       const guides = new Map(
-        [...element.querySelectorAll('[data-segment]')].map((path) => [path.dataset.segment, path]),
+        [...element.querySelectorAll<SVGPathElement>('[data-segment]')].map((path) => [
+          path.dataset.segment,
+          path,
+        ]),
       );
       const guide = guides.get(play[completed]?.key);
       const length = guide?.getAttribute('d') ? guide.getTotalLength() : 0;
-      reveal.style.opacity = head.style.opacity = '0';
-      if (length > 0) {
+      reveal.style.opacity = String((head.style.opacity = '0'));
+      if (guide && length > 0) {
         const phase = progress - completed;
         const t = ease(phase);
-        reveal.style.opacity = elapsed >= 0 ? 0.55 * (1 - handoff) : 0;
-        head.style.opacity = elapsed >= 0 ? Math.sin(Math.PI * phase) * 0.8 : 0;
-        reveal.setAttribute('d', guide.getAttribute('d'));
-        reveal.style.strokeDashoffset = 1 - t;
+        reveal.style.opacity = String(elapsed >= 0 ? 0.55 * (1 - handoff) : 0);
+        head.style.opacity = String(elapsed >= 0 ? Math.sin(Math.PI * phase) * 0.8 : 0);
+        reveal.setAttribute('d', guide.getAttribute('d')!);
+        reveal.style.strokeDashoffset = String(1 - t);
         const point = guide.getPointAtLength(length * t);
-        head.setAttribute('cx', point.x);
-        head.setAttribute('cy', point.y);
+        head.setAttribute('cx', String(point.x));
+        head.setAttribute('cy', String(point.y));
       }
       const arrived = guides.get(play[completed - 1]?.key);
       const arrivalLength = arrived?.getAttribute('d') ? arrived.getTotalLength() : 0;
@@ -138,12 +159,12 @@ export function ReadingTrail({
           ? elapsed - play.length * duration
           : (progress - completed) * duration;
       const fade = Math.min(1, age / 1000);
-      ripple.style.opacity = arrivalLength > 0 ? Math.sin(Math.PI * fade) * 0.4 : 0;
-      if (arrivalLength > 0) {
+      ripple.style.opacity = String(arrivalLength > 0 ? Math.sin(Math.PI * fade) * 0.4 : 0);
+      if (arrived && arrivalLength > 0) {
         const point = arrived.getPointAtLength(arrivalLength);
-        ripple.setAttribute('cx', point.x);
-        ripple.setAttribute('cy', point.y);
-        ripple.setAttribute('r', 8 + ease(fade) * 13);
+        ripple.setAttribute('cx', String(point.x));
+        ripple.setAttribute('cy', String(point.y));
+        ripple.setAttribute('r', String(8 + ease(fade) * 13));
       }
       if (elapsed < play.length * duration + 1000) raf = requestAnimationFrame(tick);
       else element.classList.remove('is-playing');
@@ -153,7 +174,7 @@ export function ReadingTrail({
       cancelAnimationFrame(raf);
       element.classList.remove('is-playing');
       element
-        .querySelectorAll('.reading-trail-edge')
+        .querySelectorAll<SVGPathElement>('.reading-trail-edge')
         .forEach((path) => path.style.removeProperty('opacity'));
     };
   }, [timelineKey, reduced, hidden]);
@@ -163,16 +184,16 @@ export function ReadingTrail({
   useEffect(() => {
     const element = svg.current;
     if (!element || reduced || hidden || !beamCount) return;
-    const beams = [...element.querySelectorAll('.reading-trail-shared-beam')];
-    let raf,
+    const beams = [...element.querySelectorAll<SVGPathElement>('.reading-trail-shared-beam')];
+    let raf: number,
       previous = 0,
       elapsed = 0;
-    const tick = (now) => {
+    const tick = (now: number) => {
       const dt = previous ? Math.min(80, now - previous) : 0;
       previous = now;
       // Let the opening trace finish before starting ambient traffic.
       if (!element.classList.contains('is-playing')) elapsed += dt;
-      const guides = element.querySelectorAll('[data-segment]');
+      const guides = element.querySelectorAll<SVGPathElement>('[data-segment]');
       beams.forEach((beam, index) => {
         const clock = elapsed - index * 625;
         beam.style.opacity = '0';
@@ -185,7 +206,7 @@ export function ReadingTrail({
         if (!path) return;
         const { tail, offset, opacity } = beamEnvelope(phase);
         beam.style.opacity = String(opacity);
-        beam.querySelectorAll('path').forEach((light) => {
+        beam.querySelectorAll<SVGPathElement>('path').forEach((light) => {
           light.setAttribute('d', path);
           light.style.strokeDasharray = `${tail} 2`;
           light.style.strokeDashoffset = String(offset);

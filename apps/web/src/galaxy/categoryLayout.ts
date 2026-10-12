@@ -41,7 +41,7 @@ export function categoryLayout(
         ? `collection:${node.collection}`
         : node.folderTop || 'uncategorized';
     if (!memberships.has(id)) memberships.set(id, []);
-    memberships.get(id).push(i);
+    memberships.get(id)!.push(i);
   });
   const normal = new Vector3(
     Math.cos((elevation * Math.PI) / 180),
@@ -141,7 +141,7 @@ export function interpolateCategories(
   }
   if (motion?.spherical) return interpolateSphere(from, to, progress, output);
   for (let node = 0; node < output.length / 3; node++) {
-    const delay = expanding ? motion?.delays[node] || 0 : 0;
+    const delay = expanding ? motion?.delays?.[node] || 0 : 0;
     const p = Math.max(0, Math.min(1, (progress - delay) / (1 - delay)));
     let a, b;
     if (!expanding) {
@@ -158,7 +158,7 @@ export function interpolateCategories(
     const drift = expanding ? Math.sin(p * Math.PI) * (1 - p) : 0;
     for (let axis = 0; axis < 3; axis++) {
       const i = node * 3 + axis;
-      output[i] = from[i] * a + to[i] * b + (motion?.tangents[i] || 0) * drift;
+      output[i] = from[i] * a + to[i] * b + (motion?.tangents?.[i] || 0) * drift;
     }
   }
   return output;
@@ -177,7 +177,7 @@ export function readingNeighborhood(
   if (index < 0 || !data.nodes[index]) return null;
   const node = data.nodes[index],
     anchor = new Vector3().fromArray(positions, index * 3);
-  const related = new Set();
+  const related = new Set<number>();
   for (const link of data.links || []) {
     if (link.source === index) related.add(link.target);
     if (link.target === index) related.add(link.source);

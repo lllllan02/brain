@@ -1,5 +1,5 @@
-import type { ReaderGraph } from '../types/graph.ts';
-import type { Cluster } from '../types/reading.ts';
+import type { ReaderGraph, ReaderNode } from '../types/graph.ts';
+import type { Cluster, Point } from '../types/reading.ts';
 import type { ClusterListProps } from '../types/ui.ts';
 import { readViewState, writeViewState } from './view-state.ts';
 import { ReadingQueueButton } from './ReadingQueueButton.tsx';
@@ -19,7 +19,7 @@ import {
 import { usePresence } from '../motion/usePresence.ts';
 import { MOTION, smooth, stagger } from '../motion/tokens.ts';
 
-const clusterKey = (cluster) =>
+const clusterKey = (cluster: Cluster | null) =>
   !cluster
     ? null
     : cluster.queue
@@ -37,13 +37,21 @@ const clusterKey = (cluster) =>
 export function clusterDocuments(graph: ReaderGraph, cluster: Cluster | null) {
   if (!cluster) return [];
   if (cluster.queue)
-    return cluster.queue.map((item) => graph.index.get(item.id)).filter((node) => node?.module);
+    return cluster.queue
+      .map((item) => graph.index.get(item.id))
+      .filter((node): node is ReaderNode => Boolean(node?.module));
   if (cluster.pinnedIds)
-    return cluster.pinnedIds.map((id) => graph.index.get(id)).filter((node) => node?.module);
+    return cluster.pinnedIds
+      .map((id) => graph.index.get(id))
+      .filter((node): node is ReaderNode => Boolean(node?.module));
   if (cluster.latest)
-    return cluster.latest.map((item) => graph.index.get(item.id)).filter((node) => node?.module);
+    return cluster.latest
+      .map((item) => graph.index.get(item.id))
+      .filter((node): node is ReaderNode => Boolean(node?.module));
   if (cluster.recent)
-    return cluster.recent.map((item) => graph.index.get(item.id)).filter((node) => node?.module);
+    return cluster.recent
+      .map((item) => graph.index.get(item.id))
+      .filter((node): node is ReaderNode => Boolean(node?.module));
   if (cluster.document) {
     const source = graph.index.get(cluster.document);
     const ids =
@@ -53,7 +61,7 @@ export function clusterDocuments(graph: ReaderGraph, cluster: Cluster | null) {
     return [...new Set(ids || [])]
       .filter((id) => id !== source?.id)
       .map((id) => graph.index.get(id))
-      .filter((node) => node?.module);
+      .filter((node): node is ReaderNode => Boolean(node?.module));
   }
   return graph.nodes
     .filter(
@@ -89,7 +97,7 @@ export function ClusterList({
   const scroll = useRef<HTMLDivElement>(null),
     svg = useRef<SVGSVGElement>(null),
     origin = useRef(selected);
-  const layer = useRef(null);
+  const layer = useRef<HTMLDivElement>(null);
   const {
     shown,
     ref: body,
@@ -160,15 +168,15 @@ export function ClusterList({
 
   useLayoutEffect(() => {
     if (!shown || !layer.current) return;
-    let raf,
+    let raf: number,
       previous = 0,
       elapsed = 0,
-      source = null,
+      source: Point | null = null,
       sourceId = origin.current,
-      sourceTween = null;
-    const scroller = scroll.current;
-    const track = scroller.querySelector<HTMLElement>('.cluster-scroll-track');
-    const content = scroller.querySelector<HTMLElement>('.cluster-scroll-content');
+      sourceTween: { from: Point; elapsed: number } | null = null;
+    const scroller = scroll.current!;
+    const track = scroller.querySelector<HTMLElement>('.cluster-scroll-track')!;
+    const content = scroller.querySelector<HTMLElement>('.cluster-scroll-content')!;
     let appliedOffset = 0;
     content.style.transform = 'translateY(0px)';
     const size = () => {
@@ -181,23 +189,23 @@ export function ClusterList({
       0,
       (value) => Number.isFinite(value) && value >= 0,
     );
-    const paths = svg.current.querySelectorAll<SVGElement>('.cluster-thread');
-    const sparks = svg.current.querySelectorAll<SVGElement>('.cluster-thread-sparks');
+    const paths = svg.current!.querySelectorAll<SVGElement>('.cluster-thread');
+    const sparks = svg.current!.querySelectorAll<SVGElement>('.cluster-thread-sparks');
     const rows = Array.from(
       scroller.querySelectorAll<HTMLElement>('.cluster-list-item'),
       (row, i) => ({
         row,
-        port: row.querySelector('.cluster-card-port'),
+        port: row.querySelector('.cluster-card-port')!,
         path: paths[i],
         glow: sparks[i],
         beams: sparks[i]?.querySelectorAll<SVGElement>('.cluster-flow-beam'),
-        wake: sparks[i]?.querySelector<SVGElement>('.cluster-flow-wake'),
+        wake: sparks[i]?.querySelector<SVGElement>('.cluster-flow-wake')!,
         ripples: sparks[i]?.querySelectorAll<SVGElement>('.cluster-flow-ripple'),
       }),
     );
     // SVG connects the current reading node to only the currently visible
     // document ports. Scrolling never creates hidden lines outside the list.
-    const update = (now) => {
+    const update = (now: number) => {
       if (!layer.current || !scroll.current || !svg.current) return;
       if (document.hidden) {
         previous = 0;
@@ -207,7 +215,7 @@ export function ClusterList({
       previous = Math.max(previous, now);
       const box = layer.current.getBoundingClientRect();
       const viewport = scroll.current.getBoundingClientRect();
-      const anchor = getAnchor?.(origin.current);
+      const anchor = getAnchor?.(origin.current!);
       // Elastic overscroll can report negative or beyond-bottom values. Both
       // cards and lines stop at the same content boundary, including short lists.
       const maxOffset = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
@@ -250,8 +258,8 @@ export function ClusterList({
         hub.style.opacity = String(
           visibleRows.length ? smooth((elapsed - MOTION.enter) / MOTION.enter) : 0,
         );
-        const charge = hub.querySelector('circle'),
-          wave = hub.querySelector('ellipse');
+        const charge = hub.querySelector('circle')!,
+          wave = hub.querySelector('ellipse')!;
         charge.setAttribute('r', String(4 + accent.charge * 6));
         charge.style.opacity = String(accent.charge * 0.55 + accent.flash * 0.75);
         wave.setAttribute('rx', String(6 + (1 - (1 - accent.wave) ** 2) * 32));
@@ -283,11 +291,11 @@ export function ClusterList({
           const rank = visibleRows.findIndex((item) => item.i === i);
           const flow = readingFlow(time, rank, visibleRows.length, true);
           const residual = launchWake(time);
-          wake.setAttribute('d', path.getAttribute('d'));
+          wake.setAttribute('d', path.getAttribute('d')!);
           wake.style.strokeDasharray = `${residual.length} 2`;
           wake.style.opacity = String(flow.active ? residual.opacity * reveal : 0);
           beams.forEach((beam) => {
-            beam.setAttribute('d', path.getAttribute('d'));
+            beam.setAttribute('d', path.getAttribute('d')!);
             beam.style.strokeDasharray = `${flow.tail} 2`;
             beam.style.strokeDashoffset = String(flow.offset);
             beam.style.opacity = String(flow.active ? flow.opacity * reveal : 0);
@@ -306,7 +314,7 @@ export function ClusterList({
         }
       });
     };
-    const tick = (now) => {
+    const tick = (now: number) => {
       update(now);
       raf = requestAnimationFrame(tick);
     };
@@ -324,10 +332,10 @@ export function ClusterList({
     resize.observe(content);
     // Focus reveal must use content coordinates, since the visible rows are
     // translated inside a pinned viewport rather than natively scrolled.
-    const onFocus = (event) => {
-      const row = event.target.closest('.cluster-list-item');
+    const onFocus = (event: FocusEvent) => {
+      const row = (event.target as Element).closest('.cluster-list-item');
       if (!row) return;
-      const item = row.closest('li');
+      const item = row.closest('li')!;
       const top = item.offsetTop,
         bottom = top + item.offsetHeight;
       if (top < scroller.scrollTop) scroller.scrollTop = top;

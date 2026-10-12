@@ -57,3 +57,6 @@ export interface Focus {
   sel: string | null;
   mod: string | null;
 }
+
+/** Document nodes are created from the complete file-derived record. */
+export type ReaderDocumentNode = ReaderNode & LibraryDocument & { module: string };

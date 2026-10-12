@@ -29,7 +29,7 @@ function resolvePreview(
   try {
     const node = graph.index.get(decodeURIComponent(match[1]));
     return node?.html != null
-      ? { element, node, href, anchor: decodeURIComponent(match[2] || '') }
+      ? { element, node, href: href!, anchor: decodeURIComponent(match[2] || '') }
       : null;
   } catch {
     return null;
@@ -43,25 +43,25 @@ export const LinkPreview = memo(function LinkPreview({
   reduced,
   queue,
 }: {
-  readerRef: React.RefObject<HTMLElement>;
+  readerRef: React.RefObject<HTMLElement | null>;
   graph: ReaderGraph;
   onPreview: (id: string | null) => void;
   reduced: boolean;
   queue: ReadingQueue;
 }) {
-  const [requested, setPreview] = useState(null);
+  const [requested, setPreview] = useState<ReturnType<typeof resolvePreview>>(null);
   const {
     shown: preview,
     ref: cardRef,
     closing,
   } = usePresence(requested, requested?.href || null, reduced);
-  const scrollRef = useRef(null);
-  const actionRef = useRef(null);
-  const [actionPosition, setActionPosition] = useState(null);
-  const [position, setPosition] = useState(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const actionRef = useRef<HTMLDivElement>(null);
+  const [actionPosition, setActionPosition] = useState<React.CSSProperties | null>(null);
+  const [position, setPosition] = useState<React.CSSProperties | null>(null);
   const html = useMemo(() => {
     if (!preview) return '';
-    const content = new DOMParser().parseFromString(preview.node.html, 'text/html');
+    const content = new DOMParser().parseFromString(preview.node.html!, 'text/html');
     // Keep anchor lookup local without duplicating the reader's document IDs.
     content.querySelectorAll<HTMLElement>('[id]').forEach((element) => {
       element.dataset.previewAnchor = element.id;
@@ -72,17 +72,18 @@ export const LinkPreview = memo(function LinkPreview({
   }, [preview]);
 
   useEffect(() => {
-    const reader = readerRef.current;
+    const reader = readerRef.current!;
     setPreview(null);
     setPosition(null);
-    let openTimer,
-      closeTimer,
-      active = null,
-      suppressed = null;
-    const contains = (parent, target) => target instanceof Node && parent?.contains(target);
-    const inPreview = (target) =>
+    let openTimer: ReturnType<typeof setTimeout> | undefined,
+      closeTimer: ReturnType<typeof setTimeout> | undefined,
+      active: ReturnType<typeof resolvePreview> = null,
+      suppressed: HTMLElement | null = null;
+    const contains = (parent: Node | null | undefined, target: EventTarget | null) =>
+      target instanceof Node && parent?.contains(target);
+    const inPreview = (target: EventTarget | null) =>
       contains(cardRef.current, target) || contains(actionRef.current, target);
-    const find = (target) =>
+    const find = (target: EventTarget | null) =>
       target instanceof Element
         ? target.closest<HTMLElement>('.markdown a[href], .read-relation[data-preview-href]')
         : null;
@@ -99,8 +100,8 @@ export const LinkPreview = memo(function LinkPreview({
       cancelClose();
       closeTimer = setTimeout(close, delay);
     };
-    const enter = (event) => {
-      if (event.type === 'pointerover' && event.pointerType !== 'mouse') return;
+    const enter = (event: Event) => {
+      if (event.type === 'pointerover' && (event as PointerEvent).pointerType !== 'mouse') return;
       const element = find(event.target);
       if (!element || !reader.contains(element) || element === suppressed) return;
       const next = resolvePreview(element, graph);
@@ -115,34 +116,37 @@ export const LinkPreview = memo(function LinkPreview({
       next.rect =
         [...element.getClientRects()].find(
           (rect) =>
-            event.clientX >= rect.left &&
-            event.clientX <= rect.right &&
-            event.clientY >= rect.top &&
-            event.clientY <= rect.bottom,
+            (event as MouseEvent).clientX >= rect.left &&
+            (event as MouseEvent).clientX <= rect.right &&
+            (event as MouseEvent).clientY >= rect.top &&
+            (event as MouseEvent).clientY <= rect.bottom,
         ) || element.getBoundingClientRect();
       openTimer = setTimeout(() => {
         if (next.keyboard) next.rect = element.getBoundingClientRect();
         setPreview(next);
       }, 220);
     };
-    const leave = (event) => {
+    const leave = (event: Event) => {
       const element = find(event.target);
-      if (contains(element, event.relatedTarget)) return;
+      if (contains(element, (event as FocusEvent).relatedTarget)) return;
       if (element === suppressed) suppressed = null;
       if (element !== active?.element) return;
-      if (inPreview(event.relatedTarget)) {
+      if (inPreview((event as FocusEvent).relatedTarget)) {
         cancelClose();
         return;
       }
       // Allow time to cross the reader from the link to the card beside it.
       scheduleClose(cardRef.current ? 600 : 180);
     };
-    const move = (event) => {
+    const move = (event: Event) => {
       if (inPreview(event.target)) cancelClose();
-      else if (inPreview(event.relatedTarget) && !contains(active?.element, event.target))
+      else if (
+        inPreview((event as FocusEvent).relatedTarget) &&
+        !contains(active?.element, event.target)
+      )
         scheduleClose();
     };
-    const key = (event) => {
+    const key = (event: KeyboardEvent) => {
       if (!active) return;
       const card = cardRef.current;
       if (event.key === 'Escape') {
@@ -158,7 +162,7 @@ export const LinkPreview = memo(function LinkPreview({
         document.activeElement === active.element
       ) {
         event.preventDefault();
-        (actionRef.current?.querySelector('button') || card.querySelector('a')).focus({
+        (actionRef.current?.querySelector('button') || card.querySelector('a'))!.focus({
           preventScroll: true,
         });
       } else if (
@@ -171,19 +175,19 @@ export const LinkPreview = memo(function LinkPreview({
         active.element.focus({ preventScroll: true });
       }
     };
-    const scroll = (event) => {
+    const scroll = (event: Event) => {
       // Focusing a link may first scroll it into view; position after that scroll.
       if (active?.keyboard && !cardRef.current) {
         clearTimeout(openTimer);
         openTimer = setTimeout(() => {
-          active.rect = active.element.getBoundingClientRect();
+          active!.rect = active!.element.getBoundingClientRect();
           setPreview(active);
         }, 220);
         return;
       }
       if (!inPreview(event.target)) close();
     };
-    const click = (event) => {
+    const click = (event: MouseEvent) => {
       if (contains(actionRef.current, event.target)) return;
       if ((event.target as Element).closest<HTMLElement>('.link-preview-close') && active) {
         suppressed = active.element;
@@ -223,7 +227,7 @@ export const LinkPreview = memo(function LinkPreview({
 
   useLayoutEffect(() => {
     if (!preview) return;
-    const rect = preview.rect;
+    const rect = preview.rect!;
     const margin = 12,
       gap = 8;
     const action = actionRef.current?.getBoundingClientRect();
@@ -238,7 +242,7 @@ export const LinkPreview = memo(function LinkPreview({
           }
         : null,
     );
-    const reader = readerRef.current.getBoundingClientRect();
+    const reader = readerRef.current!.getBoundingClientRect();
     const sideGap = 16;
     const leftSpace = reader.left - sideGap - margin;
     if (leftSpace >= 280) {
@@ -264,7 +268,7 @@ export const LinkPreview = memo(function LinkPreview({
     const above = rect.top - topGap - margin;
     const down = below >= Math.min(400, window.innerHeight * 0.65) || below >= above;
     const maxHeight = Math.max(0, Math.min(400, window.innerHeight * 0.65, down ? below : above));
-    const height = Math.min(cardRef.current.offsetHeight, maxHeight);
+    const height = Math.min(cardRef.current!.offsetHeight, maxHeight);
     setPosition({
       width,
       maxHeight,
@@ -275,8 +279,8 @@ export const LinkPreview = memo(function LinkPreview({
 
   useLayoutEffect(() => {
     if (!preview || !position) return;
-    const scroller = scrollRef.current;
-    const target = [...scroller.querySelectorAll('[data-preview-anchor]')].find(
+    const scroller = scrollRef.current!;
+    const target = [...scroller.querySelectorAll<HTMLElement>('[data-preview-anchor]')].find(
       (element) => element.dataset.previewAnchor === preview.anchor,
     );
     scroller.scrollTop = target
@@ -333,7 +337,7 @@ export const LinkPreview = memo(function LinkPreview({
           </button>
         </header>
         <div className="link-preview-scroll" ref={scrollRef} tabIndex={0} aria-label="预览正文">
-          <ReaderSources sources={preview.node.sources} />
+          <ReaderSources sources={preview.node.sources!} />
           <MarkdownArticle html={html} />
         </div>
         <footer className="link-preview-footer">

@@ -1,5 +1,5 @@
 import type { ReactNode, RefObject } from 'react';
-import type { ReaderGraph, ReaderNode, ReaderModule, Focus } from './graph.ts';
+import type { ReaderGraph, ReaderNode, ReaderModule, ReaderDocumentNode, Focus } from './graph.ts';
 import type { MoveState } from './library.ts';
 import type { Cluster, ReadingQueue, Point } from './reading.ts';
 import type { useReadingHistory } from '../neural/useReadingHistory.ts';
@@ -17,8 +17,8 @@ export interface HomeProps {
 }
 export interface DocumentReaderProps {
   graph: ReaderGraph;
-  node: ReaderNode;
-  module: ReaderModule;
+  node: ReaderDocumentNode;
+  module: ReaderModule | null;
   cluster: Cluster | null;
   onCluster(cluster: Cluster | null): void;
   onClose(): void;
@@ -36,19 +36,19 @@ export type RollerOption = [
   label: string,
   title: string,
   count?: string | number | null,
-  ref?: RefObject<HTMLButtonElement>,
+  ref?: RefObject<HTMLButtonElement | null>,
 ];
 export interface ListNavigationProps {
   graph: ReaderGraph;
-  node: ReaderNode;
+  node: ReaderNode | undefined;
   cluster: Cluster | null;
-  historyRef: RefObject<HTMLButtonElement>;
-  latestRef: RefObject<HTMLButtonElement>;
-  queueRef: RefObject<HTMLButtonElement>;
+  historyRef: RefObject<HTMLButtonElement | null>;
+  latestRef: RefObject<HTMLButtonElement | null>;
+  queueRef: RefObject<HTMLButtonElement | null>;
   onChoose(mode: string): void;
   collectionFilter: string;
   onFilter(value: string): void;
-  documentCount?: number;
+  documentCount?: number | null;
   totalCount?: number;
 }
 export interface Flight extends Point {
@@ -60,16 +60,16 @@ export interface Flight extends Point {
   fontFamily: string;
   color: string;
 }
-export type NodeAnchor = (id: string) => (Point & { flowTime?: number }) | null;
+export type NodeAnchor = (id: string) => (Point & { flowTime?: number }) | null | undefined;
 export interface ClusterListProps {
   graph: ReaderGraph;
   cluster: Cluster | null;
-  selected: string | null;
+  selected: string | null | undefined;
   anchorId?: string | null;
   onSelect(id: string, element: HTMLButtonElement): void;
   onClose(): void;
   onClear?: () => void;
-  getAnchor: NodeAnchor;
+  getAnchor?: NodeAnchor;
   reduced: boolean;
   onPresenceChange(visible: boolean): void;
   navigation?: React.ReactElement<ListNavigationProps>;

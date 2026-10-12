@@ -1,5 +1,5 @@
 import type { ReaderNode } from '../types/graph.ts';
-const normalize = (value: string) =>
+const normalize = (value: string | undefined) =>
   String(value ?? '')
     .normalize('NFKC')
     .toLowerCase()

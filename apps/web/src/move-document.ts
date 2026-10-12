@@ -1,3 +1,13 @@
+import type { ParsedDocument, LibraryDocument } from './types/library.ts';
+import type { IncomingMessage } from 'node:http';
+interface MarkdownToken {
+  type: string;
+  raw: string;
+  tokens?: MarkdownToken[];
+  items?: MarkdownToken[];
+  header?: { tokens?: MarkdownToken[] }[];
+  rows?: { tokens?: MarkdownToken[] }[][];
+}
 import { CONTENT_COLLECTIONS } from './collections.ts';
 import path from 'node:path';
 import {
@@ -23,18 +33,18 @@ import {
 
 export class MoveError extends Error {
   declare status: number;
-  constructor(message, status = 409) {
+  constructor(message: string, status = 409) {
     super(message);
     this.status = status;
   }
 }
 const allowed = new Set(['inbox', 'notes'].filter((id) => CONTENT_COLLECTIONS.includes(id)));
-const external = (value) => /^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i.test(value);
+const external = (value: string) => /^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i.test(value);
 const assetPattern = /\.(?:png|jpe?g|gif|webp|svg|pdf|mp3|mp4)(?:#.*)?$/i;
 
 // Only regular Markdown files are writable; never follow symbolic links.
-async function markdownFiles(directory) {
-  const files = [];
+async function markdownFiles(directory: string): Promise<string[]> {
+  const files: string[] = [];
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     if (entry.name.startsWith('.')) continue;
     const file = path.join(directory, entry.name);
@@ -43,7 +53,7 @@ async function markdownFiles(directory) {
   }
   return files;
 }
-async function regularFile(file, root) {
+async function regularFile(file: string, root: string) {
   const relative = path.relative(root, file);
   if (relative.startsWith('..') || path.isAbsolute(relative))
     throw new MoveError('文件超出知识库范围。', 400);
@@ -53,9 +63,9 @@ async function regularFile(file, root) {
 
 // Mask code and HTML using Markdown tokens, including nested lists and quotes.
 // The replacement keeps source offsets, formatting and code examples intact.
-function protectedRanges(source) {
-  const ranges = [];
-  const visit = (tokens, start, end) => {
+function protectedRanges(source: string) {
+  const ranges: [number, number][] = [];
+  const visit = (tokens: MarkdownToken[] | undefined, start: number, end: number) => {
     let cursor = start;
     for (const token of tokens || []) {
       if (!token.raw) continue;
@@ -81,10 +91,17 @@ function protectedRanges(source) {
   return ranges;
 }
 
-async function rewriteSource(raw, doc, moved, destination, documents, root) {
+async function rewriteSource(
+  raw: string,
+  doc: ParsedDocument,
+  moved: ParsedDocument,
+  destination: string,
+  documents: ParsedDocument[],
+  root: string,
+) {
   const newDoc =
     doc.id === moved.id && doc.path === moved.path ? { ...doc, path: destination } : doc;
-  const rewriteTarget = async (target, markdown = false) => {
+  const rewriteTarget = async (target: string, markdown = false) => {
     let value;
     try {
       value = markdown ? decodeURIComponent(target) : target;
@@ -172,7 +189,7 @@ async function rewriteSource(raw, doc, moved, destination, documents, root) {
   return metadata + rewritten;
 }
 
-async function replaceFile(file, content, expected) {
+async function replaceFile(file: string, content: string, expected: string) {
   if ((await readFile(file, 'utf8')) !== expected)
     throw new MoveError('文件已被其他编辑修改，请刷新后重试。');
   const temp = file + '.move-' + randomUUID();
@@ -188,10 +205,15 @@ async function replaceFile(file, content, expected) {
 }
 
 export async function moveDocument(
-  root,
+  root: string,
   { id, collection, version }: { id?: string; collection?: string; version?: string } = {},
 ) {
-  if (typeof id !== 'string' || !allowed.has(collection) || typeof version !== 'string')
+  if (
+    typeof id !== 'string' ||
+    typeof collection !== 'string' ||
+    !allowed.has(collection) ||
+    typeof version !== 'string'
+  )
     throw new MoveError('移动参数无效。', 400);
   root = await realpath(root);
   const library = await loadLibrary(root);
@@ -234,7 +256,7 @@ export async function moveDocument(
   // Resolve against the same collection scope as the reader; archived files can
   // contain incoming links, but cannot shadow a live document during resolution.
   const live = library.documents;
-  const changes = [];
+  const changes: { file: string; raw: string; next: string }[] = [];
   for (let i = 0; i < snapshots.length; i++) {
     const snapshot = snapshots[i],
       doc = documents[i];
@@ -248,7 +270,7 @@ export async function moveDocument(
           ),
           live,
         );
-      const code = (value) =>
+      const code = (value: LibraryDocument) =>
         JSON.stringify(value.html.match(/<code\b[^>]*>[\s\S]*?<\/code>/g) || []);
       if (code(before) !== code(after))
         throw new MoveError(`「${doc.title}」包含暂不支持自动迁移的代码上下文，未移动。`);
@@ -256,19 +278,20 @@ export async function moveDocument(
     }
   }
   const nextDocuments = live.map((doc) => {
-    const entry = snapshots.find((item) => item.file === path.join(root, doc.path));
+    const entry = snapshots.find((item) => item.file === path.join(root, doc.path))!;
     const change = changes.find((item) => item.file === entry.file);
     return parseDocument(change?.next ?? entry.raw, doc.id === id ? destination : doc.path);
   });
   // Reject unsupported link syntax rather than leaving changed or broken targets.
   for (const before of live) {
     const after = renderDocument(
-      nextDocuments.find((doc) => doc.id === before.id),
+      nextDocuments.find((doc) => doc.id === before.id)!,
       nextDocuments,
     );
-    const signature = (doc) =>
+    const signature = (doc: LibraryDocument) =>
       JSON.stringify(doc.references.map(({ id, anchor, kind }) => ({ id, anchor, kind })));
-    const code = (doc) => JSON.stringify(doc.html.match(/<code\b[^>]*>[\s\S]*?<\/code>/g) || []);
+    const code = (doc: LibraryDocument) =>
+      JSON.stringify(doc.html.match(/<code\b[^>]*>[\s\S]*?<\/code>/g) || []);
     if (
       code(before) !== code(after) ||
       signature(before) !== signature(after) ||
@@ -324,7 +347,7 @@ export async function moveDocument(
   }
 }
 
-export function isLocalWriteRequest(req) {
+export function isLocalWriteRequest(req: Pick<IncomingMessage, 'headers'>) {
   const host = req.headers.host || '';
   return (
     /^(?:127\.0\.0\.1|localhost):\d+$/.test(host) &&

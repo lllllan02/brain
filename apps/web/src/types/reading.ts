@@ -58,7 +58,7 @@ export interface Cluster {
   pinnedIds?: string[];
 }
 export interface ReaderCluster {
-  owner: string;
+  owner: string | null;
   value: Cluster | null;
 }
 export interface ReadingQueue {

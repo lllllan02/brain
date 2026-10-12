@@ -1,8 +1,9 @@
+import type { LibraryDocument } from '../types/library.ts';
 import { externalLink } from './external-links.ts';
 
 // Source labels are plain text, never rendered as arbitrary Markdown or HTML.
-export function documentSources(values = []) {
-  const sources = new Map();
+export function documentSources(values: string[] = []) {
+  const sources = new Map<string, { title: string; href: string | null }>();
   for (const value of values) {
     const text = String(value).trim();
     if (!text) continue;
@@ -15,7 +16,7 @@ export function documentSources(values = []) {
   return [...sources.values()];
 }
 
-export function copyDocumentMarkdown(node) {
+export function copyDocumentMarkdown(node: Pick<LibraryDocument, 'sources' | 'title' | 'body'>) {
   const sources = documentSources(node.sources).map(({ title, href }) =>
     href ? `[${title}](${href})` : title,
   );

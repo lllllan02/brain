@@ -3,13 +3,23 @@ import { createPortal } from 'react-dom';
 import { decorateExternalLinks, externalLink } from './external-links.ts';
 import './external-links.css';
 
-export function ExternalLinkPreview({ readerRef, html }) {
-  const [preview, setPreview] = useState(null);
-  const [position, setPosition] = useState(null);
-  const card = useRef(null);
+export function ExternalLinkPreview({
+  readerRef,
+  html,
+}: {
+  readerRef: React.RefObject<HTMLElement | null>;
+  html?: string;
+}) {
+  const [preview, setPreview] = useState<
+    (NonNullable<ReturnType<typeof externalLink>> & { rect: DOMRect }) | null
+  >(null);
+  const [position, setPosition] = useState<React.CSSProperties | null>(null);
+  const card = useRef<HTMLElement>(null);
   useEffect(() => {
-    decorateExternalLinks(readerRef.current, import.meta.env.BASE_URL);
-    let timer, closeTimer, active;
+    decorateExternalLinks(readerRef.current!, import.meta.env.BASE_URL);
+    let timer: ReturnType<typeof setTimeout> | undefined,
+      closeTimer: ReturnType<typeof setTimeout> | undefined,
+      active: Element | null;
     const close = () => {
       clearTimeout(timer);
       clearTimeout(closeTimer);
@@ -17,18 +27,18 @@ export function ExternalLinkPreview({ readerRef, html }) {
       active = null;
       setPreview(null);
     };
-    const find = (target) =>
+    const find = (target: EventTarget | null) =>
       target instanceof Element ? target.closest('.external-site-link') : null;
-    const enter = (event) => {
-      if (card.current?.contains(event.target)) {
+    const enter = (event: Event) => {
+      if (card.current?.contains(event.target as Node | null)) {
         clearTimeout(closeTimer);
         return;
       }
-      if (event.type === 'pointerover' && event.pointerType !== 'mouse') return;
+      if (event.type === 'pointerover' && (event as PointerEvent).pointerType !== 'mouse') return;
       const anchor = find(event.target);
       if (
         !anchor ||
-        !(readerRef.current.contains(anchor) || anchor.closest('.link-preview .markdown'))
+        !(readerRef.current!.contains(anchor) || anchor.closest('.link-preview .markdown'))
       )
         return;
       if (anchor === active) {
@@ -45,29 +55,30 @@ export function ExternalLinkPreview({ readerRef, html }) {
         setPreview({ ...link, rect: anchor.getBoundingClientRect() });
       }, 250);
     };
-    const leave = (event) => {
+    const leave = (event: Event) => {
       if (
-        event.relatedTarget instanceof Node &&
-        (active?.contains(event.relatedTarget) || card.current?.contains(event.relatedTarget))
+        (event as FocusEvent).relatedTarget instanceof Node &&
+        (active?.contains((event as FocusEvent).relatedTarget as Node | null) ||
+          card.current?.contains((event as FocusEvent).relatedTarget as Node | null))
       )
         return;
-      if (find(event.target) === active || card.current?.contains(event.target)) {
+      if (find(event.target) === active || card.current?.contains(event.target as Node | null)) {
         clearTimeout(closeTimer);
         closeTimer = setTimeout(close, 180);
       }
     };
-    const key = (event) => {
+    const key = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && active) {
         event.preventDefault();
         event.stopImmediatePropagation();
         close();
       }
     };
-    const scroll = (event) => {
-      if (card.current && !card.current.contains(event.target)) close();
+    const scroll = (event: Event) => {
+      if (card.current && !card.current.contains(event.target as Node | null)) close();
     };
-    const click = (event) => {
-      if (!card.current?.contains(event.target)) close();
+    const click = (event: Event) => {
+      if (!card.current?.contains(event.target as Node | null)) close();
     };
     const events: [string, EventListener][] = [
       ['pointerover', enter],

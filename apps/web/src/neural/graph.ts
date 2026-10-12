@@ -1,11 +1,19 @@
 import type { Library } from '../types/library.ts';
-import type { ReaderGraph, ReaderNode, ReaderLink } from '../types/graph.ts';
+import type { ReaderGraph, ReaderNode, ReaderLink, ReaderDocumentNode } from '../types/graph.ts';
 import { T } from './theme.ts';
+
+export function isDocumentNode(node: ReaderNode | null | undefined): node is ReaderDocumentNode {
+  return Boolean(node?.module && node.html !== undefined);
+}
 
 // Every topic comes from the single category property; tags do not determine groups.
 const topicId = (category: string) => 'topic:' + encodeURIComponent(category);
 const uncategorizedId = 'topic:uncategorized:';
-export const moduleOf = (graph: ReaderGraph, node: ReaderNode, preferred?: string) =>
+export const moduleOf = (
+  graph: ReaderGraph,
+  node: ReaderNode | null | undefined,
+  preferred?: string | null,
+) =>
   graph.modules.find((m) => m.id === preferred && node?.modules?.includes(m.id)) ||
   graph.modules.find((m) => m.id === node?.module) ||
   null;
@@ -57,8 +65,8 @@ export function buildGraph(library: Library): ReaderGraph {
     })),
   ];
   for (const doc of library.documents) {
-    const ids = memberships.get(doc.id),
-      module = modules.find((m) => m.id === ids[0]);
+    const ids = memberships.get(doc.id)!,
+      module = modules.find((m) => m.id === ids[0])!;
     nodes.push({
       ...doc,
       kind: module.kind,
@@ -71,7 +79,7 @@ export function buildGraph(library: Library): ReaderGraph {
   }
   const index = new Map(nodes.map((n) => [n.id, n])),
     edgeMap = new Map<string, Omit<ReaderLink, 's' | 't' | 'both'>>();
-  const link = (s, t, kind) => {
+  const link = (s: string, t: string, kind: string) => {
     if (s === t || !index.has(s) || !index.has(t)) return;
     const [a, b] = s < t ? [s, t] : [t, s];
     const key = JSON.stringify([a, b, kind]);
@@ -100,20 +108,20 @@ export function buildGraph(library: Library): ReaderGraph {
   }
   for (const l of links) {
     if (l.kind === 'contain') continue;
-    const a = index.get(l.a),
-      b = index.get(l.b);
-    a.deg++;
-    b.deg++;
+    const a = index.get(l.a)!,
+      b = index.get(l.b)!;
+    a.deg!++;
+    b.deg!++;
     if (l.both) {
-      a.mutual++;
-      b.mutual++;
-      a.in++;
-      b.in++;
-      a.out++;
-      b.out++;
+      a.mutual!++;
+      b.mutual!++;
+      a.in!++;
+      b.in!++;
+      a.out!++;
+      b.out!++;
     } else {
-      index.get(l.s).out++;
-      index.get(l.t).in++;
+      index.get(l.s)!.out!++;
+      index.get(l.t)!.in!++;
     }
   }
   return {
@@ -129,7 +137,7 @@ export function buildGraph(library: Library): ReaderGraph {
 }
 function hslHex(h: number, s: number, l: number) {
   const a = s * Math.min(l, 1 - l);
-  const channel = (n) => {
+  const channel = (n: number) => {
     const k = (n + h / 30) % 12;
     return Math.round(255 * (l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1))))
       .toString(16)
@@ -145,12 +153,13 @@ function rng(seed: string) {
 const rad = (d: number) => (d * Math.PI) / 180;
 
 export function forceLayout(graph: ReaderGraph) {
-  const N = graph.nodes,
-    idx = graph.index;
+  // Positions are initialized below before the force iterations.
+  const N = graph.nodes as (ReaderNode & { x: number; y: number; vx: number; vy: number })[],
+    idx = graph.index as Map<string, (typeof N)[number]>;
   const FOLDERS = graph.modules.map((m) => ({ id: m.folder, angle: m.angle }));
   const CONTENT = new Set(graph.modules.map((m) => m.kind));
-  const anchor = (id) => {
-    const n = idx.get(id);
+  const anchor = (id: string) => {
+    const n = idx.get(id)!;
     const f = FOLDERS.find((f) => f.id === n.folder || f.id === id);
     return f ? [Math.cos(rad(f.angle)), Math.sin(rad(f.angle))] : null;
   };
@@ -174,8 +183,15 @@ export function forceLayout(graph: ReaderGraph) {
     n.vx = 0;
     n.vy = 0;
   }
-  const rest = { contain: 120, wiki: 95, source: 90, tag: 52, mention: 135, resonance: 170 };
-  const strength = {
+  const rest: Record<string, number> = {
+    contain: 120,
+    wiki: 95,
+    source: 90,
+    tag: 52,
+    mention: 135,
+    resonance: 170,
+  };
+  const strength: Record<string, number> = {
     contain: 0.05,
     wiki: 0.06,
     source: 0.08,
@@ -205,8 +221,8 @@ export function forceLayout(graph: ReaderGraph) {
         B.vy += dy * f;
       }
     for (const l of graph.links) {
-      const A = idx.get(l.a),
-        B = idx.get(l.b);
+      const A = idx.get(l.a)!,
+        B = idx.get(l.b)!;
       const dx = B.x - A.x,
         dy = B.y - A.y,
         d = Math.hypot(dx, dy) || 0.01;

@@ -1,4 +1,4 @@
-let enginePromise;
+let enginePromise: Promise<(typeof import('mermaid'))['default']> | undefined;
 let nextId = 0;
 
 function loadEngine() {
@@ -24,7 +24,7 @@ function loadEngine() {
 
 // Each article owns its rendering lifetime. A late render must never update a
 // replacement article or reuse an SVG ID from the reader / another preview.
-export function renderDiagrams(article) {
+export function renderDiagrams(article: HTMLElement) {
   let cancelled = false;
   const blocks = [...article.querySelectorAll('.diagram-block')];
   const ready = (async () => {
@@ -35,7 +35,7 @@ export function renderDiagrams(article) {
     } catch {
       if (!cancelled)
         blocks.forEach((block) => {
-          block.querySelector('.diagram-status').textContent =
+          block.querySelector<HTMLElement>('.diagram-status')!.textContent =
             '图表组件加载失败，可查看或复制源码。';
         });
       return;
@@ -43,9 +43,9 @@ export function renderDiagrams(article) {
     await document.fonts.ready;
     for (const block of blocks) {
       if (cancelled) return;
-      const status = block.querySelector('.diagram-status');
-      const canvas = block.querySelector('.diagram-canvas');
-      const source = block.querySelector('.diagram-source');
+      const status = block.querySelector<HTMLElement>('.diagram-status')!;
+      const canvas = block.querySelector<HTMLElement>('.diagram-canvas')!;
+      const source = block.querySelector<HTMLDetailsElement>('.diagram-source')!;
       // Mermaid needs a connected, measurable container. Keep temporary SVGs
       // outside the article so cleanup is safe even when React unmounts it.
       const host = document.createElement('div');
@@ -55,7 +55,7 @@ export function renderDiagrams(article) {
       try {
         const { svg } = await mermaid.render(
           `horizon-diagram-${++nextId}`,
-          source.querySelector('code').textContent,
+          source.querySelector('code')!.textContent!,
           host,
         );
         if (cancelled) return;
@@ -63,7 +63,7 @@ export function renderDiagrams(article) {
         const drawing = canvas.querySelector('svg');
         const width = drawing?.viewBox.baseVal.width;
         // Preserve readable text in wide diagrams; the viewport scrolls locally.
-        if (width > 0) {
+        if (drawing && width && width > 0) {
           drawing.style.width = `${width}px`;
           drawing.style.maxWidth = 'none';
         }

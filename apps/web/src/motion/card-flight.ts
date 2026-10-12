@@ -1,6 +1,7 @@
+import type { Point } from '../types/reading.ts';
 import { smooth } from './tokens.ts';
 
-export function cardFlight(origin, target, elapsed) {
+export function cardFlight(origin: Point, target: Point, elapsed: number) {
   const progress = Math.max(0, Math.min(1, elapsed / 650));
   const travel = smooth(progress);
   const bend = Math.min(48, Math.hypot(target.x - origin.x, target.y - origin.y) * 0.12);

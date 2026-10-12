@@ -28,7 +28,7 @@ const styles = {
     gap: 65,
   },
 };
-export const categoryStyle = (id: string) => styles[id] || styles.nebula;
+export const categoryStyle = (id: string) => styles[id as keyof typeof styles] || styles.nebula;
 export function categorySeed(id: string) {
   let value = 2166136261;
   for (let i = 0; i < id.length; i++) value = Math.imul(value ^ id.charCodeAt(i), 16777619);

@@ -7,8 +7,8 @@ export function dashboardInsights(documents: ReaderNode[], category: string | nu
   for (const doc of documents)
     for (const ref of doc.references || []) {
       if (ref.id === doc.id || !index.has(ref.id)) continue;
-      incoming.get(ref.id).add(doc.id);
-      outgoing.get(doc.id).add(ref.id);
+      incoming.get(ref.id)!.add(doc.id);
+      outgoing.get(doc.id)!.add(ref.id);
     }
   const scoped = documents.filter(
     (doc) => category === null || (doc.category?.trim() || '') === category,
@@ -32,18 +32,22 @@ export function dashboardInsights(documents: ReaderNode[], category: string | nu
     if (hosts.size) withSource++;
     for (const host of hosts) {
       if (!domains.has(host)) domains.set(host, []);
-      domains.get(host).push(doc);
+      domains.get(host)!.push(doc);
     }
   }
   const citedReadings = readings.filter((doc) =>
-    [...incoming.get(doc.id)].some((id) => ['inbox', 'notes'].includes(index.get(id).collection)),
+    [...incoming.get(doc.id)!].some((id) =>
+      ['inbox', 'notes'].includes(index.get(id)!.collection!),
+    ),
   );
-  const connected = scoped.filter((doc) => incoming.get(doc.id).size || outgoing.get(doc.id).size);
+  const connected = scoped.filter(
+    (doc) => incoming.get(doc.id)!.size || outgoing.get(doc.id)!.size,
+  );
   const ranked = scoped
-    .filter((doc) => incoming.get(doc.id).size)
+    .filter((doc) => incoming.get(doc.id)!.size)
     .sort(
       (a, b) =>
-        incoming.get(b.id).size - incoming.get(a.id).size ||
+        incoming.get(b.id)!.size - incoming.get(a.id)!.size ||
         a.title.localeCompare(b.title, 'zh-CN'),
     );
   return {
@@ -52,7 +56,7 @@ export function dashboardInsights(documents: ReaderNode[], category: string | nu
     withSource,
     citedReadings,
     connected,
-    isolated: scoped.filter((doc) => !incoming.get(doc.id).size && !outgoing.get(doc.id).size),
+    isolated: scoped.filter((doc) => !incoming.get(doc.id)!.size && !outgoing.get(doc.id)!.size),
     ranked,
     incoming,
     domains: [...domains]

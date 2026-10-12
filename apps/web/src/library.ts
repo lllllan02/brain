@@ -1,3 +1,11 @@
+import type { marked } from 'marked';
+type MarkedOptions = marked.MarkedOptions;
+interface WikiToken {
+  type: string;
+  raw: string;
+  value: string;
+  embed: boolean;
+}
 import type {
   ParsedDocument,
   LibraryDocument,
@@ -13,19 +21,25 @@ import { Lexer, Parser, Renderer } from 'marked';
 import hljs from 'highlight.js';
 import { CONTENT_COLLECTIONS, collectionIcons, collectionStyle } from './collections.ts';
 
-export const escape = (value) =>
+export const escape = (value: unknown) =>
   String(value ?? '').replace(
     /[&<>"']/g,
-    (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c],
+    (c) =>
+      (
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }) as Record<
+          string,
+          string
+        >
+      )[c],
   );
-export const slug = (text) =>
+export const slug = (text: string) =>
   text
     .replace(/<[^>]*>/g, '')
     .replace(/[*`_]/g, '')
     .trim()
     .toLowerCase()
     .replace(/\s+/g, '-');
-const list = (value) =>
+const list = (value: unknown) =>
   value == null ? [] : Array.isArray(value) ? value.map(String) : [String(value)];
 export function parseDocument(raw: string, file: string): ParsedDocument {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
@@ -72,7 +86,7 @@ export function parseDocument(raw: string, file: string): ParsedDocument {
   };
 }
 async function walk(root: string, dir: string): Promise<string[]> {
-  const files = [];
+  const files: string[] = [];
   let entries;
   try {
     entries = await readdir(path.join(root, dir), { withFileTypes: true });
@@ -145,14 +159,14 @@ export async function safeAsset(root: string, target: string, currentPath = '') 
   return null;
 }
 // Parent remains an explicit metadata relationship; never infer it from body links.
-function parentParts(value) {
+function parentParts(value: string) {
   const raw = value.trim();
   const match = /^\[\[([^\]\n]+)\]\]$/.exec(raw);
   if (!match && /[\[\]\n]/.test(raw)) return null;
   const [target, label] = (match ? match[1] : raw).replaceAll('\\|', '|').split('|');
   return target.trim() ? { target: target.trim(), label: label?.trim() } : null;
 }
-function parentCycle(doc, documents) {
+function parentCycle(doc: ParsedDocument, documents: ParsedDocument[]) {
   const seen = new Set([doc.id]);
   let current = doc;
   while (current.parentTarget) {
@@ -171,23 +185,29 @@ export function renderDocument(doc: ParsedDocument, documents: ParsedDocument[])
     references: Reference[] = [],
     issues: LibraryDocument['issues'] = [],
     counts = new Map<string, number>();
-  const headingId = (text) => {
+  const headingId = (text: string) => {
     const base = slug(text);
     const n = counts.get(base) || 0;
     counts.set(base, n + 1);
     return base + (n ? '-' + n : '');
   };
-  const options = {
+  const options: MarkedOptions & {
+    extensions: {
+      inline: ((src: string) => WikiToken | undefined)[];
+      startInline: ((src: string) => number)[];
+      renderers: Record<string, (token: WikiToken) => string>;
+    };
+  } = {
     gfm: true,
     breaks: false,
     renderer: new Renderer(),
     extensions: { inline: [], startInline: [], renderers: {} },
   };
-  const wiki = (target, label, embed) => {
+  const wiki = (target: string, label: string | undefined, embed: boolean) => {
     const [name, anchor = ''] = target.split('#');
     const result = resolveDocument(name, documents, doc);
     if (!result.doc) {
-      issues.push({ target, reason: result.error });
+      issues.push({ target, reason: result.error! });
       return `<span class="broken-link" title="${escape(result.error)}">${escape(label || target)} ⊘</span>`;
     }
     const dest = result.doc;
@@ -231,12 +251,12 @@ export function renderDocument(doc: ParsedDocument, documents: ParsedDocument[])
       {
         name: 'wiki',
         level: 'inline',
-        start: (src) => src.indexOf('[['),
-        tokenizer(src) {
+        start: (src: string) => src.indexOf('[['),
+        tokenizer(src: string) {
           const m = /^(!?)\[\[([^\]\n]+)\]\]/.exec(src);
           if (m) return { type: 'wiki', raw: m[0], value: m[2], embed: Boolean(m[1]) };
         },
-        renderer(token) {
+        renderer(token: WikiToken) {
           const [target, label] = token.value.replaceAll('\\|', '|').split('|');
           if (/\.(png|jpe?g|gif|webp|svg|pdf|mp3|mp4)$/i.test(target)) {
             const url = `/api/asset?path=${encodeURIComponent(target)}&from=${encodeURIComponent(doc.path)}`;
@@ -249,17 +269,17 @@ export function renderDocument(doc: ParsedDocument, documents: ParsedDocument[])
       },
     ],
     renderer: {
-      html: (text) => escape(text),
-      heading(text, level, raw) {
+      html: (text: string) => escape(text),
+      heading(text: string, level: number, raw: string) {
         const id = headingId(raw);
         toc.push({ id, title: raw.replace(/[*`]/g, ''), level });
         return `<h${level} id="${escape(id)}">${text}</h${level}>`;
       },
-      paragraph(text) {
+      paragraph(text: string) {
         const block = text.match(/\s*\^([\w-]+)\s*$/);
         return `<p${block ? ` id="^${escape(block[1])}"` : ''}>${block ? text.slice(0, block.index) : text}</p>`;
       },
-      code(code, language) {
+      code(code: string, language: string) {
         const lang = (language || '').trim().split(/\s/)[0];
         if (lang.toLowerCase() === 'mermaid') {
           return `<div class="code-block diagram-block"><div class="code-header"><span>Mermaid</span><button type="button" class="copy-code" title="复制源码" aria-label="复制源码"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="copy-glyph" d="M9 9h12v12H9ZM5 15H3V3h12v2"/><path class="copied-glyph" d="m5 12 4 4L19 6"/></svg></button></div><p class="diagram-status" role="status">正在绘制图表…</p><div class="diagram-canvas" hidden tabindex="0" role="region" aria-label="图表，可横向滚动"></div><details class="diagram-source" open><summary>查看源码</summary><pre><code>${escape(code)}</code></pre></details></div>`;
@@ -270,7 +290,7 @@ export function renderDocument(doc: ParsedDocument, documents: ParsedDocument[])
             : escape(code);
         return `<div class="code-block"><div class="code-header"><span>${escape(lang || 'text')}</span><button type="button" class="copy-code" title="复制代码" aria-label="复制代码"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="copy-glyph" d="M9 9h12v12H9ZM5 15H3V3h12v2"/><path class="copied-glyph" d="m5 12 4 4L19 6"/></svg></button></div><pre><code>${value}</code></pre></div>`;
       },
-      link(href, title, text) {
+      link(href: string, title: string | null, text: string) {
         if (/^(https?:|mailto:)/i.test(href))
           return `<a href="${escape(href)}" target="_blank" rel="noopener noreferrer">${text} ↗</a>`;
         if (href.startsWith('#'))
@@ -281,24 +301,24 @@ export function renderDocument(doc: ParsedDocument, documents: ParsedDocument[])
           return `<a href="/api/asset?path=${encodeURIComponent(href)}&from=${encodeURIComponent(doc.path)}" target="_blank" rel="noopener">${text} ↗</a>`;
         return wiki(decodeURIComponent(href), text.replace(/<[^>]*>/g, ''), false);
       },
-      image(href, title, text) {
+      image(href: string, title: string | null, text: string) {
         if (/^(https?:|data:|javascript:)/i.test(href))
           return `<span class="broken-link">外部图片：${escape(text)}</span>`;
         return `<img loading="lazy" src="/api/asset?path=${encodeURIComponent(href)}&from=${encodeURIComponent(doc.path)}" alt="${escape(text)}">`;
       },
-      table(header, body) {
+      table(header: string, body: string) {
         return `<div class="table-wrap"><table><thead>${header}</thead><tbody>${body}</tbody></table></div>`;
       },
     },
   };
-  Object.assign(options.renderer, config.renderer);
-  options.renderer.options = options;
+  Object.assign(options.renderer!, config.renderer);
+  options.renderer!.options = options;
   for (const extension of config.extensions) {
     options.extensions.inline.push(extension.tokenizer);
     options.extensions.startInline.push(extension.start);
     options.extensions.renderers[extension.name] = extension.renderer;
   }
-  let parent = null;
+  let parent: LibraryDocument['parent'] = null;
   if (doc.parentTarget) {
     const parts = parentParts(doc.parentTarget);
     if (!parts) issues.push({ target: doc.parentTarget, reason: 'parent 格式无效' });
@@ -310,7 +330,7 @@ export function renderDocument(doc: ParsedDocument, documents: ParsedDocument[])
       if (references.length > before) {
         const ref = references[before];
         ref.kind = 'parent';
-        const dest = documents.find((d) => d.id === ref.id);
+        const dest = documents.find((d) => d.id === ref.id)!;
         parent = {
           ...ref,
           title: parts.label || (ref.anchor ? `${dest.title} · ${ref.anchor}` : dest.title),
@@ -336,7 +356,7 @@ export async function loadLibrary(root: string): Promise<Library> {
       };
     }),
   );
-  const ids = new Set();
+  const ids = new Set<string>();
   for (const d of docs) {
     if (ids.has(d.id)) throw new Error(`文档文件名重复：${d.id}`);
     ids.add(d.id);

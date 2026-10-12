@@ -1,24 +1,29 @@
+export interface ViewerImage {
+  src: string;
+  alt: string;
+  trigger: HTMLElement;
+}
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import './image-viewer.css';
 
-export function ImageViewer({ image, onClose }) {
-  const dialog = useRef(null);
-  const viewport = useRef(null);
-  const [size, setSize] = useState(null);
+export function ImageViewer({ image, onClose }: { image: ViewerImage; onClose(): void }) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  const viewport = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState<{ width: number; height: number } | null>(null);
   const [bounds, setBounds] = useState({ width: 1, height: 1 });
-  const [zoom, setZoom] = useState(null);
+  const [zoom, setZoom] = useState<number | null>(null);
   const [failed, setFailed] = useState(false);
   const fit = size ? Math.min(bounds.width / size.width, bounds.height / size.height, 1) : 1;
   const scale = zoom ?? fit;
 
   useLayoutEffect(() => {
-    const element = dialog.current;
+    const element = dialog.current!;
     element.showModal();
     const observer = new ResizeObserver(([entry]) =>
       setBounds({ width: entry.contentRect.width, height: entry.contentRect.height }),
     );
-    observer.observe(viewport.current);
+    observer.observe(viewport.current!);
     return () => {
       observer.disconnect();
       element.close();
@@ -27,14 +32,14 @@ export function ImageViewer({ image, onClose }) {
   }, [image]);
   useEffect(() => {
     // Keep reader navigation and search shortcuts out of the modal.
-    const key = (event) => {
+    const key = (event: KeyboardEvent) => {
       event.stopPropagation();
       if (event.key === 'Escape') {
         event.preventDefault();
         onClose();
       }
     };
-    const element = dialog.current;
+    const element = dialog.current!;
     element.addEventListener('keydown', key);
     return () => element.removeEventListener('keydown', key);
   }, [onClose]);
@@ -124,15 +129,15 @@ export function ImageViewer({ image, onClose }) {
   );
 }
 
-export function imageForViewer(target) {
-  if (target.tagName === 'IMG')
+export function imageForViewer(target: HTMLElement): ViewerImage | null {
+  if (target instanceof HTMLImageElement)
     return { src: target.currentSrc || target.src, alt: target.alt, trigger: target };
   const svg = target.querySelector('svg');
   if (!svg) return null;
-  const clone = svg.cloneNode(true);
+  const clone = svg.cloneNode(true) as SVGSVGElement;
   const box = svg.viewBox.baseVal;
-  clone.setAttribute('width', box.width || svg.clientWidth);
-  clone.setAttribute('height', box.height || svg.clientHeight);
+  clone.setAttribute('width', String(box.width || svg.clientWidth));
+  clone.setAttribute('height', String(box.height || svg.clientHeight));
   clone.style.removeProperty('max-width');
   clone.style.removeProperty('width');
   return {

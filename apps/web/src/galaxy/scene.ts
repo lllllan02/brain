@@ -38,8 +38,8 @@ interface SceneTransition {
   from: Float32Array;
   to: Float32Array;
   anchor: number;
-  anchorView: ReturnType<CameraDirector['captureAnchorView']>;
-  framingView: ReturnType<CameraDirector['captureFramingView']>;
+  anchorView: ReturnType<CameraDirector['captureAnchorView']> | null;
+  framingView: ReturnType<CameraDirector['captureFramingView']> | null | undefined;
   elapsed: number;
   duration: number;
   expanding: boolean;
@@ -109,7 +109,8 @@ export function createGalaxy(
     collectionRegistry.collections.map((entry) => [entry.id, new Color(entry.color)]),
   );
   const neutralColor = new Color('#c7d3e4');
-  let layout: LayoutEngine, preset: StylePreset;
+  let layout: LayoutEngine | null = null;
+  let preset: StylePreset;
   let width = 1,
     height = 1,
     frameWidth = 1,
@@ -147,7 +148,7 @@ export function createGalaxy(
   let presetFrom: Float32Array | null = null,
     pendingOverview: Float32Array | null = null,
     currentLook: Record<string, number> | null = null;
-  const overviewCache = settledLayouts.get(graph) || new Map();
+  const overviewCache = settledLayouts.get(graph) || new Map<string, Float32Array>();
   settledLayouts.set(graph, overviewCache);
   let branchesReady = false;
   let hoveredCategory: string | null = null;
@@ -174,7 +175,7 @@ export function createGalaxy(
     renderer.setColorFn((node) =>
       expanded && readingIndex < 0
         ? grouping === 'collection'
-          ? collectionColors.get(node.collection) || neutralColor
+          ? collectionColors.get(node.collection!) || neutralColor
           : colors.get(node.folderTop) || neutralColor
         : preset?.id === 'deepfield'
           ? neutralColor
@@ -249,7 +250,7 @@ export function createGalaxy(
       localReading
         ? (i) => {
             const link = data.links[i];
-            return localReading.indices.has(link.source) && localReading.indices.has(link.target);
+            return localReading!.indices.has(link.source) && localReading!.indices.has(link.target);
           }
         : filteredLinks
           ? (i) => {
@@ -259,7 +260,7 @@ export function createGalaxy(
               return (
                 a === b &&
                 (localReading
-                  ? localReading.indices.has(link.source) && localReading.indices.has(link.target)
+                  ? localReading!.indices.has(link.source) && localReading!.indices.has(link.target)
                   : !category ||
                     category.startsWith('collection:') !== (grouping === 'collection') ||
                     a === category)
@@ -281,7 +282,7 @@ export function createGalaxy(
       localReading
         ? links.filter((i) => {
             const link = data.links[i];
-            return localReading.indices.has(link.source) && localReading.indices.has(link.target);
+            return localReading!.indices.has(link.source) && localReading!.indices.has(link.target);
           })
         : filteredLinks
           ? focus.index >= 0 || (!focus.active && hovered >= 0)
@@ -290,8 +291,8 @@ export function createGalaxy(
                 return (
                   groupId(data.nodes[link.source]) === groupId(data.nodes[link.target]) &&
                   (!localReading ||
-                    (localReading.indices.has(link.source) &&
-                      localReading.indices.has(link.target)))
+                    (localReading!.indices.has(link.source) &&
+                      localReading!.indices.has(link.target)))
                 );
               })
             : []
@@ -324,7 +325,7 @@ export function createGalaxy(
       r = Math.max(r, new Vector3().fromArray(target, i).distanceTo(center));
     camera.cancelMotion();
     let fit = (r * 0.76) / Math.min(1, frameWidth / frameHeight);
-    if (expanded && clusters && !clusters.spherical) {
+    if (expanded && clusters && !clusters!.spherical) {
       let horizontal = 30,
         vertical = 30,
         depth = 0;
@@ -358,7 +359,7 @@ export function createGalaxy(
     }
     const from = snapshot();
     display = new Float32Array(from);
-    const to = expanded && readingIndex < 0 ? clusters.positions : overview;
+    const to = expanded && readingIndex < 0 ? clusters!.positions : overview;
     const anchor = preserveView || morph ? readingIndex : -1;
     applyFocus(false);
     const anchorView =
@@ -374,13 +375,13 @@ export function createGalaxy(
     if (
       anchor >= 0 ||
       framingView ||
-      (preserveView && clusters.spherical && !selected && !category && !tag)
+      (preserveView && clusters!.spherical && !selected && !category && !tag)
     )
       camera.cancelMotion();
     else frameDestination(to, instant);
     if (reduced || instant) {
       if (anchor >= 0)
-        camera.updateAnchorView(new Vector3().fromArray(to, anchor * 3), anchorView, 1);
+        camera.updateAnchorView(new Vector3().fromArray(to, anchor * 3), anchorView!, 1);
       if (framingView) camera.updateFramingView(framingView, 1);
       display.set(to);
       transition = null;
@@ -413,14 +414,14 @@ export function createGalaxy(
         transition.to,
         p,
         transition.expanding && !transition.morph,
-        display,
-        clusters,
+        display!,
+        clusters!,
       );
       // Move and frame the reading group on the same animation clock.
       if (transition.anchor >= 0) {
         camera.updateAnchorView(
-          scratch.fromArray(display, transition.anchor * 3),
-          transition.anchorView,
+          scratch.fromArray(display!, transition.anchor * 3),
+          transition.anchorView!,
           categoryEase(p),
         );
       }
@@ -428,7 +429,7 @@ export function createGalaxy(
       categoryBlend =
         transition.blendFrom +
         ((transition.expanding ? 1 : 0) - transition.blendFrom) * categoryEase(p);
-      burst = transition.expanding && !transition.morph && !clusters.spherical ? p : -1;
+      burst = transition.expanding && !transition.morph && !clusters!.spherical ? p : -1;
       renderer.updatePositions();
       categorySpace(categoryBlend, transition.lookFrom, p);
       if (p === 1) {
@@ -475,19 +476,19 @@ export function createGalaxy(
     focus = galaxyFocus(data, selected, category, tag);
     localReading =
       expanded && readingIndex >= 0
-        ? { indices: readingFilter(data, readingIndex, grouping), radius: 60 }
+        ? { indices: readingFilter(data, readingIndex, grouping)!, radius: 60 }
         : null;
     const previewGroup = expanded && readingIndex < 0 && !category && !tag ? hoveredCategory : null;
     renderer.setActiveNode(readingIndex);
     const weights = new Map<number, number>(
       readingTrail?.live
-        ? readingTrail.nodes.map((node) => [nodeIndices.get(node.id), node.weight])
+        ? readingTrail.nodes.map((node) => [nodeIndices.get(node.id)!, node.weight!])
         : [],
     );
     renderer.setFocus(
       localReading
         ? (i) =>
-            localReading.indices.has(i)
+            localReading!.indices.has(i)
               ? i === readingIndex
                 ? 1
                 : readingTrail?.live
@@ -534,7 +535,7 @@ export function createGalaxy(
             if (!paused) camera.beginFocusOrbit(null);
           },
         );
-    } else if (expanded && !category && !tag && clusters) frameDestination(clusters.positions);
+    } else if (expanded && !category && !tag && clusters) frameDestination(clusters!.positions);
     else frame(false, (category || tag) && focus.bright.size ? [...focus.bright] : undefined);
   }
   function fallback() {
@@ -628,7 +629,9 @@ export function createGalaxy(
     if (
       !canvasChanged &&
       destination &&
-      Object.keys(target).every((key) => target[key] === destination[key]) &&
+      (Object.keys(target) as (keyof FrameRegion)[]).every(
+        (key) => target[key] === destination[key],
+      ) &&
       (!(direct || reduced) || !framingTween)
     )
       return;
@@ -670,7 +673,7 @@ export function createGalaxy(
     if (readingTrail) {
       const nodes = readingTrail.nodes.flatMap((node) => {
         const index = nodeIndices.get(node.id);
-        if (index === undefined || (localReading && !localReading.indices.has(index))) return [];
+        if (index === undefined || (localReading && !localReading!.indices.has(index))) return [];
         const point = renderer.projectNode(index, width, height);
         return point.behind
           ? []
@@ -682,7 +685,9 @@ export function createGalaxy(
       ? readingTrail.nodes
           .filter((node) => !node.transient)
           .map((node) => nodeIndices.get(node.id))
-          .filter((i) => i !== undefined && (!localReading || localReading.indices.has(i)))
+          .filter(
+            (i): i is number => i !== undefined && (!localReading || localReading!.indices.has(i)),
+          )
       : [];
     const chosen = [
       ...new Set([readingIndex, focus.index, hovered, previewIndex, ...pathIndices]),
@@ -753,7 +758,7 @@ export function createGalaxy(
     const next = new Map(result.map((label) => [label.id, label]));
     for (const [id, old] of visibleLabels) {
       if (!next.has(id)) {
-        old.opacity = Math.max(0, old.opacity - dt / (MOTION.exit / 1000));
+        old.opacity = Math.max(0, old.opacity! - dt / (MOTION.exit / 1000));
         if (old.opacity === 0 || reduced) visibleLabels.delete(id);
       }
     }
@@ -805,7 +810,7 @@ export function createGalaxy(
       } else {
         // Establish the final pose before the first visible frame. Restored readers
         // and expanded groups share the same birth sequence as a fresh overview.
-        const target = expanded && readingIndex < 0 ? clusters.positions : overview;
+        const target = expanded && readingIndex < 0 ? clusters!.positions : overview;
         display = new Float32Array(target);
         renderer.setDisplayPositions(display);
         categoryBlend = expanded ? 1 : 0;
@@ -828,11 +833,11 @@ export function createGalaxy(
     }
     // No invisible WebGL draws while the worker is settling the first layout.
     if (!ready && !presetFrom) return;
-    if (framingTween && ready) {
+    if (framingTween && framing && ready) {
       framingTween.elapsed += dt * 1000;
       const p = Math.min(1, framingTween.elapsed / (framingTween.duration || MOTION.layout)),
         k = smooth(p);
-      for (const key of Object.keys(framing))
+      for (const key of Object.keys(framing) as (keyof FrameRegion)[])
         framing[key] = framingTween.from[key] + (framingTween.to[key] - framingTween.from[key]) * k;
       renderer.setFramingRegion(framing.width, framing.height, framing.left, framing.top);
       if (p === 1) framingTween = null;
@@ -870,7 +875,7 @@ export function createGalaxy(
       readerLayoutDirty = false;
     }
   }
-  const pick = (event) => {
+  const pick = (event: PointerEvent) => {
     const rect = canvas.getBoundingClientRect();
     return renderer.pickNearest(
       event.clientX - rect.left,
@@ -880,14 +885,14 @@ export function createGalaxy(
       event.pointerType === 'touch' ? 24 : 15,
     );
   };
-  const pointerDown = (event) => {
+  const pointerDown = (event: PointerEvent) => {
     down = { x: event.clientX, y: event.clientY, id: event.pointerId, button: event.button };
     if (hovered >= 0) {
       hovered = -1;
       updateSelectedLinks();
     }
   };
-  const pointerUp = (event) => {
+  const pointerUp = (event: PointerEvent) => {
     const start = down;
     down = null;
     if (
@@ -903,7 +908,7 @@ export function createGalaxy(
     const i = pick(event);
     if (i >= 0) hooks.onSelect(data.nodes[i].id);
   };
-  const pointerMove = (event) => {
+  const pointerMove = (event: PointerEvent) => {
     if (!ready || renderer.revealing || transition || event.buttons) return;
     const next = pick(event);
     if (next !== hovered) {
@@ -918,7 +923,7 @@ export function createGalaxy(
     down = null;
     if (hadHover) updateSelectedLinks();
   };
-  const contextLost = (event) => {
+  const contextLost = (event: Event) => {
     event.preventDefault();
     dispose();
     hooks.onError('三维画面已中断，请重新加载页面。文档仍可通过下方搜索阅读。');
@@ -973,7 +978,7 @@ export function createGalaxy(
       applyFocus(!value?.live || !wasLive);
     },
     prepareReadingTravel(id: string) {
-      const index = nodeIndices.get(id);
+      const index = nodeIndices.get(id!);
       if (disposed || !ready || transition || index === undefined) return false;
       renderer.finishReveal();
       preparedReading = index;
@@ -1005,13 +1010,13 @@ export function createGalaxy(
         (sel !== selected ||
           mod !== category ||
           selectedTag !== tag ||
-          (nodeIndices.get(readingId) ?? -1) !== readingIndex)
+          (nodeIndices.get(readingId!) ?? -1) !== readingIndex)
       )
         renderer.finishReveal();
       selected = sel;
       category = mod;
       tag = selectedTag;
-      readingIndex = nodeIndices.get(readingId) ?? -1;
+      readingIndex = nodeIndices.get(readingId!) ?? -1;
       const arrived = preparedReading === readingIndex && preparedReading >= 0;
       if (readingIndex !== previousReading) preparedReading = -1;
       updateColors();
@@ -1066,11 +1071,11 @@ export function createGalaxy(
     },
     previewNode(id: string | null) {
       if (disposed) return;
-      previewIndex = nodeIndices.get(id) ?? -1;
+      previewIndex = nodeIndices.get(id!) ?? -1;
       renderer.setPreviewNode(previewIndex, !reduced);
     },
     nodeAnchor(id: string) {
-      const index = nodeIndices.get(id);
+      const index = nodeIndices.get(id!);
       if (disposed || !ready || !initialFramed || index === undefined) return null;
       // The reading document remains the origin even while the scene focuses a category/tag.
       const point = renderer.nodePosition(index, scratch).project(renderer.camera);
@@ -1086,7 +1091,7 @@ export function createGalaxy(
       if (!disposed) {
         if (readingTrail && !readingTrail.live && trailIndices.size)
           frame(false, [...trailIndices]);
-        else if (expanded && clusters) frameDestination(clusters.positions);
+        else if (expanded && clusters) frameDestination(clusters!.positions);
         else frame();
       }
     },

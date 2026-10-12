@@ -14,43 +14,51 @@ export function RollerSelect({
   label: string;
 }) {
   const [lastMode, setLastMode] = useState(options[0]?.[0]);
-  const root = useRef(null),
+  const root = useRef<HTMLElement>(null),
     gesture = useRef({ time: 0, delta: 0, used: false }),
-    drag = useRef(null);
-  const [dragX, setDragX] = useState(null);
+    drag = useRef<{
+      id: number;
+      x: number;
+      width: number;
+      index: number;
+      moved: boolean;
+      mode?: string;
+      selected: string;
+    } | null>(null);
+  const [dragX, setDragX] = useState<number | null>(null);
   const enabled = options;
   const center = enabled.findIndex(([mode]) => mode === (active || lastMode));
   const index = Math.max(0, center);
-  const choose = (mode) => {
+  const choose = (mode: string) => {
     setLastMode(mode);
     onChoose(mode);
   };
-  const offsetFor = (position, origin = index) => {
+  const offsetFor = (position: number, origin = index) => {
     const raw = position - origin + (dragX ?? 0);
     let offset = ((raw % enabled.length) + enabled.length) % enabled.length;
     if (offset > enabled.length / 2) offset -= enabled.length;
     return offset;
   };
-  const slotPosition = (offset) =>
+  const slotPosition = (offset: number) =>
     Math.sign(offset) *
     (Math.abs(offset) <= 1 ? Math.abs(offset) * 24 : 24 + (Math.abs(offset) - 1) * 18);
-  const finishDrag = (event) => {
+  const finishDrag = (event: React.PointerEvent<HTMLElement>) => {
     const state = drag.current;
     if (!state || event.pointerId !== state.id) return;
     if (event.type !== 'pointercancel' && !state.moved && state.mode) choose(state.mode);
     drag.current = null;
     setDragX(null);
-    if (root.current.hasPointerCapture(event.pointerId))
-      root.current.releasePointerCapture(event.pointerId);
+    if (root.current!.hasPointerCapture(event.pointerId))
+      root.current!.releasePointerCapture(event.pointerId);
   };
-  const step = (direction) =>
+  const step = (direction: number) =>
     choose(enabled[(index + direction + enabled.length) % enabled.length][0]);
   const stepRef = useRef(step);
   stepRef.current = step;
 
   useEffect(() => {
-    const element = root.current;
-    const wheel = (event) => {
+    const element = root.current!;
+    const wheel = (event: WheelEvent) => {
       if (event.ctrlKey) return; // Preserve browser pinch zoom.
       event.preventDefault();
       event.stopPropagation();
@@ -85,7 +93,7 @@ export function RollerSelect({
       tabIndex={0}
       onPointerDown={(event) => {
         if (event.button !== 0 || !event.isPrimary) return;
-        const bounds = root.current.getBoundingClientRect();
+        const bounds = root.current!.getBoundingClientRect();
         drag.current = {
           id: event.pointerId,
           x: event.clientX,
@@ -95,8 +103,8 @@ export function RollerSelect({
           mode: (event.target as Element).closest('button')?.dataset.mode,
           selected: enabled[index][0],
         };
-        root.current.setPointerCapture(event.pointerId);
-        root.current.focus({ preventScroll: true });
+        root.current!.setPointerCapture(event.pointerId);
+        root.current!.focus({ preventScroll: true });
       }}
       onPointerMove={(event) => {
         const state = drag.current;

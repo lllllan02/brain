@@ -5,7 +5,7 @@ const storageKey = `horizon:reading-queue:v1:${globalThis.location?.pathname || 
 
 function readQueue(): { id: string }[] {
   try {
-    const value = JSON.parse(localStorage.getItem(storageKey));
+    const value = JSON.parse(localStorage.getItem(storageKey) ?? 'null');
     return Array.isArray(value)
       ? [...new Set(value.filter((id) => typeof id === 'string' && id))].map((id) => ({ id }))
       : [];

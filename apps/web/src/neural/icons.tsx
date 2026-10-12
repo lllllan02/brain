@@ -49,7 +49,11 @@ const paths = {
   file: 'M6 3h8l4 4v14H6ZM14 3v5h4',
 };
 
-export function Icon({ name, size = 18, ...props }) {
+export function Icon({
+  name,
+  size = 18,
+  ...props
+}: React.SVGProps<SVGSVGElement> & { name: string; size?: number }) {
   return (
     <svg
       width={size}
@@ -63,7 +67,7 @@ export function Icon({ name, size = 18, ...props }) {
       aria-hidden="true"
       {...props}
     >
-      <path d={paths[name] || paths.file} />
+      <path d={paths[name as keyof typeof paths] || paths.file} />
     </svg>
   );
 }

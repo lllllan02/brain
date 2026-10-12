@@ -32,7 +32,7 @@ export function ListNavigation({
       : cluster?.recent
         ? 'recent'
         : cluster?.document
-          ? cluster.direction || 'outgoing'
+          ? cluster!.direction || 'outgoing'
           : cluster
             ? 'context'
             : null;
@@ -43,8 +43,10 @@ export function ListNavigation({
       label,
       title,
       ['outgoing', 'incoming'].includes(mode)
-        ? clusterDocuments(graph, { document: node.id, direction: mode as 'incoming' | 'outgoing' })
-            .length
+        ? clusterDocuments(graph, {
+            document: node!.id,
+            direction: mode as 'incoming' | 'outgoing',
+          }).length
         : null,
       mode === 'queue'
         ? queueRef
@@ -57,7 +59,7 @@ export function ListNavigation({
   if (active === 'context')
     options.unshift([
       'context',
-      cluster.tag ? '标签' : cluster.category?.startsWith('collection:') ? '目录' : '分类',
+      cluster!.tag ? '标签' : cluster!.category?.startsWith('collection:') ? '目录' : '分类',
       '当前列表',
     ]);
   for (const option of options) {

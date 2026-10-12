@@ -9,11 +9,11 @@ export function libraryStats(documents: ReaderNode[]) {
     references = new Set<string>();
   const ids = new Set(documents.map((doc) => doc.id));
   for (const doc of documents) {
-    collections.set(doc.collection, (collections.get(doc.collection) || 0) + 1);
+    collections.set(doc.collection!, (collections.get(doc.collection!) || 0) + 1);
     const category = doc.category?.trim() || '';
     const group = categories.get(category) || { name: category, total: 0, collections: {} };
     group.total++;
-    group.collections[doc.collection] = (group.collections[doc.collection] || 0) + 1;
+    group.collections[doc.collection!] = (group.collections[doc.collection!] || 0) + 1;
     categories.set(category, group);
     for (const tag of new Set(doc.tags || [])) tags.set(tag, (tags.get(tag) || 0) + 1);
     for (const ref of doc.references || [])

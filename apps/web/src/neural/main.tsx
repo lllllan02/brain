@@ -39,9 +39,9 @@ function App() {
     [reading.navigate],
   );
   const route = parseReadingRoute(reading.location.url),
-    node = graph?.index.get(route.id);
+    node = graph?.index.get(route.id!);
   const focus = node?.module
-    ? { mod: moduleOf(graph, node).id, sel: node.id }
+    ? { mod: moduleOf(graph!, node)!.id, sel: node.id }
     : {
         mod:
           graph?.modules.some((m) => m.id === route.module) ||
@@ -76,4 +76,4 @@ function App() {
     </div>
   );
 }
-createRoot(document.getElementById('root')).render(<App />);
+createRoot(document.getElementById('root')!).render(<App />);

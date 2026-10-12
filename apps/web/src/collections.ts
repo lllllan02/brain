@@ -1,3 +1,14 @@
+interface CollectionConfig {
+  id: string;
+  label: string;
+  description: string;
+  enabled?: boolean;
+  icon: string;
+  color: string;
+  link?: { color?: string; opacity?: number };
+  marker?: { shape?: string; hollow?: boolean };
+  node?: { size?: number; halo?: number; rays?: number; rayStretch?: number; rayAngle?: number };
+}
 import config from '../collections.config.json' with { type: 'json' };
 
 const defaultStyle = Object.freeze({
@@ -9,18 +20,18 @@ const defaultStyle = Object.freeze({
 
 // Configuration is shared by Node (reader/export/retrieval) and the browser.
 // Reject unsafe paths and invalid visual values before either side uses them.
-export function createCollectionRegistry(entries) {
+export function createCollectionRegistry(entries: CollectionConfig[]) {
   if (!Array.isArray(entries)) throw new Error('目录配置必须是数组');
-  const seen = new Set();
+  const seen = new Set<string>();
   const collections = entries.map((entry) => {
-    const fail = (message) => {
+    const fail = (message: string) => {
       throw new Error(`目录配置 ${entry?.id || '(未命名)'}：${message}`);
     };
     if (!entry || typeof entry !== 'object' || !/^[a-z][a-z0-9-]*$/.test(entry.id || ''))
       fail('id 必须是 content 下的单层小写目录名');
     if (seen.has(entry.id)) fail('id 重复');
     seen.add(entry.id);
-    for (const key of ['label', 'description'])
+    for (const key of ['label', 'description'] as const)
       if (typeof entry[key] !== 'string' || !entry[key].trim()) fail(`${key} 必须是非空文本`);
     if (entry.enabled !== undefined && typeof entry.enabled !== 'boolean')
       fail('enabled 必须是布尔值');
@@ -31,7 +42,7 @@ export function createCollectionRegistry(entries) {
     )
       fail('icon 必须是 SVG path 的 d 属性');
     if (!/^#[0-9a-f]{6}$/i.test(entry.color || '')) fail('color 必须是六位十六进制颜色');
-    for (const key of ['marker', 'node', 'link'])
+    for (const key of ['marker', 'node', 'link'] as const)
       if (
         entry[key] !== undefined &&
         (!entry[key] || typeof entry[key] !== 'object' || Array.isArray(entry[key]))
@@ -54,7 +65,7 @@ export function createCollectionRegistry(entries) {
       ['rays', 0, 2],
       ['rayStretch', 0.5, 2],
       ['rayAngle', -180, 180],
-    ]) {
+    ] as const) {
       if (!Number.isFinite(node[key]) || node[key] < min || node[key] > max)
         fail(`node.${key} 应在 ${min} 到 ${max} 之间`);
     }
@@ -64,8 +75,8 @@ export function createCollectionRegistry(entries) {
   return {
     collections,
     directories: collections.filter((entry) => entry.enabled).map((entry) => entry.id),
-    label: (id) => byId.get(id)?.label || id,
-    style: (id) => byId.get(id) || defaultStyle,
+    label: (id: string | undefined) => byId.get(id!)?.label || id || '',
+    style: (id: string | undefined) => byId.get(id!) || defaultStyle,
     icons: Object.fromEntries(
       collections.map((entry) => [
         entry.id,
@@ -80,7 +91,7 @@ export const CONTENT_COLLECTIONS = collectionRegistry.directories;
 export const collectionLabel = collectionRegistry.label;
 export const collectionIcons = collectionRegistry.icons;
 export const collectionStyle = collectionRegistry.style;
-export const collectionMarkerStyle = (id) => {
+export const collectionMarkerStyle = (id: string | undefined) => {
   const { color, marker } = collectionStyle(id);
   return {
     '--collection-color': color,

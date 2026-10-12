@@ -17,16 +17,16 @@ export function ActivityTimeline({
   activity,
   graph,
 }: {
-  activity: LibraryActivity;
+  activity?: LibraryActivity;
   graph: ReaderGraph;
 }) {
   const [collection, setCollection] = useState('all'),
     [kind, setKind] = useState('all');
-  const [today, setToday] = useState(() => activityDay(new Date().toISOString()));
+  const [today, setToday] = useState(() => activityDay(new Date().toISOString())!);
   const [year, setYear] = useState(() => today.slice(0, 4)),
     [selected, setSelected] = useState(today);
   useEffect(() => {
-    const timer = setInterval(() => setToday(activityDay(new Date().toISOString())), 60000);
+    const timer = setInterval(() => setToday(activityDay(new Date().toISOString())!), 60000);
     return () => clearInterval(timer);
   }, []);
   const events = activity?.events || [];
@@ -47,7 +47,7 @@ export function ActivityTimeline({
     .sort()
     .reverse();
   const observedStart = activityDay(activity?.startedAt);
-  const selectYear = (value) => {
+  const selectYear = (value: string) => {
     setYear(value);
     setSelected(value === today.slice(0, 4) ? today : `${value}-12-31`);
   };
@@ -121,7 +121,7 @@ export function ActivityTimeline({
                       ? `${Number(
                           cells
                             .slice(i * 7, i * 7 + 7)
-                            .find((d) => d.startsWith(year) && d.endsWith('-01'))
+                            .find((d) => d.startsWith(year) && d.endsWith('-01'))!
                             .slice(5, 7),
                         )}月`
                       : ''}
@@ -167,8 +167,8 @@ export function ActivityTimeline({
                     const next = shiftDay(day, offset);
                     if (!next.startsWith(year) || next > today) return;
                     setSelected(next);
-                    event.currentTarget.parentElement
-                      .querySelector<HTMLButtonElement>(`[data-day="${next}"]`)
+                    event.currentTarget
+                      .parentElement!.querySelector<HTMLButtonElement>(`[data-day="${next}"]`)
                       ?.focus();
                   }}
                 />
@@ -212,7 +212,7 @@ export function ActivityTimeline({
                         ? e.collections.map(collectionLabel).join(' / ')
                         : '未关联文档'}
                     {e.files?.length
-                      ? ` · ${e.files.map((f) => f.split('/').pop()).join('、')}`
+                      ? ` · ${e.files.map((f: string) => f.split('/').pop()).join('、')}`
                       : ''}
                   </p>
                 </div>

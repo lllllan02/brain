@@ -35,7 +35,9 @@ tags: ["知识库", "图谱", "Markdown", "服务启动", "GitHub-Pages"]
 
 在 `apps/web/` 运行 `npm run typecheck` 检查类型，`npm test` 运行回归测试，`npm run format:check` 检查格式，`npm run format` 格式化自有代码。`npm run build` 和 `npm run build:pages` 均先检查类型再构建。第三方移植代码保留原有排版。
 
-此次迁移保留既有界面、文件内容来源与行为。类型检查已覆盖应用、服务与构建脚本，但为兼容存量动态代码，暂时关闭 `noImplicitAny` 和 `strictNullChecks`，尚未达到完整严格模式；后续可按模块补齐参数与空值约束。
+类型检查覆盖应用、服务与构建脚本，启用完整 `strict` 模式（包含 `noImplicitAny`、`strictNullChecks`）。文档结点与导航结点、DOM 引用、异步状态和可空数据均通过共享类型或使用位置的约束表达。迁移保留既有界面、文件内容来源与行为。
+
+三维场景通过动态导入加载，Three.js 核心和 WebGL 渲染分别分包；Mermaid 仍只在正文包含图表时加载，共享代码按上游模块分包。`scripts/bundle-budget.ts` 在构建时检查普通 JS 包不超过 500 KB，并拒绝 Three.js 或 Mermaid 进入入口的静态依赖。上游预打包的 Mermaid 解析器与 ELK 引擎分别保留 700 KB、1.5 MB 上限；它们仍可能触发 Vite 默认的 500 KB 提示，不提高该阈值，也不通过删除图表类型减小体积。构建产物中的 `bundle-report.json` 记录实际大小、上限与入口静态依赖，超出预算会阻断构建。
 
 ## 启动与使用
 

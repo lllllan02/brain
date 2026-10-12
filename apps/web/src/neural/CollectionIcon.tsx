@@ -1,8 +1,8 @@
 import React from 'react';
 import { collectionIcons } from '../collections.ts';
 
-export function CollectionIcon({ collection }: { collection: string }) {
-  const icon = collectionIcons[collection];
+export function CollectionIcon({ collection }: { collection?: string }) {
+  const icon = collectionIcons[collection!];
   if (!icon) return null;
   return (
     <svg

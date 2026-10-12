@@ -13,35 +13,35 @@ export function CardToStar({
   reduced,
 }: {
   flight: Flight | null;
-  getAnchor: NodeAnchor;
+  getAnchor?: NodeAnchor;
   onReveal(key: string): void;
   onFinish(key: string): void;
   reduced: boolean;
 }) {
-  const root = useRef(null);
+  const root = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     if (!flight || reduced) {
       if (flight) onFinish(flight.key);
       return;
     }
-    const element = root.current;
-    const title = element.querySelector('.card-flight-title');
-    const star = element.querySelector('.card-flight-star');
-    const arrival = element.querySelector('.card-flight-arrival');
-    const tail = element.querySelector('path');
-    let raf,
-      started = null,
-      waitingSince = null,
-      lastTarget = null,
-      points = [],
+    const element = root.current!;
+    const title = element.querySelector<HTMLElement>('.card-flight-title')!;
+    const star = element.querySelector<HTMLElement>('.card-flight-star')!;
+    const arrival = element.querySelector<HTMLElement>('.card-flight-arrival')!;
+    const tail = element.querySelector('path')!;
+    let raf: number,
+      started: number | null = null,
+      waitingSince: number | null = null,
+      lastTarget: ReturnType<NodeAnchor> = null,
+      points: { x: number; y: number; time: number }[] = [],
       revealed = false;
-    const update = (now) => {
+    const update = (now: number) => {
       if (document.hidden) {
         onFinish(flight.key);
         return;
       }
       waitingSince ??= now;
-      lastTarget = getAnchor(flight.id) || lastTarget;
+      lastTarget = getAnchor?.(flight.id) || lastTarget;
       // No guessed landing point when WebGL is unavailable or the star is behind us.
       if (!lastTarget) {
         if (now - waitingSince > 650) {
@@ -60,18 +60,18 @@ export function CardToStar({
       }
       const state = cardFlight(flight, lastTarget, elapsed);
       title.style.transform = `translate(${state.x}px,${state.y}px) translate(-50%,-50%) scale(${state.scale})`;
-      title.style.opacity = state.textOpacity;
+      title.style.opacity = String(state.textOpacity);
       star.style.transform = `translate(${state.x}px,${state.y}px) translate(-50%,-50%) scale(${state.starScale})`;
-      star.style.opacity = state.starOpacity;
+      star.style.opacity = String(state.starOpacity);
       arrival.style.transform = `translate(${lastTarget.x}px,${lastTarget.y}px) translate(-50%,-50%) scale(${state.ringScale})`;
-      arrival.style.opacity = state.ringOpacity;
+      arrival.style.opacity = String(state.ringOpacity);
       points.push({ x: state.x, y: state.y, time: elapsed });
       points = points.filter((point) => elapsed - point.time < 110);
       tail.setAttribute(
         'd',
         points.map((point, index) => `${index ? 'L' : 'M'}${point.x},${point.y}`).join(' '),
       );
-      tail.style.opacity = state.starOpacity * 0.45;
+      tail.style.opacity = String(state.starOpacity * 0.45);
       if (elapsed < 800) raf = requestAnimationFrame(update);
       else onFinish(flight.key);
     };

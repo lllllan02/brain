@@ -39,7 +39,7 @@ export function DocumentReader({
   const [copying, setCopying] = useState(false);
   const titleRef = useRef(null);
   useLayoutEffect(() => {
-    const wrap = ref.current.closest('.analysis-wrap');
+    const wrap = ref.current!.closest('.analysis-wrap')!;
     wrap.classList.toggle('full-reader', full);
     return () => wrap.classList.remove('full-reader');
   }, [full]);
@@ -50,7 +50,7 @@ export function DocumentReader({
     return () => clearTimeout(timer);
   }, [copy]);
   useLayoutEffect(() => {
-    const scroller = ref.current.querySelector('.an-scroll');
+    const scroller = ref.current!.querySelector('.an-scroll')!;
     const target = readingLocation?.anchor
       ? [...scroller.querySelectorAll('[id]')].find((el) => el.id === readingLocation.anchor)
       : null;
@@ -106,7 +106,7 @@ export function DocumentReader({
     template.innerHTML = node.html;
     return collectExternalLinks(template.content.querySelectorAll('a[href]'));
   }, [node.html]);
-  const copyDocument = async (titleOnly) => {
+  const copyDocument = async (titleOnly: boolean) => {
     setCopy('');
     setCopying(true);
     try {
@@ -118,17 +118,17 @@ export function DocumentReader({
       setCopying(false);
     }
   };
-  const handleClick = async (e) => {
-    const button = e.target.closest('.copy-code');
+  const handleClick = async (e: React.MouseEvent<HTMLElement>) => {
+    const button = (e.target as Element).closest<HTMLButtonElement>('.copy-code');
     if (!button || button.disabled) return;
     const label = button.closest('.diagram-block') ? '复制源码' : '复制代码';
     button.disabled = true;
     try {
       await navigator.clipboard.writeText(
         button
-          .closest('.code-block')
-          .querySelector(button.closest('.diagram-block') ? '.diagram-source code' : 'pre code')
-          .textContent,
+          .closest('.code-block')!
+          .querySelector(button.closest('.diagram-block') ? '.diagram-source code' : 'pre code')!
+          .textContent!,
       );
       button.dataset.copied = 'true';
       button.title = '已复制';

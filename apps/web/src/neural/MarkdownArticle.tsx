@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { ImageViewer, imageForViewer } from './ImageViewer.tsx';
+import { type ViewerImage, ImageViewer, imageForViewer } from './ImageViewer.tsx';
 import { renderDiagrams } from './diagrams.ts';
 import './diagrams.css';
 import { decorateExternalLinks } from './external-links.ts';
@@ -11,22 +11,24 @@ export const MarkdownArticle = memo(function MarkdownArticle({
   html: string;
   zoomable?: boolean;
 }) {
-  const ref = useRef(null);
-  const [image, setImage] = useState(null);
+  const ref = useRef<HTMLElement>(null);
+  const [image, setImage] = useState<ViewerImage | null>(null);
   useEffect(() => {
     setImage(null);
-    decorateExternalLinks(ref.current, import.meta.env.BASE_URL);
-    const rendering = renderDiagrams(ref.current);
+    decorateExternalLinks(ref.current!, import.meta.env.BASE_URL);
+    const rendering = renderDiagrams(ref.current!);
     let cancelled = false;
     const decorate = () => {
       if (!zoomable || cancelled) return;
-      ref.current.querySelectorAll('img, .diagram-canvas:not([hidden])').forEach((element) => {
-        element.dataset.imageViewer = '';
-        element.tabIndex = 0;
-        element.setAttribute('role', 'button');
-        element.setAttribute('aria-label', `放大查看：${element.alt || '图表'}`);
-        element.title = '点击放大查看';
-      });
+      ref
+        .current!.querySelectorAll<HTMLElement>('img, .diagram-canvas:not([hidden])')
+        .forEach((element) => {
+          element.dataset.imageViewer = '';
+          element.tabIndex = 0;
+          element.setAttribute('role', 'button');
+          element.setAttribute('aria-label', `放大查看：${element.getAttribute('alt') || '图表'}`);
+          element.title = '点击放大查看';
+        });
     };
     decorate();
     rendering.ready.then(decorate);
@@ -35,10 +37,11 @@ export const MarkdownArticle = memo(function MarkdownArticle({
       rendering.cancel();
     };
   }, [html, zoomable]);
-  const open = (event) => {
-    const target = event.target.closest('[data-image-viewer]');
+  const open = (event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+    const target = (event.target as Element).closest<HTMLElement>('[data-image-viewer]');
     if (!zoomable || !target) return;
-    if (event.type === 'keydown' && !['Enter', ' '].includes(event.key)) return;
+    if (event.type === 'keydown' && !['Enter', ' '].includes((event as React.KeyboardEvent).key))
+      return;
     event.preventDefault();
     event.stopPropagation();
     setImage(imageForViewer(target));

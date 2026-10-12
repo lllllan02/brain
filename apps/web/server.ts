@@ -1,3 +1,4 @@
+import type { Library } from './src/types/library.ts';
 import http from 'node:http';
 import { CONFIG } from './src/config.ts';
 import path from 'node:path';
@@ -7,19 +8,19 @@ import { createServer as createViteServer } from 'vite';
 import { loadLibrary, safeAsset } from './src/library.ts';
 import { activityForLibrary } from './src/activity.ts';
 import { moveDocument, MoveError, isLocalWriteRequest } from './src/move-document.ts';
-let queue = Promise.resolve();
-const serialize = (task) => {
+let queue: Promise<unknown> = Promise.resolve();
+const serialize = <T>(task: () => Promise<T>): Promise<T> => {
   const result = queue.then(task);
   queue = result.catch(() => {});
   return result;
 };
 const dir = path.dirname(fileURLToPath(import.meta.url)),
   root = path.resolve(dir, '../../content');
-const withActivity = async (library) => ({
+const withActivity = async (library: Library) => ({
   ...library,
   activity: await activityForLibrary(root, library, { observe: true }),
 });
-const mime = {
+const mime: Record<string, string> = {
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
@@ -32,7 +33,7 @@ const mime = {
 const headers = { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' };
 const server = http.createServer(async (req, res) => {
   try {
-    const url = new URL(req.url, 'http://localhost');
+    const url = new URL(req.url || '/', 'http://localhost');
     if (url.pathname === '/api/library') {
       if (req.method !== 'GET') {
         res.writeHead(405);

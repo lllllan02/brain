@@ -25,7 +25,7 @@ function Documents({
 }
 
 export function DashboardInsights({ graph }: { graph: import('../types/graph.ts').ReaderGraph }) {
-  const [category, setCategory] = useState(null);
+  const [category, setCategory] = useState<string | null>(null);
   const [distribution, setDistribution] = useState('categories');
   const [allCategories, setAllCategories] = useState(false);
   const documents = useMemo(() => graph.nodes.filter((node) => node.module), [graph]);
@@ -36,7 +36,8 @@ export function DashboardInsights({ graph }: { graph: import('../types/graph.ts'
   const data = useMemo(() => dashboardInsights(documents, selected), [documents, selected]);
   const stats = useMemo(() => libraryStats(data.scoped), [data]);
   const collections = collectionRegistry.collections.filter((c) => c.enabled);
-  const percent = (count) => (stats.total ? `${((count / stats.total) * 100).toFixed(1)}%` : '0%');
+  const percent = (count: number) =>
+    stats.total ? `${((count / stats.total) * 100).toFixed(1)}%` : '0%';
   const scopeName = selected === null ? '全部专题' : selected || '未分类';
   return (
     <section className="dashboard-insights" aria-labelledby="insights-title">
@@ -252,7 +253,7 @@ export function DashboardInsights({ graph }: { graph: import('../types/graph.ts'
           <p className="insight-list-label">引用较多的文章 · 前 5 篇</p>
           <Documents
             docs={data.ranked.slice(0, 5)}
-            count={(doc) => `${data.incoming.get(doc.id).size} 篇引用`}
+            count={(doc) => `${data.incoming.get(doc.id)!.size} 篇引用`}
           />
           <details key={`${selected}-isolated`}>
             <summary>

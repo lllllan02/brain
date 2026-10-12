@@ -46,7 +46,7 @@ export function useLibrary() {
         }, 4000);
     return () => {
       active = false;
-      clearInterval(timer);
+      if (timer !== null) clearInterval(timer);
     };
   }, []);
   const move = useCallback(
@@ -56,7 +56,7 @@ export function useLibrary() {
       revision.current++;
       setMoveState({ id: doc.id, pending: true });
       try {
-        const next = await moveLibraryDocument(doc.id, collection, library.version);
+        const next = await moveLibraryDocument(doc.id, collection, library!.version);
         setLibrary(next);
         setMoveState({ id: doc.id, pending: false, collection });
       } catch (error) {

@@ -34,10 +34,10 @@ import { documentTime } from './document-dates.ts';
 import { safeAsset } from './library.ts';
 import { CONTENT_COLLECTIONS } from './collections.ts';
 
-const hash = (value) => createHash('sha256').update(value).digest('hex');
+const hash = (value: string | Buffer) => createHash('sha256').update(value).digest('hex');
 const imageExt = /\.(png|jpe?g|webp|gif|svg|excalidraw)$/i;
-const groupId = (file) => file.replace(imageExt, '');
-const cache = new Map();
+const groupId = (file: string) => file.replace(imageExt, '');
+const cache = new Map<string, { signature: string; digest: string }>();
 export function metadataEvents(documents: LibraryDocument[]): ActivityEvent[] {
   return documents.flatMap((doc) => {
     const events: ActivityEvent[] = [];
@@ -55,7 +55,7 @@ export function metadataEvents(documents: LibraryDocument[]): ActivityEvent[] {
       events.push({
         id: `metadata:${doc.id}:${kind}:${time}`,
         kind,
-        time,
+        time: time!,
         entity: `doc:${doc.id}`,
         docId: doc.id,
         title: doc.title,
@@ -68,7 +68,7 @@ export function metadataEvents(documents: LibraryDocument[]): ActivityEvent[] {
 }
 async function imageSnapshot(root: string, documents: LibraryDocument[]) {
   const images: Record<string, ImageSnapshot> = {};
-  async function walk(dir) {
+  async function walk(dir: string) {
     let entries;
     try {
       if (!(await lstat(path.join(root, dir))).isDirectory()) return;
@@ -123,7 +123,7 @@ function publicActivity(
 async function readState(file: string): Promise<ActivityState | null> {
   try {
     if (!(await lstat(file)).isFile()) throw Error('活动记录不是普通文件');
-    const state = JSON.parse(await readFile(file, 'utf8'));
+    const state = JSON.parse(await readFile(file, 'utf8')) as ActivityState;
     if (
       state.schema !== 1 ||
       !state.documents ||
@@ -165,7 +165,7 @@ export async function activityForLibrary(
         library.documents,
       );
       if (publicExport) {
-        const images = new Set();
+        const images = new Set<string>();
         for (const doc of library.documents)
           for (const match of doc.html.matchAll(/\/api\/asset\?[^"\s<>]+/g)) {
             const url = new URL(match[0].replaceAll('&amp;', '&'), 'http://local');
@@ -205,7 +205,7 @@ export async function activityForLibrary(
         entity,
         title: item.title,
         time: now,
-        collections: item.collections || [item.collection],
+        collections: item.collections || [item.collection!],
         source: 'observed',
         ...extra,
       });

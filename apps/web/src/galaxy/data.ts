@@ -8,11 +8,11 @@ export function galaxyData(graph: ReaderGraph): GraphData {
   const nodes = documents.map((node) => ({
     id: node.id,
     name: node.title,
-    folderTop: node.module,
+    folderTop: node.module!,
     collection: node.collection,
-    degree: node.deg,
-    inDegree: node.in,
-    outDegree: node.out,
+    degree: node.deg!,
+    inDegree: node.in!,
+    outDegree: node.out!,
     fileSize: new TextEncoder().encode(node.body || '').length,
     tags: node.tags || [],
     unresolved: false,
@@ -20,7 +20,7 @@ export function galaxyData(graph: ReaderGraph): GraphData {
   }));
   const links = graph.links
     .filter((link) => link.kind === 'wiki' && indices.has(link.a) && indices.has(link.b))
-    .map((link) => ({ source: indices.get(link.a), target: indices.get(link.b) }));
+    .map((link) => ({ source: indices.get(link.a)!, target: indices.get(link.b)! }));
   return { nodes, links };
 }
 
@@ -47,8 +47,8 @@ export function galaxyFocus(
       if (
         tag
           ? node.tags?.includes(tag)
-          : category.startsWith('collection:')
-            ? node.collection === category.slice(11)
+          : category!.startsWith('collection:')
+            ? node.collection === category!.slice(11)
             : node.folderTop === category
       )
         bright.add(i);

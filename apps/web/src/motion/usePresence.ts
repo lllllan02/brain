@@ -15,7 +15,7 @@ export function usePresence<T, E extends HTMLElement = HTMLDivElement>(
 ) {
   const [retained, setRetained] = useState(() => ({ value, key }));
   const snapshot = useRef(value),
-    mountedKey = useRef(null);
+    mountedKey = useRef<string | null>(null);
   const ref = useRef<E>(null),
     animation = useRef<Animation>(null),
     mounted = useRef<HTMLElement>(null);

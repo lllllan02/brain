@@ -9,8 +9,8 @@ export function starCluster(
   options: { links?: { source: string; target: string }[]; groups?: Map<string, string> } = {},
 ) {
   if (ids.length < 2) return new Float32Array(ids.length * 3);
-  const points = new Map(),
-    placed = [];
+  const points = new Map<string, number[]>(),
+    placed: number[][] = [];
   for (const id of [...ids].sort()) {
     let state = 2166136261;
     for (const c of id) state = Math.imul(state ^ c.charCodeAt(0), 16777619);
@@ -21,7 +21,7 @@ export function starCluster(
       return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     };
     const r = radius * Math.pow(random(), 0.65);
-    let best,
+    let best: number[] = [],
       distance = -1;
     for (let attempt = 0; attempt < 16; attempt++) {
       const z = random() * 2 - 1,
@@ -45,15 +45,15 @@ export function starCluster(
     placed.push(best);
   }
   if (options.links?.length) arrangeSeats(ids, points, radius, options);
-  return new Float32Array(ids.flatMap((id) => points.get(id)));
+  return new Float32Array(ids.flatMap((id) => points.get(id)!));
 }
 
 // 先按分类给每组一个球面方向，组内文档优先占据该方向附近的座位；
 // 再用确定性的两两交换缩短引用总长度。只交换座位，不移动或新增采样点。
 function arrangeSeats(
-  ids,
-  points,
-  radius,
+  ids: string[],
+  points: Map<string, number[]>,
+  radius: number,
   {
     links,
     groups = new Map(),
@@ -61,7 +61,7 @@ function arrangeSeats(
 ) {
   const order = [...ids].sort(),
     index = new Map(order.map((id, i) => [id, i]));
-  const seats = order.map((id) => points.get(id));
+  const seats = order.map((id) => points.get(id)!);
   const group = order.map((id) => groups.get(id) ?? '');
   const names = [...new Set(group)].sort();
   const anchors = new Map(
@@ -72,27 +72,27 @@ function arrangeSeats(
       return [name, [r * Math.cos(angle), y, r * Math.sin(angle)]];
     }),
   );
-  const direction = (p) => {
+  const direction = (p: number[]) => {
     const l = Math.hypot(...p) || 1;
-    return p.map((v) => v / l);
+    return p.map((v: number) => v / l);
   };
   // 分组轮流挑座位：每组选与自身方向最一致的空位，组大小决定挑选次数。
   const members = new Map(
     names.map((name) => [name, order.map((_, i) => i).filter((i) => group[i] === name)]),
   );
   const free = new Set(seats.map((_, i) => i)),
-    seat = new Array(order.length);
+    seat = new Array<number>(order.length);
   const queues = names.map((name) => ({
     name,
-    left: [...members.get(name)],
+    left: [...members.get(name)!],
     taken: 0,
-    size: members.get(name).length,
+    size: members.get(name)!.length,
   }));
   while (free.size) {
     const next = queues
       .filter((q) => q.left.length)
       .sort((a, b) => a.taken / a.size - b.taken / b.size || a.name.localeCompare(b.name))[0];
-    const anchor = anchors.get(next.name);
+    const anchor = anchors.get(next.name)!;
     let best = -1,
       score = -Infinity;
     for (const s of free) {
@@ -103,19 +103,19 @@ function arrangeSeats(
         best = s;
       }
     }
-    seat[next.left.shift()] = best;
+    seat[next.left.shift()!] = best;
     free.delete(best);
     next.taken++;
   }
-  const neighbours = order.map(() => []);
-  for (const link of links) {
+  const neighbours = order.map((): number[] => []);
+  for (const link of links!) {
     const a = index.get(link.source),
       b = index.get(link.target);
     if (a === undefined || b === undefined || a === b) continue;
     neighbours[a].push(b);
     neighbours[b].push(a);
   }
-  const length = (i, s, j = -1, t = -1) =>
+  const length = (i: number, s: number, j = -1, t = -1) =>
     neighbours[i].reduce((sum, n) => {
       const p = seats[s],
         q = seats[n === j ? t : seat[n]];
@@ -126,7 +126,7 @@ function arrangeSeats(
     state = Math.imul(state ^ (state >>> 13), 0x5bd1e995) >>> 0;
     return ((state ^ (state >>> 15)) >>> 0) / 4294967296;
   };
-  const occupant = new Array(seats.length);
+  const occupant = new Array<number>(seats.length);
   seat.forEach((s, i) => {
     occupant[s] = i;
   });

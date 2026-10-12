@@ -1,6 +1,12 @@
+import type { RefObject } from 'react';
 import { useLayoutEffect, useState } from 'react';
 
-export function useToolbarTitle(readerRef, titleRef, documentId, locationKey) {
+export function useToolbarTitle(
+  readerRef: RefObject<HTMLElement | null>,
+  titleRef: RefObject<HTMLElement | null>,
+  documentId: string,
+  locationKey?: string,
+) {
   const [visible, setVisible] = useState(false);
   useLayoutEffect(() => {
     const scroller = readerRef.current?.querySelector('.an-scroll');

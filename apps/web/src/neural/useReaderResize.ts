@@ -1,17 +1,28 @@
+import type { RefObject } from 'react';
 import { useLayoutEffect, useRef } from 'react';
 import { readViewState, writeViewState, validSize } from './view-state.ts';
 
-export function useReaderResize(readerRef, full, onResize) {
-  const drag = useRef(null);
+export function useReaderResize(
+  readerRef: RefObject<HTMLElement | null>,
+  full: boolean,
+  onResize?: () => void,
+) {
+  const drag = useRef<{ id: number; x: number; y: number; width: number; height: number } | null>(
+    null,
+  );
   const sizeKey = full ? 'readerSize:full' : 'readerSize:side';
   useLayoutEffect(() => {
-    const wrap = readerRef.current.closest('.analysis-wrap');
+    const wrap = readerRef.current!.closest<HTMLElement>('.analysis-wrap')!;
     const restore = () => {
       drag.current = null;
       wrap.classList.remove('reader-resized', 'reader-resizing');
       wrap.style.removeProperty('--reader-width');
       wrap.style.removeProperty('--reader-height');
-      const saved = readViewState(sizeKey, null, validSize);
+      const saved = readViewState<{ width: number; height: number } | null>(
+        sizeKey,
+        null,
+        validSize,
+      );
       if (saved && window.matchMedia('(min-width: 901px)').matches)
         apply(saved.width, saved.height, false);
     };
@@ -23,10 +34,10 @@ export function useReaderResize(readerRef, full, onResize) {
       wrap.classList.remove('reader-resizing');
     };
   }, [readerRef, full]);
-  const apply = (width, height, persist = true) => {
-    const wrap = readerRef.current.closest('.analysis-wrap');
+  const apply = (width: number, height: number, persist = true) => {
+    const wrap = readerRef.current!.closest<HTMLElement>('.analysis-wrap')!;
     const rect = wrap.getBoundingClientRect();
-    const page = wrap.closest('.galaxy-page');
+    const page = wrap.closest<HTMLElement>('.galaxy-page')!;
     const listSpace = page.classList.contains('galaxy-browsing') ? 236 : 16;
     const maxWidth = Math.max(0, rect.right - listSpace);
     // Reserve the search dock's actual space so the lower-left grip never
@@ -47,18 +58,18 @@ export function useReaderResize(readerRef, full, onResize) {
     if (persist) writeViewState(sizeKey, nextSize);
     onResize?.();
   };
-  const end = (e) => {
+  const end = (e: React.PointerEvent<HTMLElement>) => {
     if (drag.current?.id !== e.pointerId) return;
     drag.current = null;
-    readerRef.current.closest('.analysis-wrap').classList.remove('reader-resizing');
+    readerRef.current!.closest<HTMLElement>('.analysis-wrap')!.classList.remove('reader-resizing');
     if (e.currentTarget.hasPointerCapture(e.pointerId))
       e.currentTarget.releasePointerCapture(e.pointerId);
   };
   return {
-    onPointerDown(e) {
+    onPointerDown(e: React.PointerEvent<HTMLElement>) {
       if (e.button !== 0) return;
       e.preventDefault();
-      const wrap = readerRef.current.closest('.analysis-wrap');
+      const wrap = readerRef.current!.closest<HTMLElement>('.analysis-wrap')!;
       const rect = wrap.getBoundingClientRect();
       drag.current = {
         id: e.pointerId,
@@ -70,7 +81,7 @@ export function useReaderResize(readerRef, full, onResize) {
       wrap.classList.add('reader-resizing');
       e.currentTarget.setPointerCapture(e.pointerId);
     },
-    onPointerMove(e) {
+    onPointerMove(e: React.PointerEvent<HTMLElement>) {
       const start = drag.current;
       if (!start || start.id !== e.pointerId) return;
       apply(start.width + start.x - e.clientX, start.height + e.clientY - start.y);
@@ -78,11 +89,13 @@ export function useReaderResize(readerRef, full, onResize) {
     onPointerUp: end,
     onPointerCancel: end,
     onLostPointerCapture: end,
-    onKeyDown(e) {
+    onKeyDown(e: React.KeyboardEvent<HTMLElement>) {
       if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
       e.preventDefault();
       e.stopPropagation();
-      const rect = readerRef.current.closest('.analysis-wrap').getBoundingClientRect();
+      const rect = readerRef
+        .current!.closest<HTMLElement>('.analysis-wrap')!
+        .getBoundingClientRect();
       const step = e.shiftKey ? 64 : 16;
       apply(
         rect.width + (e.key === 'ArrowLeft' ? step : e.key === 'ArrowRight' ? -step : 0),

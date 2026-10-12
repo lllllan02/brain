@@ -1,3 +1,10 @@
+export interface Curve {
+  x: number;
+  y: number;
+  endX: number;
+  endY: number;
+  bend: number;
+}
 // Milliseconds, shared by DOM transitions and the scene. Ambient motion stays slower.
 export const MOTION = Object.freeze({
   feedback: 160,
@@ -14,12 +21,12 @@ export const MOTION = Object.freeze({
   maxFrame: 50,
   ease: 'cubic-bezier(.22,.68,0,1)',
 });
-export const smooth = (t) => {
+export const smooth = (t: number) => {
   t = Math.max(0, Math.min(1, t));
   return t * t * (3 - 2 * t);
 };
-export const damp = (dt, seconds) => 1 - Math.exp(-Math.max(0, dt) / seconds);
-export const stagger = (index) => Math.min(index, 8) * MOTION.stagger;
+export const damp = (dt: number, seconds: number) => 1 - Math.exp(-Math.max(0, dt) / seconds);
+export const stagger = (index: number) => Math.min(index, 8) * MOTION.stagger;
 export const motionVariables = Object.fromEntries(
   Object.entries(MOTION).map(([key, value]) => [
     `--motion-${key}`,
@@ -28,7 +35,7 @@ export const motionVariables = Object.fromEntries(
 );
 
 // Distance-based sampling gives each dot steady speed even on strongly bent curves.
-export function curvePoint(curve, t) {
+export function curvePoint(curve: Curve, t: number) {
   const { x, y, endX, endY, bend } = curve,
     s = 1 - t;
   return {
@@ -40,7 +47,7 @@ export function curvePoint(curve, t) {
     y: y + (endY - y) * smooth(t),
   };
 }
-export function curveSamples(curve, count = 32) {
+export function curveSamples(curve: Curve, count = 32) {
   const points = [curvePoint(curve, 0)];
   let length = 0;
   const distances = [0];
@@ -51,7 +58,7 @@ export function curveSamples(curve, count = 32) {
   }
   return { points, distances, length };
 }
-export function pointAlongCurve(samples, progress) {
+export function pointAlongCurve(samples: ReturnType<typeof curveSamples>, progress: number) {
   const { points, distances, length } = samples,
     distance = Math.max(0, Math.min(1, progress)) * length;
   let i = 1;

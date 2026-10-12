@@ -31,7 +31,10 @@ const write = (storage: 'localStorage' | 'sessionStorage', key: string, value: u
 
 function initialHistory(): { entries: ReadingEntry[]; cursor: number } {
   try {
-    const saved = JSON.parse(read('sessionStorage', storageKey));
+    const saved = JSON.parse(read('sessionStorage', storageKey) ?? 'null') as {
+      entries: ReadingEntry[];
+      cursor: number;
+    };
     const key = history.state?.horizonReading;
     const cursor = saved?.entries?.findIndex(
       (entry) => entry.key === key && entry.url === location.hash,
@@ -61,7 +64,7 @@ export function useReadingHistory(graph: ReaderGraph | null) {
   const model = useRef<ReturnType<typeof initialHistory>>(null);
   if (!model.current) model.current = initialHistory();
   const [locationState, setLocationState] = useState(
-    () => model.current.entries[model.current.cursor],
+    () => model.current!.entries[model.current!.cursor],
   );
   const previousLocation = useRef(locationState);
   const [hop, setHop] = useState<TrailSegment | null>(null);
@@ -71,19 +74,19 @@ export function useReadingHistory(graph: ReaderGraph | null) {
       readVisits(read('localStorage', `${storageKey}:recent`) ?? JSON.stringify(visits)),
     ),
   );
-  const lastRead = useRef(null),
+  const lastRead = useRef<string | null>(null),
     restored = useRef(false),
-    saveTimer = useRef(null);
+    saveTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const persist = useCallback(() => write('sessionStorage', storageKey, model.current), []);
   const captureScroll = useCallback(() => {
-    const entry = model.current.entries[model.current.cursor];
+    const entry = model.current!.entries[model.current!.cursor];
     const reader = document.querySelector<HTMLElement>('.document-reader');
     if (reader?.dataset.documentId === entry.id)
-      entry.scroll = reader.querySelector('.an-scroll').scrollTop;
+      entry.scroll = reader!.querySelector('.an-scroll')!.scrollTop;
     persist();
   }, [persist]);
   const publish = useCallback(() => {
-    const entry = model.current.entries[model.current.cursor];
+    const entry = model.current!.entries[model.current!.cursor];
     const previous = previousLocation.current;
     if (previous.id !== entry.id)
       setHop(previous.id && entry.id ? { from: previous.id, to: entry.id, key: uid() } : null);
@@ -97,8 +100,8 @@ export function useReadingHistory(graph: ReaderGraph | null) {
     return () => clearTimeout(timer);
   }, [hop]);
   const navigate = useCallback(
-    (url) => {
-      const m = model.current,
+    (url: string) => {
+      const m = model.current!,
         current = m.entries[m.cursor];
       if (url === current.url) return;
       captureScroll();
@@ -119,7 +122,7 @@ export function useReadingHistory(graph: ReaderGraph | null) {
   );
   useEffect(() => {
     const route = () => {
-      const m = model.current;
+      const m = model.current!;
       const index = m.entries.findIndex(
         (e) => e.key === history.state?.horizonReading && e.url === location.hash,
       );
@@ -139,7 +142,7 @@ export function useReadingHistory(graph: ReaderGraph | null) {
       }
       publish();
     };
-    const click = (event) => {
+    const click = (event: MouseEvent) => {
       if (
         event.defaultPrevented ||
         event.button !== 0 ||
@@ -149,7 +152,7 @@ export function useReadingHistory(graph: ReaderGraph | null) {
         event.altKey
       )
         return;
-      const anchor = event.target.closest('a[href]');
+      const anchor = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[href]');
       if (
         !anchor ||
         anchor.hasAttribute('download') ||
@@ -176,7 +179,7 @@ export function useReadingHistory(graph: ReaderGraph | null) {
   }, [captureScroll, navigate, persist, publish]);
   useEffect(() => {
     if (!graph) return;
-    const id = graph.index.get(locationState.id)?.module ? locationState.id : null;
+    const id = graph.index.get(locationState.id!)?.module ? locationState.id : null;
     if (!restored.current) {
       restored.current = true;
       // Refreshing the same tab restores its last read without fabricating another step.
@@ -196,8 +199,8 @@ export function useReadingHistory(graph: ReaderGraph | null) {
   useEffect(() => write('localStorage', storageKey, visits), [visits]);
   useEffect(() => write('localStorage', `${storageKey}:recent`, recent), [recent]);
   const saveScroll = useCallback(
-    (key, top) => {
-      const entry = model.current.entries.find((e) => e.key === key);
+    (key: string, top: number) => {
+      const entry = model.current!.entries.find((e) => e.key === key);
       if (!entry) return;
       entry.scroll = Math.max(0, top);
       clearTimeout(saveTimer.current);
@@ -206,26 +209,26 @@ export function useReadingHistory(graph: ReaderGraph | null) {
     [persist],
   );
   const available = new Set(graph?.nodes.filter((n) => n.module).map((n) => n.id));
-  const m = model.current;
+  const m = model.current!;
   const path = useMemo(
     () =>
       activeReadingPath(
-        model.current.entries,
-        model.current.cursor,
+        model.current!.entries,
+        model.current!.cursor,
         new Set(graph?.nodes.filter((n) => n.module).map((n) => n.id)),
       ),
     [graph, locationState.key],
   );
   const back = adjacentDocument(m.entries, m.cursor, -1, available);
   const forward = adjacentDocument(m.entries, m.cursor, 1, available);
-  const travel = (direction) => {
+  const travel = (direction: number) => {
     const target = adjacentDocument(m.entries, m.cursor, direction, available);
     if (target < 0) return;
     captureScroll();
     history.go(target - m.cursor);
   };
-  const returnTo = (key) => {
-    const target = m.entries.findIndex((entry) => entry.key === key && available.has(entry.id));
+  const returnTo = (key: string) => {
+    const target = m.entries.findIndex((entry) => entry.key === key && available.has(entry.id!));
     if (target < 0 || target >= m.cursor) return;
     captureScroll();
     history.go(target - m.cursor);

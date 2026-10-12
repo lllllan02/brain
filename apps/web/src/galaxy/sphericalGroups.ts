@@ -38,7 +38,8 @@ export function sphericalGroups(
       .addScaledVector(basis.normal, Math.sin(angle) * ring);
     const candidates = [...remaining]
       .sort((a, b) => {
-        const score = (slot) => slot.point.dot(direction) / (slot.point.length() || 1);
+        const score = (slot: { point: Vector3 }) =>
+          slot.point.dot(direction) / (slot.point.length() || 1);
         return score(b) - score(a) || a.id.localeCompare(b.id);
       })
       .slice(0, group.members.length);
@@ -75,7 +76,12 @@ export function sphericalGroups(
 
 // Angular motion preserves depth and the globe's volume throughout the morph,
 // including antipodal paths and interrupted category/directory switches.
-export function interpolateSphere(from, to, progress, output) {
+export function interpolateSphere(
+  from: Float32Array,
+  to: Float32Array,
+  progress: number,
+  output: Float32Array,
+) {
   const k = progress * progress * (3 - 2 * progress);
   const a = new Vector3(),
     b = new Vector3(),

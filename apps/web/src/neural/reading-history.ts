@@ -16,7 +16,7 @@ export function activeReadingPath(
   cursor: number,
   available: Set<string>,
 ): ReadingEntry[] {
-  const path = [];
+  const path: ReadingEntry[] = [];
   let interrupted = false;
   for (const entry of entries.slice(0, cursor + 1)) {
     if (!entry.id) {
@@ -45,15 +45,15 @@ export function activeReadingTrail(
     nodes = new Map<string, TrailNode>(),
     edges = new Map<string, TrailEdge>();
   recent.forEach((entry, index) => {
-    nodes.set(entry.id, {
-      id: entry.id,
+    nodes.set(entry.id!, {
+      id: entry.id!,
       key: entry.key,
       steps: [index + 1],
       weight: 0.6 + (0.4 * (index + 1)) / recent.length,
     });
     const previous = recent[index - 1];
     if (previous && entry.connected) {
-      const edge = { from: previous.id, to: entry.id };
+      const edge = { from: previous.id!, to: entry.id! };
       edges.set(JSON.stringify([edge.from, edge.to]), edge);
     }
   });
@@ -75,7 +75,7 @@ export function trailPlayback(segments: TrailSegment[], previousKeys: string[] |
   return { play: [latest], settled: segments.slice(0, -1) };
 }
 
-export function readingDirection(event) {
+export function readingDirection(event: KeyboardEvent) {
   if (
     event.defaultPrevented ||
     event.repeat ||
@@ -87,8 +87,8 @@ export function readingDirection(event) {
   )
     return 0;
   if (
-    event.target?.isContentEditable ||
-    event.target?.closest(
+    (event.target as HTMLElement | null)?.isContentEditable ||
+    (event.target as Element | null)?.closest(
       'input,textarea,select,[contenteditable]:not([contenteditable="false"]),[role="slider"],[role="textbox"],[role="combobox"],[role="listbox"],[role="menu"],[role="tree"],[role="tablist"],[role="grid"],.reader-resize-handle,.table-wrap,pre,.diagram-block',
     )
   )
@@ -111,7 +111,7 @@ export function parseReadingRoute(hash: string) {
 
 export function readVisits(raw: string | null): Visit[] {
   try {
-    const value = JSON.parse(raw);
+    const value = JSON.parse(raw ?? 'null');
     return Array.isArray(value)
       ? value
           .filter(
@@ -155,7 +155,7 @@ export function adjacentDocument(
 ) {
   const current = entries[cursor]?.id;
   for (let i = cursor + direction; i >= 0 && i < entries.length; i += direction) {
-    if (entries[i].id && entries[i].id !== current && available.has(entries[i].id)) return i;
+    if (entries[i].id && entries[i].id !== current && available.has(entries[i].id!)) return i;
   }
   return -1;
 }
@@ -170,9 +170,9 @@ export function readingTrail(
       .filter((visit) => available.has(visit.id))
       .map((visit) => [visit.id, { id: visit.id, steps: [recent.indexOf(visit) + 1] }]),
   );
-  const edges = [],
-    segments = [],
-    seenEdges = new Set();
+  const edges: TrailEdge[] = [],
+    segments: TrailSegment[] = [],
+    seenEdges = new Set<string>();
   visits.forEach((visit, index) => {
     if (!nodes.has(visit.id)) return;
     const previous = visits[index - 1];
@@ -212,7 +212,11 @@ export function trailPath(edge: TrailEdge, nodes: Map<string, Point>) {
   return `M${a.x + ux * start},${a.y + uy * start} Q${(a.x + b.x) / 2 - uy * bend},${(a.y + b.y) / 2 + ux * bend} ${b.x - ux * end},${b.y - uy * end}`;
 }
 
-export function readingOrigin(previous, routeId, readableId) {
+export function readingOrigin(
+  previous: string | null,
+  routeId: string | null,
+  readableId: string | null,
+) {
   // Closing the reader or browsing categories is still the same reading session.
   // A missing document, however, must not create a jump across unavailable content.
   return routeId === null ? previous : readableId;

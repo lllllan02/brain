@@ -1,4 +1,4 @@
-import type { ReaderGraph } from '../types/graph.ts';
+import type { ReaderGraph, ReaderNode } from '../types/graph.ts';
 import type { ReadingQueue } from '../types/reading.ts';
 import type { ReadingController } from '../types/ui.ts';
 import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
@@ -18,21 +18,22 @@ function Trend({
   onSelect(index: number): void;
 }) {
   const gradient = useId();
-  const host = useRef(null);
+  const host = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(648);
   useEffect(() => {
     const observer = new ResizeObserver(([entry]) => {
       if (entry.contentRect.width > 0) setWidth(Math.max(260, entry.contentRect.width));
     });
-    observer.observe(host.current);
+    observer.observe(host.current!);
     return () => observer.disconnect();
   }, []);
   const plotWidth = width - 60;
   const max = Math.max(1, ...series.flatMap((d) => [d.created, d.updated]));
   const ceiling = Math.ceil(max / 4) * 4;
-  const x = (i) => 36 + (i / Math.max(1, series.length - 1)) * plotWidth;
-  const y = (value) => 174 - (value / ceiling) * 144;
-  const path = (key) => series.map((d, i) => `${i ? 'L' : 'M'}${x(i)},${y(d[key])}`).join(' ');
+  const x = (i: number) => 36 + (i / Math.max(1, series.length - 1)) * plotWidth;
+  const y = (value: number) => 174 - (value / ceiling) * 144;
+  const path = (key: 'created' | 'updated') =>
+    series.map((d, i) => `${i ? 'L' : 'M'}${x(i)},${y(d[key])}`).join(' ');
   const day = series[selected];
   return (
     <div className="pulse-chart" ref={host}>
@@ -99,7 +100,7 @@ function Trend({
           stroke="var(--wb-soft)"
           strokeDasharray="3 4"
         />
-        {['created', 'updated'].map((key) => (
+        {(['created', 'updated'] as const).map((key) => (
           <circle
             key={key}
             cx={x(selected)}
@@ -164,11 +165,11 @@ export function DashboardPulse({
   const [days, setDays] = useState(7),
     [selected, setSelected] = useState(6),
     [tab, setTab] = useState('recent');
-  const [today, setToday] = useState(() => activityDay(new Date().toISOString()));
+  const [today, setToday] = useState(() => activityDay(new Date().toISOString())!);
   useEffect(() => {
     if (hidden) return;
-    setToday(activityDay(new Date().toISOString()));
-    const timer = setInterval(() => setToday(activityDay(new Date().toISOString())), 60000);
+    setToday(activityDay(new Date().toISOString())!);
+    const timer = setInterval(() => setToday(activityDay(new Date().toISOString())!), 60000);
     return () => clearInterval(timer);
   }, [hidden]);
   const docs = useMemo(() => graph.nodes.filter((n) => n.module), [graph]);
@@ -180,7 +181,7 @@ export function DashboardPulse({
     () => dashboardComparison(graph.activity, docs, today, days),
     [graph.activity, docs, today, days],
   );
-  const delta = (key) => {
+  const delta = (key: keyof ReturnType<typeof dashboardPulse>['counts']) => {
     const value = comparison.current.counts[key] - comparison.previous.counts[key];
     return `${value > 0 ? '+' : ''}${value}`;
   };
@@ -299,7 +300,7 @@ export function DashboardPulse({
           {list.length ? (
             <ul className="pulse-docs">
               {list.slice(0, 4).map((item) => {
-                const doc = graph.index.get(item.id);
+                const doc = graph.index.get(item.id)!;
                 return (
                   <li key={item.id}>
                     <a href={`#/doc/${encodeURIComponent(doc.id)}`}>

@@ -1,3 +1,22 @@
+import type { ReaderGraph, ReaderNode } from '../types/graph.ts';
+interface CanvasState {
+  t0: number;
+  orb: { x: number; y: number; s: number };
+  stage: string;
+  spread?: number;
+  expanded: boolean;
+  hover: string | null;
+  paused: boolean;
+}
+interface CanvasNode {
+  n: ReaderNode;
+  p: number[];
+  d: number;
+  seed: number;
+  r: number;
+  merged?: number[];
+  s?: number[];
+}
 import React, { useEffect, useRef } from 'react';
 import { T } from './theme.ts';
 
@@ -5,12 +24,22 @@ const P = T.canvas;
 const ADD = P.additive ? 'lighter' : 'source-over';
 
 // 背景神经网络：从光球蔓延出的全部笔记、话题与概念；双向连接以金色脉冲往返传递。
-export function NetworkCanvas({ graph, layout, live, reduced }) {
-  const ref = useRef(null);
+export function NetworkCanvas({
+  graph,
+  layout,
+  live,
+  reduced,
+}: {
+  graph: ReaderGraph;
+  layout: Record<string, number[]>;
+  live: React.RefObject<CanvasState>;
+  reduced: boolean;
+}) {
+  const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
-    const canvas = ref.current,
-      ctx = canvas.getContext('2d');
-    let raf,
+    const canvas = ref.current!,
+      ctx = canvas.getContext('2d')!;
+    let raf: number,
       W = 0,
       H = 0,
       dpr = 1;
@@ -29,18 +58,18 @@ export function NetworkCanvas({ graph, layout, live, reduced }) {
     const depth = new Map([['core', 0]]),
       q = ['core'];
     while (q.length) {
-      const id = q.shift();
+      const id = q.shift()!;
       for (const l of graph.links) {
         const o = l.a === id ? l.b : l.b === id ? l.a : null;
         if (o && !depth.has(o)) {
-          depth.set(o, depth.get(id) + 1);
+          depth.set(o, depth.get(id)! + 1);
           q.push(o);
         }
       }
     }
-    const nodes = graph.nodes
+    const nodes: CanvasNode[] = graph.nodes
       .filter((n) => n.kind !== 'core')
-      .map((n, i) => ({
+      .map((n, i: number) => ({
         n,
         p: layout[n.id],
         d: depth.get(n.id) ?? 4,
@@ -54,10 +83,10 @@ export function NetworkCanvas({ graph, layout, live, reduced }) {
                 ? 2.4
                 : n.kind === 'ghost'
                   ? 2
-                  : 2.2 + Math.min(n.deg, 14) * 0.22,
+                  : 2.2 + Math.min(n.deg!, 14) * 0.22,
       }));
     const documents = nodes.filter((x) => x.n.module).sort((a, b) => a.n.id.localeCompare(b.n.id));
-    documents.forEach((x, i) => {
+    documents.forEach((x, i: number) => {
       const angle = i * 2.399963,
         radius = 370 * Math.sqrt((i + 0.5) / Math.max(documents.length, 1));
       x.merged = [Math.cos(angle) * radius, Math.sin(angle) * radius * 0.72];
@@ -65,14 +94,19 @@ export function NetworkCanvas({ graph, layout, live, reduced }) {
     const byId = new Map(nodes.map((x) => [x.n.id, x]));
     const links = graph.links
       .filter((l) => byId.has(l.a) && byId.has(l.b))
-      .map((l, i) => ({ l, A: byId.get(l.a), B: byId.get(l.b), seed: ((i * 7919) % 997) / 997 }));
+      .map((l, i: number) => ({
+        l,
+        A: byId.get(l.a)!,
+        B: byId.get(l.b)!,
+        seed: ((i * 7919) % 997) / 997,
+      }));
     const sparks = Array.from({ length: 90 }, (_, i) => ({
       a: (i / 90) * Math.PI * 2 + Math.sin(i * 12.9) * 0.3,
       v: 0.35 + ((i * 37) % 100) / 100,
       s: 1 + ((i * 13) % 7) / 3,
     }));
 
-    const draw = (now) => {
+    const draw = (now: number) => {
       const L = live.current;
       const t = Math.max(0, (now - L.t0) / 1000);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -93,9 +127,9 @@ export function NetworkCanvas({ graph, layout, live, reduced }) {
           if (hl.has(l.a) && l.kind !== 'contain') hl.add(l.b);
         }
       const grow = reduced ? 1 : Math.min(1, Math.max(0, (t - 0.35) / 2.2));
-      const prog = (x) =>
+      const prog = (x: CanvasNode) =>
         reduced ? 1 : Math.min(1, Math.max(0, (t - 0.4 - x.d * 0.32 - x.seed * 0.35) / 0.9));
-      const pos = (x) => {
+      const pos = (x: CanvasNode) => {
         const p = prog(x),
           e = 1 - Math.pow(1 - p, 3);
         const sway = reduced || L.paused ? 0 : Math.sin(t * 0.5 + x.seed * 6.28) * 3;
@@ -143,8 +177,8 @@ export function NetworkCanvas({ graph, layout, live, reduced }) {
 
       // 连线
       for (const k of links) {
-        const [x1, y1, p1] = k.A.s,
-          [x2, y2, p2] = k.B.s;
+        const [x1, y1, p1] = k.A.s!,
+          [x2, y2, p2] = k.B.s!;
         const p = Math.min(p1, p2) * grow * (k.l.kind === 'contain' ? spread : 1);
         if (p <= 0.02) continue;
         const on = !hl || (hl.has(k.l.a) && hl.has(k.l.b));
@@ -180,16 +214,16 @@ export function NetworkCanvas({ graph, layout, live, reduced }) {
           for (const lane of lanes) {
             const u = (t * speed + k.seed + lane * 0.5) % 1;
             const fwd = lane === 0 ? k.l.s === k.l.a : !(k.l.s === k.l.a);
-            const [x1, y1] = fwd ? k.A.s : k.B.s,
-              [x2, y2] = fwd ? k.B.s : k.A.s;
+            const [x1, y1] = fwd ? k.A.s! : k.B.s!,
+              [x2, y2] = fwd ? k.B.s! : k.A.s!;
             let x = x1 + (x2 - x1) * u,
               y = y1 + (y2 - y1) * u;
             if (k.l.both) {
-              const mx = (k.A.s[0] + k.B.s[0]) / 2 + (k.B.s[1] - k.A.s[1]) * 0.12,
-                my = (k.A.s[1] + k.B.s[1]) / 2 - (k.B.s[0] - k.A.s[0]) * 0.12;
+              const mx = (k.A.s![0] + k.B.s![0]) / 2 + (k.B.s![1] - k.A.s![1]) * 0.12,
+                my = (k.A.s![1] + k.B.s![1]) / 2 - (k.B.s![0] - k.A.s![0]) * 0.12;
               const uu = fwd ? u : 1 - u;
-              x = (1 - uu) ** 2 * k.A.s[0] + 2 * (1 - uu) * uu * mx + uu * uu * k.B.s[0];
-              y = (1 - uu) ** 2 * k.A.s[1] + 2 * (1 - uu) * uu * my + uu * uu * k.B.s[1];
+              x = (1 - uu) ** 2 * k.A.s![0] + 2 * (1 - uu) * uu * mx + uu * uu * k.B.s![0];
+              y = (1 - uu) ** 2 * k.A.s![1] + 2 * (1 - uu) * uu * my + uu * uu * k.B.s![1];
             }
             const a = Math.sin(u * Math.PI) * (on ? 0.95 : 0.2);
             const g = ctx.createRadialGradient(x, y, 0, x, y, 6);
@@ -207,7 +241,7 @@ export function NetworkCanvas({ graph, layout, live, reduced }) {
 
       // 节点
       for (const x of nodes) {
-        const [px, py, p] = x.s;
+        const [px, py, p] = x.s!;
         if (p <= 0) continue;
         const on = !hl || hl.has(x.n.id);
         const color = graph.kinds[x.n.kind].color;
@@ -256,7 +290,7 @@ export function NetworkCanvas({ graph, layout, live, reduced }) {
     };
     // 每帧先排好下一帧再绘制：某一帧出错也不会让背景网络停住
     let warned = false;
-    const frame = (now) => {
+    const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
       try {
         draw(now);

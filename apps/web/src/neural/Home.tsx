@@ -1,7 +1,7 @@
 import type { HomeProps, Flight } from '../types/ui.ts';
 import type { TrailProjection, ReaderCluster } from '../types/reading.ts';
 import type { createGalaxy, GalaxyLabel } from '../galaxy/scene.ts';
-import type { Focus, ReaderNode } from '../types/graph.ts';
+import type { Focus, ReaderNode, ReaderGraph } from '../types/graph.ts';
 import type { Cluster, ReadingTrail as ReadingTrailData } from '../types/reading.ts';
 import type { useReadingHistory } from './useReadingHistory.ts';
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
@@ -10,7 +10,7 @@ import { Workbench } from './Workbench.tsx';
 import { useViewState } from './useViewState.ts';
 import { validCluster, validPinnedList } from './view-state.ts';
 import { collectionLabel, CONTENT_COLLECTIONS } from '../collections.ts';
-import { moduleOf } from './graph.ts';
+import { moduleOf, isDocumentNode } from './graph.ts';
 import { createSearchIndex, searchDocuments } from './search.ts';
 import { CONFIG, asset } from '../config.ts';
 import { DocumentReader } from './DocumentReader.tsx';
@@ -27,7 +27,7 @@ import { MOTION, motionVariables } from '../motion/tokens.ts';
 import '../motion/motion.css';
 import '../galaxy/galaxy.css';
 
-export function moduleItems(graph, modId) {
+export function moduleItems(graph: ReaderGraph, modId: string) {
   return graph.nodes
     .filter((node) => node.modules?.includes(modId))
     .sort((a, b) => (a.type === 'overview' ? 0 : 1) - (b.type === 'overview' ? 0 : 1));
@@ -44,18 +44,21 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
     preset?: string;
     expanded?: boolean;
     grouping?: string;
-    groupCluster?: Cluster;
+    groupCluster?: Cluster | null;
     reduced?: boolean;
-    trail?: ReadingTrailData;
+    trail?: ReadingTrailData | null;
     reading?: ReturnType<typeof useReadingHistory>;
     visualFocus?: Focus;
   }>({ focus, setFocus });
-  const readerTimeline = useRef({ progress: 0, animation: null });
+  const readerTimeline = useRef<{ progress: number; animation: Animation | null }>({
+    progress: 0,
+    animation: null,
+  });
   const [branchesReady, setBranchesReady] = useState(false);
   const [labels, setLabels] = useState<GalaxyLabel[]>([]),
     [ready, setReady] = useState(false),
     [error, setError] = useState('');
-  const preset = graph.index.get(focus.sel)?.module ? 'nebula' : 'deepfield';
+  const preset = graph.index.get(focus.sel!)?.module ? 'nebula' : 'deepfield';
   const [expanded, setExpanded] = useViewState('expanded', false);
   const [grouping, setGrouping] = useViewState('grouping', 'category', (value) =>
     ['category', 'collection'].includes(value),
@@ -89,13 +92,15 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
   // Always enter through the galaxy; a previous dashboard visit is not a landing preference.
   const [homeMode, setHomeMode] = useState('galaxy');
   const workbenchVisible = homeMode === 'workbench' && !focus.sel && !focus.mod;
-  const [galaxyReturnFocus, setGalaxyReturnFocus] = useViewState(
+  const [galaxyReturnFocus, setGalaxyReturnFocus] = useViewState<Focus | null>(
     'galaxyReturnFocus',
     null,
     (value) =>
       value === null ||
       (typeof value === 'object' &&
-        ['sel', 'mod'].every((key) => value[key] === null || typeof value[key] === 'string')),
+        (['sel', 'mod'] as const).every(
+          (key) => value[key] === null || typeof value[key] === 'string',
+        )),
   );
   const [queueOpen, setQueueOpen] = useViewState('queueOpen', false);
   const queueToggle = useRef<HTMLButtonElement>(null);
@@ -120,15 +125,15 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
     revealed?: boolean;
     navigate(): void;
   } | null>(null);
-  const [revealedFlight, setRevealedFlight] = useState(null);
-  const revealFlight = useCallback((key) => {
+  const [revealedFlight, setRevealedFlight] = useState<string | null>(null);
+  const revealFlight = useCallback((key: string) => {
     const pending = pendingFlight.current;
     if (!pending || pending.key !== key || pending.revealed) return;
     pending.revealed = true;
     setRevealedFlight(key);
     pending.navigate();
   }, []);
-  const finishFlight = useCallback((key) => {
+  const finishFlight = useCallback((key: string) => {
     const pending = pendingFlight.current;
     if (!pending || pending.key !== key) return;
     pendingFlight.current = null;
@@ -143,7 +148,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
   const trail = useMemo(
     () =>
       pinnedList && (pinnedList.recent || pinnedList.latest)
-        ? documentHighlight(pinnedList.pinnedIds.map((id) => ({ id })))
+        ? documentHighlight(pinnedList.pinnedIds!.map((id) => ({ id })))
         : latestOpen
           ? documentHighlight(latest)
           : historyOpen
@@ -161,8 +166,8 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
     setReaderCluster({ owner: focus.sel, value: null });
     historyToggle.current?.focus({ preventScroll: true });
   };
-  const listAnchor = useCallback((id) => scene.current?.nodeAnchor(id), []);
-  const previewNode = useCallback((id) => scene.current?.previewNode(id), []);
+  const listAnchor = useCallback((id: string) => scene.current?.nodeAnchor(id), []);
+  const previewNode = useCallback((id: string | null) => scene.current?.previewNode(id), []);
   // Group filters belong to their owner; reference direction follows document navigation.
   const activeCluster = useMemo<Cluster | null>(() => {
     if (!focus.sel || timelineOpen) return null;
@@ -193,8 +198,11 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
   const groupCluster = activeCluster?.document ? null : activeCluster;
   const [query, setQuery] = useViewState('query', ''),
     [searchOpen, setSearchOpen] = useViewState('searchOpen', false);
-  const [searchSelection, setSearchSelection] = useState(null);
-  const [reviewId, setReviewId] = useViewState(
+  const [searchSelection, setSearchSelection] = useState<{
+    results: ReaderNode[];
+    index: number;
+  } | null>(null);
+  const [reviewId, setReviewId] = useViewState<string | null>(
     'reviewId',
     null,
     (value) => value === null || typeof value === 'string',
@@ -211,11 +219,11 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
     reading,
   };
   const documents = useMemo(() => graph.nodes.filter((node) => node.module), [graph]);
-  const node = graph.index.get(focus.sel);
-  const reviewNode = graph.index.get(reviewId);
+  const node = graph.index.get(focus.sel!);
+  const reviewNode = graph.index.get(reviewId!);
   // Keep the panel in place while its contents hand off to the next document.
   const reader = usePresence(
-    node?.module ? { node, location: reading.location } : null,
+    isDocumentNode(node) ? { node, location: reading.location } : null,
     node?.module ? 'reader' : null,
     reduced,
     'translateX(24px)',
@@ -229,7 +237,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
   const syncReaderLayout = useCallback(() => {
     const panel = reader.ref.current;
     if (!panel) return;
-    const page = panel.closest<HTMLElement>('.galaxy-page');
+    const page = panel.closest<HTMLElement>('.galaxy-page')!;
     page.style.setProperty('--reader-left', `${panel.offsetLeft}px`);
     page.style.setProperty('--reader-top', `${panel.offsetTop}px`);
     page.style.setProperty('--reader-height', `${panel.offsetHeight}px`);
@@ -240,7 +248,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
   useLayoutEffect(() => {
     const panel = reader.ref.current;
     if (!panel) return;
-    const page = panel.closest<HTMLElement>('.galaxy-page');
+    const page = panel.closest<HTMLElement>('.galaxy-page')!;
     syncReaderLayout();
     const observer = new ResizeObserver(syncReaderLayout);
     observer.observe(panel);
@@ -253,19 +261,19 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
       );
     };
   }, [shownNode?.id, syncReaderLayout]);
-  const review = usePresence<ReaderNode, HTMLButtonElement>(
+  const review = usePresence<ReaderNode | null, HTMLButtonElement>(
     reviewNode?.module ? reviewNode : null,
     reviewNode?.module ? reviewNode.id : null,
     reduced,
   );
-  const go = (id, keepCluster = false) => {
+  const go = (id: string, keepCluster = false) => {
     const target = graph.index.get(id);
     if (!target?.module) return;
     setReaderCluster(keepCluster && groupCluster ? { owner: id, value: groupCluster } : null);
     setQuery('');
     setSearchOpen(false);
     searchInput.current?.blur();
-    setFocus({ mod: moduleOf(graph, target).id, sel: id });
+    setFocus({ mod: moduleOf(graph, target)!.id, sel: id });
   };
   const reviewRandom = () => {
     const candidates =
@@ -314,13 +322,13 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
     if (readerTimeline.current.animation) readerTimeline.current.animation.currentTime = 0;
     if (workbenchVisible) return;
     let active = true,
-      instance;
+      instance: ReturnType<typeof createGalaxy> | undefined;
     setError('');
     import('../galaxy/scene.ts')
       .then(({ createGalaxy }) => {
         if (!active) return;
         instance = createGalaxy(
-          host.current,
+          host.current!,
           graph,
           {
             onLabels: (next) => {
@@ -361,7 +369,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
             },
             onSelect: (id) => {
               setReaderCluster(null);
-              const navigation = current.current.reading;
+              const navigation = current.current.reading!;
               const ancestor = navigation.path.slice(-3, -1).findLast((entry) => entry.id === id);
               if (ancestor && id !== current.current.focus.sel && current.current.trail?.live) {
                 navigation.returnTo(ancestor.key);
@@ -371,20 +379,20 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
               if (target?.module) current.current.setFocus({ mod: target.module, sel: id });
             },
           },
-          current.current.reduced,
+          current.current.reduced!,
           current.current.preset,
         );
         scene.current = instance;
         const cluster = current.current.groupCluster;
         instance.focus(
-          cluster ? null : current.current.visualFocus.sel,
-          cluster ? cluster.category : current.current.visualFocus.mod,
+          cluster ? null : current.current.visualFocus!.sel,
+          cluster ? (cluster.category ?? null) : current.current.visualFocus!.mod,
           cluster?.tag,
-          current.current.visualFocus.sel,
+          current.current.visualFocus!.sel,
         );
-        instance.pause(current.current.reduced);
-        instance.expand(current.current.expanded, current.current.grouping);
-        instance.readingTrail(current.current.trail);
+        instance.pause(current.current.reduced!);
+        instance.expand(current.current.expanded!, current.current.grouping);
+        instance.readingTrail(current.current.trail ?? null);
       })
       .catch(() => {
         if (active) {
@@ -420,12 +428,12 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
   useLayoutEffect(() => {
     scene.current?.focus(
       groupCluster ? null : visualFocus.sel,
-      groupCluster ? groupCluster.category : visualFocus.mod,
+      groupCluster ? (groupCluster.category ?? null) : visualFocus.mod,
       groupCluster?.tag,
       visualFocus.sel,
     );
   }, [visualFocus.sel, visualFocus.mod, groupCluster]);
-  const showReaderCluster = (cluster) => {
+  const showReaderCluster = (cluster: Cluster | null) => {
     setPinnedList(null);
     setHistoryOpen(false);
     setLatestOpen(false);
@@ -437,13 +445,15 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
     }
   };
   useEffect(() => {
-    const key = (event) => {
+    const key = (event: KeyboardEvent) => {
       if (workbenchVisible) return;
       if (document.querySelector('[role="dialog"]')) return;
-      const typing = event.target.closest('input,textarea,[contenteditable="true"]');
+      const typing = (event.target as Element | null)?.closest(
+        'input,textarea,[contenteditable="true"]',
+      );
       const direction = readingDirection(event);
       if (direction && (focus.sel || historyOpen) && window.getSelection()?.isCollapsed !== false) {
-        const navigation = current.current.reading;
+        const navigation = current.current.reading!;
         if (direction < 0 ? navigation.back : navigation.forward) {
           event.preventDefault();
           navigation.travel(direction);
@@ -495,7 +505,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
     setFocus({ mod: null, sel: null });
     if (preset === 'deepfield') scene.current?.reset();
   };
-  const switchHomeMode = (mode) => {
+  const switchHomeMode = (mode: string) => {
     if (mode === 'workbench') {
       if (workbenchVisible) return;
       setGalaxyReturnFocus(focus);
@@ -506,11 +516,11 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
       setHomeMode(mode);
       if (!workbenchVisible) return;
       const saved = galaxyReturnFocus;
-      const sel = graph.index.get(saved?.sel)?.module ? saved.sel : null;
+      const sel = graph.index.get(saved?.sel!)?.module ? saved!.sel : null;
       const mod =
         graph.modules.some((module) => module.id === saved?.mod) ||
         CONTENT_COLLECTIONS.some((collection) => saved?.mod === `collection:${collection}`)
-          ? saved.mod
+          ? saved!.mod
           : null;
       setFocus({ sel, mod });
     }
@@ -532,7 +542,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
           <Icon name={workbenchVisible ? 'back' : 'chart'} size={16} />
           <span>
             {workbenchVisible
-              ? graph.index.get(galaxyReturnFocus?.sel)?.module
+              ? graph.index.get(galaxyReturnFocus?.sel!)?.module
                 ? '返回阅读'
                 : '返回星图'
               : '统计看板'}
@@ -680,7 +690,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
                   type="button"
                   role="option"
                   tabIndex={-1}
-                  aria-selected={index === search.shown.activeResultIndex}
+                  aria-selected={index === search.shown!.activeResultIndex}
                   onPointerMove={() => setSearchSelection({ results, index })}
                   onMouseDown={(event) => event.preventDefault()}
                   onClick={() => go(n.id)}
@@ -788,7 +798,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
               inert={review.closing}
               type="button"
               className="galaxy-random galaxy-review-title"
-              onClick={() => go(review.shown.id)}
+              onClick={() => go(review.shown!.id)}
               title={review.shown.title}
               aria-label={`打开正文：${review.shown.title}`}
             >
@@ -878,7 +888,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
               setQueueOpen(mode === 'queue');
               if (mode === 'outgoing' || mode === 'incoming') {
                 setRelationMode(mode);
-                showReaderCluster({ document: node.id, direction: mode });
+                showReaderCluster({ document: node!.id, direction: mode });
               }
             }}
           />
@@ -926,7 +936,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
             setFlight({
               key,
               id,
-              title: title.textContent,
+              title: title.textContent!,
               x: box.x + box.width / 2,
               y: box.y + box.height / 2,
               width: box.width,
@@ -974,7 +984,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
               onPreview={previewNode}
               graph={graph}
               node={shownNode}
-              readingLocation={reader.shown.location}
+              readingLocation={reader.shown!.location}
               onReadingScroll={reading.saveScroll}
               module={moduleOf(graph, shownNode)}
               cluster={activeCluster}

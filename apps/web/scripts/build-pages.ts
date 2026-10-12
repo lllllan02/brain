@@ -7,7 +7,7 @@ const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 export async function pagesLibrary(root: string, { includeActivity = false } = {}) {
   const library = await loadLibrary(root),
-    assets = new Map();
+    assets = new Map<string, string>();
   if (includeActivity) {
     const { activityForLibrary } = await import('../src/activity.ts');
     library.activity = await activityForLibrary(root, library, { publicExport: true });

@@ -1,4 +1,6 @@
+import { bundleBudget } from './scripts/bundle-budget.ts';
 import { defineConfig } from 'vite';
+import path from 'node:path';
 import { readFileSync } from 'node:fs';
 const galaxyLicense = readFileSync(
   new URL('./licenses/galaxy-view-MIT.txt', import.meta.url),
@@ -7,6 +9,7 @@ const galaxyLicense = readFileSync(
 export default defineConfig(({ mode }) => ({
   base: mode === 'pages' ? './' : '/',
   plugins: [
+    bundleBudget(),
     {
       name: 'galaxy-license',
       generateBundle() {
@@ -19,5 +22,21 @@ export default defineConfig(({ mode }) => ({
     },
   ],
   define: { __STATIC_PAGES__: JSON.stringify(mode === 'pages') },
-  build: { outDir: mode === 'pages' ? 'dist-pages' : 'dist' },
+  build: {
+    outDir: mode === 'pages' ? 'dist-pages' : 'dist',
+    rollupOptions: {
+      output: {
+        // Preserve lazy diagram imports; do not pull their dependencies into the entry chunk.
+        onlyExplicitManualChunks: true,
+        manualChunks(id) {
+          if (id.includes('/three/build/three.core.js')) return 'three-core';
+          if (id.includes('/three/build/three.module.js')) return 'three-webgl';
+          if (id.includes('/mermaid/dist/chunks/mermaid.core/chunk-'))
+            return `mermaid-${path.basename(id, '.mjs')}`;
+          if (id.includes('/@mermaid-js/parser/')) return 'mermaid-parser';
+          if (id.includes('/elkjs/')) return 'mermaid-elk';
+        },
+      },
+    },
+  },
 }));

@@ -15,9 +15,9 @@ export class ReaderTransition extends Component<{
   incoming: Animation | null = null;
   outgoing = new Map<HTMLDivElement, Animation>();
 
-  getSnapshotBeforeUpdate(previous) {
+  getSnapshotBeforeUpdate(previous: Readonly<ReaderTransition['props']>) {
     if (previous.documentId === this.props.documentId || this.props.reduced) return null;
-    const element = this.content.current;
+    const element = this.content.current!;
     const style = getComputedStyle(element);
     const clone = element.cloneNode(true) as HTMLDivElement;
     clone.className = 'reader-transition-content reader-snapshot';
@@ -25,7 +25,7 @@ export class ReaderTransition extends Component<{
     clone.setAttribute('aria-hidden', 'true');
     const originals = [element, ...element.querySelectorAll('*')];
     const copies = [clone, ...clone.querySelectorAll('*')];
-    const scrolls = [];
+    const scrolls: [Element, number, number][] = [];
     const prefix = `reader-snapshot-${++snapshotSequence}`;
     const ids = new Map(
       copies.filter((copy) => copy.id).map((copy, i) => [copy.id, `${prefix}-${i}`]),
@@ -44,7 +44,7 @@ export class ReaderTransition extends Component<{
           value = `#${ids.get(value.slice(1))}`;
         if (value !== attribute.value) copy.setAttribute(attribute.name, value);
       }
-      if (copy.id) copy.id = ids.get(copy.id);
+      if (copy.id) copy.id = ids.get(copy.id)!;
       copy.removeAttribute('data-document-id');
       if (originals[i].scrollTop || originals[i].scrollLeft) {
         scrolls.push([copy, originals[i].scrollTop, originals[i].scrollLeft]);
@@ -53,7 +53,11 @@ export class ReaderTransition extends Component<{
     return { clone, scrolls, opacity: style.opacity, transform: style.transform };
   }
 
-  componentDidUpdate(previous, _state, snapshot) {
+  componentDidUpdate(
+    previous: Readonly<ReaderTransition['props']>,
+    _state: unknown,
+    snapshot: ReturnType<ReaderTransition['getSnapshotBeforeUpdate']>,
+  ) {
     if (this.props.reduced) {
       this.clear();
       return;
@@ -61,7 +65,7 @@ export class ReaderTransition extends Component<{
     if (!snapshot) return;
     const { clone, scrolls, opacity, transform } = snapshot;
     this.incoming?.cancel();
-    this.host.current.appendChild(clone);
+    this.host.current!.appendChild(clone);
     scrolls.forEach(([element, top, left]) => element.scrollTo({ top, left, behavior: 'instant' }));
     const options: KeyframeAnimationOptions = {
       duration: MOTION.enter,
@@ -83,12 +87,12 @@ export class ReaderTransition extends Component<{
     exit.finished.then(remove, remove);
     // Keep rapid navigation bounded without queueing stale documents.
     while (this.outgoing.size > 2) {
-      const [old, animation] = this.outgoing.entries().next().value;
+      const [old, animation] = this.outgoing.entries().next().value!;
       animation.cancel();
       old.remove();
       this.outgoing.delete(old);
     }
-    const enter = this.content.current.animate(
+    const enter = this.content.current!.animate(
       [
         { opacity: 0, transform: 'translateX(8px)' },
         { opacity: 1, transform: 'none' },
