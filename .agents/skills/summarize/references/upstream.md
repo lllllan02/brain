@@ -2,7 +2,7 @@
 
 来源：[steipete/summarize 官方 Skill](https://github.com/steipete/summarize/blob/main/.agents/skills/summarize/SKILL.md)，2026-10-10 经网页工具读取。GitHub 提交接口未成功，未固定提交；下文是当次读取内容，相对文档链接已改为上游 URL。许可见 [LICENSE.txt](../LICENSE.txt)。
 
-仅在使用 summarize CLI 时按需读取对应章节；项目触发方式、保存边界和工具不可用时的处理以 [本地入口](../SKILL.md) 为准。上游仓库内的 pnpm 命令不适用于 brain。
+仅在使用 summarize CLI 时按需读取对应章节；项目触发方式、保存边界和工具不可用时的处理以 [本地入口](../SKILL.md) 为准。上游仓库内的 pnpm 命令不适用于视界（Horizon）。
 
 
 # Summarize

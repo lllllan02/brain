@@ -7,7 +7,7 @@ import {pagesLibrary} from '../scripts/build-pages.mjs';
 import {loadLibrary} from '../src/library.mjs';
 
 test('Pages 与本地共同收录 notes 和 inbox，跨目录引用有效，排除归档及原始资料',async()=>{
- const root=await mkdtemp(path.join(os.tmpdir(),'brain-pages-'));
+ const root=await mkdtemp(path.join(os.tmpdir(),'horizon-pages-'));
  try{
   for(const dir of ['notes/nested','inbox','archive','sources'])await mkdir(path.join(root,dir),{recursive:true});
   await writeFile(path.join(root,'notes/a.md'),'---\ntitle: 第一篇\naliases: [别名]\ntags: [测试]\n---\n起点 [[b]] [[draft]]');
@@ -33,7 +33,7 @@ test('Pages 与本地共同收录 notes 和 inbox，跨目录引用有效，排�
 });
 
 test('Pages 导出正文引用的本地附件并改写地址，保留本地附件边界',async()=>{
- const root=await mkdtemp(path.join(os.tmpdir(),'brain-pages-assets-'));
+ const root=await mkdtemp(path.join(os.tmpdir(),'horizon-pages-assets-'));
  try{
   await mkdir(path.join(root,'notes/assets'),{recursive:true});
   await writeFile(path.join(root,'notes/assets/图片.png'),'image');

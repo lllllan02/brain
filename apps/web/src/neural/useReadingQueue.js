@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 
-const storageKey = `brain:reading-queue:v1:${globalThis.location?.pathname || '/'}`;
+const storageKey = `horizon:reading-queue:v1:${globalThis.location?.pathname || '/'}`;
 
 function readQueue() {
   try {

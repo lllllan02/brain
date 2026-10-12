@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {activeReadingPath, adjacentDocument, parseReadingRoute, readVisits, recordVisit, recentDocuments, rememberDocument, readingOrigin} from './reading-history.js';
 
-const storageKey = `brain:reading:v1:${location.pathname}`;
+const storageKey = `horizon:reading:v1:${location.pathname}`;
 const uid = () => crypto.randomUUID();
 const read = (storage, key) => {try {return window[storage].getItem(key);} catch {return null;}};
 const write = (storage, key, value) => {try {window[storage].setItem(key, JSON.stringify(value));} catch {/* Reading still works when storage is unavailable. */}};
@@ -9,7 +9,7 @@ const write = (storage, key, value) => {try {window[storage].setItem(key, JSON.s
 function initialHistory() {
   try {
     const saved = JSON.parse(read('sessionStorage', storageKey));
-    const key = history.state?.brainReading;
+    const key = history.state?.horizonReading;
     const cursor = saved?.entries?.findIndex(entry => entry.key === key && entry.url === location.hash);
     if (cursor >= 0 && saved.entries.every(e => typeof e.key === 'string' && typeof e.url === 'string'
       && (e.id === null || typeof e.id === 'string') && (e.scroll === null || Number.isFinite(e.scroll)))) {
@@ -18,7 +18,7 @@ function initialHistory() {
   } catch { /* Start a new navigation session after malformed or obsolete storage. */ }
   const route = parseReadingRoute(location.hash);
   const entry = {key: uid(), url: location.hash, id: route.id, scroll: null};
-  history.replaceState({...history.state, brainReading: entry.key}, '', location.href);
+  history.replaceState({...history.state, horizonReading: entry.key}, '', location.href);
   return {entries: [entry], cursor: 0};
 }
 
@@ -60,20 +60,20 @@ export function useReadingHistory(graph) {
     const entry = {key: uid(), url, id, scroll: parseReadingRoute(url).anchor ? null : previous?.scroll ?? null};
     m.entries = [...m.entries.slice(0, m.cursor + 1), entry];
     m.cursor = m.entries.length - 1;
-    history.pushState({brainReading: entry.key}, '', url);
+    history.pushState({horizonReading: entry.key}, '', url);
     publish();
   }, [captureScroll, publish]);
   useEffect(() => {
     const route = () => {
       const m = model.current;
-      const index = m.entries.findIndex(e => e.key === history.state?.brainReading && e.url === location.hash);
+      const index = m.entries.findIndex(e => e.key === history.state?.horizonReading && e.url === location.hash);
       if (index === m.cursor) return;
       captureScroll();
       if (index >= 0) m.cursor = index;
       else {
         const entry = {key: uid(), url: location.hash, id: parseReadingRoute(location.hash).id, scroll: null};
         m.entries = [...m.entries.slice(0, m.cursor + 1), entry]; m.cursor = m.entries.length - 1;
-        history.replaceState({...history.state, brainReading: entry.key}, '', location.href);
+        history.replaceState({...history.state, horizonReading: entry.key}, '', location.href);
       }
       publish();
     };

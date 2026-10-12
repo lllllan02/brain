@@ -7,7 +7,7 @@ import {loadLibrary} from '../src/library.mjs';
 import {moveDocument,isLocalWriteRequest} from '../src/move-document.mjs';
 
 async function fixture(t, entries) {
-  const root=await mkdtemp(path.join(os.tmpdir(),'brain-move-'));
+  const root=await mkdtemp(path.join(os.tmpdir(),'horizon-move-'));
   t.after(()=>rm(root,{recursive:true,force:true}));
   for(const folder of ['inbox','notes','readings','archive'])await mkdir(path.join(root,folder));
   for(const [name,raw] of Object.entries(entries)){

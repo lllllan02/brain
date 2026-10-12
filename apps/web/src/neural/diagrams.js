@@ -48,7 +48,7 @@ export function renderDiagrams(article) {
       host.setAttribute('aria-hidden', 'true');
       document.body.append(host);
       try {
-        const {svg} = await mermaid.render(`brain-diagram-${++nextId}`, source.querySelector('code').textContent, host);
+        const {svg} = await mermaid.render(`horizon-diagram-${++nextId}`, source.querySelector('code').textContent, host);
         if (cancelled) return;
         canvas.innerHTML = svg;
         const drawing = canvas.querySelector('svg');

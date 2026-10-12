@@ -7,7 +7,7 @@ import {loadLibrary} from '../src/library.mjs';
 import {activityForLibrary, metadataEvents} from '../src/activity.mjs';
 import {activityDay, filterActivity, dailyItems, dayDetails, periodStart, yearCells, summaryCounts} from '../src/neural/activity-model.js';
 async function fixture(t) {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'brain-activity-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'horizon-activity-'));
   t.after(()=>rm(root,{recursive:true,force:true}));
   for (const dir of ['inbox','notes','assets']) await mkdir(path.join(root,dir));
   return root;

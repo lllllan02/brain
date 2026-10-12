@@ -24,7 +24,7 @@ test('目录配置支持自定义项、禁用、样式默认值，并拒绝越�
 });
 
 test('只改配置即可收录第五目录、渲染图标、搜索及静态导出；禁用后保留文件',async t=>{
- const root=await mkdtemp(path.join(os.tmpdir(),'brain-config-'));
+ const root=await mkdtemp(path.join(os.tmpdir(),'horizon-config-'));
  t.after(()=>rm(root,{recursive:true,force:true}));
  // Run the unchanged modules against an isolated configuration, not the user's vault.
  await mkdir(path.join(root,'src/neural'),{recursive:true});

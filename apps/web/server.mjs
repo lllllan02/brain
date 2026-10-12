@@ -1,4 +1,5 @@
 import http from 'node:http';
+import {CONFIG} from './src/config.js';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {readFile} from 'node:fs/promises';
@@ -27,4 +28,4 @@ const server=http.createServer(async(req,res)=>{
  }catch(e){console.error(e);res.writeHead(e.status||500,{...headers,'Content-Type':'application/json'});res.end(JSON.stringify({error:e instanceof MoveError?e.message:'操作失败，请检查本地终端。'}));}
 });
 const vite=await createViteServer({root:dir,configFile:false,server:{middlewareMode:true,hmr:{server},fs:{allow:[dir]}},appType:'spa'});
-const port=Number(process.env.PORT||4173);server.listen(port,'127.0.0.1',()=>console.log(`brain · http://127.0.0.1:${port}`));
+const port=Number(process.env.PORT||4173);server.listen(port,'127.0.0.1',()=>console.log(`${CONFIG.brand.name} / ${CONFIG.brand.nameEn} · http://127.0.0.1:${port}`));

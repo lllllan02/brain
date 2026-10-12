@@ -11,6 +11,7 @@ import './documents.css';
 import './horizon-theme.css';
 import './controls.css';
 import './layers.css';
+document.title = CONFIG.brand.name;
 const staticPages=typeof __STATIC_PAGES__!=='undefined'&&__STATIC_PAGES__;
 const localEditing=!staticPages&&location.protocol==='http:'&&['localhost','127.0.0.1'].includes(location.hostname);
 function App(){

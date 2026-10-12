@@ -1,4 +1,4 @@
-name: Deploy knowledge cosmos to GitHub Pages
+name: Deploy Horizon to GitHub Pages
 on:
   push:
     branches: [main]

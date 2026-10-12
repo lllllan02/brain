@@ -29,7 +29,7 @@ test('无效目标、章节、自引用、循环与错误类型不产生上级�
  assert.equal(renderDocument(note('child','shared'),[x,y]).parent,null);
 });
 test('parent 更新影响版本、反链与 Pages 导出',async()=>{
- const dir=await mkdtemp(path.join(os.tmpdir(),'brain-parent-'));
+ const dir=await mkdtemp(path.join(os.tmpdir(),'horizon-parent-'));
  try{
   await mkdir(path.join(dir,'inbox'));
   await writeFile(path.join(dir,'inbox/root.md'),'---\ntitle: 入口\n---\n## Docker');

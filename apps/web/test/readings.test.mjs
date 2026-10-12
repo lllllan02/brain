@@ -10,7 +10,7 @@ import {createSearchIndex, searchDocuments} from '../src/neural/search.js';
 import {collectionLabel} from '../src/collections.js';
 
 test('导读迁入 readings 后保留地址、正文、双链与上级，同时进入搜索、图谱及静态导出', async () => {
- const root = await mkdtemp(path.join(os.tmpdir(), 'brain-readings-'));
+ const root = await mkdtemp(path.join(os.tmpdir(), 'horizon-readings-'));
  const server=await createServer({root:process.cwd(),configFile:false,optimizeDeps:{noDiscovery:true},server:{middlewareMode:true,hmr:false,ws:false},appType:'custom'});
  try {
   await Promise.all(['notes','inbox','readings','sources','archive'].map(dir => mkdir(path.join(root,dir))));
@@ -40,7 +40,7 @@ test('导读迁入 readings 后保留地址、正文、双链与上级，同时�
 });
 
 test('仅有 readings 时可读取，跨目录重名仍被拒绝',async()=>{
- const root=await mkdtemp(path.join(os.tmpdir(),'brain-reading-only-'));
+ const root=await mkdtemp(path.join(os.tmpdir(),'horizon-reading-only-'));
  try {
   await mkdir(path.join(root,'readings'));
   await writeFile(path.join(root,'readings/guide.md'),'导读');

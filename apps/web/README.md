@@ -5,7 +5,7 @@ category: "项目开发"
 tags: ["知识库", "图谱", "Markdown", "服务启动", "GitHub-Pages"]
 ---
 
-「视界」是本地文档阅读页面，首页移植 [Galaxy View](https://github.com/Longwind1984/galaxy-view) 的三维星空渲染、辉光、星云背景和镜头控制。每颗文档星点对应一篇笔记，连线来自真实正文引用；背景星点仅用于装饰，不参与文档计数。正文直接读取 `content/`，不维护第二份内容。页面外壳和阅读面板沿用 [Neural Creator Dashboard](https://github.com/luoluo-121/neural-creator-dashboard) 的适配实现。项目介绍见 [[README|README]]。
+「视界」（Horizon）的 Web 应用是本地文档阅读页面，首页移植 [Galaxy View](https://github.com/Longwind1984/galaxy-view) 的三维星空渲染、辉光、星云背景和镜头控制。每颗文档星点对应一篇笔记，连线来自真实正文引用；背景星点仅用于装饰，不参与文档计数。正文直接读取 `content/`，不维护第二份内容。页面外壳和阅读面板沿用 [Neural Creator Dashboard](https://github.com/luoluo-121/neural-creator-dashboard) 的适配实现。项目介绍见 [[README|README]]。
 
 ## 统计看板
 
@@ -24,6 +24,10 @@ tags: ["知识库", "图谱", "Markdown", "服务启动", "GitHub-Pages"]
 配图统计覆盖 `content/assets/` 内的 PNG、JPEG、WebP、GIF、SVG 和 Excalidraw 文件，同路径同名的不同格式归为一组。新增格式仅表示新文件被检测到，不证明执行过转换。目录归属取检测时引用配图的文档；未关联图片只在全部范围显示。静态构建只读取历史，不产生检测事件，仅导出当前收录文档及其所引用配图的活动，省略图片源文件清单；已删除或不再收录的文档历史不展示。
 
 记录文件采用临时文件替换和互斥锁；损坏或锁未释放时保留原文件，阅读继续可用，时间统计回退到文档日期并提示异常。如服务异常退出遗留 `content/.activity.json.lock`，确认没有服务正在写入后可移除空锁目录。看板不提供置顶、问题编辑、讨论或阅读队列管理；原有星图和阅读面板保留搜索、最近阅读及待阅读功能。
+
+项目品牌配置位于 `src/config.js`：中文名为「视界」，英文名为 `Horizon`；首页、加载提示、统计看板、运行时网页标题和启动日志共用该配置。`index.html` 的初始标题保持同名。
+
+浏览器阅读历史、待阅读列表和页面状态使用 `horizon:*` 存储键与 `horizonReading` 历史状态字段，不读取或迁移旧品牌下的记录。存储键包含访问路径，不同路径的阅读状态相互独立。
 
 ## 启动与使用
 

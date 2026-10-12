@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readViewState, writeViewState, validSize, validCluster, validPinnedList} from '../src/neural/view-state.js';
 
-const read = (raw, fallback, valid) => readViewState('test', fallback, valid, {getItem: () => raw}, '/brain/');
+const read = (raw, fallback, valid) => readViewState('test', fallback, valid, {getItem: () => raw}, '/horizon/');
 test('状态损坏、类型不符和存储拒绝访问时回退，不影响阅读', () => {
   for (const raw of ['{', 'null', '"true"', '12']) assert.equal(read(raw, false, v => typeof v === 'boolean'), false);
   assert.equal(read('true', false, v => typeof v === 'boolean'), true);
@@ -21,7 +21,7 @@ test('不同站点路径的界面记忆隔离', () => {
   const keys = [];
   const storage = {getItem(key) {keys.push(key);return 'true';}};
   readViewState('expanded', false, v => typeof v === 'boolean', storage, '/');
-  readViewState('expanded', false, v => typeof v === 'boolean', storage, '/brain/');
+  readViewState('expanded', false, v => typeof v === 'boolean', storage, '/horizon/');
   assert.notEqual(keys[0], keys[1]);
 });
 

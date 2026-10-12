@@ -27,7 +27,7 @@ test('同日精确到秒，时区按实际时间比较，缺失字段回退 mtim
 });
 
 test('读取和静态导出携带秒级 mtime，未伪造元数据，mtime 改变触发版本更新', async () => {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'brain-dates-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'horizon-dates-'));
   try {
     await mkdir(path.join(root, 'inbox'));
     const file = path.join(root, 'inbox', 'example.md');
