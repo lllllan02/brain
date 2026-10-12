@@ -5,8 +5,12 @@ parent: mysql-overview
 type: "article"
 tags: ["MySQL", "索引", "执行计划", "SQL优化"]
 created_at: "2026-10-12T14:03:16+08:00"
-updated_at: "2026-10-12T19:05:16+08:00"
+updated_at: "2026-10-12T22:08:19+08:00"
 source:
+  - "https://dev.mysql.com/blog-archive/mysql-explain-analyze/"
+  - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/optimizer-statistics.html"
+  - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/analyze-table.html"
+  - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/select-optimization.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/innodb-performance-midpoint_insertion.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/connection-access.html"
   - "https://github.com/mysql/mysql-server/blob/8.4/sql/sql_parse.cc"
@@ -39,6 +43,7 @@ source:
   - "https://dev.mysql.com/doc/refman/8.4/en/optimization-indexes.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/table-scan-avoidance.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/explain-output.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/internal-temporary-tables.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/create-index.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/cost-model.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/type-conversion.html"
@@ -152,7 +157,35 @@ ICP 的适用边界包括：需要读取完整行、使用受支持的访问方�
 
 普通 EXPLAIN 展示计划与估算；`EXPLAIN ANALYZE` 会实际运行受支持的语句，再给出实际行数、循环次数和耗时，便于比较预期与现实。阅读重点是「访问多少数据、重复执行多少次、时间花在哪里」，不能只根据某个标记给整条 SQL 判定快慢。使用 ANALYZE 时要意识到它会执行语句；本导读没有运行 SQL，也不把文档示例当作本地性能结论。
 
-EXPLAIN 输出中的 `key` 表示所选索引，`type=index` 仍可能遍历整棵索引；`rows` 与 `filtered` 是估算，后者表示条件过滤后保留的比例。判断回表代价需结合索引覆盖情况与取行路径，不能将某一列直接当成回表次数；实测则结合 ANALYZE 的实际行数、循环和时间，区分扫描量与最终返回量。
+[优化器统计](https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/optimizer-statistics.html)说明列直方图怎样用值分布估算过滤比例。直方图主要有助于非索引列，适用时优化器优先采用范围优化器估算；有直方图也不保证选择更快的计划。
+
+更新规则须同时核对 [ANALYZE TABLE](https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/analyze-table.html)：索引统计与列直方图是不同对象，后者用 UPDATE HISTOGRAM 等子句创建和管理，默认手动更新；8.4 支持显式启用 AUTO UPDATE，此时执行 ANALYZE TABLE 或后台重算持久统计时也会更新直方图。统计概述中「只按需更新」的概括不能覆盖这一可选行为。
+
+## EXPLAIN 的字段与常见标记
+
+[8.4 EXPLAIN 输出说明](https://dev.mysql.com/doc/refman/8.4/en/explain-output.html)将表格信息分为 12 个字段。`id`、`select_type` 识别 SELECT 查询块，`table`、`partitions` 指明表或中间结果与分区范围；同一查询块访问多表可以显示多行，UNION 结果行的 id 可为 NULL。派生表和物化子查询在 table 中可呈现为 `<derivedN>`、`<subqueryN>`，数字关联查询块。
+
+索引信息需分工阅读：`possible_keys` 是查找候选，`key` 是实际选择，覆盖扫描所用的 key 可能不在候选中；`key_len` 是所用键长度，可结合列定义判断联合键部分，可空列会增加一个字节；`ref` 指明与键比较的常量、列或表达式。`rows` 估算检查量，`filtered` 估算保留比例，二者相乘还需除以 100，才是预计传给后续操作的行数。
+
+手册用唯一性与匹配方式区分访问类型：`const` 用主键或唯一索引全部键部分匹配常量，至多一行；`eq_ref` 对前表的每个行组合用完整主键或非空唯一键定位一行；`ref` 查找同键值的全部匹配；`range` 访问区间；`index` 与 `ALL` 分别扫描整个索引与整表。访问类型本身不能替代总工作量比较。
+
+查询块类型中，SIMPLE 不使用子查询或 UNION，PRIMARY 是外层 SELECT，SUBQUERY、DERIVED、MATERIALIZED 分别标识子查询、派生表与物化子查询。DEPENDENT SUBQUERY 依赖外层上下文，但不同外层参数组合与每个外层行的重新求值不是同一规则；UNCACHEABLE SUBQUERY 才明确要求为每个外层行重新求值，不能把两类混同。
+
+Extra 补充剩余处理：`Using where` 表示条件限制输出，`Using index` 表示所需列由索引提供，`Using index condition` 表示先检查索引条件再取完整行；`Using filesort` 表示额外排序，`Using temporary` 表示需要临时表保存结果。[内部临时表说明](https://dev.mysql.com/doc/refman/8.4/en/internal-temporary-tables.html)区分内存与磁盘存储，还指出派生或物化临时表不一定显示 Using temporary。因此，不能仅凭标记判断是否落盘，也不能凭标记缺失排除所有临时表。
+
+判断回表代价需结合索引覆盖情况与取行路径，不能将某一列直接当成回表次数；实测则结合 ANALYZE 的实际行数、循环和时间，区分扫描量与最终返回量。
+
+## EXPLAIN ANALYZE 的行数与时间
+
+[8.4 EXPLAIN 说明](https://dev.mysql.com/doc/refman/8.4/en/explain.html)规定 ANALYZE 实际执行受支持的语句，以 TREE 输出操作节点；时间单位为毫秒，节点时间包含子节点、不包含父节点，多轮执行显示平均时间。它有执行与测量开销，不能视为只生成计划的命令。
+
+Norvald H. Ryeng 的 [MySQL EXPLAIN ANALYZE](https://dev.mysql.com/blog-archive/mysql-explain-analyze/)以 8.0.18 的 Sakila 数据库查询解释读法：两名员工分别关联付款记录，因此内层过滤执行两轮。过滤节点预计每轮输出 894 行，实际约 2844 行；索引查找的预计与实际行数却较接近，显示误差主要出现在日期过滤的选择率估计。
+
+该过滤节点平均完成一轮约 22.767 毫秒，包含下方索引查找的约 19.988 毫秒。由此作者判断主要时间花在取数，过滤本身相对便宜；两轮过滤对应的总工作还需考虑 loops，父节点已包含这部分时间，不能再次相加。这里保留原文实测用于解释字段，不代表 MySQL 8.4 或当前设备的性能结果。
+
+## 查询优化的检查范围
+
+[SELECT 优化](https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/select-optimization.html)将主要检查点组织为索引、重复函数计算、大表扫描、统计信息及执行计划。函数若对每个候选调用，单次开销会被候选量放大；索引设计则应让一组相关查询受益，同时控制空间与维护成本。手册还提醒避免把优化器已自动完成的转换写成复杂 SQL：是否改进应落实到最终计划和实际处理量。
 
 ## 查询条件与索引定位
 
@@ -171,6 +204,8 @@ EXPLAIN 输出中的 `key` 表示所选索引，`type=index` 仍可能遍历整�
 ## 分页与连接的工作量
 
 [LIMIT](https://dev.mysql.com/doc/refman/8.4/en/limit-optimization.html)说明，有序索引可帮助尽早取得所需结果；若仍需 filesort，限制返回数量并不消除前面的候选读取。排序值相同时，未被 ORDER BY 区分的行可按不同顺序返回，因此稳定分页需要完整排序边界。把偏移改成上一页键值条件，是结合该规则与范围定位作出的应用推导，并非手册保证的固定耗时方案。
+
+该节还用 `WHERE id2 > 3 ORDER BY id1 LIMIT 2` 比较两条候选路径：默认计划沿 id1 主键顺序扫描并检查过滤条件；关闭 prefer_ordering_index 后，示例转为利用包含 id2 的索引作范围访问，再执行 filesort。前者希望尽早找到足够结果，后者先缩小候选再排序。原文展示的是计划变化及估算，没有提供两者的实际耗时，不能据此推荐普遍关闭开关。对于[[mysql-index-ordering#少扫描还是省排序|过滤与排序的取舍]]，还要核对匹配数据在排序键上的分布：匹配很晚才出现时，少量 LIMIT 也可能扫描很多条目。
 
 [嵌套循环](https://dev.mysql.com/doc/refman/8.4/en/nested-loop-joins.html)将外层每行传入内层继续查找，内层因而可能反复访问；适合的连接索引可减少每轮候选。与此同时，[哈希连接](https://dev.mysql.com/doc/refman/8.4/en/hash-joins.html)可在无合适连接索引等场景使用，不能把“无索引”一律写成嵌套循环重扫。应结合计划中的算法、行数与循环次数解释工作量。
 
