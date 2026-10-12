@@ -1,0 +1,43 @@
+---
+title: "MySQL 官方手册导读：日志、复制与恢复"
+category: "MySQL"
+parent: mysql-overview
+type: "article"
+tags: ["MySQL", "持久化", "binlog", "数据恢复"]
+created_at: "2026-10-12T14:03:16+08:00"
+updated_at: "2026-10-12T14:03:16+08:00"
+source:
+  - "https://dev.mysql.com/doc/refman/8.4/en/innodb-redo-log.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/innodb-recovery.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/binary-log.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/replication.html"
+  - "https://dev.mysql.com/doc/refman/8.4/en/point-in-time-recovery.html"
+---
+
+MySQL 8.4 手册把实例崩溃恢复、复制和备份恢复分开介绍，因为三者解决的故障不同。本篇节选职责与基本过程，不包含恢复命令、参数调优或集群部署步骤。
+
+## Redo 怎样参与本机恢复
+
+[Redo Log](https://dev.mysql.com/doc/refman/8.4/en/innodb-redo-log.html)记录数据修改所需的重做信息。异常退出前，某些修改还没有完成数据文件写入，重启时可据此重做；日志随着修改追加，旧部分随检查点推进而回收。它面向当前实例的数据恢复，不是可任意回放全部历史的永久档案。
+
+[InnoDB Recovery](https://dev.mysql.com/doc/refman/8.4/en/innodb-recovery.html)说明重启后的恢复还要处理未提交事务：应用必要的 Redo，并回滚应撤销的修改。因而「存在重做日志」本身不能证明事务已经提交。Undo 所提供的撤销与历史版本信息则用于回滚和一致性读，两类日志不能互相替代。
+
+日志先于对应数据页持久化的思路可用 [[wal|WAL]] 理解；它允许数据页写回与事务提交分离。能承诺多强的持久性，还取决于提交时的日志持久化策略和存储可靠性，不能把「数据还在内存」与「事务必然丢失」简单画等号。
+
+## Binlog 为什么还需要单独存在
+
+[Binary Log](https://dev.mysql.com/doc/refman/8.4/en/binary-log.html)记录数据和表结构的变更事件，用于把变化传给副本，也用于恢复备份之后的增量变化。它通常不记录不修改数据的 SELECT，不能把它当作所有查询的执行日志。
+
+两类日志的职责不同：Redo 服务 InnoDB 的崩溃恢复，Binlog 服务复制与增量恢复。对开启 Binlog 的 InnoDB 事务，还需要协调两者的提交状态；内部两阶段提交是后续理解这个协调问题的方向，本篇不展开提交阶段和所有崩溃窗口。
+
+## 复制解决什么，为什么仍需要备份
+
+[Replication](https://dev.mysql.com/doc/refman/8.4/en/replication.html)说明源实例可向一个或多个副本复制，默认异步。按[复制线程](https://dev.mysql.com/doc/refman/8.4/en/replication-threads.html)的分工，源端发送 Binlog，副本接收并写入中继日志，再由应用线程执行。传输与应用是不同阶段，因此「源端提交」不能直接推出「副本已可读到」。
+
+由此可推导，读写分离需要处理写后读到旧值的情况；复制也可能继续传播误操作，不能代替历史恢复能力。这是依据复制方式得到的应用边界，不是手册提供的某项延迟保证。
+
+## 备份与时间点恢复
+
+[时间点恢复](https://dev.mysql.com/doc/refman/8.4/en/point-in-time-recovery.html)先恢复一个完整备份，再应用备份之后的 Binlog，将状态推进到目标时刻。它需要可用备份、衔接正确且保留完整的日志，以及明确的恢复边界。
+
+例如要恢复误删前的状态，目标是找到对应的历史状态；重启实例执行崩溃恢复不会自动撤销已经正常提交的错误删除。磁盘损坏也不能只依赖同一磁盘上的 Redo。基础学习应先区分故障类型、所需材料与恢复目标，再讨论具体工具；本导读没有执行恢复演练。

@@ -11,6 +11,6 @@ aliases: ["Write-Ahead Logging", "预写日志", "日志先行"]
 
 它让数据库可以通过日志恢复尚未写入数据文件的修改；配合提交时的日志持久化，事务不必等待所有数据页写回，有助于减少提交时的随机磁盘 I/O。
 
-WAL 不是 MySQL 特有的技术：[[mysql-redo-log|InnoDB 的 Redo Log]]是实现 WAL 的具体日志，[[postgresql|PostgreSQL]]也有自己的 WAL 实现。
+WAL 不是 MySQL 特有的技术：[[mysql-manual-recovery#Redo 怎样参与本机恢复|InnoDB 的 Redo Log]]是实现 WAL 的具体日志，[[postgresql|PostgreSQL]]也有自己的 WAL 实现。
 
 参考：[PostgreSQL：Write-Ahead Logging](https://www.postgresql.org/docs/16/wal-intro.html)。
