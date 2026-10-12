@@ -234,7 +234,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
         <span>{workbenchVisible ? graph.index.get(galaxyReturnFocus?.sel)?.module ? '返回阅读' : '返回星图' : '统计看板'}</span>
       </button>
     </nav>
-    <Workbench graph={graph} hidden={!workbenchVisible}/>
+    <Workbench graph={graph} hidden={!workbenchVisible} reading={reading} queue={queue}/>
     <div className={`galaxy-viewport ${!ready || error ? 'is-loading' : ''}`} ref={host}>
       <div className="galaxy-frame" aria-hidden="true"/>
       {historyOpen && <ReadingTrail projection={trailProjection} route={trail} reduced={reduced} hidden={workbenchVisible || !ready || Boolean(error)}/>}
