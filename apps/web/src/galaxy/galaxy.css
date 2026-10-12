@@ -151,3 +151,6 @@
 .queue-list-action{position:absolute;right:3px;top:9px;display:grid;place-items:center;width:30px;height:30px;padding:0;border:0;border-radius:6px;background:transparent;color:#899ab2;cursor:pointer}
 .queue-list-action:hover,.queue-list-action[aria-pressed=true]{color:#e4e5ff;background:#abb9d812}
 .queue-list-action:focus-visible{outline:1px solid #a8c4df;outline-offset:-2px}
+
+/* Exiting panels retain their DOM, but the return flight already targets home. */
+.galaxy-page[data-home-return="true"] .galaxy-frame{inset:0}

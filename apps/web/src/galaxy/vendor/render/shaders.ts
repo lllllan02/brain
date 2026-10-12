@@ -9,10 +9,10 @@ import { REVEAL_ACTIVE_SPAN, REVEAL_DELAY_SPAN } from './reveal';
 const REVEAL_POSITION_GLSL = /* glsl */ `
 vec3 revealPosition(vec3 targetPosition) {
 	if (uRevealActive < 0.5) return targetPosition;
-	float delay = (length(targetPosition) / max(uRevealMaxRadius, 0.0001)) * ${REVEAL_DELAY_SPAN.toFixed(2)};
+	float delay = (length(targetPosition - uRevealOrigin) / max(uRevealMaxRadius, 0.0001)) * ${REVEAL_DELAY_SPAN.toFixed(2)};
 	float localProgress = clamp((uRevealProgress - delay) / ${REVEAL_ACTIVE_SPAN.toFixed(2)}, 0.0, 1.0);
 	float scale = 1.0 - pow(1.0 - localProgress, 3.0);
-	return targetPosition * scale;
+	return uRevealOrigin + (targetPosition - uRevealOrigin) * scale;
 }
 `;
 
@@ -49,6 +49,7 @@ uniform float uLightMode;
 uniform float uRevealActive;
 uniform float uRevealProgress;
 uniform float uRevealMaxRadius;
+uniform vec3 uRevealOrigin;
 
 ${REVEAL_POSITION_GLSL}
 
@@ -59,6 +60,11 @@ void main() {
 	vCollectionShape = aCollectionShape;
 	vRayAngle = aRayAngle;
 	vDim = mix(aDim, 1.0, max(aActive, aPreview));
+	// Keep the compressed stars a small luminous seed rather than a white flash.
+	if (uRevealActive > 0.5) {
+		float spread = length(revealPosition(position) - uRevealOrigin) / max(length(position - uRevealOrigin), 0.0001);
+		vDim *= mix(0.012, 1.0, smoothstep(0.0, 0.28, max(spread, uRevealProgress)));
+	}
 	vActive = aActive;
 	vPreview = aPreview;
 	// 每颗星按顶点序号取稳定相位与频率，偶尔亮起一下，不同步闪烁。
@@ -152,6 +158,7 @@ uniform float uLinkCurvature;
 uniform float uRevealActive;
 uniform float uRevealProgress;
 uniform float uRevealMaxRadius;
+uniform vec3 uRevealOrigin;
 
 ${REVEAL_POSITION_GLSL}
 `;
@@ -192,6 +199,7 @@ export interface RevealLineUniforms {
 	uRevealActive: { value: number };
 	uRevealProgress: { value: number };
 	uRevealMaxRadius: { value: number };
+	uRevealOrigin: { value: import("three").Vector3 };
 }
 
 /**

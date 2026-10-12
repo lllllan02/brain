@@ -30,6 +30,8 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   const host = useRef(null), scene = useRef(null), searchInput = useRef(null);
   const composing = useRef(false);
   const current = useRef({focus, setFocus});
+  const readerTimeline = useRef({progress: 0, animation: null});
+  const [branchesReady, setBranchesReady] = useState(false);
   const [labels, setLabels] = useState([]), [ready, setReady] = useState(false), [error, setError] = useState('');
   const preset = graph.index.get(focus.sel)?.module ? 'nebula' : 'deepfield';
   const [expanded, setExpanded] = useViewState('expanded', false);
@@ -91,7 +93,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   const node = graph.index.get(focus.sel);
   const reviewNode = graph.index.get(reviewId);
   // Keep the panel in place while its contents hand off to the next document.
-  const reader = usePresence(node?.module ? {node, location: reading.location} : null, node?.module ? 'reader' : null, reduced, 'translateX(calc(100% + 24px))', MOTION.layout);
+  const reader = usePresence(node?.module ? {node, location: reading.location} : null, node?.module ? 'reader' : null, reduced, 'translateX(24px)', MOTION.morph, readerTimeline);
   const shownNode = reader.shown?.node;
   const visualNode = node?.module ? shownNode : null;
   const visualFocus = {sel: visualNode?.id || null, mod: visualNode?.module || focus.mod};
@@ -150,19 +152,35 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   }, [search.shown?.results, activeResultIndex, searchVisible, search.closing]);
   const statusText = error || (!documents.length ? '还没有文档。保存笔记后，这里会亮起第一颗星。' : !ready && !node?.module ? '正在展开星系…' : null);
   const status = usePresence(statusText, statusText, reduced, 'none');
-  useEffect(() => {
+  useLayoutEffect(() => {
     // The dashboard needs no WebGL scene. Dispose it on entry and create it
     // only for the galaxy/reader; pause() stops motion, not rendering.
+    setReady(false); setBranchesReady(false); setLabels([]);
+    readerTimeline.current.progress = 0;
+    if (readerTimeline.current.animation) readerTimeline.current.animation.currentTime = 0;
     if (workbenchVisible) return;
     let active = true, instance;
-    setError(''); setReady(false); setLabels([]);
+    setError('');
     import('../galaxy/scene').then(({createGalaxy}) => {
       if (!active) return;
       instance = createGalaxy(host.current, graph, {
         onLabels: next => { if (active) setLabels(next); },
         onTrail: next => { if (active) setTrailProjection(next); },
         onReady: value => { if (active) setReady(value); },
-        onError: message => { if (active) setError(message); },
+        onBranchesReady: value => {
+          if (!active) return;
+          if (!value) {
+            readerTimeline.current.progress = 0;
+            if (readerTimeline.current.animation) readerTimeline.current.animation.currentTime = 0;
+          }
+          setBranchesReady(value);
+        },
+        onEntryProgress: progress => {
+          if (!active) return;
+          readerTimeline.current.progress = progress;
+          if (readerTimeline.current.animation) readerTimeline.current.animation.currentTime = progress * MOTION.morph;
+        },
+        onError: message => { if (active) { setError(message); readerTimeline.current.progress = 1; if (readerTimeline.current.animation) readerTimeline.current.animation.currentTime = MOTION.morph; } },
         onReset: () => {setReaderCluster(null);current.current.setFocus({mod: null, sel: null});},
         onSelect: id => {
           setReaderCluster(null);
@@ -180,14 +198,18 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       instance.expand(current.current.expanded, current.current.grouping);
       instance.readingTrail(current.current.trail);
     }).catch(() => {
-      if (active) setError('当前浏览器无法显示三维星云，可通过下方搜索继续阅读。');
+      if (active) {
+        setError('当前浏览器无法显示三维星云，可通过下方搜索继续阅读。');
+        readerTimeline.current.progress = 1;
+        if (readerTimeline.current.animation) readerTimeline.current.animation.currentTime = MOTION.morph;
+      }
     });
     return () => { active = false; instance?.dispose(); scene.current = null; };
   }, [graph, workbenchVisible]);
-  useEffect(() => scene.current?.preset(preset), [preset]);
+  useLayoutEffect(() => scene.current?.preset(preset), [preset]);
   useEffect(() => {scene.current?.pause(reduced);}, [reduced, ready]);
   useEffect(() => scene.current?.setReducedMotion(reduced), [reduced]);
-  useEffect(() => {scene.current?.readingTrail(trail);}, [trail]);
+  useLayoutEffect(() => {scene.current?.readingTrail(trail);}, [trail]);
   useEffect(() => {
     if (!focus.sel) setReaderCluster(null);
     const pending = pendingFlight.current;
@@ -197,7 +219,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       scene.current?.cancelReadingTravel();
     }
   }, [focus.sel]);
-  useEffect(() => {
+  useLayoutEffect(() => {
     scene.current?.focus(groupCluster ? null : visualFocus.sel, groupCluster ? groupCluster.category : visualFocus.mod, groupCluster?.tag, visualFocus.sel);
   }, [visualFocus.sel, visualFocus.mod, groupCluster]);
   const showReaderCluster = cluster => {
@@ -240,7 +262,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
     };
     window.addEventListener('keydown', key); return () => window.removeEventListener('keydown', key);
   }, [focus, query, searchVisible, setFocus, historyOpen, latestOpen, queueOpen, workbenchVisible]);
-  const reset = () => { setQuery(''); setSearchOpen(false); searchInput.current?.blur(); setFocus({mod: null, sel: null}); scene.current?.reset(); };
+  const reset = () => { setQuery(''); setSearchOpen(false); searchInput.current?.blur(); setFocus({mod: null, sel: null}); if (preset === 'deepfield') scene.current?.reset(); };
   const switchHomeMode = mode => {
     if (mode === 'workbench') {
       if (workbenchVisible) return;
@@ -257,7 +279,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       setFocus({sel, mod});
     }
   };
-  return <section className={`galaxy-page ${workbenchVisible ? 'workbench-visible' : ''} ${node || shownNode ? 'galaxy-reading' : ''} ${displayedCluster || clusterVisible ? 'galaxy-browsing' : ''} ${timelineOpen ? 'galaxy-history-open' : ''} ${flight ? revealedFlight === flight.key ? 'galaxy-handoff-revealing' : 'galaxy-handoff' : ''}`} aria-label={CONFIG.brand.name} data-reader-open={Boolean(node?.module)} data-view={preset} style={motionVariables}>
+  return <section className={`galaxy-page ${workbenchVisible ? 'workbench-visible' : ''} ${node || shownNode ? 'galaxy-reading' : ''} ${displayedCluster || clusterVisible ? 'galaxy-browsing' : ''} ${timelineOpen ? 'galaxy-history-open' : ''} ${flight ? revealedFlight === flight.key ? 'galaxy-handoff-revealing' : 'galaxy-handoff' : ''}`} aria-label={CONFIG.brand.name} data-home-return={!node?.module && !displayedCluster} data-reader-open={Boolean(node?.module)} data-view={preset} style={motionVariables}>
     <nav className="workbench-mode" aria-label="页面导航">
       <button type="button" onClick={() => switchHomeMode(workbenchVisible ? 'galaxy' : 'workbench')}>
         <Icon name={workbenchVisible ? 'back' : 'chart'} size={16}/>
@@ -339,7 +361,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
       }}><Icon name={icon} size={15}/><span>{title}</span></button>)}
 
     </nav>
-    <ClusterList collectionFilter={collectionFilter} queue={queue} navigation={<ListNavigation collectionFilter={collectionFilter} onFilter={setCollectionFilter} graph={graph} node={pinnedList?.document ? graph.index.get(pinnedList.document) : node} cluster={displayedCluster} queueRef={queueToggle} historyRef={historyToggle} latestRef={latestToggle} onChoose={mode => {
+    <ClusterList active={!workbenchVisible && (Boolean(error) || ready && branchesReady)} collectionFilter={collectionFilter} queue={queue} navigation={<ListNavigation collectionFilter={collectionFilter} onFilter={setCollectionFilter} graph={graph} node={pinnedList?.document ? graph.index.get(pinnedList.document) : node} cluster={displayedCluster} queueRef={queueToggle} historyRef={historyToggle} latestRef={latestToggle} onChoose={mode => {
       const activeMode = displayedCluster?.queue ? 'queue' : displayedCluster?.latest ? 'latest' : displayedCluster?.recent ? 'recent' : displayedCluster?.document ? displayedCluster.direction || 'outgoing' : null;
       if (mode === activeMode) return;
       setPinnedList(null);
@@ -369,7 +391,7 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
         setFlight(null);
         go(id, !timelineOpen);
       }} onClear={() => {setPinnedList(null);reading.clear();}} onClose={() => {setPinnedList(null);queueOpen ? closeQueue() : latestOpen ? closeLatest() : historyOpen ? closeHistory() : setReaderCluster({owner: focus.sel, value: null});}}/>
-    {shownNode && <div ref={reader.ref} inert={reader.closing} className="analysis-wrap reader-shell">
+    {shownNode && <div ref={reader.ref} inert={reader.closing || !branchesReady && !error} className="analysis-wrap reader-shell">
       <ReaderTransition documentId={shownNode.id} reduced={reduced}>
       <DocumentReader queue={queue} collectionAction={collectionAction} navigation={<ReadingNavigation graph={graph} reading={reading} onTravel={reading.travel}/>} onResize={syncReaderLayout} key={shownNode.id} reduced={reduced} onPreview={previewNode} graph={graph} node={shownNode} readingLocation={reader.shown.location} onReadingScroll={reading.saveScroll} module={moduleOf(graph, shownNode)} cluster={activeCluster} onCluster={showReaderCluster} onClose={() => setFocus({mod: null, sel: null})}/>
       </ReaderTransition>

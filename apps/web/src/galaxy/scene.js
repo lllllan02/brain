@@ -15,6 +15,10 @@ import {CategoryEffects} from './categoryEffects';
 import {categoryStyle} from './categoryStyles';
 import {NebulaBackdrop} from './nebulaBackdrop';
 
+// A Dashboard round trip disposes WebGL, but settled layouts belong to the graph.
+// Weak keys release them when a refreshed library replaces that graph.
+const settledLayouts = new WeakMap();
+
 export function createGalaxy(container, graph, hooks, reduced, initialPreset = 'deepfield') {
   const data = galaxyData(graph);
   const nodeIndices = new Map(data.nodes.map((node, i) => [node.id, i]));
@@ -30,6 +34,8 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
   const renderer = new AggregateRenderer(container, radius);
   const backdrop = new NebulaBackdrop(renderer.scene);
   const canvas = renderer.renderer.domElement;
+  // Never expose seed coordinates or the provisional camera while layout settles.
+  canvas.style.visibility = 'hidden';
   canvas.setAttribute('aria-label', '三维知识星云：拖动旋转，滚轮缩放；文档也可通过下方搜索打开');
   const camera = new CameraDirector(renderer.camera, canvas, {
     onFlyToSelected: () => applyFocus(true), onResetView: () => hooks.onReset(),
@@ -54,7 +60,9 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
   let expanded = false, transition = null, overview = null, clusters = null, effects = null;
   let display = null, categoryBlend = 0;
   let presetFrom = null, pendingOverview = null, currentLook = null;
-  const overviewCache = new Map();
+  const overviewCache = settledLayouts.get(graph) || new Map();
+  settledLayouts.set(graph, overviewCache);
+  let branchesReady = false;
   let hoveredCategory = null;
   let filteredLinks = false;
   let framing = null, framingTween = null, readerLayoutDirty = false;
@@ -145,7 +153,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
       if (!paused) camera.beginFocusOrbit(null);
     });
   }
-  function frameDestination(target, instant = false) {
+  function frameDestination(target, instant = false, capture = false) {
     // Layout changes keep the reader's node as the camera anchor, even when
     // its related list spans several categories or directories.
     if (readingIndex >= 0) {
@@ -170,6 +178,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
       }
       fit = Math.max((horizontal + 25) / (frameWidth / frameHeight), vertical + 85) * .72 + depth * .12;
     }
+    if (capture) return camera.captureFramingView(center, fit);
     if (instant || reduced) camera.setInitialFraming(center, fit);
     else camera.resetView(center, fit);
   }
@@ -189,18 +198,21 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     const from = snapshot();
     display = new Float32Array(from);
     const to = expanded && readingIndex < 0 ? clusters.positions : overview;
-    const anchor = preserveView ? readingIndex : -1;
+    const anchor = preserveView || morph ? readingIndex : -1;
     applyFocus(false);
     const anchorView = anchor >= 0 ? camera.captureAnchorView(new Vector3().fromArray(from, anchor * 3), 60 / Math.min(1, frameWidth / frameHeight)) : null;
+    if (morph && framingTween) framingTween.duration = MOTION.morph;
+    const framingView = morph && anchor < 0 ? frameDestination(to, false, true) : null;
     renderer.setDisplayPositions(display);
-    if (anchor >= 0 || preserveView && clusters.spherical && !selected && !category && !tag) camera.cancelMotion();
+    if (anchor >= 0 || framingView || preserveView && clusters.spherical && !selected && !category && !tag) camera.cancelMotion();
     else frameDestination(to, instant);
     if (reduced || instant) {
       if (anchor >= 0) camera.updateAnchorView(new Vector3().fromArray(to, anchor * 3), anchorView, 1);
+      if (framingView) camera.updateFramingView(framingView, 1);
       display.set(to); transition = null; categoryBlend = expanded ? 1 : 0;
       renderer.updatePositions(); categorySpace(categoryBlend);
       if (readingTrail && readingIndex < 0) applyFocus(true);
-    } else transition = {from, to, anchor, anchorView, elapsed: 0, duration: (morph ? MOTION.morph : expanded ? MOTION.expand : MOTION.collapse) / 1000, expanding: expanded, blendFrom: categoryBlend, morph, lookFrom: {...currentLook}};
+    } else transition = {from, to, anchor, anchorView, framingView, elapsed: 0, duration: (morph ? MOTION.morph : expanded ? MOTION.expand : MOTION.collapse) / 1000, expanding: expanded, blendFrom: categoryBlend, morph, lookFrom: {...currentLook}};
   }
   function stepCategories(dt) {
     let burst = -1;
@@ -212,6 +224,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
       if (transition.anchor >= 0) {
         camera.updateAnchorView(scratch.fromArray(display, transition.anchor * 3), transition.anchorView, categoryEase(p));
       }
+      if (transition.framingView) camera.updateFramingView(transition.framingView, categoryEase(p));
       categoryBlend = transition.blendFrom + ((transition.expanding ? 1 : 0) - transition.blendFrom) * categoryEase(p);
       burst = transition.expanding && !transition.morph && !clusters.spherical ? p : -1;
       renderer.updatePositions(); categorySpace(categoryBlend, transition.lookFrom, p);
@@ -256,7 +269,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     renderer.setFocus(localReading ? i => localReading.indices.has(i) ? i === readingIndex ? 1 : readingTrail?.live ? weights.get(i) ?? .28 : focus.bright.has(i) ? 1 : .28 : 0 : readingTrail?.live ? i => i === readingIndex ? 1 : weights.get(i) ?? .28 : readingTrail && trailIndices.size ? i => trailIndices.has(i) ? 1 : .16 : previewGroup ? i => groupId(data.nodes[i]) === previewGroup ? 1 : .14 : focus.active ? i => focus.bright.has(i) ? 1 : 0.28 : null);
     updateLinkFilter();
     renderer.setLinkOpacity(readingTrail ? .025 : expanded && readingIndex < 0 && category && focus.index < 0 ? .16 : categoryLinkOpacity(categoryBlend));
-    if (!ready || !move || transition || preparedReading >= 0) return;
+    if (!ready || !move || transition || renderer.revealing || preparedReading >= 0) return;
     if (readingTrail && !readingTrail.live && trailIndices.size) frame(false, [...trailIndices]);
     else if (readingIndex >= 0 || focus.index >= 0) {
       const anchor = readingIndex >= 0 ? readingIndex : focus.index;
@@ -282,7 +295,9 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
   }
   function setPreset(id) {
     if (preset?.id === id) return;
-    const hadScene = overviewCache.size > 0;
+    const hadScene = Boolean(preset);
+    branchesReady = false;
+    hooks.onBranchesReady?.(false);
     presetFrom = hadScene ? snapshot() : null;
     camera.cancelMotion();
     transition = null; overview = null;
@@ -293,6 +308,8 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     ready = false;
     layout?.dispose(); layout = null;
     workerDeadline = 0;
+    // Keep separate destinations: the homepage sphere opens into the reader's
+    // slightly flattened, volumetric nebula. Cache only within the same preset.
     pendingOverview = overviewCache.get(preset.id) || null;
     if (!pendingOverview && preset.id === 'deepfield') {
       pendingOverview = starCluster(data.nodes.map(node => node.id), Math.max(55, Math.cbrt(data.nodes.length) * 28), 1, {
@@ -350,6 +367,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     }
   }
   function labels(dt) {
+    if (!ready || renderer.revealProgress < .22) { hooks.onLabels([]); hooks.onTrail?.({nodes: [], edges: []}); return; }
     if (readingTrail) {
       const nodes = readingTrail.nodes.flatMap(node => {
         const index = nodeIndices.get(node.id);
@@ -404,6 +422,8 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     if (workerDeadline && now > workerDeadline && !layout?.isSettled()) fallback();
     layout?.step();
     if (!ready && (pendingOverview || layout?.isSettled())) {
+      // Sample the final reader/list footprint before fixing the birth camera.
+      resize(!presetFrom);
       workerDeadline = 0; ready = true;
       if (pendingOverview) overview = pendingOverview;
       else {
@@ -419,29 +439,52 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
       if (presetFrom) {
         renderer.setDisplayPositions(presetFrom);
         expand(expanded, reduced, true);
-      } else if (expanded) expand(true, reduced, true);
-      else {
-        renderer.setDisplayPositions(overview); renderer.updatePositions();
-        frame(!initialFramed || reduced);
-        if (!reduced && !selected && !category && !tag) renderer.playReveal(MOTION.expand);
+      } else {
+        // Establish the final pose before the first visible frame. Restored readers
+        // and expanded groups share the same birth sequence as a fresh overview.
+        const target = expanded && readingIndex < 0 ? clusters.positions : overview;
+        display = new Float32Array(target);
+        renderer.setDisplayPositions(display);
+        categoryBlend = expanded ? 1 : 0;
+        categorySpace(categoryBlend);
+        applyFocus(false);
+        const anchor = readingIndex >= 0 ? readingIndex : focus.index;
+        if (anchor >= 0) frameReading(new Vector3().fromArray(target, anchor * 3), true);
+        else if (readingTrail && !readingTrail.live && trailIndices.size) frame(true, [...trailIndices]);
+        else if ((category || tag) && focus.bright.size) frame(true, [...focus.bright]);
+        else frameDestination(target, true);
+        renderer.refreshClusterClouds();
+        if (!reduced) renderer.playReveal(MOTION.expand, camera.target.clone());
       }
+      const changedPreset = Boolean(presetFrom);
       presetFrom = null;
-      applyFocus(Boolean(selected || category || tag || readingTrail));
+      if (changedPreset) applyFocus(Boolean(selected || category || tag || readingTrail));
+      canvas.style.visibility = '';
       hooks.onReady(true);
     }
-    if (framingTween) {
+    // No invisible WebGL draws while the worker is settling the first layout.
+    if (!ready && !presetFrom) return;
+    if (framingTween && ready) {
       framingTween.elapsed += dt * 1000;
-      const p = Math.min(1, framingTween.elapsed / MOTION.layout), k = smooth(p);
+      const p = Math.min(1, framingTween.elapsed / (framingTween.duration || MOTION.layout)), k = smooth(p);
       for (const key of Object.keys(framing)) framing[key] = framingTween.from[key] + (framingTween.to[key] - framingTween.from[key]) * k;
       renderer.setFramingRegion(framing.width, framing.height, framing.left, framing.top);
       if (p === 1) framingTween = null;
     }
     stepCategories(reduced ? 0 : dt);
-    camera.cruiseEnabled = !paused && !reduced && ready && !transition && !readingTrail;
+    camera.cruiseEnabled = !paused && !reduced && ready && !transition && !renderer.revealing && !readingTrail;
     camera.cruiseSpeed = 0.5;
     camera.update(now, dt, paused || reduced ? 0 : dt);
-    backdrop.update(renderer.camera, preset.id, readingIndex >= 0 ? 0 : categoryBlend, readingIndex >= 0, dt, reduced);
+    backdrop.update(renderer.camera, preset.id, readingIndex >= 0 ? 0 : categoryBlend, readingIndex >= 0, dt, reduced, ready || presetFrom ? renderer.revealProgress : 0);
     renderer.render(paused || reduced ? 0 : dt, dt);
+    hooks.onEntryProgress?.(ready ? transition?.morph
+      ? Math.min(1, transition.elapsed / transition.duration)
+      : renderer.revealProgress : 0);
+    // Publish only after a real frame has rendered and the central star is visible.
+    if (!branchesReady && ready && renderer.revealProgress >= .22) {
+      branchesReady = true;
+      hooks.onBranchesReady?.(true);
+    }
     if (readerLayoutDirty || now - labelTime > 32) { labels(Math.min((now - labelTime) / 1000, .05)); labelTime = now; readerLayoutDirty = false; }
   }
   const pick = event => {
@@ -454,11 +497,11 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
   };
   const pointerUp = event => {
     const start = down; down = null;
-    if (!start || start.id !== event.pointerId || start.button !== 0 || !ready || transition || Math.hypot(event.clientX - start.x, event.clientY - start.y) > 5) return;
+    if (!start || start.id !== event.pointerId || start.button !== 0 || !ready || renderer.revealing || transition || Math.hypot(event.clientX - start.x, event.clientY - start.y) > 5) return;
     const i = pick(event); if (i >= 0) hooks.onSelect(data.nodes[i].id);
   };
   const pointerMove = event => {
-    if (!ready || transition || event.buttons) return;
+    if (!ready || renderer.revealing || transition || event.buttons) return;
     const next = pick(event);
     if (next !== hovered) { hovered = next; updateSelectedLinks(); }
     canvas.style.cursor = hovered < 0 ? 'grab' : 'pointer';
@@ -501,6 +544,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     prepareReadingTravel(id) {
       const index = nodeIndices.get(id);
       if (disposed || !ready || transition || index === undefined) return false;
+      renderer.finishReveal();
       preparedReading = index;
       camera.followReading(renderer.nodePosition(index, scratch), 60 / Math.min(1, frameWidth / frameHeight), reduced);
       return true;
@@ -514,6 +558,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     focus(sel, mod, selectedTag = null, readingId = sel) {
       if (disposed) return;
       const previousReading = readingIndex;
+      if (ready && (sel !== selected || mod !== category || selectedTag !== tag || (nodeIndices.get(readingId) ?? -1) !== readingIndex)) renderer.finishReveal();
       selected = sel; category = mod; tag = selectedTag;
       readingIndex = nodeIndices.get(readingId) ?? -1;
       const arrived = preparedReading === readingIndex && preparedReading >= 0;
@@ -552,7 +597,7 @@ export function createGalaxy(container, graph, hooks, reduced, initialPreset = '
     },
     nodeAnchor(id) {
       const index = nodeIndices.get(id);
-      if (disposed || !initialFramed || index === undefined) return null;
+      if (disposed || !ready || !initialFramed || index === undefined) return null;
       // The reading document remains the origin even while the scene focuses a category/tag.
       const point = renderer.nodePosition(index, scratch).project(renderer.camera);
       if (point.z < -1 || point.z > 1) return null;

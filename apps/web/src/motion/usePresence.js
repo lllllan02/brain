@@ -3,7 +3,7 @@ import {MOTION} from './tokens.js';
 
 // Retain outgoing content until its actual animation completes. Reversals sample
 // the visible frame before cancelling, and stale completions can never replace a newer choice.
-export function usePresence(value, key, reduced, offset = 'translateY(8px)', duration) {
+export function usePresence(value, key, reduced, offset = 'translateY(8px)', duration, enterTimeline) {
   const [retained, setRetained] = useState(() => ({value, key}));
   const snapshot = useRef(value), mountedKey = useRef(null);
   const ref = useRef(null), animation = useRef(null), mounted = useRef(null);
@@ -17,6 +17,7 @@ export function usePresence(value, key, reduced, offset = 'translateY(8px)', dur
     if (!element || reduced) {
       animation.current?.cancel();
       animation.current = null;
+      if (enterTimeline) enterTimeline.current.animation = null;
       mounted.current = element; mountedKey.current = retained.key;
       if (retained.key !== key) setRetained(latest.current);
       return;
@@ -32,6 +33,12 @@ export function usePresence(value, key, reduced, offset = 'translateY(8px)', dur
       duration: duration ?? (closing ? MOTION.exit : MOTION.enter), easing: MOTION.ease, fill: 'both',
     });
     animation.current = next;
+    if (enterTimeline && !closing) {
+      // The scene owns entry time; mounting the panel must not start a second clock.
+      next.pause();
+      next.currentTime = enterTimeline.current.progress * (duration ?? MOTION.enter);
+      enterTimeline.current.animation = next;
+    } else if (enterTimeline) enterTimeline.current.animation = null;
     next.finished.then(() => {
       if (animation.current !== next) return;
       if (closing) {
@@ -39,7 +46,10 @@ export function usePresence(value, key, reduced, offset = 'translateY(8px)', dur
         setRetained(latest.current);
       }
     }, () => {});
-  }, [key, retained.key, reduced, offset, duration]);
-  useLayoutEffect(() => () => animation.current?.cancel(), []);
+  }, [key, retained.key, reduced, offset, duration, enterTimeline]);
+  useLayoutEffect(() => () => {
+    animation.current?.cancel();
+    if (enterTimeline) enterTimeline.current.animation = null;
+  }, []);
   return {shown, ref, closing};
 }

@@ -43,6 +43,36 @@ test('阅读布局与局部取景同步，节点保持居中，中途反向从�
   } finally { await server.close(); }
 });
 
+test('返回首页时聚合与镜头共用进度，中断后从当前机位续接', async () => {
+  const server = await createServer({configFile:false, optimizeDeps:{noDiscovery:true}, server:{middlewareMode:true,hmr:false,ws:false}});
+  try {
+    const {CameraDirector} = await server.ssrLoadModule('/src/galaxy/vendor/interactions/CameraDirector.ts');
+    const camera = new PerspectiveCamera(45, 1.6, .1, 10000);
+    camera.position.set(210, 130, 300);
+    const director = Object.create(CameraDirector.prototype);
+    Object.assign(director, {camera, framingElevDeg:18, controls:{target:new Vector3(120, -30, 5)}});
+    const from = new Float32Array([120,-30,5,300,150,-40]);
+    const to = new Float32Array([-40,0,0,40,0,0]);
+    const display = new Float32Array(from.length);
+    const view = director.captureFramingView(new Vector3(), 80);
+    for (const p of [0, .1, .5, 1]) {
+      const k = categoryEase(p);
+      interpolateCategories(from, to, p, false, display);
+      director.updateFramingView(view, k);
+      assert.ok(camera.position.distanceTo(view.from.clone().lerp(view.to, k)) < 1e-10);
+      assert.ok(director.controls.target.distanceTo(view.targetFrom.clone().lerp(view.targetTo, k)) < 1e-10);
+      assert.ok(Math.abs(display[0] - (from[0] + (to[0] - from[0]) * k)) < 1e-4);
+    }
+    director.updateFramingView(view, .4);
+    const interrupted = camera.position.clone();
+    const reverse = director.captureFramingView(new Vector3(40, 5, 20), 60);
+    director.updateFramingView(reverse, 0);
+    assert.ok(camera.position.equals(interrupted));
+    director.updateFramingView(reverse, 1);
+    assert.ok(director.controls.target.equals(new Vector3(40, 5, 20)));
+  } finally { await server.close(); }
+});
+
 test('阻尼在 30、60、120 帧下经过相同时间到达相同位置', () => {
   const results = [30, 60, 120].map(fps => {
     let position = 0;

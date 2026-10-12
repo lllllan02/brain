@@ -80,12 +80,12 @@ export class NebulaBackdrop {
     scene.add(this.mesh);
   }
 
-  update(camera, preset, categoryBlend, reading, dt, reduced) {
+  update(camera, preset, categoryBlend, reading, dt, reduced, birthProgress = 1) {
     this.mesh.position.copy(camera.position);
     const base = {nebula: .72, galaxy: .44, deepfield: .72}[preset] ?? .72;
     const target = base * (1 - categoryBlend * .4) * (reading ? .65 : 1);
     this.intensity += (target - this.intensity) * (reduced ? 1 : damp(dt, MOTION.enter / 1000));
-    this.material.uniforms.uIntensity.value = this.intensity;
+    this.material.uniforms.uIntensity.value = this.intensity * (reduced ? 1 : Math.min(1, birthProgress * 1.8));
   }
 
   dispose() {

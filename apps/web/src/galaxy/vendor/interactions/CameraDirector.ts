@@ -301,6 +301,17 @@ export class CameraDirector {
 		return new Vector3(Math.cos(elev), Math.sin(elev), 0.35).normalize().multiplyScalar(dist).add(center);
 	}
 
+	/** Let layout morphs drive framing on their own shared animation clock. */
+	captureFramingView(center: Vector3, fitRadius: number) {
+		return {from: this.camera.position.clone(), targetFrom: this.controls.target.clone(),
+			to: this.framingPosition(center, fitRadius), targetTo: center.clone()};
+	}
+
+	updateFramingView(view: ReturnType<CameraDirector['captureFramingView']>, progress: number): void {
+		this.camera.position.copy(view.from).lerp(view.to, progress);
+		this.controls.target.copy(view.targetFrom).lerp(view.targetTo, progress);
+	}
+
 	/** R/回中心：平滑回总览（绕质心 center，居中不偏） */
 	resetView(center: Vector3, fitRadius: number, onDone?: () => void): void {
 		this.startTween(this.framingPosition(center, fitRadius), center.clone(), MOTION.camera, onDone);

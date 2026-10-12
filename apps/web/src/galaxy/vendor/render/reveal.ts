@@ -1,6 +1,6 @@
-/** 创世动画前 55% 时间用于按半径错峰，后 45% 是每个节点自己的展开窗口。 */
-export const REVEAL_DELAY_SPAN = 0.55;
-export const REVEAL_ACTIVE_SPAN = 0.45;
+/** 创世动画前 12% 时间用于按半径错峰，后 88% 是每个节点自己的展开窗口。 */
+export const REVEAL_DELAY_SPAN = 0.12;
+export const REVEAL_ACTIVE_SPAN = 0.88;
 
 function finite(v: number | undefined): number {
 	return v !== undefined && Number.isFinite(v) ? v : 0;
@@ -16,14 +16,14 @@ export function revealScale(progress: number, radius: number, maxRadius: number)
 	return 1 - Math.pow(1 - local, 3);
 }
 
-export function maxPositionRadius(positions: ArrayLike<number>, nodeCount: number): number {
+export function maxPositionRadius(positions: ArrayLike<number>, nodeCount: number, origin = {x: 0, y: 0, z: 0}): number {
 	let maxRadius = 1;
 	const count = Math.min(Math.max(Math.floor(nodeCount), 0), Math.floor(positions.length / 3));
 	for (let i = 0; i < count; i++) {
 		const radius = Math.hypot(
-			finite(positions[i * 3]),
-			finite(positions[i * 3 + 1]),
-			finite(positions[i * 3 + 2]),
+			finite(positions[i * 3]) - origin.x,
+			finite(positions[i * 3 + 1]) - origin.y,
+			finite(positions[i * 3 + 2]) - origin.z,
 		);
 		if (radius > maxRadius) maxRadius = radius;
 	}
@@ -40,6 +40,7 @@ export function fillRevealPositions(
 	nodeCount: number,
 	maxRadius: number,
 	progress: number,
+	origin = {x: 0, y: 0, z: 0},
 ): void {
 	if (out.buffer === target.buffer) {
 		throw new Error('Reveal target and display buffers must not alias');
@@ -50,12 +51,12 @@ export function fillRevealPositions(
 		Math.floor(target.length / 3),
 	);
 	for (let i = 0; i < count; i++) {
-		const x = finite(target[i * 3]);
-		const y = finite(target[i * 3 + 1]);
-		const z = finite(target[i * 3 + 2]);
+		const x = finite(target[i * 3]) - origin.x;
+		const y = finite(target[i * 3 + 1]) - origin.y;
+		const z = finite(target[i * 3 + 2]) - origin.z;
 		const scale = revealScale(progress, Math.hypot(x, y, z), maxRadius);
-		out[i * 3] = x * scale;
-		out[i * 3 + 1] = y * scale;
-		out[i * 3 + 2] = z * scale;
+		out[i * 3] = origin.x + x * scale;
+		out[i * 3 + 1] = origin.y + y * scale;
+		out[i * 3 + 2] = origin.z + z * scale;
 	}
 }

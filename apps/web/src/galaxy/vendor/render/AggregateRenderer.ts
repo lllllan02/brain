@@ -130,6 +130,7 @@ export class AggregateRenderer {
 	private revealActiveUniform = { value: 0 };
 	private revealProgressUniform = { value: 1 };
 	private revealMaxRadiusUniform = { value: 1 };
+	private revealOriginUniform = { value: new Vector3() };
 	private linkCurvatureUniform = { value: 0 };
 
 	private data: GraphData = { nodes: [], links: [] };
@@ -273,6 +274,7 @@ export class AggregateRenderer {
 				uRevealActive: this.revealActiveUniform,
 				uRevealProgress: this.revealProgressUniform,
 				uRevealMaxRadius: this.revealMaxRadiusUniform,
+				uRevealOrigin: this.revealOriginUniform,
 			},
 		});
 		this.nodePoints = new Points(this.nodeGeometry, this.nodeMaterial);
@@ -451,7 +453,7 @@ export class AggregateRenderer {
 	 * 创世动画（G2.5 反馈）：节点从中心按半径波次绽放到沉降坐标。
 	 * 目标坐标只快照一次；节点/链接在 GPU 用同一进度展开，CPU 仅维护浮层查询坐标。
 	 */
-	playReveal(durMs = 2600): void {
+	playReveal(durMs = 2600, origin = new Vector3()): void {
 		const n = this.data.nodes.length;
 		if (n === 0 || !this.nodeGeometry || !this.linkGeometry) return;
 
@@ -459,7 +461,8 @@ export class AggregateRenderer {
 		this.resetRevealState();
 		this.updatePositions();
 		const target = new Float32Array(this.renderPositions);
-		const maxR = maxPositionRadius(target, n);
+		this.revealOriginUniform.value.copy(origin);
+		const maxR = maxPositionRadius(target, n, origin);
 		this.reveal = { elapsedMs: 0, durMs: Math.max(durMs, 1), maxR, target };
 		this.revealActiveUniform.value = 1;
 		this.revealProgressUniform.value = 0;
@@ -536,6 +539,7 @@ export class AggregateRenderer {
 				uRevealActive: this.revealActiveUniform,
 				uRevealProgress: this.revealProgressUniform,
 				uRevealMaxRadius: this.revealMaxRadiusUniform,
+				uRevealOrigin: this.revealOriginUniform,
 			});
 		};
 		material.customProgramCacheKey = () => 'galaxy-reveal-basic-v1';
@@ -549,7 +553,7 @@ export class AggregateRenderer {
 		this.fillRevealAttributes(geometry, target, this.data.links, this.linkK);
 		this.linkCurvatureUniform.value = this.linkCurvature;
 		this.revealLinkMaterial ??= this.createRevealLinkMaterial(this.effectiveLinkOpacity());
-		this.revealLinkMaterial.opacity = this.effectiveLinkOpacity() * Math.min(this.revealProgressUniform.value * 1.6, 1);
+		this.revealLinkMaterial.opacity = 0;
 		segments.material = this.revealLinkMaterial;
 	}
 
@@ -557,12 +561,13 @@ export class AggregateRenderer {
 		if (!this.selGeometry || !this.selSegments || this.selLinks.length === 0) return;
 		this.fillRevealAttributes(this.selGeometry, target, this.selLinks, this.linkK);
 		this.revealSelMaterial ??= this.createRevealLinkMaterial(0.85);
-		this.revealSelMaterial.opacity = 0.85 * Math.min(this.revealProgressUniform.value * 1.6, 1);
+		this.revealSelMaterial.opacity = 0;
 		this.selSegments.material = this.revealSelMaterial;
 	}
 
 	private syncRevealLinkOpacity(progress: number): void {
-		const fade = Math.min(Math.max(progress, 0) * 1.6, 1);
+		// Let stars lead the burst; thin reference lines emerge during settling.
+		const fade = Math.min(Math.max((progress - 0.35) / 0.65, 0), 1) * 0.18;
 		if (this.revealLinkMaterial) this.revealLinkMaterial.opacity = this.effectiveLinkOpacity() * fade;
 		if (this.revealSelMaterial) this.revealSelMaterial.opacity = 0.85 * fade;
 	}
@@ -576,6 +581,16 @@ export class AggregateRenderer {
 		if (this.selSegments && this.selMaterial) this.selSegments.material = this.selMaterial;
 		this.syncLinkLayerVisibility();
 		if (this.ghostMaterial) this.ghostMaterial.opacity = 0.22;
+	}
+
+	finishReveal(): void {
+		if (!this.reveal) return;
+		this.resetRevealState();
+		this.updatePositions();
+	}
+
+	get revealProgress(): number {
+		return this.revealProgressUniform.value;
 	}
 
 	get revealing(): boolean {
@@ -1212,8 +1227,9 @@ export class AggregateRenderer {
 		const y = positions[i * 3 + 1] ?? 0;
 		const z = positions[i * 3 + 2] ?? 0;
 		if (!reveal) return out.set(x, y, z);
-		const scale = revealScale(this.revealProgressUniform.value, Math.hypot(x, y, z), reveal.maxR);
-		return out.set(x * scale, y * scale, z * scale);
+		const origin = this.revealOriginUniform.value;
+		const scale = revealScale(this.revealProgressUniform.value, Math.hypot(x - origin.x, y - origin.y, z - origin.z), reveal.maxR);
+		return out.set(x, y, z).sub(origin).multiplyScalar(scale).add(origin);
 	}
 
 	/** 投影到屏幕逻辑像素；z>1 = 在镜头后 */

@@ -31,10 +31,10 @@ export function clusterDocuments(graph, cluster) {
     .sort((a, b) => a.title.localeCompare(b.title, 'zh-CN') || a.id.localeCompare(b.id));
 }
 
-export function ClusterList({graph, cluster, selected, anchorId = selected, onSelect, onClose, onClear, getAnchor, reduced, onPresenceChange, navigation, pinned, onPin, queue, collectionFilter = 'all'}) {
+export function ClusterList({graph, cluster, selected, anchorId = selected, onSelect, onClose, onClear, getAnchor, reduced, onPresenceChange, navigation, pinned, onPin, queue, collectionFilter = 'all', active = true}) {
   const scroll = useRef(null), svg = useRef(null), origin = useRef(selected);
   const layer = useRef(null);
-  const {shown, ref: body, closing} = usePresence(cluster, cluster ? 'list' : null, reduced, 'translateX(12px)', MOTION.layout);
+  const {shown, ref: body, closing} = usePresence(active ? cluster : null, active && cluster ? 'list' : null, reduced || !active, 'none', MOTION.layout);
   if (!closing && anchorId) origin.current = anchorId;
   const allDocuments = useMemo(() => clusterDocuments(graph, shown), [graph, shown]);
   const documents = useMemo(() => collectionFilter === 'all' ? allDocuments : allDocuments.filter(node => node.collection === collectionFilter), [allDocuments, collectionFilter]);
@@ -85,7 +85,6 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
       if (!layer.current || !scroll.current || !svg.current) return;
       if (document.hidden) { previous = 0; return; }
       const dt = previous ? Math.max(0, Math.min(now - previous, MOTION.maxFrame)) : 0;
-      elapsed += dt;
       previous = Math.max(previous, now);
       const box = layer.current.getBoundingClientRect();
       const viewport = scroll.current.getBoundingClientRect();
@@ -104,6 +103,7 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
       // Never draw from an invented or stale origin while a node is unavailable.
       svg.current.style.opacity = anchor ? 1 : 0;
       if (!anchor) return;
+      elapsed += dt;
       if (sourceId !== origin.current) { sourceTween = source ? {from: {...source}, elapsed: 0} : null; sourceId = origin.current; }
       if (sourceTween && !reduced) {
         sourceTween.elapsed += dt;
@@ -200,7 +200,7 @@ export function ClusterList({graph, cluster, selected, anchorId = selected, onSe
     };
   }, [selectionKey, documents, getAnchor, reduced]);
 
-  return <div ref={layer} className="cluster-fan">
+  return <div ref={layer} className="cluster-fan" inert={!active} aria-hidden={!active} style={{visibility: active ? undefined : 'hidden'}}>
     {shown && <svg ref={svg} className="cluster-fan-lines" style={{...readingInkVariables, opacity: closing ? 0 : 1}} aria-hidden="true" key={`lines:${selectionKey}`}>
       {!reduced && <g className="cluster-flow-hub"><circle r="4" opacity="0"/><ellipse rx="6" ry="3" opacity="0"/></g>}
       {documents.map((node, index) => <path key={node.id} pathLength="1" className={`cluster-thread${node.id === selected ? ' is-current' : ''}`}
