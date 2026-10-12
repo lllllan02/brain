@@ -1,13 +1,11 @@
 # 项目活动经验
 
-供任务前按范围读取；记录与合并遵循 [管理细则](../docs/knowledge-management.md#工作经验的记录与合并)，操作见 [project-reflection](../.agents/skills/project-reflection/SKILL.md)。本文件保存经验依据及处理状态，正式规则以落点为准。
+这里只保留待处理或有具体待验证动作的条目，可以为空。正式规则见各条落点；已结束条目立即移入 `archive/YYYY-MM.md`，日常不读取。处理标准见 [记录与合并](../docs/knowledge-management.md#工作经验的记录与合并)，操作见 [project-reflection](../.agents/skills/project-reflection/SKILL.md)。
 
-## LRN-20261012-workflow.proactive-reflection
-- 问题键：workflow.proactive-reflection
-- 范围：项目开发、知识块整理；任务前读取、反馈捕捉与任务收尾
-- 状态：promoted
-- 独立任务次数：1；最近日期：2026-10-12
-- 依据：本次用户明确反馈，每次功能或知识块完成后都需要自己提醒 Agent 回顾链路、沉淀规则；要求主动记录要点、积累后合并，并授权适配到项目。用户报告反复发生，但未逐项核实历史任务，因此次数只计本次。
-- 下次动作：按已接入的反思流程执行，无需用户再次要求复盘。
-- 落点：[AGENTS.md 的规则维护](../AGENTS.md#规则维护)、[经验记录与合并](../docs/knowledge-management.md#工作经验的记录与合并)、[project-reflection](../.agents/skills/project-reflection/SKILL.md)
-- 验证：已写入流程；尚未通过后续独立任务验证主动触发和经验复用效果。
+## LRN-20261012-galaxy.reentry-framing
+- 问题键：galaxy.reentry-framing；范围：视界入场与页面切换
+- 状态：promoted；独立任务次数：1；最近日期：2026-10-12
+- 依据：多轮局部修复仍遗漏 DOM 列表、阅读面板各自的时钟与退出面板取景；用户要求保留首页和阅读的不同形态。
+- 落点：[界面维护与验收](../apps/web/README.md#界面维护与验收)
+- 验证：原记录报告已检查刷新、搜索、Dashboard 往返和 LOGO 返回；本轮只整理开发约定，未重跑浏览器或测试。整屏验收约定待后续独立任务验证。
+- 下次验证与结束条件：下一次修改入场或模式切换时，按开发说明检查相关宽窄屏路径，观察星点、连线、列表和阅读面板的共同出现及退出；整体验收完成且未见脱节即 verified 归档，保留实际检查范围。
