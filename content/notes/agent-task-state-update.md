@@ -35,4 +35,4 @@ updated_at: "2026-10-11T23:16:14+08:00"
 
 ![[assets/agent-task-state-update.png|任务状态更新时序：模型提交更新，程序校验写入，存储确认成功，下一轮读取并组装上下文]]
 
-[[agent-planning|计划调整]]也要同步到记录。下一轮提供[[agent-task-state#在完整上下文中放在哪里？|最新相关状态]]，原始证据仍保留备查。
+[[agent-replanning|计划调整]]也要同步到记录。下一轮提供[[agent-task-state#在完整上下文中放在哪里？|最新相关状态]]，原始证据仍保留备查。
