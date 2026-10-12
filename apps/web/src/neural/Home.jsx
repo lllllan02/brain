@@ -45,7 +45,8 @@ export function Home({graph, focus, setFocus, reading, reduced, collectionAction
   const [latestOpen, setLatestOpen] = useViewState('latestOpen', false);
   const [relationMode, setRelationMode] = useViewState('relationMode', 'outgoing', value => ['outgoing', 'incoming'].includes(value));
   const queue = useReadingQueue();
-  const [homeMode, setHomeMode] = useViewState('homeMode', 'workbench', value => ['workbench', 'galaxy'].includes(value));
+  // Always enter through the galaxy; a previous dashboard visit is not a landing preference.
+  const [homeMode, setHomeMode] = useState('galaxy');
   const workbenchVisible = homeMode === 'workbench' && !focus.sel && !focus.mod;
   const [galaxyReturnFocus, setGalaxyReturnFocus] = useViewState('galaxyReturnFocus', null, value => value === null || (typeof value === 'object' && ['sel', 'mod'].every(key => value[key] === null || typeof value[key] === 'string')));
   const [queueOpen, setQueueOpen] = useViewState('queueOpen', false);
