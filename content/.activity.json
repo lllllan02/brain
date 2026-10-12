@@ -65,67 +65,77 @@
     "agent-memory-evaluation": {
       "title": "Agent 记忆质量如何评估与归因",
       "collection": "inbox",
-      "digest": "c1a4c6e0e91aec94ba9980d8bbffa2ac33249966f96ed1ffecd395df87440890"
+      "digest": "8da5570ec8b01b5cd1761001977352e306ae1416bc6a43dd6b0735802b2f1efc"
     },
-    "agent-memory-extraction": {
-      "title": "长期记忆如何提取",
+    "agent-memory-maintenance": {
+      "title": "Agent 记忆失效、删除与信任边界",
       "collection": "inbox",
-      "digest": "58ef2c1c191e9d529ed9fa72d73eab904d9657c55c2aa05623a4cf1e70577a92"
+      "digest": "38ee22493bb54a38c3f292c2bcd2f0aea92a89ed5721281141f3897009d2db09"
     },
-    "agent-memory-lifecycle": {
-      "title": "Agent 记忆的有效期与遗忘机制",
+    "agent-memory-practice": {
+      "title": "Agent 记忆最小实现与源码阅读",
       "collection": "inbox",
-      "digest": "ccfadb467405e30f37dacd9627a275d5fb9ffebe8f101b07b57c576872b18f8a"
+      "digest": "222aa4421042dc2b5e2df12ae2394ca58ea59711991da3dce3063cca7c55cbc3"
     },
     "agent-memory-retrieval": {
-      "title": "长期记忆如何检索",
+      "title": "Agent 记忆检索与注入",
       "collection": "inbox",
-      "digest": "7ac9bfa42f30805bc6ffd3f0114d6f0e030b77c0576577ca8927fc302ccf6ebf"
+      "digest": "de39b823609d37b06d0358b2848b0b8a854876dfe35dcfedccd5fe16aec32215"
     },
-    "agent-memory-security": {
-      "title": "长期记忆的安全边界",
+    "agent-memory-selection": {
+      "title": "Agent 记忆工程选型",
       "collection": "inbox",
-      "digest": "c58b140fb07c4aa8467b98de243ecf49364b3c2d8d2d92757c2bef7af713d6da"
+      "digest": "3504e3f412f80ac2f4c2597f83363ccfe9cbcb8a040610af322ff1cdcc55fd8e"
     },
     "agent-memory-storage": {
-      "title": "长期记忆如何存储",
+      "title": "Agent 记忆表示与存储",
       "collection": "inbox",
-      "digest": "d9f6e68a7242c4a7378e7dbf4b3f2abf0c7a383c88531a39fabc6fde7f90f494"
+      "digest": "87765373bf158df66732451dbdd3526e75e342e2bcdd9de45290f2669f75b54d"
     },
-    "agent-memory-types": {
-      "title": "长期记忆的内容分类",
+    "agent-memory-writing": {
+      "title": "Agent 记忆写入与纠正",
       "collection": "inbox",
-      "digest": "329c5226396b9d13900d4ef2f29c8428b52dbf0a45343dbc4bca44a1604097b0"
-    },
-    "agent-memory-update": {
-      "title": "长期记忆如何更新",
-      "collection": "inbox",
-      "digest": "953d152e2042076874da217857d33ca54e728ae75453bde84f8496799a70dbf3"
+      "digest": "1c1acdde26bb792ec6031035c330711db31dcfcbd16a296d647d9db7f81d68d2"
     },
     "agent-memory": {
       "title": "Agent 记忆（Memory）",
       "collection": "inbox",
-      "digest": "3d88313143051dec57b591774a42b1aeaf0f5ec3831636b7e8b886ab5dbc4886"
-    },
-    "agent-planning": {
-      "title": "Agent 的规划与执行模式",
-      "collection": "inbox",
-      "digest": "422e2a02dae9b7669400808bd6e5c834526f2bf288b0116b10d7fc914bfe75c2"
+      "digest": "2a3c0cb48b637ad8ad4d63882691cc0024d939e677631d12e7639b24f9ee385d"
     },
     "agent-sandbox": {
       "title": "Agent 沙箱（Sandbox）",
       "collection": "inbox",
       "digest": "e5e47e34cc8d78b2f4bb307487c86c71cd8708e584c03c1e4e797a17c7482516"
     },
-    "agent-trace-requirements": {
-      "title": "Agent Trace 要记录什么",
+    "agent-trace-capture": {
+      "title": "Agent Trace 的内容采集与保留",
       "collection": "inbox",
-      "digest": "68c09b2c7413cae77030bc53817e2359769ffa7b17f9cdcc17b0bd9d37f33e43"
+      "digest": "3b7f9a224b2f25fe96331f8741b7c2beb40b5603811870aae13e1c9fd0df4eb7"
+    },
+    "agent-trace-evaluation": {
+      "title": "从 Agent 错例轨迹到回归用例",
+      "collection": "inbox",
+      "digest": "52ff81753e48d14b38be1a668bf40fb1c42981514880940c64ea62d284ce8a8c"
+    },
+    "agent-trace-lab": {
+      "title": "Eino 与 Langfuse 的 Trace 实验任务书",
+      "collection": "inbox",
+      "digest": "a40cdfdbfc04d42af217d4226891ce9594682a3f474db1c42d027fcb51547ba1"
+    },
+    "agent-trace-structure": {
+      "title": "Agent Trace 的埋点与调用关联",
+      "collection": "inbox",
+      "digest": "c234972577909dee377f4bdcd1d06988a2c80e2ab979847c20c3a8edc0303107"
+    },
+    "agent-trace": {
+      "title": "Agent Trace（执行追踪）",
+      "collection": "inbox",
+      "digest": "a9583fb39ef12e74d3039e260c0fd2585577c2835b6413f563d6bebc03d7000f"
     },
     "agent": {
       "title": "Agent",
       "collection": "inbox",
-      "digest": "30a30afe93d7a3c1b107f6d0c549985d45caa35c3b6dab64e3b8c44dec165bb6"
+      "digest": "b5bd77c97d98935188f6c9123816ac5f0deec67837a6fd02b786a2dbaba83caf"
     },
     "api-gateway": {
       "title": "API 网关",
@@ -286,6 +296,11 @@
       "title": "分库分表",
       "collection": "inbox",
       "digest": "f3f8a45b04c4bde52e2291514f518ff8dc5bd4e22b58ffcf26ff84953b545834"
+    },
+    "db-connection-pool": {
+      "title": "数据库连接池排查",
+      "collection": "inbox",
+      "digest": "618330d3430eae5f49d896dd7a7ca505f0b9fa8edf91fc99b162aa13ed04a610"
     },
     "deletion-write-barrier": {
       "title": "删除写屏障（Deletion Barrier）",
@@ -627,11 +642,6 @@
       "collection": "inbox",
       "digest": "587004c6f3255b83eadd7b949fd615877ebac42dd2b59306fc95254fd0964187"
     },
-    "long-term-memory": {
-      "title": "长期记忆（Long-term Memory）",
-      "collection": "inbox",
-      "digest": "24e6bdcbda6cc4eabec82203a03f604e97f85017d5be5dcb45694455dc18fe48"
-    },
     "mcp-oauth-client": {
       "title": "MCP Client 的最小 OAuth 接入",
       "collection": "inbox",
@@ -657,30 +667,125 @@
       "collection": "inbox",
       "digest": "b0cbb350e1f2d493efd5f00f18a5478899800ea5d064c21c68a84447eda4038c"
     },
+    "mysql-explain-extra": {
+      "title": "EXPLAIN 附加信息",
+      "collection": "inbox",
+      "digest": "73e4cdff607b69af58cc7cad027e0dd357e5510d7a409e4b495aa05c7975eb5b"
+    },
+    "mysql-explain-reading": {
+      "title": "EXPLAIN 执行计划读法",
+      "collection": "inbox",
+      "digest": "4244ea7428f0739859e3c3ca074fcc06863f50d57534a610b41e2a68f129ba43"
+    },
+    "mysql-explain-select-type": {
+      "title": "EXPLAIN 查询块类型",
+      "collection": "inbox",
+      "digest": "770816173b5329062e37a6f38d92d97f533610aab887dbc0ea519d488462618f"
+    },
+    "mysql-explain-type": {
+      "title": "EXPLAIN 访问类型",
+      "collection": "inbox",
+      "digest": "236c5c6d06ee2cdef2ef96dbfed4673caf0c4ffe822086ff778e9bb2a196c061"
+    },
     "mysql-index-maintenance": {
       "title": "索引维护",
       "collection": "inbox",
       "digest": "55aeef50f71edfb209b1c37ca0b86756c7a8ff23e266213945097d9179244e6a"
     },
+    "mysql-instance-recovery": {
+      "title": "MySQL 崩溃恢复",
+      "collection": "inbox",
+      "digest": "41c10af7bdb94862ef701aee74b58e087310daa58229278b898fa475ef692451"
+    },
+    "mysql-intermediate-results": {
+      "title": "中间结果优化",
+      "collection": "inbox",
+      "digest": "cfdd021d84f02b5581ad631df4cd93591ce98ddd61464cccdf4b38f619dd7b44"
+    },
+    "mysql-isolation-levels": {
+      "title": "MySQL 事务隔离级别",
+      "collection": "inbox",
+      "digest": "e59222e4ab6ec9d6f40730cfc8c81f8b3c75367fe9b7b03e1a455b1e8192a749"
+    },
+    "mysql-lock-waits": {
+      "title": "MySQL 锁等待排查",
+      "collection": "inbox",
+      "digest": "165d49ccc5cfad9bf4d622056b2828f1cfc4ee4b0be38be5702dcef6d0c0b907"
+    },
+    "mysql-locks-and-deadlocks": {
+      "title": "InnoDB 加锁与死锁",
+      "collection": "inbox",
+      "digest": "810b5c38b6678023f4317d23baeeb6fcd5c52cd79a9668689421bbed8c375d88"
+    },
+    "mysql-log-roles": {
+      "title": "MySQL 日志分工",
+      "collection": "inbox",
+      "digest": "66d24521d15580b5af0c00136cb1bbbbf5733b9b01e404c5c5a9a8c1c0a0f4e2"
+    },
+    "mysql-mvcc": {
+      "title": "MySQL MVCC（多版本并发控制）",
+      "collection": "inbox",
+      "digest": "e4ad7c367e279b005aa419df9f7a8afc4b81b1267d410dfeab5b186c7b4fa2ea"
+    },
     "mysql-overview": {
       "title": "MySQL",
       "collection": "inbox",
-      "digest": "b0379c690a58ea09f4c28e30b8560d4e19a7cc1ebf8f2fd533b685eaa63f599d"
+      "digest": "3c0d290eeb7beb1a6c0ddf8717612958bd482a4f942885f81dd0390c4935be56"
+    },
+    "mysql-point-in-time-recovery": {
+      "title": "MySQL 备份与时间点恢复",
+      "collection": "inbox",
+      "digest": "d1f8c66f38ac04c9eea982bb9b1a912ab72cb9561a3a5265d22edcc6b10ccabd"
     },
     "mysql-query-execution": {
       "title": "MySQL 的 SQL 执行流程",
       "collection": "inbox",
       "digest": "4adcd99649da0c6d11140bae25ceebbc7c917ab98fca85736d5b5af21106d9d9"
     },
+    "mysql-query-optimization": {
+      "title": "查询优化",
+      "collection": "inbox",
+      "digest": "035268fd52ea400baa60c2655a82dd89d3560b2cc02d48fb57cf1b8d9aee1b6e"
+    },
+    "mysql-query-plans": {
+      "title": "执行计划与优化器",
+      "collection": "inbox",
+      "digest": "56aa70b2f6041b1d48db5e5bd85329efd40bf7421882148c28a696a6a9222673"
+    },
+    "mysql-query-resources": {
+      "title": "MySQL 查询资源排查",
+      "collection": "inbox",
+      "digest": "570ba256d75c357d8499ec6fc548be25cb199b241491393676db961ab75cd619"
+    },
+    "mysql-slow-query": {
+      "title": "慢查询排查",
+      "collection": "inbox",
+      "digest": "1a6ef4556739a2ca56c862c35bfea475fe60ae6863cee83cfd59b7d425f48d42"
+    },
     "mysql-specialized-indexes": {
       "title": "全文、空间与多值索引",
       "collection": "inbox",
       "digest": "908aa10c90a8d9b1443170c7ed65cf0d01a3eed27f505529619410bbb030b543"
     },
+    "mysql-statement-tracing": {
+      "title": "MySQL 语句与等待追踪",
+      "collection": "inbox",
+      "digest": "ad0986d3fdd14ad3416cac928fcd41e4aec808cf4187b36cc6e56c27a26ab807"
+    },
     "mysql-storage-layout": {
       "title": "InnoDB 的表空间、页与行记录",
       "collection": "inbox",
       "digest": "79d859b8fb04688f9f1ecbfe60769489011b38b02ef43777f122e3fbed73582f"
+    },
+    "mysql-transaction-boundaries": {
+      "title": "MySQL 事务边界与 ACID",
+      "collection": "inbox",
+      "digest": "5f6b2e1e2d4b765b14471b6cad4557eb7fa5b6536427326581f45d2062f6ee79"
+    },
+    "mysql-transaction-commit": {
+      "title": "MySQL 事务提交与持久性",
+      "collection": "inbox",
+      "digest": "3d202d744c0f301149bd8aea1d12c6e896d38e5e154228db2d8d8ec31691fe49"
     },
     "nacos": {
       "title": "Nacos",
@@ -1182,6 +1287,11 @@
       "collection": "notes",
       "digest": "ff8f4037b426eb4fc361f3c800e51893ccc7e872317517278da70b90b20603c0"
     },
+    "agent-planning": {
+      "title": "Agent 的规划与执行模式",
+      "collection": "notes",
+      "digest": "63deae60c90bc5aee5411e1a9a1dc4fb53244f9c0fe3b6c2923ce2ed6518382c"
+    },
     "agent-reflection-design": {
       "title": "怎样组织有效的 Reflection",
       "collection": "notes",
@@ -1190,7 +1300,7 @@
     "agent-replanning": {
       "title": "Replanning（重新规划）",
       "collection": "notes",
-      "digest": "0173f46cb4f4a84e7464be07c0e360fe0ca7133cf72e21c361a64165401a597a"
+      "digest": "0e89638080b8823f330d374d9ae9cb7a0bd67e866b4b97237047a35bfe6f1866"
     },
     "agent-retry": {
       "title": "Agent 重试",
@@ -1367,6 +1477,11 @@
       "collection": "notes",
       "digest": "773122e548113124c328774a1efa616c16248a7635ded0b88a96bb723c392aa7"
     },
+    "mysql-existence-queries": {
+      "title": "存在性查询优化",
+      "collection": "notes",
+      "digest": "258cf43bf66ffc06bcd2ce87d22c1dcc320a7e59cb7738f29fe78618b42a7b99"
+    },
     "mysql-index-access-cost": {
       "title": "索引选择",
       "collection": "notes",
@@ -1420,7 +1535,7 @@
     "mysql-index-ordering": {
       "title": "索引与排序",
       "collection": "notes",
-      "digest": "569617ed42c291e6eb01b88ac54a7a993825cb1c501107154a693382de078092"
+      "digest": "d744d551885bb606d6cc4936b3afc3c082a8a48d2bae517af6c612479a86a9b1"
     },
     "mysql-index-page-changes": {
       "title": "InnoDB 页分裂与页合并：变化与代价",
@@ -1505,7 +1620,7 @@
     "tool-interface-design": {
       "title": "工具接口设计",
       "collection": "notes",
-      "digest": "13c61eee72bac478abd37e6c6cce96888693e461486d767147dc75685eb358b7"
+      "digest": "1070965ae733b7aaca73770ac504bfd84114e65ad9852a13bcc0dfcb0962842c"
     },
     "tool-loading": {
       "title": "工具按需加载",
@@ -1582,6 +1697,11 @@
       "collection": "readings",
       "digest": "0ecc821b5e7d0ee774810a05a8f7378679366d0bf023cb2a7f90a0da67477877"
     },
+    "anthropic-memory-tool": {
+      "title": "Anthropic Memory Tool：模型提出操作，应用保存文件",
+      "collection": "readings",
+      "digest": "59bd192bd3ba534a60ca6acf7940a82e560cb26b0314a96349f77ae8cb6f1d2c"
+    },
     "anthropic-tool-design-summary": {
       "title": "Anthropic：如何设计有效的 Agent 工具",
       "collection": "readings",
@@ -1611,6 +1731,11 @@
       "title": "Claude Code：上下文预算与压缩阈值",
       "collection": "readings",
       "digest": "b38ccbaf44b6224aefbc7a63ffe956afab2dfe8ccc77589fecce7de5ad06220d"
+    },
+    "claude-code-memory": {
+      "title": "Claude Code：规则文件与自动记忆索引",
+      "collection": "readings",
+      "digest": "ef6dc6f1ec1168a56702b683e563c8d8941644d75e2c6416d96bc400835f4ccd"
     },
     "claude-code-shell-permissions-summary": {
       "title": "Claude Code：Shell 权限规则与无法判定的调用",
@@ -1682,6 +1807,11 @@
       "collection": "readings",
       "digest": "f51756511a720885e2cd6b57d7782e52d9474de2a6c83a00bc3e0f057a3b1232"
     },
+    "codex-memory-pipeline": {
+      "title": "Codex 源码：后台提取与跨会话整合",
+      "collection": "readings",
+      "digest": "82577b50374d53e09910ed7122ea2710b68d6cc029459bdf666878393a571779"
+    },
     "codex-sandbox-filesystem": {
       "title": "Codex 如何保护可写工作区内的敏感路径",
       "collection": "readings",
@@ -1732,6 +1862,11 @@
       "collection": "readings",
       "digest": "ffe1842da5ff473543e3482f3607ed460e03f77de1cfd865b30496b0c2cf2b50"
     },
+    "eino-langfuse-tracing": {
+      "title": "Eino 的 Langfuse Trace 集成",
+      "collection": "readings",
+      "digest": "476b923d9dd8ed0e40a74120bef96717091e5f3692acbb5e35a69c005e74c782"
+    },
     "factory-compression-evaluation-summary": {
       "title": "Factory：怎样评测压缩后的任务状态保留",
       "collection": "readings",
@@ -1756,6 +1891,16 @@
       "title": "Go backoff：用函数包装一次操作",
       "collection": "readings",
       "digest": "c1bd8768f3ac0bec791bf18b486ce87a3af30aaf96dbf8a90a985038950ec655"
+    },
+    "go-sql-connections": {
+      "title": "Go 官方文档导读：数据库连接池与资源归还",
+      "collection": "readings",
+      "digest": "d25c0b2e7fc9af987c67a2f1de157043a6ef707a43b3ae663daf0e0c6cc54666"
+    },
+    "graphiti-memory": {
+      "title": "Graphiti：随时间变化的事实图",
+      "collection": "readings",
+      "digest": "d237ee9edc55354816d269c049bbd54c16221d3e441d25032c176159048d34c7"
     },
     "grpc-error-recovery-summary": {
       "title": "gRPC：错误码怎样表达恢复方式",
@@ -1822,10 +1967,30 @@
       "collection": "readings",
       "digest": "0a82da33003504fc610df75934b410872e10e39c421d052c32eb41d5a18aab29"
     },
+    "langfuse-dataset-experiments": {
+      "title": "Langfuse：从生产轨迹建立数据集与实验",
+      "collection": "readings",
+      "digest": "fb410377c4f030d8a5d7364f74be31431599a088f4841b684ef00ee6186c75c3"
+    },
+    "langfuse-tracing": {
+      "title": "Langfuse：可用于调试和评测的 Trace",
+      "collection": "readings",
+      "digest": "09f53fc0574bbdc47bc07b698b4f9e1b8c07e037f11b4b129e99411d8239ba7e"
+    },
+    "langgraph-memory": {
+      "title": "LangGraph 与 LangMem：状态持久化和记忆形成",
+      "collection": "readings",
+      "digest": "de069a048fb76596d234ff37bce356b1ec4c63998c1dfe87c81605cf119407c6"
+    },
     "langgraph-replanning-summary": {
       "title": "LangGraph：每步执行后的 Replan 节点",
       "collection": "readings",
       "digest": "0554b4d6959aed6e1c96279e1167b40034a48aee5fafb6ed16be90267ee60939"
+    },
+    "langgraph-time-travel": {
+      "title": "LangGraph：从检查点重放与分叉",
+      "collection": "readings",
+      "digest": "3235f6d7e3cbca9ccb94639fbb1c1340e287828be4b37f8d0528ccbc52ea55b4"
     },
     "langgraph-tool-execution-summary": {
       "title": "LangGraph：同轮工具执行与结果回传",
@@ -1837,10 +2002,20 @@
       "collection": "readings",
       "digest": "e6437847aa839e1b46a564b095e6bccde89d9630e64733230dd84e897024f9b0"
     },
+    "letta-memory": {
+      "title": "Letta：常驻记忆块与归档检索",
+      "collection": "readings",
+      "digest": "5ccc1d23244593370457693dd4d6185e775b55a3dba4095ef1ec131cadc2f60a"
+    },
     "llmcompiler-summary": {
       "title": "LLMCompiler：按依赖调度工具调用",
       "collection": "readings",
       "digest": "09c91aba6da11ed7e73f955e2d3b5a4523f96c5017dcb2adb095e7080e32ec07"
+    },
+    "longmemeval-memory": {
+      "title": "LongMemEval：跨会话记忆与经验复用评测",
+      "collection": "readings",
+      "digest": "6f98b97314360d8333f796642b9283fa83668576d0fe4d359a61a18be922eb92"
     },
     "manus-context-engineering-summary": {
       "title": "Manus：上下文怎样影响成本与行动",
@@ -1867,45 +2042,85 @@
       "collection": "readings",
       "digest": "5424328634cedff3491236d857bd70320c7acd3d8537d0af108ef69786570325"
     },
+    "mem0-memory": {
+      "title": "Mem0：追加提取、显式更新与检索",
+      "collection": "readings",
+      "digest": "b8b8b54abf049bc7de30b6e2a4697754ca002abad9ff8ef8baa7e449d36c2f39"
+    },
     "messaging-patterns-sources": {
       "title": "消息通信与事件处理模式导读",
       "collection": "readings",
       "digest": "a843399e2d6f7ca6c33a101d6b557804b6554bd909b09b1300213b12568c2547"
     },
+    "mysql-derived-optimization": {
+      "title": "MySQL 官方手册导读：派生表、条件下推与临时结果",
+      "collection": "readings",
+      "digest": "7afb2613004f5e53d2ecfb9e0fff3026ead6ec29e4700de0c378567abf61cc5a"
+    },
     "mysql-learning-resources": {
       "title": "MySQL 学习资料导读",
       "collection": "readings",
-      "digest": "20b16a84d615998af847d2fcb89bace831e103c0fe5f723db17c29e1c8d6d5fc"
+      "digest": "110606a24adc013cb673442b31458e608599b90c25b21f07515909e2f8ebc34f"
+    },
+    "mysql-manual-backup": {
+      "title": "MySQL 官方手册导读：备份坐标与时间点恢复",
+      "collection": "readings",
+      "digest": "87f5296abeb25dcd1a9410fea08d30285b962b668a0bb0bcf321a1ce3988e764"
     },
     "mysql-manual-buffer-pool": {
       "title": "MySQL 官方手册导读：缓存保留与页面写回",
       "collection": "readings",
       "digest": "3c135277ad53da7991ca773b6427a98947da1d33daac689716661c01ffc23ac9"
     },
+    "mysql-manual-commit": {
+      "title": "MySQL 官方文档导读：提交协调与日志持久化",
+      "collection": "readings",
+      "digest": "09edab6d230b15d97d420b00658c5f0e7455bdfaf56ff06e01bc4ce63e828764"
+    },
     "mysql-manual-queries": {
       "title": "MySQL 官方手册导读：查询与索引",
       "collection": "readings",
-      "digest": "cb975b520657a01fd934e73f3285dbea588c2f84973f97fb1029f4ad207431eb"
+      "digest": "4f673973b01c1124887cf4958beb978012f6d2ae7bbc950a6cc0317cde62f49c"
     },
     "mysql-manual-recovery": {
       "title": "MySQL 官方手册导读：日志、复制与恢复",
       "collection": "readings",
-      "digest": "b6aa06ff4b8c03ba13870883b10343b9d419ab7a1c0c9da39ec035f08a996ded"
+      "digest": "6fdbd2258c012c9fe6ac86e6b420fefa7d294dc8d217c0b1f4ccea0538c99fd3"
     },
     "mysql-manual-transactions": {
       "title": "MySQL 官方手册导读：事务与锁",
       "collection": "readings",
-      "digest": "faf80861b89cffde2d2567aadeb0892182fffb98671f145622273cf571b00f4d"
+      "digest": "58d1d3cc584c99b0235ef288cc2c36361199200018bcc23675d4646c23c5fba1"
     },
     "mysql-pagination-sources": {
       "title": "MySQL 分页优化资料导读",
       "collection": "readings",
       "digest": "ad1e06a902377c9d8c99376d0fd76ddfb6b02f500e63ec2aba75dc87ec5da435"
     },
+    "mysql-performance-diagnostics": {
+      "title": "MySQL 官方手册导读：慢查询与等待",
+      "collection": "readings",
+      "digest": "70933295d25878f8ead63fc2019db78d38cf6f5846fb2eec2cc0e24f5a270d19"
+    },
+    "mysql-performance-schema-profiling": {
+      "title": "MySQL 官方手册导读：语句、阶段与等待事件",
+      "collection": "readings",
+      "digest": "ee12aaa09f8db2382ab6c52634184cb606903830e3e0c76eeff11d1a1d20c4ec"
+    },
     "mysql-scan-resistance-readings": {
       "title": "InnoDB 扫描抗性：图解与实验导读",
       "collection": "readings",
       "digest": "acc049e4511e67bda600c7e27cbfb13b4f2aef395b74fb08c32cadb00798d646"
+    },
+    "mysql-subquery-optimization": {
+      "title": "MySQL 官方手册导读：存在性查询与子查询物化",
+      "collection": "readings",
+      "digest": "eb9fc642e8043985cda48967b14e8bd7538f0f6a6b48ce924f4096bae484ac46"
+    },
+    "mysql-temporary-tables": {
+      "title": "MySQL 官方手册导读：内部临时表的存储与监测",
+      "collection": "readings",
+      "digest": "27335410842ac1af489c68dc91e39a4b38c50eb14bf71df76cdccecf277f2465"
     },
     "openai-agents-architecture-summary": {
       "title": "OpenAI Agents API：Harness、执行环境与应用的分工",
@@ -1961,6 +2176,21 @@
       "title": "OpenFGA：Agent 授权关系、条件与变更管理",
       "collection": "readings",
       "digest": "3805c047f03cba1caf367dc095ad3788e6fbfa18941a2a59d9f5a3998e895ff1"
+    },
+    "openinference-tracing": {
+      "title": "OpenInference：AI 操作语义与埋点仓库",
+      "collection": "readings",
+      "digest": "05d5b5d22fd8b633a1d71593672299ba426df0bf6cfb672eeb86d2d4559d02b8"
+    },
+    "otel-genai-tracing": {
+      "title": "OpenTelemetry：GenAI 与 Agent 的追踪约定",
+      "collection": "readings",
+      "digest": "f1163834c9c6b20bc7b9cdf89ab834d13406a0c2558e61b98b7b6ca2bb73998d"
+    },
+    "otel-trace-collection": {
+      "title": "OpenTelemetry：上下文传播、错误记录与采样",
+      "collection": "readings",
+      "digest": "66e556f151adbac78b6e3b2ee15a03414c7fc3c1b75fd34d7983db0ff4c60d30"
     },
     "permit-agent-approvals-summary": {
       "title": "Permit：Agent 授权与审批如何组合",
@@ -2119,6 +2349,17 @@
         "assets/agent-loop.excalidraw": "291e3940ea7d21c5399319849380c7896443fc6cff4a68e708213b08b0209eaa",
         "assets/agent-loop.png": "56de0f0150e21692e2c38f6ecf5f671a5456dee902de3fee5c6f18e65df16ff1",
         "assets/agent-loop.svg": "732549acd51129c6a3e9f2e99132364529599d6b58e79ba397c337207a4873be"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/agent-planning-combination": {
+      "title": "agent-planning-combination",
+      "files": {
+        "assets/agent-planning-combination.excalidraw": "a46eda0da741a25ac209ae4d627b887177f52c632c0c8c0173b9a7c1ace6be96",
+        "assets/agent-planning-combination.png": "4f8619517b4aa1b10d6c8af032a4dd01114b7b2ce51269cc7796413739a20fc1",
+        "assets/agent-planning-combination.svg": "9d924490ca45272ea87a7a766e53062dd8bb56164231be49d9cf4c96ee14f057"
       },
       "collections": [
         "notes"
@@ -14564,6 +14805,1324 @@
       "docId": "mysql-buffer-pool-lifecycle",
       "from": "inbox",
       "to": "notes"
+    },
+    {
+      "id": "447e60b9-b868-4704-baa7-bcf1da2c1bc5",
+      "kind": "created",
+      "entity": "doc:mysql-instance-recovery",
+      "title": "MySQL 崩溃恢复",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-instance-recovery"
+    },
+    {
+      "id": "1474fcef-3667-4e42-8b0b-9d99072e1251",
+      "kind": "created",
+      "entity": "doc:mysql-isolation-levels",
+      "title": "MySQL 事务隔离级别",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-isolation-levels"
+    },
+    {
+      "id": "beccfcf5-edcd-463c-977f-a869fc2dcd8d",
+      "kind": "created",
+      "entity": "doc:mysql-locks-and-deadlocks",
+      "title": "InnoDB 加锁与死锁",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-locks-and-deadlocks"
+    },
+    {
+      "id": "7a91b205-0294-401a-a324-943c3c67c4c1",
+      "kind": "created",
+      "entity": "doc:mysql-log-roles",
+      "title": "MySQL 日志分工",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-log-roles"
+    },
+    {
+      "id": "605ef960-b5a9-4815-802e-74b1e6fbc3a4",
+      "kind": "created",
+      "entity": "doc:mysql-mvcc",
+      "title": "MySQL MVCC（多版本并发控制）",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-mvcc"
+    },
+    {
+      "id": "a2cba1d8-f885-43eb-a33e-66c48639220f",
+      "kind": "updated",
+      "entity": "doc:mysql-overview",
+      "title": "MySQL",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-overview"
+    },
+    {
+      "id": "465fb7c5-d596-4141-8db6-bf5de7a56fbb",
+      "kind": "created",
+      "entity": "doc:mysql-point-in-time-recovery",
+      "title": "MySQL 备份与时间点恢复",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-point-in-time-recovery"
+    },
+    {
+      "id": "d4d6a2c7-b65d-406c-bd43-bf35f6deceee",
+      "kind": "created",
+      "entity": "doc:mysql-query-optimization",
+      "title": "查询优化",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-query-optimization"
+    },
+    {
+      "id": "f3567123-79eb-466b-8224-d49c81d7360f",
+      "kind": "created",
+      "entity": "doc:mysql-query-plans",
+      "title": "执行计划与优化器",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-query-plans"
+    },
+    {
+      "id": "f69be928-9e7a-4c8a-b723-c08427a0892b",
+      "kind": "created",
+      "entity": "doc:mysql-slow-query",
+      "title": "慢查询排查",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-slow-query"
+    },
+    {
+      "id": "95adc6df-6ef6-4983-af90-bebacc609540",
+      "kind": "created",
+      "entity": "doc:mysql-transaction-boundaries",
+      "title": "MySQL 事务边界与 ACID",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-transaction-boundaries"
+    },
+    {
+      "id": "6dbb8bfd-62b3-4da5-8d2c-fbbde6e95937",
+      "kind": "created",
+      "entity": "doc:mysql-transaction-commit",
+      "title": "MySQL 事务提交与持久性",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-transaction-commit"
+    },
+    {
+      "id": "c04c4645-90d6-44ee-b5b1-cbc4ac8ac83e",
+      "kind": "updated",
+      "entity": "doc:mysql-learning-resources",
+      "title": "MySQL 学习资料导读",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-learning-resources"
+    },
+    {
+      "id": "96087e6f-a4e5-4aa3-9cc0-7fff0c70783e",
+      "kind": "created",
+      "entity": "doc:mysql-manual-backup",
+      "title": "MySQL 官方手册导读：备份坐标与时间点恢复",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-backup"
+    },
+    {
+      "id": "503c1701-fc5c-46be-a8a6-bd1b532ab608",
+      "kind": "created",
+      "entity": "doc:mysql-manual-commit",
+      "title": "MySQL 官方文档导读：提交协调与日志持久化",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-commit"
+    },
+    {
+      "id": "ff351e32-ca27-4e5a-b703-c6d6e192cd08",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-queries",
+      "title": "MySQL 官方手册导读：查询与索引",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-queries"
+    },
+    {
+      "id": "b6c0a028-c053-4090-9439-5bac6374a917",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-recovery",
+      "title": "MySQL 官方手册导读：日志、复制与恢复",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-recovery"
+    },
+    {
+      "id": "6b4fcb14-defb-48a8-a5e1-739ce60e94cf",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-transactions",
+      "title": "MySQL 官方手册导读：事务与锁",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-transactions"
+    },
+    {
+      "id": "929d79e8-ff5a-4796-aae8-d762f8993563",
+      "kind": "created",
+      "entity": "doc:mysql-performance-diagnostics",
+      "title": "MySQL 官方手册导读：慢查询与等待",
+      "time": "2026-10-12T13:49:04.783Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-performance-diagnostics"
+    },
+    {
+      "id": "07d106c3-5c94-44c9-999e-4475131d902d",
+      "kind": "created",
+      "entity": "doc:mysql-explain-reading",
+      "title": "EXPLAIN 执行计划读法",
+      "time": "2026-10-12T13:59:40.591Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-explain-reading"
+    },
+    {
+      "id": "17609e00-53a2-4f09-b848-3dc09efa2c29",
+      "kind": "updated",
+      "entity": "doc:mysql-query-plans",
+      "title": "执行计划与优化器",
+      "time": "2026-10-12T13:59:40.591Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-query-plans"
+    },
+    {
+      "id": "a5a4dba9-1ad1-4b83-804b-9939f2691747",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-queries",
+      "title": "MySQL 官方手册导读：查询与索引",
+      "time": "2026-10-12T13:59:40.591Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-queries"
+    },
+    {
+      "id": "66ddef0e-91d3-4687-b2ac-ea82b72c3e94",
+      "kind": "updated",
+      "entity": "doc:mysql-explain-reading",
+      "title": "EXPLAIN 执行计划读法",
+      "time": "2026-10-12T14:00:24.625Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-explain-reading"
+    },
+    {
+      "id": "d64634f6-aff9-47e6-b251-e5f2f3fa0f99",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-queries",
+      "title": "MySQL 官方手册导读：查询与索引",
+      "time": "2026-10-12T14:01:48.647Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-queries"
+    },
+    {
+      "id": "7d53ec96-4ba7-4e87-8d3f-9e1e95c594b8",
+      "kind": "created",
+      "entity": "doc:mysql-existence-queries",
+      "title": "存在性查询优化",
+      "time": "2026-10-12T14:04:56.585Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-existence-queries"
+    },
+    {
+      "id": "aafe4b49-5290-4a13-bee7-62b80303b307",
+      "kind": "created",
+      "entity": "doc:mysql-intermediate-results",
+      "title": "中间结果优化",
+      "time": "2026-10-12T14:04:56.585Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-intermediate-results"
+    },
+    {
+      "id": "5f2618ec-d8f7-43e0-a839-1ce0119c949f",
+      "kind": "created",
+      "entity": "doc:mysql-derived-optimization",
+      "title": "MySQL 官方手册导读：派生表、条件下推与临时结果",
+      "time": "2026-10-12T14:04:56.585Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-derived-optimization"
+    },
+    {
+      "id": "6841c3ad-cc37-4927-b5f1-891f4c61084c",
+      "kind": "created",
+      "entity": "doc:mysql-subquery-optimization",
+      "title": "MySQL 官方手册导读：存在性查询与子查询物化",
+      "time": "2026-10-12T14:04:56.585Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-subquery-optimization"
+    },
+    {
+      "id": "42c7443a-4677-4e04-b124-3fc0e84147cb",
+      "kind": "updated",
+      "entity": "doc:mysql-overview",
+      "title": "MySQL",
+      "time": "2026-10-12T14:06:16.622Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-overview"
+    },
+    {
+      "id": "1476ef41-a3e4-4f10-b09e-c5f33cf76b8c",
+      "kind": "updated",
+      "entity": "doc:mysql-query-optimization",
+      "title": "查询优化",
+      "time": "2026-10-12T14:06:16.622Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-query-optimization"
+    },
+    {
+      "id": "8c65479a-22f2-464d-aec1-a8f3d2cf1c0c",
+      "kind": "updated",
+      "entity": "doc:mysql-index-ordering",
+      "title": "索引与排序",
+      "time": "2026-10-12T14:06:16.622Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-index-ordering"
+    },
+    {
+      "id": "62677cc6-5b45-4a44-a084-f93e225303bf",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-queries",
+      "title": "MySQL 官方手册导读：查询与索引",
+      "time": "2026-10-12T14:06:16.622Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-queries"
+    },
+    {
+      "id": "0a41b879-12a4-4f72-b9c1-d64e1ca67693",
+      "kind": "created",
+      "entity": "doc:go-sql-connections",
+      "title": "Go 官方文档导读：数据库连接池与资源归还",
+      "time": "2026-10-12T14:07:56.576Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "go-sql-connections"
+    },
+    {
+      "id": "98826a6e-9cb9-4dfc-92bf-5f02ea58f3cc",
+      "kind": "created",
+      "entity": "doc:mysql-performance-schema-profiling",
+      "title": "MySQL 官方手册导读：语句、阶段与等待事件",
+      "time": "2026-10-12T14:07:56.576Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-performance-schema-profiling"
+    },
+    {
+      "id": "76efbaf0-1b66-4b92-9f2b-c4061b69c23e",
+      "kind": "created",
+      "entity": "doc:mysql-temporary-tables",
+      "title": "MySQL 官方手册导读：内部临时表的存储与监测",
+      "time": "2026-10-12T14:07:56.576Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-temporary-tables"
+    },
+    {
+      "id": "8464f448-16c1-42c1-a214-6b4913db77d7",
+      "kind": "updated",
+      "entity": "doc:mysql-derived-optimization",
+      "title": "MySQL 官方手册导读：派生表、条件下推与临时结果",
+      "time": "2026-10-12T14:08:20.519Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-derived-optimization"
+    },
+    {
+      "id": "a01c9cc1-ed8f-4179-a3db-65512d5ce61d",
+      "kind": "updated",
+      "entity": "doc:mysql-subquery-optimization",
+      "title": "MySQL 官方手册导读：存在性查询与子查询物化",
+      "time": "2026-10-12T14:08:20.519Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-subquery-optimization"
+    },
+    {
+      "id": "9c0ae774-1be2-48dd-9cf2-9fb89317157a",
+      "kind": "created",
+      "entity": "doc:db-connection-pool",
+      "title": "数据库连接池排查",
+      "time": "2026-10-12T14:10:08.594Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "db-connection-pool"
+    },
+    {
+      "id": "f5ae6fb9-6da4-4114-b97f-e37db9de13ae",
+      "kind": "created",
+      "entity": "doc:mysql-lock-waits",
+      "title": "MySQL 锁等待排查",
+      "time": "2026-10-12T14:10:08.594Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-lock-waits"
+    },
+    {
+      "id": "22a11677-cd70-4f56-9157-eac64bb2bf1a",
+      "kind": "created",
+      "entity": "doc:mysql-query-resources",
+      "title": "MySQL 查询资源排查",
+      "time": "2026-10-12T14:10:08.594Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-query-resources"
+    },
+    {
+      "id": "ef4b7eb0-cea3-4601-9117-4c8252349fbe",
+      "kind": "created",
+      "entity": "doc:mysql-statement-tracing",
+      "title": "MySQL 语句与等待追踪",
+      "time": "2026-10-12T14:10:08.594Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-statement-tracing"
+    },
+    {
+      "id": "d59614be-d9b3-4603-8598-734d2cb56c4a",
+      "kind": "created",
+      "entity": "doc:mysql-explain-extra",
+      "title": "EXPLAIN 附加信息",
+      "time": "2026-10-12T14:13:44.550Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-explain-extra"
+    },
+    {
+      "id": "5b990876-22da-4193-987a-8258133de71e",
+      "kind": "updated",
+      "entity": "doc:mysql-explain-reading",
+      "title": "EXPLAIN 字段与取值",
+      "time": "2026-10-12T14:13:44.550Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-explain-reading"
+    },
+    {
+      "id": "a9d371a4-862c-41eb-aed9-4f760cf98379",
+      "kind": "created",
+      "entity": "doc:mysql-explain-select-type",
+      "title": "EXPLAIN 查询块类型",
+      "time": "2026-10-12T14:13:44.550Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-explain-select-type"
+    },
+    {
+      "id": "3a98232d-1e15-4aa5-9380-9d377aedf533",
+      "kind": "created",
+      "entity": "doc:mysql-explain-type",
+      "title": "EXPLAIN 访问类型",
+      "time": "2026-10-12T14:13:44.550Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-explain-type"
+    },
+    {
+      "id": "56bc6dde-2003-4be6-bab6-cb287f4956c9",
+      "kind": "updated",
+      "entity": "doc:mysql-query-plans",
+      "title": "执行计划与优化器",
+      "time": "2026-10-12T14:13:44.550Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-query-plans"
+    },
+    {
+      "id": "4cd20474-7d22-47d3-a319-01cd876f96fa",
+      "kind": "updated",
+      "entity": "doc:mysql-explain-extra",
+      "title": "EXPLAIN 附加信息",
+      "time": "2026-10-12T14:16:00.618Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-explain-extra"
+    },
+    {
+      "id": "27f6f911-320e-4848-aad9-706995058439",
+      "kind": "updated",
+      "entity": "doc:mysql-overview",
+      "title": "MySQL",
+      "time": "2026-10-12T14:16:28.554Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-overview"
+    },
+    {
+      "id": "891741a6-c4b6-43c6-a6d3-6a405de7e72f",
+      "kind": "updated",
+      "entity": "doc:mysql-query-plans",
+      "title": "执行计划与优化器",
+      "time": "2026-10-12T14:16:28.554Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-query-plans"
+    },
+    {
+      "id": "3b84e36c-b446-45f0-8d62-1f9d14c15c02",
+      "kind": "updated",
+      "entity": "doc:mysql-slow-query",
+      "title": "慢查询排查",
+      "time": "2026-10-12T14:16:28.554Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-slow-query"
+    },
+    {
+      "id": "482279ff-59f5-4334-ace4-0086965c1b86",
+      "kind": "updated",
+      "entity": "doc:mysql-performance-diagnostics",
+      "title": "MySQL 官方手册导读：慢查询与等待",
+      "time": "2026-10-12T14:16:28.554Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-performance-diagnostics"
+    },
+    {
+      "id": "a7d2cb95-f670-4ea9-9937-516a8b2604a2",
+      "kind": "updated",
+      "entity": "doc:mysql-existence-queries",
+      "title": "存在性查询优化",
+      "time": "2026-10-12T14:19:32.203Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-existence-queries"
+    },
+    {
+      "id": "ee345be4-0de0-4cce-97c8-cc767a4787d6",
+      "kind": "updated",
+      "entity": "doc:mysql-subquery-optimization",
+      "title": "MySQL 官方手册导读：存在性查询与子查询物化",
+      "time": "2026-10-12T14:19:32.203Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-subquery-optimization"
+    },
+    {
+      "id": "7f678a9d-babb-49eb-89f3-db396e4c06e9",
+      "kind": "updated",
+      "entity": "doc:go-sql-connections",
+      "title": "Go 官方文档导读：数据库连接池与资源归还",
+      "time": "2026-10-12T14:20:31.863Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "go-sql-connections"
+    },
+    {
+      "id": "925d43a7-c1f2-4ed0-a040-abd831929a34",
+      "kind": "updated",
+      "entity": "doc:mysql-performance-schema-profiling",
+      "title": "MySQL 官方手册导读：语句、阶段与等待事件",
+      "time": "2026-10-12T14:20:31.863Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-performance-schema-profiling"
+    },
+    {
+      "id": "7b66602f-3d86-463d-a14d-7c1fe4136fe8",
+      "kind": "updated",
+      "entity": "doc:mysql-temporary-tables",
+      "title": "MySQL 官方手册导读：内部临时表的存储与监测",
+      "time": "2026-10-12T14:20:31.863Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-temporary-tables"
+    },
+    {
+      "id": "7c3314af-3d7b-45eb-92d6-4750c26944bd",
+      "kind": "updated",
+      "entity": "doc:mysql-existence-queries",
+      "title": "存在性查询优化",
+      "time": "2026-10-12T14:22:51.148Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-existence-queries"
+    },
+    {
+      "id": "680f9a01-32ed-4b38-9257-2c1643a23427",
+      "kind": "updated",
+      "entity": "doc:mysql-existence-queries",
+      "title": "存在性查询优化",
+      "time": "2026-10-12T14:31:23.651Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-existence-queries"
+    },
+    {
+      "id": "0ad55351-63fc-4ea3-a176-3c5a4d6dab30",
+      "kind": "updated",
+      "entity": "doc:mysql-existence-queries",
+      "title": "存在性查询优化",
+      "time": "2026-10-12T14:33:55.784Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-existence-queries"
+    },
+    {
+      "id": "d26a2fb3-03ff-4c01-8a80-197dee5991bf",
+      "kind": "moved",
+      "entity": "doc:mysql-existence-queries",
+      "title": "存在性查询优化",
+      "time": "2026-10-12T14:36:47.390Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mysql-existence-queries",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "1057389d-6de1-49b9-9c37-b5397ce817b8",
+      "kind": "updated",
+      "entity": "doc:mysql-explain-reading",
+      "title": "EXPLAIN 执行计划读法",
+      "time": "2026-10-12T14:50:04.147Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-explain-reading"
+    },
+    {
+      "id": "583ae040-0d3b-4c49-9ab4-4f9426306d90",
+      "kind": "updated",
+      "entity": "doc:mysql-query-optimization",
+      "title": "查询优化",
+      "time": "2026-10-12T14:50:04.147Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-query-optimization"
+    },
+    {
+      "id": "1dadc4fb-c88f-42bb-ad75-8e674f0fddf4",
+      "kind": "updated",
+      "entity": "doc:mysql-query-plans",
+      "title": "执行计划与优化器",
+      "time": "2026-10-12T14:50:04.147Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-query-plans"
+    },
+    {
+      "id": "d951f0bf-30b2-4c0e-a380-1a1a8d081d2f",
+      "kind": "updated",
+      "entity": "doc:mysql-explain-reading",
+      "title": "EXPLAIN 执行计划读法",
+      "time": "2026-10-12T14:51:48.007Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-explain-reading"
+    },
+    {
+      "id": "ab19f72b-b19c-4ec5-aa0c-027889c1b89a",
+      "kind": "updated",
+      "entity": "doc:agent-planning",
+      "title": "Agent 的规划与执行模式",
+      "time": "2026-10-12T14:52:44.034Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-planning"
+    },
+    {
+      "id": "a1dc0246-e3d4-4649-b297-443f0e143f9d",
+      "kind": "updated",
+      "entity": "doc:mysql-explain-reading",
+      "title": "EXPLAIN 执行计划读法",
+      "time": "2026-10-12T14:59:44.027Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "mysql-explain-reading"
+    },
+    {
+      "id": "419eccf3-9001-4b22-9e7d-b10549c4d418",
+      "kind": "updated",
+      "entity": "doc:agent-planning",
+      "title": "Agent 的规划与执行模式",
+      "time": "2026-10-12T15:10:54.558Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-planning"
+    },
+    {
+      "id": "62f427db-6615-4585-a053-4d003caa435c",
+      "kind": "image-created",
+      "entity": "image:assets/agent-planning-combination",
+      "title": "agent-planning-combination",
+      "time": "2026-10-12T15:10:54.558Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/agent-planning-combination.excalidraw",
+        "assets/agent-planning-combination.png",
+        "assets/agent-planning-combination.svg"
+      ]
+    },
+    {
+      "id": "52c6e73d-faa5-4631-add0-2d60e3e6aea5",
+      "kind": "moved",
+      "entity": "doc:agent-planning",
+      "title": "Agent 的规划与执行模式",
+      "time": "2026-10-12T15:11:29.838Z",
+      "collections": [
+        "inbox",
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-planning",
+      "from": "inbox",
+      "to": "notes"
+    },
+    {
+      "id": "65f37b6a-d860-4383-96b2-bca4591cb2bd",
+      "kind": "updated",
+      "entity": "doc:agent-trace-requirements",
+      "title": "Agent Trace 要记录什么",
+      "time": "2026-10-12T15:25:39.224Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-trace-requirements"
+    },
+    {
+      "id": "e622fb96-6085-40ba-9056-d259d30c3354",
+      "kind": "created",
+      "entity": "doc:langfuse-tracing",
+      "title": "Langfuse：可用于调试和评测的 Trace",
+      "time": "2026-10-12T15:25:39.224Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langfuse-tracing"
+    },
+    {
+      "id": "7355c032-290e-483f-a761-ea6a871e7168",
+      "kind": "created",
+      "entity": "doc:openinference-tracing",
+      "title": "OpenInference：AI 操作语义与埋点仓库",
+      "time": "2026-10-12T15:25:39.224Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openinference-tracing"
+    },
+    {
+      "id": "2b6f2d3c-d1da-4413-8b4d-e0b115e27156",
+      "kind": "created",
+      "entity": "doc:otel-genai-tracing",
+      "title": "OpenTelemetry：GenAI 与 Agent 的追踪约定",
+      "time": "2026-10-12T15:25:39.224Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "otel-genai-tracing"
+    },
+    {
+      "id": "dbe9e3c9-814a-44cc-941e-c431c8e4d22a",
+      "kind": "created",
+      "entity": "doc:anthropic-memory-tool",
+      "title": "Anthropic Memory Tool：模型提出操作，应用保存文件",
+      "time": "2026-10-12T15:29:52.547Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-memory-tool"
+    },
+    {
+      "id": "4393e1a7-c460-4089-8e5e-4f05e26444f6",
+      "kind": "created",
+      "entity": "doc:claude-code-memory",
+      "title": "Claude Code：规则文件与自动记忆索引",
+      "time": "2026-10-12T15:29:52.547Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-code-memory"
+    },
+    {
+      "id": "70f2b821-f63d-47a3-9230-1d3370b41a04",
+      "kind": "created",
+      "entity": "doc:codex-memory-pipeline",
+      "title": "Codex 源码：后台提取与跨会话整合",
+      "time": "2026-10-12T15:29:52.547Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "codex-memory-pipeline"
+    },
+    {
+      "id": "6366a17e-f7ee-4478-a657-8229d165ff95",
+      "kind": "created",
+      "entity": "doc:graphiti-memory",
+      "title": "Graphiti：随时间变化的事实图",
+      "time": "2026-10-12T15:29:52.547Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "graphiti-memory"
+    },
+    {
+      "id": "c8591937-78a5-40f3-b1c4-28ee3acc015c",
+      "kind": "created",
+      "entity": "doc:langgraph-memory",
+      "title": "LangGraph 与 LangMem：状态持久化和记忆形成",
+      "time": "2026-10-12T15:29:52.547Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langgraph-memory"
+    },
+    {
+      "id": "9fa21e2c-4b0a-4b5b-8c66-cf7f9019cdfa",
+      "kind": "created",
+      "entity": "doc:letta-memory",
+      "title": "Letta：常驻记忆块与归档检索",
+      "time": "2026-10-12T15:29:52.547Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "letta-memory"
+    },
+    {
+      "id": "033d3800-5d22-46cd-b219-884bbfccf6d3",
+      "kind": "created",
+      "entity": "doc:longmemeval-memory",
+      "title": "LongMemEval：跨会话记忆与经验复用评测",
+      "time": "2026-10-12T15:29:52.547Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "longmemeval-memory"
+    },
+    {
+      "id": "b3b74e26-b0fc-41d8-80ed-5f7a69e49b07",
+      "kind": "created",
+      "entity": "doc:mem0-memory",
+      "title": "Mem0：追加提取、显式更新与检索",
+      "time": "2026-10-12T15:29:52.547Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mem0-memory"
+    },
+    {
+      "id": "51064a6f-ed17-4e51-8957-a162db3f5703",
+      "kind": "updated",
+      "entity": "doc:agent-memory-evaluation",
+      "title": "Agent 记忆质量如何评估与归因",
+      "time": "2026-10-12T15:32:42.470Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-evaluation"
+    },
+    {
+      "id": "a44bb0fc-17ec-4338-8e39-2307203f23f7",
+      "kind": "created",
+      "entity": "doc:agent-trace-capture",
+      "title": "Agent Trace 的内容采集与保留",
+      "time": "2026-10-12T15:32:42.470Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-trace-capture"
+    },
+    {
+      "id": "6bd807c1-b698-493e-a0ab-8e3984a93b1c",
+      "kind": "created",
+      "entity": "doc:agent-trace-evaluation",
+      "title": "从 Agent 错例轨迹到回归用例",
+      "time": "2026-10-12T15:32:42.470Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-trace-evaluation"
+    },
+    {
+      "id": "8a652b6e-8660-409e-a1cf-bdfeef1a108e",
+      "kind": "created",
+      "entity": "doc:agent-trace-structure",
+      "title": "Agent Trace 的埋点与调用关联",
+      "time": "2026-10-12T15:32:42.470Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-trace-structure"
+    },
+    {
+      "id": "5fdd7dd2-612e-4990-a001-9345b36c8bd4",
+      "kind": "created",
+      "entity": "doc:agent-trace",
+      "title": "Agent Trace（执行追踪）",
+      "time": "2026-10-12T15:32:42.470Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-trace"
+    },
+    {
+      "id": "7e42c0ee-117d-47a8-9d04-fe6a618d6bee",
+      "kind": "updated",
+      "entity": "doc:agent",
+      "title": "Agent",
+      "time": "2026-10-12T15:32:42.470Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent"
+    },
+    {
+      "id": "55bf77c9-7d0f-4de6-876c-f062a361c07f",
+      "kind": "updated",
+      "entity": "doc:agent-replanning",
+      "title": "Replanning（重新规划）",
+      "time": "2026-10-12T15:32:42.470Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-replanning"
+    },
+    {
+      "id": "af5027d5-a6a5-4c15-90d6-d864b199ee55",
+      "kind": "updated",
+      "entity": "doc:tool-interface-design",
+      "title": "工具接口设计",
+      "time": "2026-10-12T15:32:42.470Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-interface-design"
+    },
+    {
+      "id": "366a0b19-7c60-4c14-8cdb-34b7ff1e9eee",
+      "kind": "created",
+      "entity": "doc:langfuse-dataset-experiments",
+      "title": "Langfuse：从生产轨迹建立数据集与实验",
+      "time": "2026-10-12T15:32:42.470Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langfuse-dataset-experiments"
+    },
+    {
+      "id": "d9e69d74-efad-443c-b980-a5cf26a44ada",
+      "kind": "created",
+      "entity": "doc:langgraph-time-travel",
+      "title": "LangGraph：从检查点重放与分叉",
+      "time": "2026-10-12T15:32:42.470Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langgraph-time-travel"
+    },
+    {
+      "id": "2f458b71-6022-4e10-a739-550487bcacd0",
+      "kind": "created",
+      "entity": "doc:otel-trace-collection",
+      "title": "OpenTelemetry：上下文传播、错误记录与采样",
+      "time": "2026-10-12T15:32:42.470Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "otel-trace-collection"
+    },
+    {
+      "id": "32d63cfc-6f08-47c0-bd8f-a73e56ba4e0e",
+      "kind": "updated",
+      "entity": "doc:otel-trace-collection",
+      "title": "OpenTelemetry：上下文传播、错误记录与采样",
+      "time": "2026-10-12T15:33:12.955Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "otel-trace-collection"
+    },
+    {
+      "id": "4e427f55-29df-4f48-ad23-6fc56ee95226",
+      "kind": "updated",
+      "entity": "doc:agent-memory-evaluation",
+      "title": "Agent 记忆质量如何评估与归因",
+      "time": "2026-10-12T15:35:06.943Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-evaluation"
+    },
+    {
+      "id": "a46b8d37-37b0-4f81-8b37-5b029d17b43d",
+      "kind": "updated",
+      "entity": "doc:agent-memory-retrieval",
+      "title": "Agent 记忆检索与注入",
+      "time": "2026-10-12T15:35:06.943Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-retrieval"
+    },
+    {
+      "id": "8e63e16d-38dc-4996-aa3f-7ea024c02d34",
+      "kind": "updated",
+      "entity": "doc:agent-memory-storage",
+      "title": "Agent 记忆表示与存储",
+      "time": "2026-10-12T15:35:06.943Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-storage"
+    },
+    {
+      "id": "d40e305c-64f1-4119-bd51-42221a57d8c8",
+      "kind": "updated",
+      "entity": "doc:agent-memory",
+      "title": "Agent 记忆（Memory）",
+      "time": "2026-10-12T15:35:06.943Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-memory"
+    },
+    {
+      "id": "8fc2f722-ee98-4a31-9f3b-67ccbdac61ec",
+      "kind": "created",
+      "entity": "doc:agent-memory-maintenance",
+      "title": "Agent 记忆失效、删除与信任边界",
+      "time": "2026-10-12T15:36:26.987Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-maintenance"
+    },
+    {
+      "id": "f8e5aa81-a14d-4277-9b29-214b928a7d44",
+      "kind": "created",
+      "entity": "doc:agent-memory-selection",
+      "title": "Agent 记忆工程选型",
+      "time": "2026-10-12T15:36:26.987Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-selection"
+    },
+    {
+      "id": "a3ccc49f-de2f-43b3-a0dc-750f8a5f914a",
+      "kind": "created",
+      "entity": "doc:agent-memory-writing",
+      "title": "Agent 记忆写入与纠正",
+      "time": "2026-10-12T15:36:26.987Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-writing"
+    },
+    {
+      "id": "3ae5392f-218e-46ec-8b90-3466bffc8853",
+      "kind": "created",
+      "entity": "doc:agent-memory-practice",
+      "title": "Agent 记忆最小实现与源码阅读",
+      "time": "2026-10-12T15:39:26.934Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-practice"
+    },
+    {
+      "id": "93a24d74-ac6b-4fff-ba8b-511f3d2315ab",
+      "kind": "updated",
+      "entity": "doc:agent-memory-practice",
+      "title": "Agent 记忆最小实现与源码阅读",
+      "time": "2026-10-12T15:40:30.940Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-practice"
+    },
+    {
+      "id": "a2b33efc-d5cf-416c-8116-324264e1bc62",
+      "kind": "updated",
+      "entity": "doc:mem0-memory",
+      "title": "Mem0：追加提取、显式更新与检索",
+      "time": "2026-10-12T15:40:30.940Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mem0-memory"
+    },
+    {
+      "id": "5974eacb-46b6-4307-a7b8-5537f9081045",
+      "kind": "updated",
+      "entity": "doc:agent-memory-practice",
+      "title": "Agent 记忆最小实现与源码阅读",
+      "time": "2026-10-12T15:49:22.970Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-practice"
+    },
+    {
+      "id": "4004adae-d49e-4820-8e73-b18b2eac8ad4",
+      "kind": "updated",
+      "entity": "doc:agent-memory-selection",
+      "title": "Agent 记忆工程选型",
+      "time": "2026-10-12T15:49:22.970Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-selection"
+    },
+    {
+      "id": "98dbfbe6-4c9f-44c3-8df4-3578a1147925",
+      "kind": "updated",
+      "entity": "doc:agent-memory-writing",
+      "title": "Agent 记忆写入与纠正",
+      "time": "2026-10-12T15:49:22.970Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-writing"
+    },
+    {
+      "id": "305e8646-df0c-474c-96d6-72a83a0a2337",
+      "kind": "created",
+      "entity": "doc:agent-trace-lab",
+      "title": "Eino 与 Langfuse 的 Trace 实验任务书",
+      "time": "2026-10-12T15:49:22.970Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-trace-lab"
+    },
+    {
+      "id": "c12075bb-c5a8-4f65-a370-e53e44853cc1",
+      "kind": "updated",
+      "entity": "doc:agent-trace",
+      "title": "Agent Trace（执行追踪）",
+      "time": "2026-10-12T15:49:22.970Z",
+      "collections": [
+        "inbox"
+      ],
+      "source": "observed",
+      "docId": "agent-trace"
+    },
+    {
+      "id": "94d40a54-47d3-416c-8cf3-b94605cd840a",
+      "kind": "created",
+      "entity": "doc:eino-langfuse-tracing",
+      "title": "Eino 的 Langfuse Trace 集成",
+      "time": "2026-10-12T15:49:22.970Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "eino-langfuse-tracing"
     }
   ]
 }
