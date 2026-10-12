@@ -2,9 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createServer} from 'vite';
 import {Scene, Color, BufferGeometry, BufferAttribute, PerspectiveCamera, Vector3} from 'three';
-import {interpolateCategories, categoryEase} from '../src/galaxy/categoryLayout.js';
-import {damp, curveSamples, pointAlongCurve} from '../src/motion/tokens.js';
-import {CategoryEffects} from '../src/galaxy/categoryEffects.js';
+import {interpolateCategories, categoryEase} from '../src/galaxy/categoryLayout.ts';
+import {damp, curveSamples, pointAlongCurve} from '../src/motion/tokens.ts';
+import {CategoryEffects} from '../src/galaxy/categoryEffects.ts';
 
 test('阅读布局与局部取景同步，节点保持居中，中途反向从当前机位继续', async () => {
   const server = await createServer({configFile:false, optimizeDeps:{noDiscovery:true}, server:{middlewareMode:true,hmr:false,ws:false}});

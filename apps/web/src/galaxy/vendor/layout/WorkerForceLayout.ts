@@ -1,6 +1,6 @@
 import ForceWorker from './forceWorker.ts?worker';
-import type { GraphData, LayoutParams } from '../types';
-import type { LayoutEngine } from './LayoutEngine';
+import type { GraphData, LayoutParams } from '../types.ts';
+import type { LayoutEngine } from './LayoutEngine.ts';
 
 interface TickMsg {
 	type: 'tick';

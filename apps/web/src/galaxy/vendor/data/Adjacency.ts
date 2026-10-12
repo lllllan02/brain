@@ -1,4 +1,4 @@
-import type { GraphData } from '../types';
+import type { GraphData } from '../types.ts';
 
 /**
  * 无向邻接（CSR：压缩稀疏行）——三条扁平 typed array，零逐节点对象分配、缓存友好。

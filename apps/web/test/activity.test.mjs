@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import os from 'node:os';
 import path from 'node:path';
 import {mkdtemp, mkdir, writeFile, readFile, rename, rm, symlink} from 'node:fs/promises';
-import {loadLibrary} from '../src/library.mjs';
-import {activityForLibrary, metadataEvents} from '../src/activity.mjs';
-import {activityDay, filterActivity, dailyItems, dayDetails, periodStart, yearCells, summaryCounts} from '../src/neural/activity-model.js';
+import {loadLibrary} from '../src/library.ts';
+import {activityForLibrary, metadataEvents} from '../src/activity.ts';
+import {activityDay, filterActivity, dailyItems, dayDetails, periodStart, yearCells, summaryCounts} from '../src/neural/activity-model.ts';
 async function fixture(t) {
   const root = await mkdtemp(path.join(os.tmpdir(), 'horizon-activity-'));
   t.after(()=>rm(root,{recursive:true,force:true}));

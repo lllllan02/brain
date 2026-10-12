@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {cardFlight} from '../src/motion/card-flight.js';
+import {cardFlight} from '../src/motion/card-flight.ts';
 
 test('标题从卡片原位出发，收拢成星芒并准确落到实时星点', () => {
   const origin = {x:800,y:230}, target = {x:300,y:400};

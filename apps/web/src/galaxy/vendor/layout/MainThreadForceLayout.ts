@@ -1,8 +1,8 @@
 import { forceLink, forceManyBody, forceSimulation, forceX, forceY, forceZ } from 'd3-force-3d';
 import type { SimLink, SimNode, Simulation } from 'd3-force-3d';
-import type { GraphData, LayoutParams } from '../types';
-import type { LayoutEngine } from './LayoutEngine';
-import { forceRadialCore, forceSpiral } from './galaxyForces';
+import type { GraphData, LayoutParams } from '../types.ts';
+import type { LayoutEngine } from './LayoutEngine.ts';
+import { forceRadialCore, forceSpiral } from './galaxyForces.ts';
 
 interface LNode extends SimNode {
 	x: number;

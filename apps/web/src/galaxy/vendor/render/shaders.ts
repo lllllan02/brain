@@ -3,8 +3,8 @@
 // aDim: 聚焦模式下非邻居淡出（0.12..1）
 // uAmbientTime 驱动星芒闪烁与当前主星的呼吸星冕；减少动态效果时 uTwinkle = 0。
 
-import { CURVE_BOW } from './linkCurves';
-import { REVEAL_ACTIVE_SPAN, REVEAL_DELAY_SPAN } from './reveal';
+import { CURVE_BOW } from './linkCurves.ts';
+import { REVEAL_ACTIVE_SPAN, REVEAL_DELAY_SPAN } from './reveal.ts';
 
 const REVEAL_POSITION_GLSL = /* glsl */ `
 vec3 revealPosition(vec3 targetPosition) {

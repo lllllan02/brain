@@ -1,5 +1,5 @@
-import type { GraphData } from '../types';
-import type { Adjacency } from './Adjacency';
+import type { GraphData } from '../types.ts';
+import type { Adjacency } from './Adjacency.ts';
 
 export interface TopTag {
 	id: string;

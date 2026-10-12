@@ -1,4 +1,7 @@
-import { boundedTagHubLimit } from './data/tagLens';
+// Web adapter: these shapes do not require the Obsidian plugin modules.
+type LangPref = 'auto' | 'en' | 'zh' | 'de' | 'it' | 'es' | 'pt';
+type ColorGroup = {query: string; color: string};
+import { boundedTagHubLimit } from './data/tagLens.ts';
 
 export interface BloomSettings {
 	strength: number;
@@ -72,9 +75,9 @@ export interface GalaxySettings {
 	/** 当前激活的风格预设 id（面板「由 X 设定 / 已自定义」标记用） */
 	activePreset: string;
 	/** 用户保存的自定义预设（可排序/删除） */
-	customPresets: import('./render/stylePresets').StylePreset[];
+	customPresets: import('./render/stylePresets.ts').StylePreset[];
 	/** 界面语言：auto=跟随 Obsidian（见 src/i18n）；en/zh/de/it/es/pt */
-	language: import('./i18n').LangPref;
+	language: LangPref;
 	/** 面板各折叠分区的展开状态（稳定 sectionId → 是否展开） */
 	panelSections: Record<string, boolean>;
 	/** 浮动面板宽度（px，可拖右边缘调整） */
@@ -86,7 +89,7 @@ export interface GalaxySettings {
 	/** 巡游/自动驾驶（v0.3） */
 	tour: TourSettings;
 	/** 从 .obsidian/graph.json 一次性导入的 2D 配色（可在面板重新导入） */
-	colorGroups: import('./settings/graphJsonImport').ColorGroup[];
+	colorGroups: ColorGroup[];
 	/** 沉降坐标缓存：暖启动用（id → [x,y,z]） */
 	positionCache: Record<string, [number, number, number]>;
 }
@@ -218,7 +221,7 @@ export function mergeSettings(saved: unknown): GalaxySettings {
 		customPresets: Array.isArray(sv.customPresets)
 			? (sv.customPresets as unknown[])
 					.filter(
-						(p): p is import('./render/stylePresets').StylePreset =>
+						(p): p is import('./render/stylePresets.ts').StylePreset =>
 							!!p && typeof (p as { id?: unknown }).id === 'string' && typeof (p as { physics?: unknown }).physics === 'object' && typeof (p as { bloom?: unknown }).bloom === 'object' && typeof (p as { look?: unknown }).look === 'object',
 					)
 					// v0.4 前存的预设没有 linkCurve/space：按 0 补齐 = 保持存档当时的直线/无背景观感
@@ -233,7 +236,7 @@ export function mergeSettings(saved: unknown): GalaxySettings {
 					}))
 			: [],
 		language: (['auto', 'en', 'zh', 'de', 'it', 'es', 'pt'] as const).includes(sv.language as 'auto')
-			? (sv.language as import('./i18n').LangPref)
+			? (sv.language as LangPref)
 			: d.language,
 		panelSections:
 			sv.panelSections && typeof sv.panelSections === 'object' && !Array.isArray(sv.panelSections)
@@ -249,7 +252,7 @@ export function mergeSettings(saved: unknown): GalaxySettings {
 		},
 		colorGroups: Array.isArray(sv.colorGroups)
 			? sv.colorGroups.filter(
-					(g): g is import('./settings/graphJsonImport').ColorGroup =>
+					(g): g is ColorGroup =>
 						typeof (g as { query?: unknown })?.query === 'string' &&
 						typeof (g as { color?: unknown })?.color === 'string',
 				)
@@ -267,7 +270,7 @@ export interface SettingsHost {
 	saveSettings(): Promise<void>;
 }
 
-export function toLayoutParams(p: PhysicsSettings): import('./types').LayoutParams {
+export function toLayoutParams(p: PhysicsSettings): import('./types.ts').LayoutParams {
 	return {
 		charge: -p.repel,
 		linkDistance: p.linkDistance,

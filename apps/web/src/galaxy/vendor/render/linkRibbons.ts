@@ -1,4 +1,4 @@
-import {READING_FLOW, READING_INK} from '../../../motion/reading-flow.js';
+import {READING_FLOW, READING_INK} from '../../../motion/reading-flow.ts';
 import {
 	type BufferAttribute,
 	BufferAttribute as Attribute,

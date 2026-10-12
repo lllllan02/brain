@@ -1,7 +1,7 @@
 import { forceLink, forceManyBody, forceSimulation, forceX, forceY, forceZ } from 'd3-force-3d';
 import type { SimLink, SimNode, Simulation } from 'd3-force-3d';
-import type { LayoutParams } from '../types';
-import { forceRadialCore, forceSpiral } from './galaxyForces';
+import type { LayoutParams } from '../types.ts';
+import { forceRadialCore, forceSpiral } from './galaxyForces.ts';
 
 /**
  * 布局 Worker（M3）：d3-force-3d 完全离主线程。

@@ -1,8 +1,8 @@
 import { Color } from 'three';
-import { hash32 } from '../data/seed';
-import type { GraphNode } from '../types';
+import { hash32 } from '../data/seed.ts';
+import type { GraphNode } from '../types.ts';
 type ColorGroup = { query: string; color: string }; // Web adapter: no Obsidian settings reader.
-import { primaryTag } from '../data/tagLens';
+import { primaryTag } from '../data/tagLens.ts';
 
 export type NodeColorFn = (node: GraphNode) => Color;
 

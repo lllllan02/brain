@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, writeFile, symlink, rename, rm } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import {parseDocument,renderDocument,resolveDocument,safeAsset,loadLibrary} from '../src/library.mjs';
+import {parseDocument,renderDocument,resolveDocument,safeAsset,loadLibrary} from '../src/library.ts';
 const doc=(body,file='notes/202610/example.md')=>parseDocument(body,file);
 test('支持 YAML 列表、别名、双链章节与块，代码不产生关系',()=>{
  const a=doc('---\ntitle: 测试文档\naliases:\n  - 别名\ntags: [主题]\n---\n## 小节\n\n内容 ^block-1');
@@ -42,7 +42,7 @@ test('Mermaid 时序图、多图及大小写围栏在本地与 Pages 中保持�
  try{
   await mkdir(path.join(root,'inbox'));
   await writeFile(path.join(root,'inbox/chart.md'),'```mermaid\nsequenceDiagram\n A->>B: 请求<br/>下一行\n```\n\n```Mermaid title\nflowchart TD\n A --> B\n```');
-  const {pagesLibrary}=await import('../scripts/build-pages.mjs');
+  const {pagesLibrary}=await import('../scripts/build-pages.ts');
   const local=await loadLibrary(root);
   const {library}=await pagesLibrary(root);
   assert.deepEqual(library,local);

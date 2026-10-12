@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import os from 'node:os';
 import {mkdtemp,mkdir,writeFile,readFile,rm,symlink,readdir} from 'node:fs/promises';
-import {loadLibrary} from '../src/library.mjs';
-import {moveDocument,isLocalWriteRequest} from '../src/move-document.mjs';
+import {loadLibrary} from '../src/library.ts';
+import {moveDocument,isLocalWriteRequest} from '../src/move-document.ts';
 
 async function fixture(t, entries) {
   const root=await mkdtemp(path.join(os.tmpdir(),'horizon-move-'));

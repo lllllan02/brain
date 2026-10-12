@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {parseDocument} from '../src/library.mjs';
-import {documentSources, copyDocumentMarkdown} from '../src/neural/document-sources.js';
+import {parseDocument} from '../src/library.ts';
+import {documentSources, copyDocumentMarkdown} from '../src/neural/document-sources.ts';
 import {createServer} from 'vite';
 import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
@@ -21,7 +21,7 @@ test('来源合并 source、url、URL，保留标签、锚点、出处文本并�
 test('来源组件隐藏空值，转义标题，只为 HTTP(S) 提供外链', async () => {
   const server = await createServer({root:new URL('..',import.meta.url).pathname,configFile:false,server:{middlewareMode:true},appType:'custom'});
   try {
-    const {ReaderSources} = await server.ssrLoadModule('/src/neural/ReaderSources.jsx');
+    const {ReaderSources} = await server.ssrLoadModule('/src/neural/ReaderSources.tsx');
     const render = sources => renderToStaticMarkup(React.createElement(ReaderSources,{sources}));
     assert.equal(render([]), '');
     const html = render(['[<script>alert(1)</script>](https://example.org/)', '[危险](javascript:alert(1))', 'data:text/html,test']);

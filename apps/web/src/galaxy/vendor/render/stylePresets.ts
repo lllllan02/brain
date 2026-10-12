@@ -1,4 +1,4 @@
-import type { BloomSettings, LookSettings, PhysicsSettings, SpaceSettings } from '../settings';
+import type { BloomSettings, LookSettings, PhysicsSettings, SpaceSettings } from '../settings.ts';
 
 /**
  * 风格预设 = 一整套外观：辉光 + 力学 + 外观 + 星空背景开关 + 深空背景形态层 + 配色主题 + 取景仰角。

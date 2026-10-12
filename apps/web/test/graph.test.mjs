@@ -1,13 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createServer} from 'vite';
-import {parseDocument} from '../src/library.mjs';
+import {parseDocument} from '../src/library.ts';
 
 test('唯一分类动态生成星云，标签不影响分组，分类更新与空库正常',async()=>{
  const server=await createServer({root:process.cwd(),configFile:false,optimizeDeps:{noDiscovery:true},server:{middlewareMode:true,hmr:false,ws:false},appType:'custom'});
  try{
-  const {buildGraph,forceLayout,moduleOf}=await server.ssrLoadModule('/src/neural/graph.js');
-  const {moduleItems}=await server.ssrLoadModule('/src/neural/Home.jsx');
+  const {buildGraph,forceLayout,moduleOf}=await server.ssrLoadModule('/src/neural/graph.ts');
+  const {moduleItems}=await server.ssrLoadModule('/src/neural/Home.tsx');
   const doc=(raw,id)=>({...parseDocument(raw,'notes/202610/'+id+'.md'),references:[],backlinks:[]});
   const a=doc('---\ncategory: 数据库\ntags: [检索, 操作系统]\ntype: overview\n---\n正文','rag-arbitrary');
   const b=doc('---\nclasses: [concept]\ntags: [数据库]\n---\n无分类','b');
@@ -35,9 +35,9 @@ test('唯一分类动态生成星云，标签不影响分组，分类更新与�
 test('分类、目录和标签列表展示全部匹配文档，与星图聚焦集合一致', async () => {
  const server=await createServer({root:process.cwd(),configFile:false,optimizeDeps:{noDiscovery:true},server:{middlewareMode:true,hmr:false,ws:false},appType:'custom'});
  try {
-  const {buildGraph}=await server.ssrLoadModule('/src/neural/graph.js');
-  const {clusterDocuments}=await server.ssrLoadModule('/src/neural/ClusterList.jsx');
-  const {galaxyData,galaxyFocus}=await import('../src/galaxy/data.js');
+  const {buildGraph}=await server.ssrLoadModule('/src/neural/graph.ts');
+  const {clusterDocuments}=await server.ssrLoadModule('/src/neural/ClusterList.tsx');
+  const {galaxyData,galaxyFocus}=await import('../src/galaxy/data.ts');
   const documents=Array.from({length:80},(_,i)=>({id:`note-${i}`,title:`笔记 ${i}`,body:'',collection:i<30?'inbox':i<60?'notes':i<70?'readings':'glossary',category:i<65?'数据库':'系统',tags:i%2?['共享']:['共享扩展'],references:[],backlinks:[]}));
   const graph=buildGraph({documents}), data=galaxyData(graph);
   const category=graph.modules.find(m=>m.title==='数据库').id;
@@ -53,8 +53,8 @@ test('分类、目录和标签列表展示全部匹配文档，与星图聚焦�
 test('内部链接列表按引用顺序去重，排除自身、断链和仅反向引用的文档', async () => {
  const server=await createServer({root:process.cwd(),configFile:false,optimizeDeps:{noDiscovery:true},server:{middlewareMode:true,hmr:false,ws:false},appType:'custom'});
  try {
-  const {buildGraph}=await server.ssrLoadModule('/src/neural/graph.js');
-  const {clusterDocuments}=await server.ssrLoadModule('/src/neural/ClusterList.jsx');
+  const {buildGraph}=await server.ssrLoadModule('/src/neural/graph.ts');
+  const {clusterDocuments}=await server.ssrLoadModule('/src/neural/ClusterList.tsx');
   const note=(id,references=[])=>({id,title:id,body:'',category:'示例',tags:[],references:references.map(id=>({id})),backlinks:[]});
   const graph=buildGraph({documents:[note('a',['c','b','c','a','missing','core']),note('b'),note('c',['b']),note('incoming',['a'])]});
   graph.index.get('a').backlinks=['incoming','incoming','a','missing','core'];

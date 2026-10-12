@@ -1,12 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {latestDocuments, documentHighlight} from '../src/neural/latest-documents.js';
-import {documentTime} from '../src/document-dates.js';
+import {latestDocuments, documentHighlight} from '../src/neural/latest-documents.ts';
+import {documentTime} from '../src/document-dates.ts';
 import {mkdtemp, mkdir, writeFile, utimes, rm} from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import {loadLibrary} from '../src/library.mjs';
-import {pagesLibrary} from '../scripts/build-pages.mjs';
+import {loadLibrary} from '../src/library.ts';
+import {pagesLibrary} from '../scripts/build-pages.ts';
 
 test('同日精确到秒，时区按实际时间比较，缺失字段回退 mtime', () => {
   const latest = latestDocuments([

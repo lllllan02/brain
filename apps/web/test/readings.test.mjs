@@ -3,11 +3,11 @@ import assert from 'node:assert/strict';
 import {mkdtemp, mkdir, writeFile, rename, rm} from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import {loadLibrary} from '../src/library.mjs';
-import {pagesLibrary} from '../scripts/build-pages.mjs';
+import {loadLibrary} from '../src/library.ts';
+import {pagesLibrary} from '../scripts/build-pages.ts';
 import {createServer} from 'vite';
-import {createSearchIndex, searchDocuments} from '../src/neural/search.js';
-import {collectionLabel} from '../src/collections.js';
+import {createSearchIndex, searchDocuments} from '../src/neural/search.ts';
+import {collectionLabel} from '../src/collections.ts';
 
 test('导读迁入 readings 后保留地址、正文、双链与上级，同时进入搜索、图谱及静态导出', async () => {
  const root = await mkdtemp(path.join(os.tmpdir(), 'horizon-readings-'));
@@ -31,7 +31,7 @@ test('导读迁入 readings 后保留地址、正文、双链与上级，同时�
   assert.equal(after.documents.flatMap(d=>d.issues).length,0);
   assert.notEqual(after.version,before.version);
   assert.deepEqual(searchDocuments(createSearchIndex(after.documents),'外部资料摘要').map(d=>d.id),['guide']);
-  const {buildGraph}=await server.ssrLoadModule('/src/neural/graph.js');
+  const {buildGraph}=await server.ssrLoadModule('/src/neural/graph.ts');
   assert.equal(buildGraph(after).nodes.find(n=>n.id==='guide').collection,'readings');
   assert.deepEqual((await pagesLibrary(root)).library,after);
   await writeFile(path.join(root,'readings/guide.md'),body+'\n更新导读');

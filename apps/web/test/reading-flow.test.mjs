@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createServer} from 'vite';
 import {BufferGeometry} from 'three';
-import {READING_FLOW, readingFlow, beamEnvelope, launchEnvelope, launchAccent, launchWake} from '../src/motion/reading-flow.js';
+import {READING_FLOW, readingFlow, beamEnvelope, launchEnvelope, launchAccent, launchWake} from '../src/motion/reading-flow.ts';
 
 test('阅读光束先汇入再扇出，每批最多三条并覆盖所有可见目标', () => {
   const seen = new Set();

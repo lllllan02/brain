@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {categoryLayout, interpolateCategories, readingNeighborhood} from '../src/galaxy/categoryLayout.js';
-import {categoryStyle} from '../src/galaxy/categoryStyles.js';
-import {starCluster} from '../src/galaxy/starCluster.js';
+import {categoryLayout, interpolateCategories, readingNeighborhood} from '../src/galaxy/categoryLayout.ts';
+import {categoryStyle} from '../src/galaxy/categoryStyles.ts';
+import {starCluster} from '../src/galaxy/starCluster.ts';
 
 test('首页分组保留同一球体的所有空间采样，三轴都有厚度且语义区域聚拢', () => {
   const nodes = Array.from({length:180}, (_,i) => ({id:`n-${i}`, folderTop:`topic-${i % 8}`,collection:['inbox','notes','readings'][i % 3]}));
@@ -148,7 +148,7 @@ test('错峰动画保留原位和终点，快速反向切换仍连续', () => {
 
 // Directory grouping must cross topic boundaries without changing real links.
 test('目录布局覆盖三个目录，目录聚焦只突出所属文档及内部引用', async () => {
-  const {galaxyFocus} = await import('../src/galaxy/data.js');
+  const {galaxyFocus} = await import('../src/galaxy/data.ts');
   const nodes = [
     {id:'a', folderTop:'topic-a', collection:'inbox'},
     {id:'b', folderTop:'topic-b', collection:'inbox'},

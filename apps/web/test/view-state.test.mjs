@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readViewState, writeViewState, validSize, validCluster, validPinnedList} from '../src/neural/view-state.js';
+import {readViewState, writeViewState, validSize, validCluster, validPinnedList} from '../src/neural/view-state.ts';
 
 const read = (raw, fallback, valid) => readViewState('test', fallback, valid, {getItem: () => raw}, '/horizon/');
 test('状态损坏、类型不符和存储拒绝访问时回退，不影响阅读', () => {

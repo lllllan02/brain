@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import os from 'node:os';
 import {mkdtemp,mkdir,writeFile,rm,symlink} from 'node:fs/promises';
-import {pagesLibrary} from '../scripts/build-pages.mjs';
-import {loadLibrary} from '../src/library.mjs';
+import {pagesLibrary} from '../scripts/build-pages.ts';
+import {loadLibrary} from '../src/library.ts';
 
 test('Pages 与本地共同收录 notes 和 inbox，跨目录引用有效，排除归档及原始资料',async()=>{
  const root=await mkdtemp(path.join(os.tmpdir(),'horizon-pages-'));

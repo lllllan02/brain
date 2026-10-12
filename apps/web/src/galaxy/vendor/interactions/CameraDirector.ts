@@ -1,8 +1,8 @@
-import {MOTION} from '../../../motion/tokens.js';
+import {MOTION} from '../../../motion/tokens.ts';
 import { CatmullRomCurve3, MOUSE, PerspectiveCamera, Spherical, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { CRUISE, FLY_TO } from '../constants';
-import { progress01, safeFrameSeconds } from '../timing/frameClock';
+import { CRUISE, FLY_TO } from '../constants.ts';
+import { progress01, safeFrameSeconds } from '../timing/frameClock.ts';
 
 function easeInOutCubic(t: number): number {
 	return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;

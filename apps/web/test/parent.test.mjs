@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import {parseDocument,renderDocument,loadLibrary} from '../src/library.mjs';
-import {pagesLibrary} from '../scripts/build-pages.mjs';
+import {parseDocument,renderDocument,loadLibrary} from '../src/library.ts';
+import {pagesLibrary} from '../scripts/build-pages.ts';
 import {createServer} from 'vite';
 import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
@@ -43,14 +43,14 @@ test('parent 更新影响版本、反链与 Pages 导出',async()=>{
 test('阅读上级是安全的导航链接，图谱保留父子关系',async()=>{
  const server=await createServer({root:process.cwd(),configFile:false,optimizeDeps:{noDiscovery:true},server:{middlewareMode:true,hmr:false,ws:false},appType:'custom'});
  try{
-  const {ReaderParent}=await server.ssrLoadModule('/src/neural/ReaderParent.jsx');
+  const {ReaderParent}=await server.ssrLoadModule('/src/neural/ReaderParent.tsx');
   assert.equal(renderToStaticMarkup(React.createElement(ReaderParent,{parent:null})), '');
   const root=note('root',null),child=note('child','root');
   const docs=[root,child].map(d=>({...renderDocument(d,[root,child]),backlinks:[]}));
   const html=renderToStaticMarkup(React.createElement(ReaderParent,{parent:{...docs[1].parent,title:'<script>bad</script>'}}));
   assert.match(html,/aria-label="上级文档"/);assert.match(html,/href="#\/doc\/root"/);assert.doesNotMatch(html,/<script>/);
-  const {buildGraph}=await server.ssrLoadModule('/src/neural/graph.js');
-  const {galaxyData}=await server.ssrLoadModule('/src/galaxy/data.js');
+  const {buildGraph}=await server.ssrLoadModule('/src/neural/graph.ts');
+  const {galaxyData}=await server.ssrLoadModule('/src/galaxy/data.ts');
   assert.equal(galaxyData(buildGraph({documents:docs})).links.length,1);
  }finally{await server.close();}
 });

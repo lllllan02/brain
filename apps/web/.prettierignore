@@ -1,0 +1,5 @@
+node_modules/
+dist/
+dist-pages/
+# Preserve the upstream formatting in the vendored renderer.
+src/galaxy/vendor/

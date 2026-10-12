@@ -4,7 +4,7 @@ import {mkdtemp, mkdir, writeFile, readFile, copyFile, symlink, rm} from 'node:f
 import {execFileSync} from 'node:child_process';
 import path from 'node:path';
 import os from 'node:os';
-import {createCollectionRegistry, collectionMarkerStyle} from '../src/collections.js';
+import {createCollectionRegistry, collectionMarkerStyle} from '../src/collections.ts';
 
 const entry = {id:'reference', label:'参考', description:'随查资料', icon:'M2 2h20v20H2Z', color:'#123abc'};
 test('目录配置支持自定义项、禁用、样式默认值，并拒绝越界路径及无效渲染值', () => {
@@ -31,8 +31,8 @@ test('只改配置即可收录第五目录、渲染图标、搜索及静态导�
  await mkdir(path.join(root,'scripts'));
  await writeFile(path.join(root,'package.json'),'{"type":"module"}');
  await symlink(path.resolve('node_modules'),path.join(root,'node_modules'),'dir');
- for(const file of ['collections.js','library.mjs','document-dates.js','neural/search.js']) await copyFile(path.resolve('src',file),path.join(root,'src',file));
- await copyFile(path.resolve('scripts/build-pages.mjs'),path.join(root,'scripts/build-pages.mjs'));
+ for(const file of ['collections.ts','library.ts','document-dates.ts','neural/search.ts']) await copyFile(path.resolve('src',file),path.join(root,'src',file));
+ await copyFile(path.resolve('scripts/build-pages.ts'),path.join(root,'scripts/build-pages.ts'));
  const config=JSON.parse(await readFile('collections.config.json','utf8'));
  config.push({...entry,link:{color:'#abcdef',opacity:0.3}});
  await writeFile(path.join(root,'collections.config.json'),JSON.stringify(config));
@@ -42,9 +42,9 @@ test('只改配置即可收录第五目录、渲染图标、搜索及静态导�
  await writeFile(path.join(root,'content/reference/custom.md'),'---\ntitle: 自定义查阅\n---\n配置驱动检索');
  await writeFile(path.join(root,'content/unconfigured/hidden.md'),'不应收录');
  const script=`import assert from 'node:assert/strict';
- import {loadLibrary} from './src/library.mjs';
- import {pagesLibrary} from './scripts/build-pages.mjs';
- import {createSearchIndex,searchDocuments} from './src/neural/search.js';
+ import {loadLibrary} from './src/library.ts';
+ import {pagesLibrary} from './scripts/build-pages.ts';
+ import {createSearchIndex,searchDocuments} from './src/neural/search.ts';
  const library=await loadLibrary('./content');
  const enabled=process.argv[1]==='enabled';
  assert.equal(library.documents.length,enabled?3:2);
@@ -61,7 +61,7 @@ test('只改配置即可收录第五目录、渲染图标、搜索及静态导�
   assert.deepEqual(searchDocuments(createSearchIndex(library.documents),'配置驱动检索').map(d=>d.id),['custom']);
  }else{assert.ok(topic.issues.some(issue=>issue.target==='custom'));}
  assert.deepEqual((await pagesLibrary('./content')).library,library);`;
- const run=state=>execFileSync(process.execPath,['--input-type=module','-e',script,state],{cwd:root,encoding:'utf8'});
+ const run=state=>execFileSync(process.execPath,['--import','tsx','--input-type=module','-e',script,state],{cwd:root,encoding:'utf8'});
  run('enabled');
  config.at(-1).enabled=false;
  await writeFile(path.join(root,'collections.config.json'),JSON.stringify(config));

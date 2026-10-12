@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {dashboardInsights} from '../src/neural/dashboard-insights.js';
+import {dashboardInsights} from '../src/neural/dashboard-insights.ts';
 
 test('专题保留跨专题入站引用，排除重复、自引用与缺失目标',()=>{
  const docs=[{id:'a',title:'A',category:'甲',collection:'readings',references:[{id:'a'},{id:'missing'}],sources:[]},{id:'b',title:'B',category:'乙',collection:'notes',references:[{id:'a'},{id:'a'}]},{id:'c',title:'C',category:'甲',collection:'inbox',references:[]}];

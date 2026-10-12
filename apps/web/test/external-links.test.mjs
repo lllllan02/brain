@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {collectExternalLinks, externalLink} from '../src/neural/external-links.js';
+import {collectExternalLinks, externalLink} from '../src/neural/external-links.ts';
 
 const anchor = (href, textContent = '') => ({getAttribute: () => href, textContent});
 

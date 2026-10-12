@@ -23,11 +23,11 @@ jobs:
       - run: npm ci
         working-directory: apps/web
       - uses: actions/configure-pages@v5
-      - run: npm run build:pages
+      - run: npm run format:check
         working-directory: apps/web
-      - name: Run tests (non-blocking)
-        run: npm test
-        continue-on-error: true
+      - run: npm test
+        working-directory: apps/web
+      - run: npm run build:pages
         working-directory: apps/web
       - uses: actions/upload-pages-artifact@v3
         with:

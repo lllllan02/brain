@@ -12,10 +12,8 @@
 import path from 'node:path';
 import { readdir, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { parseDocument, renderDocument } from '../apps/web/src/library.mjs';
-import { documentTime } from '../apps/web/src/document-dates.js';
+import { parseDocument, renderDocument, documentTime, CONTENT_COLLECTIONS, collectionRegistry } from '../apps/web/scripts/retrieval-api.mjs';
 
-import { CONTENT_COLLECTIONS, collectionRegistry } from '../apps/web/src/collections.js';
 const DEFAULT_DIRS = CONTENT_COLLECTIONS.map(dir => `content/${dir}`);
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');

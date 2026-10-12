@@ -1,4 +1,4 @@
-import {MOTION} from '../../motion/tokens.js';
+import {MOTION} from '../../motion/tokens.ts';
 export const VIEW_TYPE_GALAXY = 'galaxy-view';
 // 力学/辉光/外观的默认值与持久化见 src/settings.ts
 

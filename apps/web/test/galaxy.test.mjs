@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createServer} from 'vite';
-import {galaxyData, galaxyFocus, readingFilter} from '../src/galaxy/data.js';
+import {galaxyData, galaxyFocus, readingFilter} from '../src/galaxy/data.ts';
 
 const note = (id, module, deg = 0) => ({id, title:id, body:'正文', module, deg, in:0, out:deg, tags:[]});
 test('星系适配只包含文档和真实引用，保留孤立文档及稳定 ID', () => {

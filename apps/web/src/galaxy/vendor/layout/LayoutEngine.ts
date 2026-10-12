@@ -1,4 +1,4 @@
-import type { GraphData, LayoutParams } from '../types';
+import type { GraphData, LayoutParams } from '../types.ts';
 
 /**
  * 布局引擎接口——前人死墙的隔离层。

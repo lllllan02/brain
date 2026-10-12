@@ -36,7 +36,7 @@ test('星点未就绪时列表不可见且不提前挂载连线，就绪后保�
   try {
     const {default: React} = await import('react');
     const {renderToStaticMarkup} = await import('react-dom/server');
-    const {ClusterList} = await server.ssrLoadModule('/src/neural/ClusterList.jsx');
+    const {ClusterList} = await server.ssrLoadModule('/src/neural/ClusterList.tsx');
     const source = {id:'a',title:'起点',module:'topic',references:[{id:'b'}]};
     const target = {id:'b',title:'目标文章',module:'topic',collection:'inbox'};
     const graph = {nodes:[source,target],index:new Map([['a',source],['b',target]]),modules:[]};

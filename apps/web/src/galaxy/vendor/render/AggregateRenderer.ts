@@ -1,5 +1,5 @@
-import {collectionStyle} from '../../../collections.js';
-import {MOTION, damp} from '../../../motion/tokens.js';
+import {collectionStyle} from '../../../collections.ts';
+import {MOTION, damp} from '../../../motion/tokens.ts';
 import {
 	ACESFilmicToneMapping,
 	BufferAttribute,
@@ -24,27 +24,27 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
-import type { GraphData } from '../types';
-import type { SpaceSettings } from '../settings';
-import { BLOOM_DEFAULTS, NODE_BASE_RADIUS, NODE_MAX_RADIUS, STARFIELD_ROTATION_RAD_PER_S } from '../constants';
+import type { GraphData } from '../types.ts';
+import type { SpaceSettings } from '../settings.ts';
+import { BLOOM_DEFAULTS, NODE_BASE_RADIUS, NODE_MAX_RADIUS, STARFIELD_ROTATION_RAD_PER_S } from '../constants.ts';
 import {
 	NODE_FRAGMENT_SHADER,
 	NODE_VERTEX_SHADER,
 	patchRevealLineShader,
-} from './shaders';
-import { linkColor, fallbackColorFn } from './palette';
-import type { NodeColorFn } from './palette';
-import { buildFieldStars, buildStarfield, disposeStarfield, Twinkler } from './starfield';
-import { fillLinkPositions, fillRevealLinkAttributes, segsFor } from './linkCurves';
-import { fitGraphPositions, GRAPH_FIT_RADIUS_FACTOR } from './graphTransform';
-import { ClusterClouds, NebulaDome } from './nebula';
-import type { VisualTokens } from './presets';
-import { effectivePixelRatio, type QualityTier } from '../quality/tiers';
-import { DEEP_SPACE } from './presets';
-import { maxPositionRadius, revealScale } from './reveal';
-import {crystalLinkAttributes, linkImportance, patchCrystalLinks} from './crystalLinks';
-import {selectionFlowAttributes} from './selectionFlow';
-import {createRibbonUniforms, LinkRibbons} from './linkRibbons';
+} from './shaders.ts';
+import { linkColor, fallbackColorFn } from './palette.ts';
+import type { NodeColorFn } from './palette.ts';
+import { buildFieldStars, buildStarfield, disposeStarfield, Twinkler } from './starfield.ts';
+import { fillLinkPositions, fillRevealLinkAttributes, segsFor } from './linkCurves.ts';
+import { fitGraphPositions, GRAPH_FIT_RADIUS_FACTOR } from './graphTransform.ts';
+import { ClusterClouds, NebulaDome } from './nebula.ts';
+import type { VisualTokens } from './presets.ts';
+import { effectivePixelRatio, type QualityTier } from '../quality/tiers.ts';
+import { DEEP_SPACE } from './presets.ts';
+import { maxPositionRadius, revealScale } from './reveal.ts';
+import {crystalLinkAttributes, linkImportance, patchCrystalLinks} from './crystalLinks.ts';
+import {selectionFlowAttributes} from './selectionFlow.ts';
+import {createRibbonUniforms, LinkRibbons} from './linkRibbons.ts';
 
 const FOCUS_FADE_S = MOTION.feedback / 1000;
 
@@ -56,6 +56,8 @@ const FOCUS_FADE_S = MOTION.feedback / 1000;
 export class AggregateRenderer {
 	readonly camera: PerspectiveCamera;
 	readonly renderer: WebGLRenderer;
+
+	get sceneRoot(): Scene { return this.scene; }
 
 	private scene = new Scene();
 	private composer: EffectComposer;
@@ -89,7 +91,7 @@ export class AggregateRenderer {
 	};
 	private linkRibbons: LinkRibbons | null = null;
 	private linkColorFn: NodeColorFn | null = null;
-	private linkImportance = new Float32Array(0);
+	private linkImportance: Float32Array = new Float32Array(0);
 	private selRibbons: LinkRibbons | null = null;
 	private crystalDirection = new Vector3();
 	private revealLinkMaterial: LineBasicMaterial | null = null;
@@ -426,7 +428,7 @@ export class AggregateRenderer {
 
 	private sizeMode: 'degree' | 'fileSize' | 'uniform' = 'degree';
 
-	private computeSize(node: import('../types').GraphNode): number {
+	private computeSize(node: import('../types.ts').GraphNode): number {
 		switch (this.sizeMode) {
 			case 'fileSize':
 				// 中位笔记 ~2KB；立方根压缩长尾，巨型文档不吞画面

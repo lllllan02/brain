@@ -4,12 +4,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node server.mjs",
-    "start": "node server.mjs",
-    "test": "node --test test/*.test.mjs",
-    "build": "vite build",
-    "build:pages": "node scripts/build-pages.mjs",
-    "preview:pages": "vite preview --mode pages --host 127.0.0.1 --port 4174"
+    "dev": "node --import tsx server.ts",
+    "start": "node --import tsx server.ts",
+    "test": "node --import tsx --test test/*.test.mjs",
+    "build": "npm run typecheck && vite build",
+    "build:pages": "npm run typecheck && node --import tsx scripts/build-pages.ts",
+    "preview:pages": "vite preview --mode pages --host 127.0.0.1 --port 4174",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\" server.ts \"scripts/*.{ts,mjs}\" vite.config.ts tsconfig.json package.json",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\" server.ts \"scripts/*.{ts,mjs}\" vite.config.ts tsconfig.json package.json"
   },
   "dependencies": {
     "d3-force-3d": "3.0.6",
@@ -25,5 +28,16 @@
   "engines": {
     "node": ">=22.12.0"
   },
-  "license": "PolyForm-Noncommercial-1.0.0"
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/marked": "^4.3.2",
+    "@types/node": "22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "0.184.0",
+    "prettier": "^3.9.10",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
 }

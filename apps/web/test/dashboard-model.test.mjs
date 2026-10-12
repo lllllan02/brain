@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {dashboardPulse} from '../src/neural/dashboard-model.js';
+import {dashboardPulse} from '../src/neural/dashboard-model.ts';
 const doc = {id:'a',category:'Agent'};
 const event = (kind,time,extra={}) => ({kind,time,docId:'a',entity:'doc:a',collections:['inbox'],...extra});
 test('趋势按北京时间、每天同一文档去重；摘要按整个区间去重，排除未来记录',()=>{
@@ -26,7 +26,7 @@ test('空库保留完整日期序列与空主题',()=>{
 });
 
 test('周期对比排除今天，两个完整区间覆盖不足时不可比较', async()=>{
- const {dashboardComparison}=await import('../src/neural/dashboard-model.js');
+ const {dashboardComparison}=await import('../src/neural/dashboard-model.ts');
  const activity={startedAt:'2026-09-01T00:00:00+08:00',events:[]};
  const value=dashboardComparison(activity,[],'2026-10-12',7);
  assert.equal(value.current.start,'2026-10-05');

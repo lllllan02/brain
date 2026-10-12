@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {starCluster} from '../src/galaxy/starCluster.js';
+import {starCluster} from '../src/galaxy/starCluster.ts';
 
 test('星团在球体内部聚拢，三轴均衡且无重叠，输入顺序不改变文档位置', () => {
   const ids = Array.from({length:300}, (_,i)=>`document-${i}`);

@@ -6,7 +6,7 @@ import {
 	Points,
 	ShaderMaterial,
 } from 'three';
-import type { GraphData } from '../types';
+import type { GraphData } from '../types.ts';
 
 // ---------- 共用：确定性噪声 / 随机 ----------
 

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {parseDocument} from '../src/library.mjs';
-import {createSearchIndex, searchDocuments} from '../src/neural/search.js';
+import {parseDocument} from '../src/library.ts';
+import {createSearchIndex, searchDocuments} from '../src/neural/search.ts';
 
 const note = (id, title, extra = {}) => ({id, title, ...extra});
 const results = (documents, query) => searchDocuments(createSearchIndex(documents), query).map(doc => doc.id);

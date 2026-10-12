@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {adjacentDocument, parseReadingRoute, readVisits, readingTrail, recordVisit, recentDocuments, rememberDocument, readingDirection, trailPlayback, trailPath, readingOrigin} from '../src/neural/reading-history.js';
+import {adjacentDocument, parseReadingRoute, readVisits, readingTrail, recordVisit, recentDocuments, rememberDocument, readingDirection, trailPlayback, trailPath, readingOrigin} from '../src/neural/reading-history.ts';
 
 const visit = (id, from, key = id) => ({key, id, from, time: 1});
 test('前后篇跳过主页、同篇锚点与已移除文档，并在边界停下', () => {
@@ -128,7 +128,7 @@ test('关闭正文后继续阅读保留来源，缺失文档仍切断路径', ()
 });
 
 test('常驻来路取当前历史分支，合并章节并保留各次访问的返回位置', async () => {
-  const {activeReadingPath, activeReadingTrail} = await import('../src/neural/reading-history.js');
+  const {activeReadingPath, activeReadingTrail} = await import('../src/neural/reading-history.ts');
   const entries = ['a','a','b','c'].map((id, i) => ({id, key: String(i), scroll: i * 100}));
   const available = new Set(['a','b','c','d']);
   const path = activeReadingPath(entries, 3, available);
@@ -141,7 +141,7 @@ test('常驻来路取当前历史分支，合并章节并保留各次访问的�
 });
 
 test('来路不连接首页或缺失文档两端，重复访问可分别返回，星图只保留最近三次阅读', async () => {
-  const {activeReadingPath, activeReadingTrail} = await import('../src/neural/reading-history.js');
+  const {activeReadingPath, activeReadingTrail} = await import('../src/neural/reading-history.ts');
   const entries = ['a',null,'b','missing','c','a','d','e','f'].map((id,i) => ({id,key:String(i)}));
   const available = new Set(['a','b','c','d','e','f']);
   const path = activeReadingPath(entries, 8, available);
@@ -155,7 +155,7 @@ test('来路不连接首页或缺失文档两端，重复访问可分别返回�
 });
 
 test('回退只临时保留离开的节点用于反向光迹，结束后恢复三次阅读范围', async () => {
-  const {activeReadingTrail} = await import('../src/neural/reading-history.js');
+  const {activeReadingTrail} = await import('../src/neural/reading-history.ts');
   const path = ['a','b','c'].map((id,i) => ({id,key:String(i),connected:i>0}));
   const hop = {from:'d',to:'c',key:'reverse'};
   const trail = activeReadingTrail(path, hop);

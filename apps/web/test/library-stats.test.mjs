@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {libraryStats} from '../src/neural/library-stats.js';
+import {libraryStats} from '../src/neural/library-stats.ts';
 
 test('统计按文档去重标签与引用，缺失分类不虚增分类总数', () => {
   const stats = libraryStats([
