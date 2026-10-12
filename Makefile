@@ -2,9 +2,12 @@
 
 PORT ?= 4173
 
-.PHONY: run install search index lint check test test-browser build
+.PHONY: run dev install search index lint check test test-browser build
 
 run:
+	PORT=$(PORT) npm --prefix apps/web start
+
+dev:
 	PORT=$(PORT) npm --prefix apps/web run dev
 
 install:
