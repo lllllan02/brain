@@ -2,7 +2,7 @@
 
 普通外部链接的摘要与导读放在 `content/readings/`，不在本目录复制。原始资料不作为已确认的知识库结论。
 
-网页读取与 Pages 导出当前只收录 `content/notes/`、`content/inbox/` 与 `content/readings/`，本目录不参与网页渲染。
+网页读取与 Pages 导出当前只收录 `content/notes/`、`content/readings/` 与 `content/glossary/`，本目录不参与网页渲染。
 
 ## Claude Code 沙箱：DeepWiki 问答
 

@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: agent
 title: "Agent Harness 是什么"
 aliases: ["Harness", "Agent Harness"]
@@ -14,7 +15,7 @@ updated_at: "2026-10-11T12:14:02+08:00"
 
 Harness 的范围随语境不同：广义上可包含工具、状态、提示配置与配套基础设施；具体架构中则可把运行控制与执行环境、会话存储分开。因此，Harness 不限定为一个框架、进程或容器。[[openai-agents-architecture-summary|OpenAI 的职责划分]]与[[anthropic-managed-agents-summary|Anthropic 的组件解耦]]展示了这种边界。
 
-Agent Harness 负责运行任务；[[anthropic-agent-evals-summary|Evaluation Harness（评测运行系统）]]负责组织测试、评分与汇总。任务中的结果验证可以属于前者，批量评估模型与运行系统的表现则属于后者。
+Agent Harness 负责运行任务；[[agent-evaluation-harness|Evaluation Harness（评测运行系统）]]负责组织测试、评分与汇总。任务中的结果验证可以属于前者，批量评估模型与运行系统的表现则属于后者。
 
 ## 参考实践
 

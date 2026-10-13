@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "InnoDB 怎样选择聚簇键"
 category: "MySQL"
 parent: mysql-clustered-index

@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "InnoDB 双写缓冲（Doublewrite Buffer）"
 category: "MySQL"
 parent: mysql-buffer-pool-lifecycle

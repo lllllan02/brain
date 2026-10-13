@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "存在性查询优化"
 aliases: ["EXISTS 查询优化", "半连接"]
 category: "MySQL"

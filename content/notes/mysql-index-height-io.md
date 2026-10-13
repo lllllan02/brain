@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "为什么 B+ 树高度不等于磁盘 I/O 次数"
 category: "MySQL"
 parent: mysql-index-structure

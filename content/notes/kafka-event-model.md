@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "Kafka 事件与记录"
 category: "Kafka"
 parent: kafka-overview#定位与事件建模

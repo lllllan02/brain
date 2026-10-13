@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "工具注册与调用分发"
 parent: tool-calling
 aliases: ["Tool Registry", "工具注册表"]

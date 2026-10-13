@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "InnoDB 的 B+ 树与数据页"
 category: "MySQL"
 parent: mysql-indexes

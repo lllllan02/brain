@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "为什么 InnoDB 选择 B+ 树而不是经典 B 树"
 category: "MySQL"
 parent: mysql-index-structure

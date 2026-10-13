@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "MCP Server 的最小实现（stdio）"
 parent: mcp
 category: "Agent"

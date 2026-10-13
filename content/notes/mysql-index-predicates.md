@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "查询条件与索引定位"
 category: "MySQL"
 parent: mysql-indexes

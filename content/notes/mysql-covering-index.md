@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "InnoDB 的回表与覆盖索引"
 category: "MySQL"
 parent: mysql-indexes

@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "索引与排序"
 category: "MySQL"
 parent: mysql-indexes

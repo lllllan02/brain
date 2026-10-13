@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "分批读取与导出"
 category: "MySQL"
 parent: mysql-index-pagination

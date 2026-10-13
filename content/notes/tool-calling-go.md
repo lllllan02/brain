@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "普通工具调用的 Go 最小实现"
 parent: tool-calling-flow
 category: "Agent"

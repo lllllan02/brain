@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "JOIN 与索引"
 category: "MySQL"
 parent: mysql-indexes

@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "InnoDB 的聚簇索引与二级索引"
 category: "MySQL"
 parent: mysql-indexes

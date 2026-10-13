@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "MCP 的完整接入流程"
 parent: mcp
 category: "Agent"

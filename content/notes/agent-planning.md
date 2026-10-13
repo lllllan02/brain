@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: agent
 title: "Agent 的规划与执行模式"
 aliases: ["Planning", "任务规划", "Agent 的 Planning 与 Replanning"]

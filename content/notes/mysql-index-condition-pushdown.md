@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "索引条件下推（ICP）"
 category: "MySQL"
 parent: mysql-indexes

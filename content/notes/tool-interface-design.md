@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "工具接口设计"
 aliases: ["Tool Interface Design"]
 parent: tool-calling

@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "Chat Completions 工具调用的最小消息示例"
 aliases: ["Chat Completions 工具调用示例"]
 parent: tool-calling-flow

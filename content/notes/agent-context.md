@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: agent
 title: "Agent 上下文管理"
 aliases: ["Context Management"]

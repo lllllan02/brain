@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "前缀索引（Prefix Index）"
 category: "MySQL"
 parent: mysql-indexes

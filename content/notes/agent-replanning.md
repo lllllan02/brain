@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: agent-planning
 title: "Replanning（重新规划）"
 aliases: ["Replan", "重新规划", "计划调整"]

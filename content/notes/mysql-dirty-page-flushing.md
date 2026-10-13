@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "InnoDB 脏页写回与检查点"
 category: "MySQL"
 parent: mysql-buffer-pool-lifecycle

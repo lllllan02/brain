@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: agent-context
 title: "Agent 任务状态管理"
 aliases: ["Agent Task State", "Task State Management"]

@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "联合索引与最左前缀匹配原则"
 category: "MySQL"
 parent: mysql-indexes

@@ -1,8 +1,8 @@
 ---
 title: "Anthropic：如何构建可信的 Agent 评测"
-parent: agent-harness
+parent: agent-evaluation
 category: "Agent"
-tags: ["Agent", "Harness"]
+tags: ["Agent", "Harness", "评测"]
 created_at: "2026-10-11T11:46:46+08:00"
 updated_at: "2026-10-11T12:33:19+08:00"
 source: "[Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)"

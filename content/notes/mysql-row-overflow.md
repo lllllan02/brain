@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "溢出页"
 category: "MySQL"
 parent: mysql-clustered-index

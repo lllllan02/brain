@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "深分页优化"
 category: "MySQL"
 parent: mysql-index-pagination

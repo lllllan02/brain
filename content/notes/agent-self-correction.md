@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: agent
 title: "Agent 反思与自我纠正"
 aliases: ["Self-Correction", "Self-correction", "Reflection", "Agent 自我纠正"]

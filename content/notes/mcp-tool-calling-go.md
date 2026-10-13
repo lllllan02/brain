@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "MCP 工具调用的 Go 最小实现"
 parent: mcp-flow
 category: "Agent"

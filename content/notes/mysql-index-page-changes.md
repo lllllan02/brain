@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "InnoDB 页分裂与页合并：变化与代价"
 category: "MySQL"
 parent: mysql-index-structure

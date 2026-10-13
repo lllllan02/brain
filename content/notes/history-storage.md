@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: agent-context
 title: "对话历史的存储"
 category: "Agent"

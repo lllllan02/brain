@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "工具调用的权限规则设计"
 parent: tool-permissions
 category: "Agent"

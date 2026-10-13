@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "InnoDB 为什么需要较矮的 B+ 树"
 category: "MySQL"
 parent: mysql-index-structure

@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "主键、唯一、联合与聚簇索引怎样区分"
 category: "MySQL"
 parent: mysql-indexes

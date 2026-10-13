@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: agent
 title: "Agent 与工作流有什么区别"
 category: "Agent"

@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: context-compaction
 title: "上下文压缩的效果评估"
 category: "Agent"

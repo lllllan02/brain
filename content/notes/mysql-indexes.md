@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "MySQL 索引"
 category: "MySQL"
 parent: mysql-overview

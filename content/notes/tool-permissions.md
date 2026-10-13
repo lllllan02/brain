@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "工具调用的权限与审批"
 parent: tool-calling
 category: "Agent"

@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "MCP 的接入授权与权限边界"
 parent: mcp
 category: "Agent"

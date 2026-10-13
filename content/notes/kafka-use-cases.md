@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "Kafka 使用场景与选型"
 category: "Kafka"
 parent: kafka-overview#定位与事件建模

@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: agent
 title: "最小 Agent Loop"
 aliases: ["Agent Loop", "Agent 循环"]

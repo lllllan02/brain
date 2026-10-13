@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "工具执行调度"
 parent: tool-calling
 category: "Agent"

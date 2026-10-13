@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "重试的封装与实现"
 parent: retry-decision
 category: "服务治理"

@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: agent-self-correction
 title: "怎样组织有效的 Reflection"
 category: "Agent"

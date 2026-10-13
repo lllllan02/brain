@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "WAL（预写日志）"
 category: "数据存储"
 created_at: "2026-10-09"

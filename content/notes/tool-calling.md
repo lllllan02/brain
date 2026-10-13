@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: agent
 title: "工具调用（Tool Calling）"
 aliases: ["Tool Calling", "Function Calling", "函数调用"]

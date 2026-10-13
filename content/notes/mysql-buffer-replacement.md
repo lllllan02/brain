@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "InnoDB 的 LRU 与扫描污染"
 category: "MySQL"
 parent: mysql-buffer-pool-lifecycle

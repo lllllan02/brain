@@ -4,7 +4,7 @@ parent: agent-memory-writing
 category: "Agent"
 tags: ["Agent", "记忆", "检索"]
 created_at: "2026-10-12T23:24:47+08:00"
-updated_at: "2026-10-12T23:43:29+08:00"
+updated_at: "2026-10-13T10:44:40+08:00"
 source:
   - "https://docs.mem0.ai/open-source/overview"
   - "https://docs.mem0.ai/core-concepts/memory-operations/add"
@@ -31,7 +31,7 @@ source:
 
 `expiration_date` 另管有效期：按当前 Add 文档，到期记录默认退出 `search` 与 `get_all`，但按 ID 获取仍可能返回。过期过滤不能当作物理删除。
 
-这一区别影响升级判断：网上常见的“提取后自动选择 ADD／UPDATE／DELETE”不能直接作为本次固定提交的实现说明；使用旧版本时，应对照那个版本的源文件核对。
+这一区别影响升级判断：[[mem0-paper-memory|2025 年 Mem0 论文]]确实描述了提取后自动选择 ADD／UPDATE／DELETE／NOOP 的算法，但不能将它直接当作本篇固定提交的实现。2026-10-13 再次核对 Add 文档，仍为追加语义；使用其他版本时，应核对对应源文件。
 
 ## 读写接入还剩什么？
 

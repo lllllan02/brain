@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "MCP（模型上下文协议）"
 parent: tool-calling
 aliases: ["MCP", "Model Context Protocol", "模型上下文协议"]

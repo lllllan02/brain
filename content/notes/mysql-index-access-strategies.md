@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "索引合并与跳跃扫描"
 category: "MySQL"
 parent: mysql-indexes

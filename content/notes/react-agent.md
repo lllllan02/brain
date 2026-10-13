@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: agent-planning
 title: "ReAct（推理与行动交替）"
 aliases: ["ReAct", "Reasoning and Acting"]

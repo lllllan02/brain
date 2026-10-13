@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: agent
 title: "Agent 重试"
 aliases: ["Agent Retry", "Task Retry"]

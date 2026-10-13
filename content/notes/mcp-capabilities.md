@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "MCP 的 Tool、Resource 与 Prompt 有什么区别"
 parent: mcp
 category: "Agent"

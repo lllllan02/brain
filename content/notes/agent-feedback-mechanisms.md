@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "Agent 的反馈与调整机制"
 parent: agent
 category: "Agent"

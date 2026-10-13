@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "错误分类与重试决策"
 category: "服务治理"
 tags: ["重试", "异常分类", "幂等"]

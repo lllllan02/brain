@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: context-compaction
 title: "压缩摘要的提示词设计"
 aliases: ["压缩时怎样提炼信息", "摘要提示词", "结构化摘要"]

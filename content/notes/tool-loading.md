@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 title: "工具按需加载"
 parent: tool-calling
 aliases: ["工具延迟加载", "Deferred Tool Loading"]

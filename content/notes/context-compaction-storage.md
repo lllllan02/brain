@@ -1,4 +1,5 @@
 ---
+learning_status: understood
 parent: context-compaction
 title: "压缩摘要的存储与读取"
 aliases: ["摘要覆盖范围", "压缩边界", "Summary Boundary"]

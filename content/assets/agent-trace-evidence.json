@@ -1,0 +1,357 @@
+{
+  "experiment_id": "20261012T163812Z-9ca91a89",
+  "code_commit": "be79b00709d88d66ac938e11e2904ec8508c7f0c",
+  "description": "Selected synthetic experiment evidence extracted on 2026-10-13; no model rerun. Fields omitted for teaching; full files remain in independent lab repository.",
+  "source_sha256": {
+    "results.json": "539b8b15a5ac50a21318cc7ad28f5ca49380df4cfdd8a3018543f8369ce2e74e",
+    "spans.json": "96b34178662bb8ce96d4403b8b5cc65e7a23bf4c49cccc4e71caf343f30e7966",
+    "metrics.json": "d2cb4819f0fd0134f3b8f2ec1f1748fae5fea41a6d44cf4c3990eb18807ff0ff",
+    "verification.json": "47ba592314d3f8a26c0433e82130a7cf9749ac75c9663d8c2501097a557687f3"
+  },
+  "summary": {
+    "runs": 35,
+    "spans": 1654,
+    "observation_types": {
+      "span": 1290,
+      "generation": 119,
+      "tool": 181,
+      "agent": 64
+    },
+    "model": "deepseek-v4-flash",
+    "usage": {
+      "input_tokens": 150393,
+      "output_tokens": 25161,
+      "generations": 119,
+      "missing_input_usage": 2,
+      "missing_output_usage": 2
+    },
+    "baseline_passed": 13,
+    "fixed_passed": 17,
+    "platform_visible_at_original_verification": true,
+    "pending": []
+  },
+  "selected_results": [
+    {
+      "scenario": "approval",
+      "version": "baseline",
+      "trace_id": "8c332a78150c6d63dd074a4c37fe387f",
+      "passed": true,
+      "covered": true,
+      "outcome": "refunded",
+      "stop_reason": "completed",
+      "ledger_count": 1,
+      "resumed": 2,
+      "model_calls": 5,
+      "duration_ms": 5083,
+      "evidence": [
+        "ledger_count=1",
+        "order_consistent=true",
+        "fault_reached=true",
+        "rules-v1"
+      ]
+    },
+    {
+      "scenario": "approval",
+      "version": "fixed",
+      "trace_id": "e6c6f8d733d9ef5380e9756191e21841",
+      "passed": true,
+      "covered": true,
+      "outcome": "refunded",
+      "stop_reason": "completed",
+      "ledger_count": 1,
+      "resumed": 2,
+      "model_calls": 5,
+      "duration_ms": 5714,
+      "evidence": [
+        "ledger_count=1",
+        "order_consistent=true",
+        "fault_reached=true",
+        "rules-v1"
+      ]
+    },
+    {
+      "scenario": "context",
+      "version": "baseline",
+      "trace_id": "d2ccced5cd5ca856d9605fd49069cb80",
+      "passed": false,
+      "covered": true,
+      "outcome": "refunded",
+      "stop_reason": "completed",
+      "ledger_count": 1,
+      "resumed": 1,
+      "model_calls": 4,
+      "duration_ms": 8057,
+      "evidence": [
+        "ledger_count=1",
+        "order_consistent=false",
+        "fault_reached=true",
+        "rules-v1"
+      ]
+    },
+    {
+      "scenario": "context",
+      "version": "fixed",
+      "trace_id": "4ca960af5f1475e63b7641d01dc3109a",
+      "passed": true,
+      "covered": true,
+      "outcome": "refunded",
+      "stop_reason": "completed",
+      "ledger_count": 1,
+      "resumed": 1,
+      "model_calls": 4,
+      "duration_ms": 4772,
+      "evidence": [
+        "ledger_count=1",
+        "order_consistent=true",
+        "fault_reached=true",
+        "rules-v1"
+      ]
+    },
+    {
+      "scenario": "data",
+      "version": "baseline",
+      "trace_id": "ffea35c456717ed316fa8b6fe81ca0a3",
+      "passed": false,
+      "covered": true,
+      "outcome": "refunded",
+      "stop_reason": "completed",
+      "ledger_count": 1,
+      "resumed": 1,
+      "model_calls": 5,
+      "duration_ms": 13289,
+      "evidence": [
+        "ledger_count=1",
+        "order_consistent=false",
+        "fault_reached=true",
+        "rules-v1"
+      ]
+    },
+    {
+      "scenario": "data",
+      "version": "fixed",
+      "trace_id": "1003eb8958013319d193ed7f80bb3cfc",
+      "passed": true,
+      "covered": true,
+      "outcome": "failed",
+      "stop_reason": "error",
+      "ledger_count": 0,
+      "resumed": 0,
+      "model_calls": 1,
+      "duration_ms": 1220,
+      "evidence": [
+        "ledger_count=0",
+        "order_consistent=false",
+        "fault_reached=true",
+        "rules-v1"
+      ]
+    },
+    {
+      "scenario": "interpretation",
+      "version": "baseline",
+      "trace_id": "065f61e1e19f5f5e7767c9e2f7cfa794",
+      "passed": false,
+      "covered": true,
+      "outcome": "refunded",
+      "stop_reason": "completed",
+      "ledger_count": 1,
+      "resumed": 1,
+      "model_calls": 4,
+      "duration_ms": 5097,
+      "evidence": [
+        "ledger_count=1",
+        "order_consistent=false",
+        "fault_reached=true",
+        "rules-v1"
+      ]
+    },
+    {
+      "scenario": "interpretation",
+      "version": "fixed",
+      "trace_id": "533a0b9fe0de31309a469238cf7ea447",
+      "passed": true,
+      "covered": true,
+      "outcome": "refunded",
+      "stop_reason": "completed",
+      "ledger_count": 1,
+      "resumed": 1,
+      "model_calls": 4,
+      "duration_ms": 4747,
+      "evidence": [
+        "ledger_count=1",
+        "order_consistent=true",
+        "fault_reached=true",
+        "rules-v1"
+      ]
+    },
+    {
+      "scenario": "normal",
+      "version": "baseline",
+      "trace_id": "01652eee1398ee220f83c39ef33eb44c",
+      "passed": true,
+      "covered": true,
+      "outcome": "refunded",
+      "stop_reason": "completed",
+      "ledger_count": 1,
+      "resumed": 1,
+      "model_calls": 4,
+      "duration_ms": 4669,
+      "evidence": [
+        "ledger_count=1",
+        "order_consistent=true",
+        "fault_reached=true",
+        "rules-v1"
+      ]
+    },
+    {
+      "scenario": "normal",
+      "version": "fixed",
+      "trace_id": "d224a0068b8f4cfc41e774a82b2118d3",
+      "passed": true,
+      "covered": true,
+      "outcome": "refunded",
+      "stop_reason": "completed",
+      "ledger_count": 1,
+      "resumed": 1,
+      "model_calls": 4,
+      "duration_ms": 4354,
+      "evidence": [
+        "ledger_count=1",
+        "order_consistent=true",
+        "fault_reached=true",
+        "rules-v1"
+      ]
+    },
+    {
+      "scenario": "parameter",
+      "version": "baseline",
+      "trace_id": "0c195e006a1f378ac99c871bb36edccb",
+      "passed": false,
+      "covered": true,
+      "outcome": "refunded",
+      "stop_reason": "completed",
+      "ledger_count": 1,
+      "resumed": 1,
+      "model_calls": 4,
+      "duration_ms": 7651,
+      "evidence": [
+        "ledger_count=1",
+        "order_consistent=false",
+        "fault_reached=true",
+        "rules-v1"
+      ]
+    },
+    {
+      "scenario": "parameter",
+      "version": "fixed",
+      "trace_id": "9d0ba4d3cefc74ba9229d5d22a77bd05",
+      "passed": true,
+      "covered": true,
+      "outcome": "failed",
+      "stop_reason": "error",
+      "ledger_count": 0,
+      "resumed": 0,
+      "model_calls": 1,
+      "duration_ms": 1036,
+      "evidence": [
+        "ledger_count=0",
+        "order_consistent=true",
+        "fault_reached=true",
+        "rules-v1"
+      ]
+    },
+    {
+      "scenario": "retry",
+      "version": "baseline",
+      "trace_id": "d112c17130ed0cd6d8ac15412003418f",
+      "passed": true,
+      "covered": true,
+      "outcome": "refunded",
+      "stop_reason": "completed",
+      "ledger_count": 1,
+      "resumed": 1,
+      "model_calls": 4,
+      "duration_ms": 4561,
+      "evidence": [
+        "ledger_count=1",
+        "order_consistent=true",
+        "fault_reached=true",
+        "rules-v1"
+      ]
+    },
+    {
+      "scenario": "retry",
+      "version": "fixed",
+      "trace_id": "0e8a9e8882aab32869738754c6eba1e7",
+      "passed": true,
+      "covered": true,
+      "outcome": "refunded",
+      "stop_reason": "completed",
+      "ledger_count": 1,
+      "resumed": 1,
+      "model_calls": 4,
+      "duration_ms": 4822,
+      "evidence": [
+        "ledger_count=1",
+        "order_consistent=true",
+        "fault_reached=true",
+        "rules-v1"
+      ]
+    }
+  ],
+  "context_change": [
+    {
+      "span_id": "5f2177e27dae7457",
+      "tool_call_id": "call_00_PWc9AJ81rS2bFUKORqhv8887",
+      "input": {
+        "raw": {
+          "amount": 100,
+          "order_id": "A",
+          "status": "paid"
+        },
+        "strategy": "identity-v1",
+        "tool_call_id": "call_00_PWc9AJ81rS2bFUKORqhv8887"
+      },
+      "output": {
+        "amount": 100,
+        "order_id": "B",
+        "status": "paid"
+      }
+    }
+  ],
+  "retry_attempts": [
+    {
+      "span_id": "9e8d88da9d2417b6",
+      "status": "Error",
+      "input": {
+        "attempt": 1,
+        "tool_call_id": "call_00_rdbiWSKCfv291Pt0PR9D1605"
+      },
+      "output": null
+    },
+    {
+      "span_id": "1df3b1e2f93c971f",
+      "status": "Unset",
+      "input": {
+        "attempt": 2,
+        "tool_call_id": "call_00_rdbiWSKCfv291Pt0PR9D1605"
+      },
+      "output": "recovered"
+    }
+  ],
+  "normal_parallel_spans": [
+    {
+      "name": "get_shipping",
+      "id": "e963e03fa44505e4",
+      "parent_id": "a2cef32c8d03278d",
+      "start": "2026-10-13T00:38:17.640342+08:00",
+      "end": "2026-10-13T00:38:17.661480375+08:00"
+    },
+    {
+      "name": "get_order",
+      "id": "e163a0a379b7ec2b",
+      "parent_id": "a2cef32c8d03278d",
+      "start": "2026-10-13T00:38:17.640332+08:00",
+      "end": "2026-10-13T00:38:17.661482625+08:00"
+    }
+  ]
+}
