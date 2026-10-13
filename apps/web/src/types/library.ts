@@ -15,6 +15,7 @@ export interface ParsedDocument {
   id: string;
   path: string;
   collection: string;
+  state: import('../document-state.ts').DocumentState | null;
   title: string;
   aliases: string[];
   tags: string[];
@@ -37,7 +38,13 @@ export interface LibraryDocument extends ParsedDocument {
   backlinks?: string[];
 }
 export type ActivityKind =
-  'created' | 'updated' | 'moved' | 'image-created' | 'image-updated' | 'image-format';
+  | 'created'
+  | 'updated'
+  | 'moved'
+  | 'state-changed'
+  | 'image-created'
+  | 'image-updated'
+  | 'image-format';
 export interface ActivityEvent {
   id: string;
   kind: ActivityKind;
@@ -63,8 +70,14 @@ export interface Library {
   activity?: LibraryActivity;
   public?: boolean;
 }
-export type MoveState =
-  | { status: 'idle'; pending: false; id?: never; collection?: never; error?: never }
-  | { status: 'pending'; pending: true; id: string; collection?: never; error?: never }
-  | { status: 'success'; pending: false; id: string; collection: string; error?: never }
-  | { status: 'error'; pending: false; id: string; error: string; collection?: never };
+export type StateUpdate =
+  | { status: 'idle'; pending: false; id?: never; state?: never; error?: never }
+  | { status: 'pending'; pending: true; id: string; state?: never; error?: never }
+  | {
+      status: 'success';
+      pending: false;
+      id: string;
+      state: import('../document-state.ts').DocumentState;
+      error?: never;
+    }
+  | { status: 'error'; pending: false; id: string; error: string; state?: never };

@@ -1,16 +1,17 @@
-import type { Library, MoveState } from '../types/library.ts';
+import type { DocumentState } from '../document-state.ts';
+import type { Library, StateUpdate } from '../types/library.ts';
 
 type LoadState =
   | { status: 'loading'; library: null; error: '' }
   | { status: 'error'; library: null; error: string }
   | { status: 'ready'; library: Library; error: string };
 export type LibrarySnapshot = LoadState & {
-  moveState: MoveState;
+  updateState: StateUpdate;
   revision: number;
 };
 interface Transport {
   fetch(signal: AbortSignal): Promise<Library>;
-  move(id: string, collection: string, version: string): Promise<Library>;
+  setState(id: string, state: DocumentState, version: string): Promise<Library>;
 }
 const message = (error: unknown) => (error instanceof Error ? error.message : String(error));
 
@@ -20,7 +21,7 @@ export function createLibraryStore(transport: Transport) {
     status: 'loading',
     library: null,
     error: '',
-    moveState: { status: 'idle', pending: false },
+    updateState: { status: 'idle', pending: false },
     revision: 0,
   };
   const listeners = new Set<() => void>();
@@ -44,7 +45,7 @@ export function createLibraryStore(transport: Transport) {
     request = null;
   };
   const refresh = async () => {
-    if (!active || request || snapshot.moveState.pending) return;
+    if (!active || request || snapshot.updateState.pending) return;
     const controller = new AbortController();
     request = controller;
     const ticket = revision,
@@ -96,8 +97,8 @@ export function createLibraryStore(transport: Transport) {
       active = true;
       generation++;
       // StrictMode may reconnect while a previous write is still finishing.
-      if (snapshot.moveState.pending)
-        publish({ ...snapshot, moveState: { status: 'idle', pending: false } });
+      if (snapshot.updateState.pending)
+        publish({ ...snapshot, updateState: { status: 'idle', pending: false } });
       void refresh();
     },
     stop() {
@@ -106,32 +107,32 @@ export function createLibraryStore(transport: Transport) {
       invalidate();
     },
     refresh,
-    clearMove() {
-      if (!snapshot.moveState.pending)
-        publish({ ...snapshot, moveState: { status: 'idle', pending: false } });
+    clearUpdate() {
+      if (!snapshot.updateState.pending)
+        publish({ ...snapshot, updateState: { status: 'idle', pending: false } });
     },
-    async move(id: string, collection: string) {
-      if (!active || !snapshot.library || snapshot.moveState.pending) return;
+    async setState(id: string, state: DocumentState) {
+      if (!active || !snapshot.library || snapshot.updateState.pending) return;
       const version = snapshot.library.version,
         epoch = generation;
       invalidate();
-      publish({ ...snapshot, revision, moveState: { status: 'pending', pending: true, id } });
+      publish({ ...snapshot, revision, updateState: { status: 'pending', pending: true, id } });
       try {
-        const library = await transport.move(id, collection, version);
+        const library = await transport.setState(id, state, version);
         if (!active || epoch !== generation) return;
         publish({
           status: 'ready',
           library,
           error: '',
           revision: ++revision,
-          moveState: { status: 'success', pending: false, id, collection },
+          updateState: { status: 'success', pending: false, id, state },
         });
       } catch (error) {
         if (!active || epoch !== generation) return;
         publish({
           ...snapshot,
           revision: ++revision,
-          moveState: { status: 'error', pending: false, id, error: message(error) },
+          updateState: { status: 'error', pending: false, id, error: message(error) },
         });
       }
     },

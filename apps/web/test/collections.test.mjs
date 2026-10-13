@@ -23,7 +23,7 @@ test('目录配置支持自定义项、禁用、样式默认值，并拒绝越�
  assert.deepEqual(createCollectionRegistry([]).directories,[]);
 });
 
-test('只改配置即可收录第五目录、渲染图标、搜索及静态导出；禁用后保留文件',async t=>{
+test('只改配置即可收录自定义目录、渲染图标、搜索及静态导出；禁用后保留文件',async t=>{
  const root=await mkdtemp(path.join(os.tmpdir(),'horizon-config-'));
  t.after(()=>rm(root,{recursive:true,force:true}));
  // Run the unchanged modules against an isolated configuration, not the user's vault.
@@ -31,13 +31,14 @@ test('只改配置即可收录第五目录、渲染图标、搜索及静态导�
  await mkdir(path.join(root,'scripts'));
  await writeFile(path.join(root,'package.json'),'{"type":"module"}');
  await symlink(path.resolve('node_modules'),path.join(root,'node_modules'),'dir');
- for(const file of ['collections.ts','library.ts','document-dates.ts','neural/search.ts']) await copyFile(path.resolve('src',file),path.join(root,'src',file));
+ for(const file of ['collections.ts','document-state.ts','library.ts','document-dates.ts','neural/search.ts']) await copyFile(path.resolve('src',file),path.join(root,'src',file));
  await copyFile(path.resolve('scripts/build-pages.ts'),path.join(root,'scripts/build-pages.ts'));
+ await copyFile(path.resolve('document-states.config.json'),path.join(root,'document-states.config.json'));
  const config=JSON.parse(await readFile('collections.config.json','utf8'));
  config.push({...entry,link:{color:'#abcdef',opacity:0.3}});
  await writeFile(path.join(root,'collections.config.json'),JSON.stringify(config));
- for(const dir of ['inbox','glossary','reference','unconfigured']) await mkdir(path.join(root,'content',dir),{recursive:true});
- await writeFile(path.join(root,'content/inbox/topic.md'),'---\ntitle: 主题\n---\n[[term]] [[custom]]');
+ for(const dir of ['notes','glossary','reference','unconfigured']) await mkdir(path.join(root,'content',dir),{recursive:true});
+ await writeFile(path.join(root,'content/notes/topic.md'),'---\ntitle: 主题\n---\n[[term]] [[custom]]');
  await writeFile(path.join(root,'content/glossary/term.md'),'---\ntitle: 术语\n---\n[[topic]]');
  await writeFile(path.join(root,'content/reference/custom.md'),'---\ntitle: 自定义查阅\n---\n配置驱动检索');
  await writeFile(path.join(root,'content/unconfigured/hidden.md'),'不应收录');

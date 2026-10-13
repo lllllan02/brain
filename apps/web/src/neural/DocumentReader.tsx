@@ -1,6 +1,6 @@
 import type { DocumentReaderProps } from '../types/ui.ts';
 import type { Cluster } from '../types/reading.ts';
-import { CONTENT_COLLECTIONS, collectionLabel } from '../collections.ts';
+import { nextDocumentState, stateLabel, stateComplete } from '../document-state.ts';
 import { useViewState } from './useViewState.ts';
 import { CollectionIcon } from './CollectionIcon.tsx';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
@@ -28,7 +28,7 @@ export function DocumentReader({
   readingLocation,
   onReadingScroll,
   navigation,
-  collectionAction,
+  stateAction,
   queue,
 }: DocumentReaderProps) {
   const ref = useRef<HTMLElement>(null);
@@ -65,29 +65,31 @@ export function DocumentReader({
   }, [node.id, readingLocation?.key]);
 
   const toolbarTitle = useToolbarTitle(ref, titleRef, node.id, readingLocation?.key);
-  const canMove =
-    collectionAction &&
-    ['inbox', 'notes'].every((id) => CONTENT_COLLECTIONS.includes(id)) &&
-    ['inbox', 'notes'].includes(node.collection);
-  const moveLabel =
-    node.collection === 'inbox'
-      ? `已理解，移入 ${collectionLabel('notes')}`
-      : `重新学习，移回 ${collectionLabel('inbox')}`;
-  const titleIcon = canMove ? (
-    <button
-      type="button"
-      className="collection-toggle"
-      title={moveLabel}
-      aria-label={moveLabel}
-      disabled={collectionAction.pending}
-      aria-busy={collectionAction.pending}
-      onClick={() => collectionAction.move(node, node.collection === 'inbox' ? 'notes' : 'inbox')}
-    >
-      <CollectionIcon collection={node.collection} />
-    </button>
-  ) : (
-    <CollectionIcon collection={node.collection} />
-  );
+  const nextState = nextDocumentState(node);
+  const stateActionLabel = nextState ? `标为${stateLabel(nextState)}` : '';
+  const titleIcon = <CollectionIcon {...node} />;
+  const stateControl =
+    node.state &&
+    (stateAction && nextState ? (
+      <button
+        type="button"
+        className="document-state-toggle"
+        data-state={node.state}
+        title={stateActionLabel}
+        aria-label={stateActionLabel}
+        aria-pressed={stateComplete(node.state)}
+        disabled={stateAction.pending}
+        aria-busy={stateAction.pending}
+        onClick={() => stateAction.setState(node, nextState)}
+      >
+        <span aria-hidden="true">{stateComplete(node.state) ? '✓' : '○'}</span>
+        {stateLabel(node.state)}
+      </button>
+    ) : (
+      <span className="document-state-label" data-state={node.state}>
+        {stateLabel(node.state)}
+      </span>
+    ));
   const relations = {
     graph,
     node,
@@ -165,6 +167,7 @@ export function DocumentReader({
           </div>
         </div>
         <div className="read-actions">
+          {stateControl}
           {queue && <ReadingQueueButton queue={queue} node={node} className="icon-btn" />}
           <button
             className="icon-btn"

@@ -1,3 +1,4 @@
+import { documentFilters, stateLabel } from '../document-state.ts';
 import { useReadingFlight } from './useReadingFlight.ts';
 import { useReaderLayout } from './useReaderLayout.ts';
 import { GalaxyLabels } from './GalaxyLabels.tsx';
@@ -30,7 +31,7 @@ import { MOTION, motionVariables } from '../motion/tokens.ts';
 import '../motion/motion.css';
 import '../galaxy/galaxy.css';
 
-export function Home({ graph, focus, setFocus, reading, reduced, collectionAction }: HomeProps) {
+export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: HomeProps) {
   const host = useRef<HTMLDivElement>(null),
     scene = useRef<ReturnType<typeof createGalaxy>>(null),
     searchInput = useRef<HTMLInputElement>(null);
@@ -62,7 +63,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
     'listCollectionFilter',
     'all',
     (value): value is string =>
-      typeof value === 'string' && (value === 'all' || CONTENT_COLLECTIONS.includes(value)),
+      typeof value === 'string' && documentFilters.some(([id]) => id === value),
   );
   const [clusterVisible, setClusterVisible] = useState(false);
   const [historyOpen, setHistoryOpen] = useViewState('historyOpen', false);
@@ -469,6 +470,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
                   <span>{n.title}</span>
                   <small>
                     {n.category || '未分类'} · {collectionLabel(n.collection)}
+                    {n.state && ` · ${stateLabel(n.state)}`}
                   </small>
                 </button>
               ))}
@@ -711,7 +713,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, collectionActio
           <ReaderTransition documentId={shownNode.id} reduced={reduced}>
             <DocumentReader
               queue={queue}
-              collectionAction={collectionAction}
+              stateAction={stateAction}
               navigation={
                 <ReadingNavigation graph={graph} reading={reading} onTravel={reading.travel} />
               }

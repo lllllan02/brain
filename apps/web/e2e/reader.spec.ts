@@ -43,7 +43,7 @@ test('损坏的浏览器记忆安全回退，静态预览保持只读', async ({
   });
   await page.goto('/#/doc/first');
   await expect(page.locator('.document-reader[data-document-id="first"]')).toBeVisible();
-  await expect(page.getByRole('button', { name: /移入/ })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: /标为/ })).toHaveCount(0);
 });
 
 test('阅读列表过渡、看板返回阅读和快速反向导航', async ({ page }) => {

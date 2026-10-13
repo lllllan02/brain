@@ -13,12 +13,12 @@ test('导读迁入 readings 后保留地址、正文、双链与上级，同时�
  const root = await mkdtemp(path.join(os.tmpdir(), 'horizon-readings-'));
  const server=await createServer({root:process.cwd(),configFile:false,optimizeDeps:{noDiscovery:true},server:{middlewareMode:true,hmr:false,ws:false},appType:'custom'});
  try {
-  await Promise.all(['notes','inbox','readings','sources','archive'].map(dir => mkdir(path.join(root,dir))));
+  await Promise.all(['notes','readings','sources','archive'].map(dir => mkdir(path.join(root,dir))));
   await writeFile(path.join(root,'notes/topic.md'),'---\ntitle: 工具接口\n---\n[[guide|外部导读]]');
   const body='---\ntitle: 工具文章导读\nparent: topic\n---\n外部资料摘要\n\n[原文](https://example.com/article)';
-  await writeFile(path.join(root,'inbox/guide.md'),body);
+  await writeFile(path.join(root,'notes/guide.md'),body);
   const before=await loadLibrary(root);
-  await rename(path.join(root,'inbox/guide.md'),path.join(root,'readings/guide.md'));
+  await rename(path.join(root,'notes/guide.md'),path.join(root,'readings/guide.md'));
   for(const dir of ['sources','archive']) await writeFile(path.join(root,dir,'guide.md'),'不应收录');
   const after=await loadLibrary(root), guide=after.documents.find(d=>d.id==='guide');
   assert.equal(after.documents.length,2);

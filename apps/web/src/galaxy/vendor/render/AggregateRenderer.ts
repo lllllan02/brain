@@ -1,4 +1,4 @@
-import {collectionStyle} from '../../../collections.ts';
+import {documentAppearance} from '../../../document-state.ts';
 import {MOTION, damp} from '../../../motion/tokens.ts';
 import {
 	ACESFilmicToneMapping,
@@ -231,7 +231,7 @@ export class AggregateRenderer {
 			const node = data.nodes[i];
 			if (!node) continue;
 			ghost[i] = node.unresolved ? 1 : 0;
-			const style = collectionStyle(node.collection);
+			const style = documentAppearance(node);
 			collectionColor.set(style.color).toArray(collectionColors, i * 3);
 			collectionShapes.set([style.node.size, style.node.halo, style.node.rays, style.node.rayStretch], i * 4);
 			rayAngles[i] = style.node.rayAngle * Math.PI / 180;
@@ -607,7 +607,7 @@ export class AggregateRenderer {
 		const angles = this.nodeGeometry.getAttribute('aRayAngle') as BufferAttribute;
 		const color = new Color();
 		this.data.nodes.forEach((node, i) => {
-			const style = collectionStyle(node.collection);
+			const style = documentAppearance(node);
 			color.set(style.color);
 			colors.setXYZ(i, color.r, color.g, color.b);
 			shapes.setXYZW(i, style.node.size, style.node.halo, style.node.rays, style.node.rayStretch);

@@ -24,7 +24,7 @@ export function dashboardPulse(
   const topics = new Map<string, Set<string>>();
   for (const e of events) {
     const doc = index.get(e.docId!);
-    if (!doc || !['created', 'updated', 'moved'].includes(e.kind)) continue;
+    if (!doc || !['created', 'updated', 'moved', 'state-changed'].includes(e.kind)) continue;
     const name = doc.category?.trim() || '未分类';
     if (!topics.has(name)) topics.set(name, new Set());
     topics.get(name)!.add(doc.id);

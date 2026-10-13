@@ -4,7 +4,7 @@ import { parseLibrary } from '../src/data/library-schema.ts';
 import { parseDocument, renderDocument } from '../src/library.ts';
 import { createLibraryStore } from '../src/data/library-store.ts';
 import { validFocus, validReadingSession, validPinnedList } from '../src/neural/view-state.ts';
-const raw = parseDocument('---\ntitle: Example\n---\nHello', 'inbox/example.md');
+const raw = parseDocument('---\ntitle: Example\n---\nHello', 'notes/example.md');
 const library = { version: 'v1', documents: [renderDocument(raw, [raw])] };
 const deferred = () => { let resolve, reject; const promise = new Promise((a,b) => { resolve=a; reject=b; }); return {promise,resolve,reject}; };
 const tick = () => new Promise(resolve => setImmediate(resolve));
@@ -32,23 +32,23 @@ test('存储入口拒绝伪对象、不完整阅读记录和混入无效字段�
   assert.equal(validPinnedList({category:'valid',pinnedIds:['a'],latest:[null]}), false);
 });
 
-test('轮询单飞、移动取消旧读取；迟到旧响应不能覆盖移动结果', async () => {
+test('轮询单飞、状态写回取消旧读取；迟到旧响应不能覆盖状态写回结果', async () => {
   const reads = [], write = deferred(); let signal;
-  const store = createLibraryStore({fetch: s => {signal=s; const task=deferred();reads.push(task);return task.promise;},move:()=>write.promise});
+  const store = createLibraryStore({fetch: s => {signal=s; const task=deferred();reads.push(task);return task.promise;},setState:()=>write.promise});
   store.start(); await store.refresh(); assert.equal(reads.length,1);
   reads[0].resolve(library); await tick();
   void store.refresh(); assert.equal(reads.length,2);
-  const moving=store.move('example','notes'); assert.equal(signal.aborted,true);
+  const moving=store.setState('example','understood'); assert.equal(signal.aborted,true);
   await store.refresh(); assert.equal(reads.length,2);
   const moved={...library,version:'v2'}; write.resolve(moved); await moving;
   reads[1].resolve(library); await tick();
   assert.equal(store.getSnapshot().library,moved);
-  assert.equal(store.getSnapshot().moveState.status,'success');
+  assert.equal(store.getSnapshot().updateState.status,'success');
   store.stop();
 });
 
 test('失败后恢复清除错误；卸载取消读取并隔离旧生命周期响应', async () => {
-  const reads=[];const store=createLibraryStore({fetch:s=>{const task=deferred();reads.push({...task,signal:s});return task.promise;},move:async()=>library});
+  const reads=[];const store=createLibraryStore({fetch:s=>{const task=deferred();reads.push({...task,signal:s});return task.promise;},setState:async()=>library});
   store.start(); reads[0].reject(Error('offline')); await tick();
   assert.equal(store.getSnapshot().status,'error');
   void store.refresh(); reads[1].resolve(library); await tick();
@@ -59,32 +59,32 @@ test('失败后恢复清除错误；卸载取消读取并隔离旧生命周期�
   assert.equal(store.getSnapshot().library.version,'v3'); store.stop();
 });
 
-test('未加载不允许移动，失败写入保留正文', async () => {
+test('未加载不允许状态写回，失败写入保留正文', async () => {
   const write=deferred();let writes=0;
-  const store=createLibraryStore({fetch:async()=>library,move:()=>{writes++;return write.promise;}});
-  await store.move('example','notes');assert.equal(writes,0);
-  store.start();await tick();const moving=store.move('example','notes');
-  await store.move('example','notes');assert.equal(writes,1);
+  const store=createLibraryStore({fetch:async()=>library,setState:()=>{writes++;return write.promise;}});
+  await store.setState('example','understood');assert.equal(writes,0);
+  store.start();await tick();const moving=store.setState('example','understood');
+  await store.setState('example','understood');assert.equal(writes,1);
   write.reject(Error('version conflict'));await moving;
   assert.equal(store.getSnapshot().library,library);
-  assert.equal(store.getSnapshot().moveState.status,'error');
-  store.clearMove();assert.equal(store.getSnapshot().moveState.status,'idle');store.stop();
+  assert.equal(store.getSnapshot().updateState.status,'error');
+  store.clearUpdate();assert.equal(store.getSnapshot().updateState.status,'idle');store.stop();
 });
 
 
 test('卸载前的写入迟到结果不能覆盖重新连接后的文档库', async () => {
   const write=deferred();let version='v1';
-  const store=createLibraryStore({fetch:async()=>({...library,version}),move:()=>write.promise});
-  store.start();await tick();const moving=store.move('example','notes');
+  const store=createLibraryStore({fetch:async()=>({...library,version}),setState:()=>write.promise});
+  store.start();await tick();const moving=store.setState('example','understood');
   store.stop();version='v3';store.start();await tick();
   write.resolve({...library,version:'v2'});await moving;
   assert.equal(store.getSnapshot().library.version,'v3');
-  assert.equal(store.getSnapshot().moveState.status,'idle');store.stop();
+  assert.equal(store.getSnapshot().updateState.status,'idle');store.stop();
 });
 
 test('后台自动同步最新库，只替换变化的文档对象；无变化不通知', async () => {
   let next=library;
-  const store=createLibraryStore({fetch:async()=>next,move:async()=>next});
+  const store=createLibraryStore({fetch:async()=>next,setState:async()=>next});
   let notifications=0;store.subscribe(()=>notifications++);
   store.start();await tick();const initial=store.getSnapshot();
   await store.refresh();assert.equal(store.getSnapshot(),initial);assert.equal(notifications,1);
@@ -102,7 +102,7 @@ test('后台自动同步最新库，只替换变化的文档对象；无变化�
 
 test('后台读取失败保留已加载正文，恢复后自动同步', async () => {
   let next=library, failure=false;
-  const store=createLibraryStore({fetch:async()=>{if(failure)throw Error('offline');return next;},move:async()=>next});
+  const store=createLibraryStore({fetch:async()=>{if(failure)throw Error('offline');return next;},setState:async()=>next});
   store.start();await tick();failure=true;await store.refresh();
   assert.equal(store.getSnapshot().library,library);assert.equal(store.getSnapshot().error,'offline');
   next={...library,version:'v2'};failure=false;await store.refresh();

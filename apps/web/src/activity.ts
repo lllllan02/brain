@@ -1,4 +1,4 @@
-import { array, dictionary, object, number, nullable, string } from './data/validation.ts';
+import { array, dictionary, object, number, nullable, string, literal } from './data/validation.ts';
 import { isActivityEvent } from './data/library-schema.ts';
 import type {
   Library,
@@ -15,7 +15,10 @@ interface ImageSnapshot {
 interface ActivityState {
   schema: number;
   startedAt: string | null;
-  documents: Record<string, { title: string; collection: string; digest: string }>;
+  documents: Record<
+    string,
+    { title: string; collection: string; state: string | null; digest: string }
+  >;
   images: Record<string, ImageSnapshot>;
   events: ActivityEvent[];
 }
@@ -125,7 +128,14 @@ function publicActivity(
 const validState = object<ActivityState>({
   schema: number,
   startedAt: nullable(string),
-  documents: dictionary(object({ title: string, collection: string, digest: string })),
+  documents: dictionary(
+    object({
+      title: string,
+      collection: string,
+      state: nullable(literal('pending', 'understood', 'unread', 'read')),
+      digest: string,
+    }),
+  ),
   images: dictionary(
     object<ImageSnapshot>({ title: string, files: dictionary(string), collections: array(string) }),
   ),
@@ -185,7 +195,12 @@ export async function activityForLibrary(
     const documents = Object.fromEntries(
       library.documents.map((doc) => [
         doc.id,
-        { title: doc.title, collection: doc.collection, digest: hash(doc.title + '\n' + doc.body) },
+        {
+          title: doc.title,
+          collection: doc.collection,
+          state: doc.state,
+          digest: hash(doc.title + '\n' + doc.body),
+        },
       ]),
     );
     const images = await imageSnapshot(root, library.documents);
@@ -224,6 +239,13 @@ export async function activityForLibrary(
               to: doc.collection,
               collections: [...new Set([old.collection, doc.collection])],
             });
+          if (
+            old.collection === doc.collection &&
+            old.state != null &&
+            doc.state != null &&
+            old.state !== doc.state
+          )
+            emit('state-changed', `doc:${id}`, doc, { docId: id, from: old.state, to: doc.state });
           if (old.digest !== doc.digest) emit('updated', `doc:${id}`, doc, { docId: id });
         }
       }

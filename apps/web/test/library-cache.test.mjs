@@ -8,18 +8,18 @@ import { loadLibrary, createLibraryLoader } from '../src/library.ts';
 test('缓存复用无变化快照；新增、移动、删除、别名变化与冷加载完全一致', async t => {
   const root=await mkdtemp(path.join(os.tmpdir(),'horizon-cache-'));
   t.after(()=>rm(root,{recursive:true,force:true}));
-  for(const dir of ['inbox','notes'])await mkdir(path.join(root,dir));
+  for(const dir of ['readings','notes'])await mkdir(path.join(root,dir));
   const put=(file,body)=>writeFile(path.join(root,file),body);
-  await put('inbox/a.md','[[别名]]');
+  await put('readings/a.md','[[别名]]');
   const load=createLibraryLoader(root);let last=await load();
   assert.equal(await load(),last);
   const check=async()=>{const next=await load();assert.notEqual(next,last);assert.deepEqual(next,await loadLibrary(root));last=next;return next;};
   await put('notes/b.md','---\naliases: [别名]\n---\n目标');
   assert.equal((await check()).documents.find(d=>d.id==='a').references[0].id,'b');
-  await rename(path.join(root,'notes/b.md'),path.join(root,'inbox/b.md'));await check();
-  await put('inbox/b.md','---\naliases: [新名]\n---\n目标');
+  await rename(path.join(root,'notes/b.md'),path.join(root,'readings/b.md'));await check();
+  await put('readings/b.md','---\naliases: [新名]\n---\n目标');
   assert.equal((await check()).documents.find(d=>d.id==='a').references.length,0);
-  await unlink(path.join(root,'inbox/b.md'));await check();
+  await unlink(path.join(root,'readings/b.md'));await check();
   assert.equal(await load(),last);
 });
 

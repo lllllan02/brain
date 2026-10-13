@@ -305,7 +305,7 @@ export function DashboardPulse({
                   <li key={item.id}>
                     <a href={`#/doc/${encodeURIComponent(doc.id)}`}>
                       <span className="pulse-doc-icon" aria-hidden="true">
-                        <CollectionIcon collection={doc.collection} />
+                        <CollectionIcon {...doc} />
                       </span>
                       <span>
                         <strong>{doc.title}</strong>

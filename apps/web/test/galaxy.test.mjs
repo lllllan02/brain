@@ -100,7 +100,7 @@ test('目录样式原位更新 GPU 属性，保留几何体、坐标与入场状
   try {
     const {AggregateRenderer}=await server.ssrLoadModule('/src/galaxy/vendor/render/AggregateRenderer.ts');
     const {BufferGeometry,BufferAttribute,Color}=await import('three');
-    const {collectionStyle}=await import('../src/collections.ts');
+    const {documentAppearance}=await import('../src/document-state.ts');
     const renderer=Object.create(AggregateRenderer.prototype);
     const geometry=new BufferGeometry();
     const positions=new BufferAttribute(new Float32Array([1,2,3]),3);
@@ -110,11 +110,11 @@ test('目录样式原位更新 GPU 属性，保留几何体、坐标与入场状
     geometry.setAttribute('aCollectionColor',new BufferAttribute(new Float32Array(3),3));
     geometry.setAttribute('aCollectionShape',new BufferAttribute(new Float32Array(4),4));
     geometry.setAttribute('aRayAngle',new BufferAttribute(new Float32Array(1),1));
-    renderer.nodeGeometry=geometry;renderer.data={nodes:[{collection:'inbox'}],links:[]};
+    renderer.nodeGeometry=geometry;renderer.data={nodes:[{collection:'notes',state:'pending'}],links:[]};
     const reveal={progress:.5};renderer.reveal=reveal;
-    for(const collection of ['notes','inbox']) {
-      renderer.data.nodes[0].collection=collection;renderer.updateNodeAppearance();
-      const style=collectionStyle(collection),color=new Color(style.color);
+    for(const state of ['pending','understood']) {
+      renderer.data.nodes[0].state=state;renderer.updateNodeAppearance();
+      const style=documentAppearance(renderer.data.nodes[0]),color=new Color(style.color);
       assert.ok(Math.abs(geometry.getAttribute('aCollectionColor').getX(0)-color.r)<1e-6);
       assert.ok(Math.abs(geometry.getAttribute('aCollectionShape').getX(0)-style.node.size)<1e-6);
       assert.equal(renderer.nodeGeometry,geometry);assert.equal(geometry.getAttribute('position'),positions);

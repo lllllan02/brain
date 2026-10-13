@@ -75,12 +75,23 @@ button.read-tag{cursor:pointer;font-family:inherit;text-align:left;transition:co
 .reader-sources a:focus-visible{outline:1px solid currentColor;outline-offset:3px}
 
 
-.collection-toggle{display:inline-flex;align-items:center;justify-content:center;vertical-align:-.14em;margin:0 .28em 0 0;padding:0;border:0;border-radius:4px;background:transparent;color:inherit;font:inherit;cursor:pointer}
-.collection-toggle .collection-title-icon{margin:0;vertical-align:0}
-.collection-toggle:hover{color:var(--gold);background:#ffffff0a}
-.collection-toggle:focus-visible{outline:1px solid var(--gold);outline-offset:3px}
-.collection-toggle:disabled{opacity:.45;cursor:wait}
 
-.collection-move-toast{position:fixed;z-index:100;top:24px;left:50%;max-width:min(420px,calc(100vw - 40px));padding:9px 16px;border:1px solid #ffffff18;border-radius:18px;background:#22252bf2;box-shadow:0 6px 24px #0005;color:var(--text);font-size:12px;line-height:1.6;text-align:center;overflow-wrap:anywhere;pointer-events:none;animation:collectionToast var(--toast-duration,2400ms) both}
+.document-state-toast{position:fixed;z-index:100;top:24px;left:50%;max-width:min(420px,calc(100vw - 40px));padding:9px 16px;border:1px solid #ffffff18;border-radius:18px;background:#22252bf2;box-shadow:0 6px 24px #0005;color:var(--text);font-size:12px;line-height:1.6;text-align:center;overflow-wrap:anywhere;pointer-events:none;animation:collectionToast var(--toast-duration,2400ms) both}
 @keyframes collectionToast{0%{opacity:0;transform:translate(-50%,8px)}10%,85%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-6px)}}
-@media(prefers-reduced-motion:reduce){.collection-move-toast{animation:none;transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.document-state-toast{animation:none;transform:translateX(-50%)}}
+
+/* State is file-backed and shared by title icons, previews and internal links. */
+.state-check { stroke-width: 2.4; paint-order: stroke; stroke: currentColor; }
+.collection-title-icon[data-state="pending"], .collection-title-icon[data-state="unread"] { stroke-dasharray: 3 1.5; }
+.markdown a[data-state="pending"], .markdown a[data-state="unread"] { text-decoration-line: underline; text-decoration-style: dotted; text-underline-offset: 4px; }
+.markdown a[data-state="understood"], .markdown a[data-state="read"] { text-decoration: none; }
+.document-state-toggle, .document-state-label { font-size: 11px; color: #b5c8cf; white-space: nowrap; }
+.document-state-toggle { display: inline-flex; align-items: center; gap: 5px; background: transparent; border: 0; padding: 6px 8px; cursor: pointer; border-radius: 5px; }
+.document-state-toggle:hover, .document-state-toggle:focus-visible { background: #adc6df18; color: #eef4f7; }
+.document-state-toggle:focus-visible { outline: 1px solid currentColor; outline-offset: 2px; }
+.document-state-toggle:disabled { opacity: .55; cursor: wait; }
+.document-state-toggle[data-state="understood"] { color: #e4d0ab; }
+.document-state-toggle[data-state="read"] { color: #aadcd8; }
+.cluster-list-item .document-state-label { margin-left: 8px; opacity: .85; }
+.galaxy-state-label { margin-left: 7px; font-size: 10px; opacity: .8; }
+ .markdown a[data-state="pending"] .internal-link-icon, .markdown a[data-state="unread"] .internal-link-icon { stroke-dasharray: 3 1.5; }

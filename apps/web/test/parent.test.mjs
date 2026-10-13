@@ -8,7 +8,7 @@ import {pagesLibrary} from '../scripts/build-pages.ts';
 import {createServer} from 'vite';
 import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
-const note=(id,parent,body='正文')=>parseDocument(`---\ntitle: ${id}\n${parent == null?'':`parent: ${JSON.stringify(parent)}\n`}---\n${body}`,`inbox/${id}.md`);
+const note=(id,parent,body='正文')=>parseDocument(`---\ntitle: ${id}\n${parent == null?'':`parent: ${JSON.stringify(parent)}\n`}---\n${body}`,`readings/${id}.md`);
 test('parent 支持双链与章节，正文不变且产生真实引用',()=>{
  const root=note('root',null,'## Docker\n说明'),child=note('child','[[root#Docker|Docker 实践]]');
  const r=renderDocument(child,[root,child]);
@@ -25,18 +25,18 @@ test('无效目标、章节、自引用、循环与错误类型不产生上级�
  for(const value of ['',[],{}]) assert.throws(()=>note('child',value),/parent 必须/);
  const a=note('a','b'),b=note('b','a'),c=note('c','a');
  for(const d of [a,b,c])assert.match(renderDocument(d,[a,b,c]).issues[0].reason,/循环/);
- const x={...root,id:'x',path:'inbox/x.md',aliases:['shared']},y={...root,id:'y',path:'inbox/y.md',aliases:['shared']};
+ const x={...root,id:'x',path:'readings/x.md',aliases:['shared']},y={...root,id:'y',path:'readings/y.md',aliases:['shared']};
  assert.equal(renderDocument(note('child','shared'),[x,y]).parent,null);
 });
 test('parent 更新影响版本、反链与 Pages 导出',async()=>{
  const dir=await mkdtemp(path.join(os.tmpdir(),'horizon-parent-'));
  try{
-  await mkdir(path.join(dir,'inbox'));
-  await writeFile(path.join(dir,'inbox/root.md'),'---\ntitle: 入口\n---\n## Docker');
-  await writeFile(path.join(dir,'inbox/child.md'),'---\nparent: "[[root#Docker]]"\n---\n正文');
+  await mkdir(path.join(dir,'readings'));
+  await writeFile(path.join(dir,'readings/root.md'),'---\ntitle: 入口\n---\n## Docker');
+  await writeFile(path.join(dir,'readings/child.md'),'---\nparent: "[[root#Docker]]"\n---\n正文');
   const local=await loadLibrary(dir);assert.deepEqual((await pagesLibrary(dir)).library,local);
   assert.deepEqual(local.documents.find(d=>d.id==='root').backlinks,['child']);
-  await writeFile(path.join(dir,'inbox/child.md'),'正文');const updated=await loadLibrary(dir);
+  await writeFile(path.join(dir,'readings/child.md'),'正文');const updated=await loadLibrary(dir);
   assert.notEqual(updated.version,local.version);assert.deepEqual(updated.documents.find(d=>d.id==='root').backlinks,[]);
  }finally{await rm(dir,{recursive:true,force:true});}
 });

@@ -1,6 +1,6 @@
 import type { ListNavigationProps, RollerOption } from '../types/ui.ts';
 import { RollerSelect } from './RollerSelect.tsx';
-import { CONTENT_COLLECTIONS, collectionLabel } from '../collections.ts';
+import { documentFilters } from '../document-state.ts';
 import { clusterDocuments } from './ClusterList.tsx';
 
 const modes = [
@@ -65,14 +65,11 @@ export function ListNavigation({
     if (option[0] === active && documentCount != null)
       option[3] = collectionFilter === 'all' ? documentCount : `${documentCount}/${totalCount}`;
   }
-  const collections: RollerOption[] = [
-    ['all', '全部', '显示当前列表的全部目录'],
-    ...CONTENT_COLLECTIONS.map((id): RollerOption => [
-      id,
-      collectionLabel(id),
-      `只显示 ${collectionLabel(id)} 目录的文档`,
-    ]),
-  ];
+  const collections: RollerOption[] = documentFilters.map(([id, label]) => [
+    id,
+    label,
+    `显示${label}文档`,
+  ]);
   return (
     <div className="list-navigation-controls">
       <RollerSelect
@@ -87,7 +84,7 @@ export function ListNavigation({
         options={collections}
         active={collectionFilter}
         onChoose={onFilter}
-        label="列表目录筛选"
+        label="列表类型与状态筛选"
       />
     </div>
   );

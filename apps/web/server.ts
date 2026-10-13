@@ -9,7 +9,11 @@ import { createServer as createViteServer } from 'vite';
 import { createReaderFrontend } from './src/reader-frontend.ts';
 import { createLibraryLoader, safeAsset } from './src/library.ts';
 import { activityForLibrary } from './src/activity.ts';
-import { moveDocument, MoveError, isLocalWriteRequest } from './src/move-document.ts';
+import {
+  updateDocumentState,
+  StateError,
+  isLocalWriteRequest,
+} from './src/update-document-state.ts';
 const dir = path.dirname(fileURLToPath(import.meta.url));
 export async function startServer({
   root = path.resolve(dir, '../../content'),
@@ -63,29 +67,29 @@ export async function startServer({
         res.writeHead(200, { ...readHeaders, 'Content-Type': 'application/json; charset=utf-8' });
         return res.end(JSON.stringify(library));
       }
-      if (url.pathname === '/api/documents/move') {
+      if (url.pathname === '/api/documents/state') {
         if (req.method !== 'POST') {
           res.writeHead(405, headers);
           return res.end();
         }
         if (!isLocalWriteRequest(req)) {
           res.writeHead(403, headers);
-          return res.end(JSON.stringify({ error: '只允许本地页面执行文件移动。' }));
+          return res.end(JSON.stringify({ error: '只允许本地页面保存文档状态。' }));
         }
         let body = '';
         for await (const chunk of req) {
           body += chunk;
-          if (Buffer.byteLength(body) > 4096) throw new MoveError('请求过大。', 413);
+          if (Buffer.byteLength(body) > 4096) throw new StateError('请求过大。', 413);
         }
         let input: unknown;
         try {
           input = JSON.parse(body);
         } catch {
-          throw new MoveError('请求格式无效。', 400);
+          throw new StateError('请求格式无效。', 400);
         }
         const library = await serialize(async () => {
           await withActivity(await readLibrary());
-          return withActivity(await moveDocument(root, input));
+          return withActivity(await updateDocumentState(root, input));
         });
         res.writeHead(200, { ...headers, 'Content-Type': 'application/json; charset=utf-8' });
         return res.end(JSON.stringify(library));
@@ -115,13 +119,13 @@ export async function startServer({
       });
     } catch (e) {
       console.error(e);
-      res.writeHead(e instanceof MoveError ? e.status : 500, {
+      res.writeHead(e instanceof StateError ? e.status : 500, {
         ...headers,
         'Content-Type': 'application/json',
       });
       res.end(
         JSON.stringify({
-          error: e instanceof MoveError ? e.message : '操作失败，请检查本地终端。',
+          error: e instanceof StateError ? e.message : '操作失败，请检查本地终端。',
         }),
       );
     }

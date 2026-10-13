@@ -1,0 +1,56 @@
+{
+  "pending": {
+    "label": "待学习",
+    "color": "#a2c5ea",
+    "link": {
+      "color": "#acd2fa",
+      "opacity": 0.26
+    },
+    "marker": {
+      "hollow": true
+    },
+    "node": {
+      "size": 0.9,
+      "halo": 0.75,
+      "rays": 0.7
+    }
+  },
+  "understood": {
+    "label": "已理解",
+    "color": "#f3e2c5",
+    "link": {
+      "color": "#e4d0ab",
+      "opacity": 0.18
+    },
+    "marker": {
+      "hollow": false
+    }
+  },
+  "unread": {
+    "label": "未读",
+    "color": "#aadcd8",
+    "link": {
+      "color": "#aadcd8",
+      "opacity": 0.27
+    },
+    "marker": {
+      "hollow": true
+    },
+    "node": {
+      "size": 0.9,
+      "halo": 0.75,
+      "rays": 0.7
+    }
+  },
+  "read": {
+    "label": "已读",
+    "color": "#aadcd8",
+    "link": {
+      "color": "#aadcd8",
+      "opacity": 0.12
+    },
+    "marker": {
+      "hollow": false
+    }
+  }
+}

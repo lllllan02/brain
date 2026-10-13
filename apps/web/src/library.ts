@@ -19,7 +19,8 @@ import { createHash } from 'node:crypto';
 import yaml from 'js-yaml';
 import { Lexer, Parser, Renderer } from 'marked';
 import hljs from 'highlight.js';
-import { CONTENT_COLLECTIONS, collectionIcons, collectionStyle } from './collections.ts';
+import { CONTENT_COLLECTIONS } from './collections.ts';
+import { documentAppearance, documentIcon, checkPath } from './document-state.ts';
 
 export const escape = (value: unknown) =>
   String(value ?? '').replace(
@@ -57,7 +58,26 @@ export function parseDocument(raw: string, file: string): ParsedDocument {
     throw new Error(`文档 ${file} 的 category 必须是单个文本`);
   if (meta.parent != null && (typeof meta.parent !== 'string' || !meta.parent.trim()))
     throw new Error(`文档 ${file} 的 parent 必须是非空文本`);
+  if (
+    collection === 'notes' &&
+    meta.learning_status !== undefined &&
+    (typeof meta.learning_status !== 'string' ||
+      !['pending', 'understood'].includes(meta.learning_status))
+  )
+    throw new Error(`文档 ${file} 的 learning_status 必须是 pending 或 understood`);
+  if (collection === 'readings' && meta.read !== undefined && typeof meta.read !== 'boolean')
+    throw new Error(`文档 ${file} 的 read 必须是布尔值`);
   return {
+    state:
+      collection === 'notes'
+        ? meta.learning_status === 'understood'
+          ? 'understood'
+          : 'pending'
+        : collection === 'readings'
+          ? meta.read === true
+            ? 'read'
+            : 'unread'
+          : null,
     parentTarget: (meta.parent as string | null)?.trim() || null,
     id,
     collection,
@@ -235,15 +255,15 @@ export function renderDocument(
     const referenceId = 'reference-' + references.length;
     references.push({ id: dest.id, anchor, target, referenceId });
     const href = `#/doc/${encodeURIComponent(dest.id)}${anchor ? '/' + encodeURIComponent(block ? anchor : slug(anchor)) : ''}`;
-    const collection = collectionIcons[dest.collection];
+    const collection = documentIcon(dest);
     const text = escape(label || dest.title);
     const icon = collection
-      ? `<svg class="internal-link-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${escape(collection.path)}"/></svg>`
+      ? `<svg class="internal-link-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${escape(collection.path)}"/>${collection.complete ? `<path class="state-check" d="${checkPath}"/>` : ''}</svg>`
       : '';
-    const { color, opacity } = collectionStyle(dest.collection).link;
+    const { color, opacity } = documentAppearance(dest).link;
     const linkStyle = ` style="--link-color:${color};--link-opacity:${opacity}"`;
     const provenance = collection
-      ? ` data-collection="${dest.collection}" title="${escape(collection.label)}" aria-label="${text}（${escape(collection.label)}）"`
+      ? ` data-state="${dest.state || ''}" data-collection="${dest.collection}" title="${escape(collection.label)}" aria-label="${text}（${escape(collection.label)}）"`
       : '';
     const link = `<a class="wiki-link" id="${referenceId}" href="${href}"${provenance}${linkStyle}>${icon}${text}</a>`;
     return embed

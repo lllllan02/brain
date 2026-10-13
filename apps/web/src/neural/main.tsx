@@ -1,6 +1,7 @@
+import { stateLabel } from '../document-state.ts';
 import { useLibrary } from './useLibrary.ts';
 import type { Focus } from '../types/graph.ts';
-import { CONTENT_COLLECTIONS, collectionLabel } from '../collections.ts';
+import { CONTENT_COLLECTIONS } from '../collections.ts';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { buildGraph, moduleOf } from './graph.ts';
@@ -15,7 +16,7 @@ import './controls.css';
 import './layers.css';
 document.title = CONFIG.brand.name;
 function App() {
-  const { library, error, moveState, collectionAction, revision } = useLibrary();
+  const { library, error, updateState, stateAction, revision } = useLibrary();
   const [reduced, setReduced] = useState(
     () => matchMedia('(prefers-reduced-motion: reduce)').matches,
   );
@@ -55,7 +56,7 @@ function App() {
   return (
     <div className="neural page-home">
       <Home
-        collectionAction={collectionAction}
+        stateAction={stateAction}
         graph={graph}
         focus={focus}
         setFocus={setFocus}
@@ -67,15 +68,15 @@ function App() {
           {error ? '暂时无法同步，仍显示已加载内容' : '当前文档已移除或重命名'}
         </div>
       )}
-      {moveState.id && !moveState.pending && (
+      {updateState.id && !updateState.pending && (
         <div
           key={revision.current}
-          className="collection-move-toast"
+          className="document-state-toast"
           role="status"
           aria-live="polite"
-          style={{ '--toast-duration': moveState.error ? '4500ms' : '2400ms' }}
+          style={{ '--toast-duration': updateState.error ? '4500ms' : '2400ms' }}
         >
-          {moveState.error || `已移入 ${collectionLabel(moveState.collection)}`}
+          {updateState.error || `已标记为${stateLabel(updateState.state)}`}
         </div>
       )}
     </div>

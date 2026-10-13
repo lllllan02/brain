@@ -17,18 +17,18 @@ export async function fetchLibrary(signal?: AbortSignal): Promise<Library> {
   return parseLibrary(await response.json());
 }
 
-export async function moveLibraryDocument(
+export async function updateDocumentState(
   id: string,
-  collection: string,
+  state: import('../document-state.ts').DocumentState,
   version: string,
 ): Promise<Library> {
-  const response = await fetch('/api/documents/move', {
+  const response = await fetch('/api/documents/state', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id, collection, version }),
+    body: JSON.stringify({ id, state, version }),
   });
   const next: unknown = await response.json();
   if (!response.ok)
-    throw Error(record(next) && typeof next.error === 'string' ? next.error : '移动失败');
+    throw Error(record(next) && typeof next.error === 'string' ? next.error : '状态保存失败');
   return parseLibrary(next);
 }

@@ -4,6 +4,7 @@ export const ACTIVITY_KINDS = {
   created: '新增文档',
   updated: '更新文档',
   moved: '目录迁移',
+  'state-changed': '状态变更',
   'image-created': '新增配图',
   'image-updated': '更新配图',
   'image-format': '新增图片格式',
@@ -85,8 +86,8 @@ export function summaryCounts(events: ActivityEvent[], start: string, end: strin
   return {
     created: count((e) => e.kind === 'created'),
     updated: count((e) => e.kind === 'updated'),
-    learned: count((e) => e.kind === 'moved' && e.to === 'notes'),
-    relearn: count((e) => e.kind === 'moved' && e.to === 'inbox'),
+    learned: count((e) => e.kind === 'state-changed' && e.to === 'understood'),
+    relearn: count((e) => e.kind === 'state-changed' && e.to === 'pending'),
     images: count((e) => e.kind === 'image-created'),
     formats: count((e) => e.kind === 'image-format'),
     imageUpdates: count((e) => e.kind === 'image-updated'),

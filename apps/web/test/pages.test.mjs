@@ -6,21 +6,21 @@ import {mkdtemp,mkdir,writeFile,rm,symlink} from 'node:fs/promises';
 import {pagesLibrary} from '../scripts/build-pages.ts';
 import {loadLibrary} from '../src/library.ts';
 
-test('Pages 与本地共同收录 notes 和 inbox，跨目录引用有效，排除归档及原始资料',async()=>{
+test('Pages 与本地共同收录 notes 和 readings，跨目录引用有效，排除归档及原始资料',async()=>{
  const root=await mkdtemp(path.join(os.tmpdir(),'horizon-pages-'));
  try{
-  for(const dir of ['notes/nested','inbox','archive','sources'])await mkdir(path.join(root,dir),{recursive:true});
+  for(const dir of ['notes/nested','readings','archive','sources'])await mkdir(path.join(root,dir),{recursive:true});
   await writeFile(path.join(root,'notes/a.md'),'---\ntitle: 第一篇\naliases: [别名]\ntags: [测试]\n---\n起点 [[b]] [[draft]]');
   await writeFile(path.join(root,'notes/nested/b.md'),'---\ntitle: 第二篇\n---\n终点 [[a]]');
-  await writeFile(path.join(root,'inbox/draft.md'),'待学习正文 [[a]]');
+  await writeFile(path.join(root,'readings/draft.md'),'待学习正文 [[a]]');
   for(const dir of ['archive','sources'])await writeFile(path.join(root,dir,'draft.md'),'不收录的正文');
   const {library,assets}=await pagesLibrary(root);
   assert.deepEqual(library,await loadLibrary(root));
   assert.equal(library.documents.length,3);
   assert.equal(assets.size,0);
   assert.doesNotMatch(JSON.stringify(library),/不收录的正文/);
-  assert.deepEqual(library.documents.find(d=>d.id==='a').backlinks,['draft','b']);
-  assert.equal(library.documents.find(d=>d.id==='draft').collection,'inbox');
+  assert.deepEqual(library.documents.find(d=>d.id==='a').backlinks,['b','draft']);
+  assert.equal(library.documents.find(d=>d.id==='draft').collection,'readings');
   assert.equal(library.documents.find(d=>d.id==='a').collection,'notes');
   assert.equal(library.documents.find(d=>d.id==='a').references[1].id,'draft');
   assert.deepEqual(library.documents.find(d=>d.id==='draft').backlinks,['a']);

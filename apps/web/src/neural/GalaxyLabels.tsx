@@ -1,3 +1,4 @@
+import { stateLabel, stateComplete } from '../document-state.ts';
 import React, { type RefObject, type Dispatch, type SetStateAction } from 'react';
 import type { createGalaxy, GalaxyLabel } from '../galaxy/scene.ts';
 import type { Focus } from '../types/graph.ts';
@@ -88,6 +89,12 @@ export function GalaxyLabels({
                   }}
                 >
                   {label.title}
+                  {label.state && (
+                    <small className="galaxy-state-label">
+                      {stateComplete(label.state) ? '✓ ' : '○ '}
+                      {stateLabel(label.state)}
+                    </small>
+                  )}
                 </button>
               ) : (
                 <span
@@ -96,6 +103,12 @@ export function GalaxyLabels({
                   style={{ left: label.x, top: label.y, opacity: label.opacity }}
                 >
                   {label.title}
+                  {label.state && (
+                    <small className="galaxy-state-label">
+                      {stateComplete(label.state) ? '✓ ' : '○ '}
+                      {stateLabel(label.state)}
+                    </small>
+                  )}
                 </span>
               )}
             </React.Fragment>

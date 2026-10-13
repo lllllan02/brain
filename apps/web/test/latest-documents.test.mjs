@@ -29,8 +29,8 @@ test('同日精确到秒，时区按实际时间比较，缺失字段回退 mtim
 test('读取和静态导出携带秒级 mtime，未伪造元数据，mtime 改变触发版本更新', async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), 'horizon-dates-'));
   try {
-    await mkdir(path.join(root, 'inbox'));
-    const file = path.join(root, 'inbox', 'example.md');
+    await mkdir(path.join(root, 'readings'));
+    const file = path.join(root, 'readings', 'example.md');
     await writeFile(file, '---\ntitle: Example\n---\n内容');
     const first = new Date('2026-10-10T02:00:01.500Z');
     await utimes(file, first, first);

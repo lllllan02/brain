@@ -5,14 +5,14 @@ import {
   staticPages,
   localEditing,
   fetchLibrary,
-  moveLibraryDocument,
+  updateDocumentState,
 } from '../data/library-client.ts';
 
 export function useLibrary() {
   const [store] = useState(() =>
-    createLibraryStore({ fetch: fetchLibrary, move: moveLibraryDocument }),
+    createLibraryStore({ fetch: fetchLibrary, setState: updateDocumentState }),
   );
-  const { library, error, moveState, revision } = useSyncExternalStore(
+  const { library, error, updateState, revision } = useSyncExternalStore(
     store.subscribe,
     store.getSnapshot,
   );
@@ -29,21 +29,21 @@ export function useLibrary() {
     };
   }, [store]);
   useEffect(() => {
-    if (moveState.status === 'idle' || moveState.status === 'pending') return;
-    const timer = setTimeout(store.clearMove, moveState.status === 'error' ? 4500 : 2400);
+    if (updateState.status === 'idle' || updateState.status === 'pending') return;
+    const timer = setTimeout(store.clearUpdate, updateState.status === 'error' ? 4500 : 2400);
     return () => clearTimeout(timer);
-  }, [store, moveState]);
-  const move = useCallback(
-    async (doc: ReaderNode, collection: string) => {
-      if (localEditing) await store.move(doc.id, collection);
+  }, [store, updateState]);
+  const setState = useCallback(
+    async (doc: ReaderNode, state: import('../document-state.ts').DocumentState) => {
+      if (localEditing) await store.setState(doc.id, state);
     },
     [store],
   );
   return {
     library,
     error,
-    moveState,
-    collectionAction: localEditing ? { ...moveState, move } : null,
+    updateState,
+    stateAction: localEditing ? { ...updateState, setState } : null,
     revision: { current: revision },
   };
 }

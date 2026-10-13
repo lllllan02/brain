@@ -10,6 +10,7 @@ export function galaxyData(graph: ReaderGraph): GraphData {
     name: node.title,
     folderTop: node.module!,
     collection: node.collection,
+    state: node.state,
     degree: node.deg!,
     inDegree: node.in!,
     outDegree: node.out!,

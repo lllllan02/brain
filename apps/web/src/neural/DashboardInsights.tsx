@@ -215,7 +215,7 @@ export function DashboardInsights({ graph }: { graph: import('../types/graph.ts'
           </div>
           <details key={`${selected}-cited`}>
             <summary>
-              <span>被 Inbox / Notes 引用的导读</span>
+              <span>被 Notes 引用的导读</span>
               <strong>
                 {data.citedReadings.length} / {data.readings.length}
               </strong>

@@ -9,6 +9,7 @@ export interface GraphNode {
 	/** 笔记的 metadata 标签；标签 hub 自身只含它代表的一个标签。 */
 	tags: string[];
 	collection?: string;
+	state?: import('../../document-state.ts').DocumentState | null;
 	unresolved: boolean;
 	tag: boolean; // true=有界标签 hub（非文件），与 unresolved 并列的判别位
 }

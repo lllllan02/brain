@@ -10,10 +10,10 @@ const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const temp = await mkdtemp(path.join(os.tmpdir(), 'horizon-browser-'));
 const root = path.join(temp, 'content'),
   outDir = path.join(temp, 'site');
-await mkdir(path.join(root, 'inbox'), { recursive: true });
+await mkdir(path.join(root, 'readings'), { recursive: true });
 await mkdir(path.join(root, 'notes'), { recursive: true });
 await writeFile(
-  path.join(root, 'inbox/first.md'),
+  path.join(root, 'notes/first.md'),
   `---
 title: 回归起点
 category: 验收
@@ -54,6 +54,7 @@ await writeFile(
   path.join(root, 'notes/second.md'),
   `---
 title: 回归终点
+learning_status: understood
 category: 验收
 ---
 # 回归终点

@@ -8,6 +8,7 @@ export interface GalaxyLabel {
   title: string;
   x: number;
   y: number;
+  state?: import('../document-state.ts').DocumentState | null;
   current?: boolean;
   preview?: boolean;
   path?: boolean;
@@ -701,6 +702,7 @@ export function createGalaxy(
       result.push({
         id: data.nodes[i].id,
         title: data.nodes[i].name,
+        state: data.nodes[i].state,
         x: p.x,
         y: p.y,
         current: i === readingIndex,

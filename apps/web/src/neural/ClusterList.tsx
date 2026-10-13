@@ -4,7 +4,13 @@ import type { ClusterListProps } from '../types/ui.ts';
 import { readViewState, writeViewState } from './view-state.ts';
 import { ReadingQueueButton } from './ReadingQueueButton.tsx';
 import { Icon } from './icons.tsx';
-import { collectionLabel, collectionMarkerStyle } from '../collections.ts';
+import {
+  documentFilterLabel,
+  documentMarkerStyle,
+  matchesDocumentFilter,
+  stateLabel,
+} from '../document-state.ts';
+import { collectionLabel } from '../collections.ts';
 import React, { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 
 import {
@@ -115,7 +121,7 @@ export function ClusterList({
     () =>
       collectionFilter === 'all'
         ? allDocuments
-        : allDocuments.filter((node) => node.collection === collectionFilter),
+        : allDocuments.filter((node) => matchesDocumentFilter(node, collectionFilter)),
     [allDocuments, collectionFilter],
   );
   const timeline = Boolean(shown?.queue || shown?.recent || shown?.latest);
@@ -413,7 +419,7 @@ export function ClusterList({
           {pinned && shown && (
             <div
               className="cluster-list-pinned-title"
-              title={`${kind ? `${kind}：` : ''}${title}${collectionFilter !== 'all' ? ` · ${collectionLabel(collectionFilter)}` : ''}`}
+              title={`${kind ? `${kind}：` : ''}${title}${collectionFilter !== 'all' ? ` · ${documentFilterLabel(collectionFilter)}` : ''}`}
             >
               <h2>
                 {kind && <span>{kind} · </span>}
@@ -421,7 +427,7 @@ export function ClusterList({
               </h2>
               {collectionFilter !== 'all' && (
                 <span className="cluster-list-pinned-filter">
-                  {collectionLabel(collectionFilter)}
+                  {documentFilterLabel(collectionFilter)}
                 </span>
               )}
               <small>
@@ -493,7 +499,7 @@ export function ClusterList({
                             >
                               <i
                                 className="cluster-card-port"
-                                style={collectionMarkerStyle(node.collection)}
+                                style={documentMarkerStyle(node)}
                                 aria-hidden="true"
                               />
                               {timeline && (
@@ -503,6 +509,11 @@ export function ClusterList({
                               )}
                               <span>
                                 <strong>{node.title}</strong>
+                                {node.state && (
+                                  <small className="document-state-label">
+                                    {stateLabel(node.state)}
+                                  </small>
+                                )}
                               </span>
                             </button>
                             {queue && (
@@ -518,7 +529,7 @@ export function ClusterList({
                     ) : (
                       <p className="cluster-list-empty">
                         {collectionFilter !== 'all'
-                          ? `当前列表没有 ${collectionLabel(collectionFilter)} 文档，${pinned ? '解除固定后可切换为“全部”' : '可切换为“全部”'}`
+                          ? `当前列表没有 ${documentFilterLabel(collectionFilter)} 文档，${pinned ? '解除固定后可切换为“全部”' : '可切换为“全部”'}`
                           : shown.queue
                             ? '还没有待阅读文档，可用文章或列表旁的书签按钮添加'
                             : shown.latest

@@ -1,3 +1,4 @@
+import { stateLabel, type DocumentState } from '../document-state.ts';
 import type { ReaderGraph } from '../types/graph.ts';
 import type { LibraryActivity } from '../types/library.ts';
 import { useEffect, useMemo, useState } from 'react';
@@ -206,11 +207,13 @@ export function ActivityTimeline({
                     <strong>{e.title}</strong>
                   )}
                   <p>
-                    {e.kind === 'moved'
-                      ? `${collectionLabel(e.from)} → ${collectionLabel(e.to)}`
-                      : e.collections.length
-                        ? e.collections.map(collectionLabel).join(' / ')
-                        : '未关联文档'}
+                    {e.kind === 'state-changed'
+                      ? `${stateLabel(e.from as DocumentState)} → ${stateLabel(e.to as DocumentState)}`
+                      : e.kind === 'moved'
+                        ? `${collectionLabel(e.from)} → ${collectionLabel(e.to)}`
+                        : e.collections.length
+                          ? e.collections.map(collectionLabel).join(' / ')
+                          : '未关联文档'}
                     {e.files?.length
                       ? ` · ${e.files.map((f: string) => f.split('/').pop()).join('、')}`
                       : ''}

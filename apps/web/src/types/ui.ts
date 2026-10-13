@@ -1,11 +1,11 @@
 import type { ReactNode, RefObject } from 'react';
 import type { ReaderGraph, ReaderNode, ReaderModule, ReaderDocumentNode, Focus } from './graph.ts';
-import type { MoveState } from './library.ts';
+import type { StateUpdate } from './library.ts';
 import type { Cluster, ReadingQueue, Point } from './reading.ts';
 import type { useReadingHistory } from '../neural/useReadingHistory.ts';
 export type ReadingController = ReturnType<typeof useReadingHistory>;
-export type CollectionAction = MoveState & {
-  move(doc: ReaderNode, collection: string): Promise<void>;
+export type DocumentStateAction = StateUpdate & {
+  setState(doc: ReaderNode, state: import('../document-state.ts').DocumentState): Promise<void>;
 };
 export interface HomeProps {
   graph: ReaderGraph;
@@ -13,7 +13,7 @@ export interface HomeProps {
   setFocus(focus: Focus): void;
   reading: ReadingController;
   reduced: boolean;
-  collectionAction: CollectionAction | null;
+  stateAction: DocumentStateAction | null;
 }
 export interface DocumentReaderProps {
   graph: ReaderGraph;
@@ -28,7 +28,7 @@ export interface DocumentReaderProps {
   readingLocation: ReadingController['location'];
   onReadingScroll(key: string, top: number): void;
   navigation: ReactNode;
-  collectionAction: CollectionAction | null;
+  stateAction: DocumentStateAction | null;
   queue: ReadingQueue;
 }
 export type RollerOption = [

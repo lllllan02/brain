@@ -40,8 +40,8 @@ test('Mermaid 保留原始源码并标记图表，图内文本不产生链接或
 test('Mermaid 时序图、多图及大小写围栏在本地与 Pages 中保持一致',async()=>{
  const root=await mkdtemp(path.join(os.tmpdir(),'horizon-diagrams-'));
  try{
-  await mkdir(path.join(root,'inbox'));
-  await writeFile(path.join(root,'inbox/chart.md'),'```mermaid\nsequenceDiagram\n A->>B: 请求<br/>下一行\n```\n\n```Mermaid title\nflowchart TD\n A --> B\n```');
+  await mkdir(path.join(root,'readings'));
+  await writeFile(path.join(root,'readings/chart.md'),'```mermaid\nsequenceDiagram\n A->>B: 请求<br/>下一行\n```\n\n```Mermaid title\nflowchart TD\n A --> B\n```');
   const {pagesLibrary}=await import('../scripts/build-pages.ts');
   const local=await loadLibrary(root);
   const {library}=await pagesLibrary(root);
@@ -56,31 +56,31 @@ test('附件限于 content 内 assets，拒绝越界和符号链接',async()=>{
 });
 test('原文更新后版本、正文、跨目录引用同时重建',async()=>{
  const root=await mkdtemp(path.join(os.tmpdir(),'horizon-library-'));
- try{await Promise.all(['notes/202610','inbox'].map(d=>mkdir(path.join(root,d),{recursive:true})));await writeFile(path.join(root,'notes/202610/a.md'),'起点');await writeFile(path.join(root,'notes/202610/b.md'),'终点');await writeFile(path.join(root,'inbox/draft.md'),'待学习 [[a]]');const first=await loadLibrary(root);await writeFile(path.join(root,'notes/202610/a.md'),'更新 [[b]] [[draft]]');const second=await loadLibrary(root);assert.notEqual(first.version,second.version);assert.equal(second.documents.length,3);assert.equal(second.documents.find(d=>d.id==='draft').collection,'inbox');assert.deepEqual(second.documents.find(d=>d.id==='b').backlinks,['a']);assert.match(second.documents.find(d=>d.id==='a').html,/更新/);}finally{await rm(root,{recursive:true,force:true});}
+ try{await Promise.all(['notes/202610','readings'].map(d=>mkdir(path.join(root,d),{recursive:true})));await writeFile(path.join(root,'notes/202610/a.md'),'起点');await writeFile(path.join(root,'notes/202610/b.md'),'终点');await writeFile(path.join(root,'readings/draft.md'),'待学习 [[a]]');const first=await loadLibrary(root);await writeFile(path.join(root,'notes/202610/a.md'),'更新 [[b]] [[draft]]');const second=await loadLibrary(root);assert.notEqual(first.version,second.version);assert.equal(second.documents.length,3);assert.equal(second.documents.find(d=>d.id==='draft').collection,'readings');assert.deepEqual(second.documents.find(d=>d.id==='b').backlinks,['a']);assert.match(second.documents.find(d=>d.id==='a').html,/更新/);}finally{await rm(root,{recursive:true,force:true});}
 });
 
-test('inbox 迁入 notes 后 ID、正文及引用不变，目录状态和版本更新',async()=>{
+test('readings 迁入 notes 后 ID、正文及引用不变，目录状态和版本更新',async()=>{
  const root=await mkdtemp(path.join(os.tmpdir(),'horizon-move-'));
  try{
-  await Promise.all(['notes','inbox'].map(d=>mkdir(path.join(root,d))));
+  await Promise.all(['notes','readings'].map(d=>mkdir(path.join(root,d))));
   await writeFile(path.join(root,'notes/a.md'),'[[b]]');
-  await writeFile(path.join(root,'inbox/b.md'),'学习内容 [[a]]');
+  await writeFile(path.join(root,'readings/b.md'),'学习内容 [[a]]');
   const before=await loadLibrary(root);
-  await rename(path.join(root,'inbox/b.md'),path.join(root,'notes/b.md'));
+  await rename(path.join(root,'readings/b.md'),path.join(root,'notes/b.md'));
   const after=await loadLibrary(root);
   const b=after.documents.find(d=>d.id==='b');
   assert.equal(b.collection,'notes');assert.equal(b.body,before.documents.find(d=>d.id==='b').body);
   assert.deepEqual(b.backlinks,['a']);assert.deepEqual(b.references.map(r=>r.id),['a']);
   assert.notEqual(before.version,after.version);assert.equal(after.documents.length,2);
-  await writeFile(path.join(root,'inbox/b.md'),'重复文件名');
+  await writeFile(path.join(root,'readings/b.md'),'重复文件名');
   await assert.rejects(loadLibrary(root),/文档文件名重复/);
  }finally{await rm(root,{recursive:true,force:true});}
 });
-test('仅有 inbox 或两个收录目录均不存在时也能读取',async()=>{
- const root=await mkdtemp(path.join(os.tmpdir(),'horizon-inbox-only-'));
+test('仅有 readings 或两个收录目录均不存在时也能读取',async()=>{
+ const root=await mkdtemp(path.join(os.tmpdir(),'horizon-readings-only-'));
  try{
   assert.equal((await loadLibrary(root)).documents.length,0);
-  await mkdir(path.join(root,'inbox'));await writeFile(path.join(root,'inbox/a.md'),'正文');
-  assert.equal((await loadLibrary(root)).documents[0].collection,'inbox');
+  await mkdir(path.join(root,'readings'));await writeFile(path.join(root,'readings/a.md'),'正文');
+  assert.equal((await loadLibrary(root)).documents[0].collection,'readings');
  }finally{await rm(root,{recursive:true,force:true});}
 });

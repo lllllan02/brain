@@ -18,7 +18,7 @@
 .galaxy-page .galaxy-views { z-index: var(--layer-navigation); }
 .neural.link-preview,
 .external-address-preview { z-index: var(--layer-preview); }
-.collection-move-toast { z-index: var(--layer-notice); }
+.document-state-toast { z-index: var(--layer-notice); }
 .galaxy-page .galaxy-search-dock { z-index: var(--layer-search); }
 
 /* An overlapping result must hide the text beneath it, including during scroll. */

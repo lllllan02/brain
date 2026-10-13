@@ -36,9 +36,7 @@ export function dashboardInsights(documents: ReaderNode[], category: string | nu
     }
   }
   const citedReadings = readings.filter((doc) =>
-    [...incoming.get(doc.id)!].some((id) =>
-      ['inbox', 'notes'].includes(index.get(id)!.collection!),
-    ),
+    [...incoming.get(doc.id)!].some((id) => index.get(id)!.collection === 'notes'),
   );
   const connected = scoped.filter(
     (doc) => incoming.get(doc.id)!.size || outgoing.get(doc.id)!.size,

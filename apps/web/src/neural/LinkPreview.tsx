@@ -1,3 +1,4 @@
+import { stateLabel } from '../document-state.ts';
 import type { ReaderGraph, ReaderNode } from '../types/graph.ts';
 import type { ReadingQueue } from '../types/reading.ts';
 import { CollectionIcon } from './CollectionIcon.tsx';
@@ -321,9 +322,10 @@ export const LinkPreview = memo(function LinkPreview({
           <div>
             <span className="link-preview-label">
               文档预览 · {preview.node.category || '未分类'}
+              {preview.node.state && ` · ${stateLabel(preview.node.state)}`}
             </span>
             <a className="link-preview-title" href={preview.href}>
-              <CollectionIcon collection={preview.node.collection} />
+              <CollectionIcon {...preview.node} />
               {preview.node.title}
             </a>
           </div>

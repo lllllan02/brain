@@ -38,6 +38,7 @@ const document = object<LibraryDocument>({
   id: string,
   path: string,
   collection: string,
+  state: nullable(literal('pending', 'understood', 'unread', 'read')),
   title: string,
   aliases: array(string),
   tags: array(string),
@@ -59,7 +60,15 @@ const document = object<LibraryDocument>({
 });
 export const isActivityEvent = object<ActivityEvent>({
   id: string,
-  kind: literal('created', 'updated', 'moved', 'image-created', 'image-updated', 'image-format'),
+  kind: literal(
+    'created',
+    'updated',
+    'moved',
+    'state-changed',
+    'image-created',
+    'image-updated',
+    'image-format',
+  ),
   time: string,
   entity: string,
   title: string,
