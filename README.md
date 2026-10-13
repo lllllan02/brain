@@ -27,6 +27,7 @@ tags: ["知识库", "Obsidian", "项目使用", "服务启动"]
 content/       个人内容：notes 知识笔记、inbox 待学笔记、readings 外部导读、glossary 术语解释、sources 原始资料、archive 归档
 apps/web/      图谱看板代码
 scripts/       Agent 只读检索层（复用看板解析逻辑）
+labs/          本地独立实验仓库，不进入知识库正文或 Horizon Git
 AGENTS.md      Agent 工作约束与任务入口
 docs/          管理判断、格式约定与个人写作和学习习惯
 .agents/skills/ 保存、维护、学习与工具使用的按需流程
@@ -35,3 +36,9 @@ docs/          管理判断、格式约定与个人写作和学习习惯
 除随查术语解释外，自己的知识笔记中新建及仍在学习的文档直接平铺在 `content/inbox/`；用户确认本篇所需概念已理解后再移入 `content/notes/`，不按月份、主题或类型建立子目录。整理完成不自动触发迁移；更新旧文保持路径稳定。唯一分类通过 `category` 表达，多标签通过 `tags` 表达，文档类型通过 `type` 表达，已有 `classes` 兼容保留。外部资料的摘要与导读平铺在 `content/readings/`，保留来源链接，读完不迁入 notes。`content/sources/` 仅保留无法仅靠链接复现、可能失效或需要格式转换的资料，注明出处并保留原件；不参与网页文章收录。看板开发范围见 [[apps/web/README|看板说明]]。
 
 目录收录、名称、图标、颜色与节点样式统一配置在 [collections.config.json](apps/web/collections.config.json)，修改后重启本地服务或重新构建；配置方式见 [[apps/web/README#目录配置|目录配置]]。`content/glossary/` 保存随查术语解释，不随理解程度迁移，内容仍需核对来源和版本。
+
+## 本地实验仓库
+
+[Agent Trace 实验](labs/agent-trace/README.md)位于 `labs/agent-trace/`，保留独立 `.git`；Horizon 忽略该目录，笔记构建也不收录它。可以在当前工作区直接维护代码，操作前读取该目录的 `AGENTS.md`；实验运行、测试和 Git 命令以实验仓库为工作目录，例如 `git -C labs/agent-trace status`。
+
+实验代码、配置和报告由实验仓库管理，知识结论按需整理回 `content/`。克隆 Horizon 不会自动获得实验仓库，换机器时需单独恢复或克隆至约定目录。本地配置与实验产物仍遵循实验仓库自己的忽略规则。

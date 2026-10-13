@@ -9,3 +9,6 @@ build/
 dist-pages/
 test-results/
 playwright-report/
+
+# Independent local experiment repository
+/labs/agent-trace/
