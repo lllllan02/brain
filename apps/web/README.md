@@ -29,6 +29,11 @@ tags: ["知识库", "图谱", "Markdown", "服务启动", "GitHub-Pages"]
 
 浏览器阅读历史、待阅读列表和页面状态使用 `horizon:*` 存储键与 `horizonReading` 历史状态字段，不读取或迁移旧品牌下的记录。存储键包含访问路径，不同路径的阅读状态相互独立。
 
+## 开发 TODO
+
+- [ ] **手机端适配**：优化小屏幕阅读布局，打开文档时全屏显示正文，充分利用屏幕空间。
+- [ ] **阅读建议**：正文内部链接较多，出现顺序也未必适合作为阅读顺序。支持每篇文档单独维护阅读建议，从正文已有的内部链接中选取部分文档并编排顺序；可采用数组或树形结构，具体形式待定。建议不展示在正文中，而是在左侧卡片列表中呈现。
+
 ## 开发与类型检查
 
 应用使用 React、Vite 和 TypeScript。`src/neural/main.tsx` 负责页面组合，`src/neural/useLibrary.ts` 连接 React 与 `src/data/library-store.ts` 的加载、轮询和状态写回，`src/data/library-client.ts` 统一接口请求；文档、图谱、阅读状态与组件契约集中在 `src/types/`。本地服务入口为 `server.ts`，静态导出入口为 `scripts/build-pages.ts`，通过 `node --import tsx` 运行，不依赖 Node 原生 TypeScript 支持。根目录检索入口为 `scripts/retrieve.ts`，通过 `npm --silent --prefix apps/web run retrieve -- <子命令>` 执行，直接导入共享解析模块。
