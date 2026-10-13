@@ -9,6 +9,7 @@ source:
   - "https://github.com/getzep/graphiti"
   - "https://github.com/getzep/graphiti/blob/main/graphiti_core/edges.py"
   - "https://arxiv.org/html/2501.13956v1"
+read: true
 ---
 
 **「Graphiti 将输入组织为带来源与时间的实体关系图，用于查询不断变化的事实。」** 本篇结合 2026-10-12 已核对的开源项目说明与 Zep 论文 v1；下文的三层图、双时间和检索流程来自论文第 2—4 节，不代表当前每个后端都提供完全相同的接口。未部署验证。

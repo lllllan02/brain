@@ -6,6 +6,7 @@ tags: ["Agent", "记忆", "按需加载"]
 created_at: "2026-10-12T23:24:47+08:00"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "https://code.claude.com/docs/en/memory"
+read: true
 ---
 
 **「Claude Code 把人工维护的项目指令与自动积累的记忆分开，自动记忆再通过短索引找到详细主题文件。」** 本文节选 2026-10-12 官方 memory 文档；依据产品说明，未将其当作完整公开源码分析。

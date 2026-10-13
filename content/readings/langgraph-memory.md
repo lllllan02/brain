@@ -10,6 +10,7 @@ source:
   - "https://docs.langchain.com/oss/python/langgraph/persistence"
   - "https://docs.langchain.com/oss/python/langgraph/stores"
   - "https://langchain-ai.github.io/langmem/concepts/conceptual_guide/"
+read: true
 ---
 
 **「LangGraph 提供记忆的状态与存储基础，LangMem 补充从交互形成和维护记忆的逻辑。」** 本文依据 2026-10-12 官方文档，聚焦两者分工；未运行 SDK 示例。

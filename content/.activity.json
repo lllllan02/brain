@@ -74,6 +74,12 @@
       "state": null,
       "digest": "1d2a4dcb79731ed2aa74e9a10c86dc53c4be75f231d19ea5eb92df0f2d2c60ec"
     },
+    "a2a": {
+      "title": "A2A（Agent 间通信协议）",
+      "collection": "notes",
+      "state": "pending",
+      "digest": "7c4836ee6743ff195b191844d6112d259ccb26f352bb027c8ca441ad2977e1a6"
+    },
     "agent-approval-protocol": {
       "title": "人工审批怎样绑定动作并处理回复",
       "collection": "notes",
@@ -194,6 +200,12 @@
       "state": "pending",
       "digest": "84bf0b9e58c82531968d5a5a5a2136e1d5980f16b1ea8a4b0fe48ee907fd7090"
     },
+    "agent-intent": {
+      "title": "Agent 意图识别",
+      "collection": "notes",
+      "state": "pending",
+      "digest": "74badf2dedc9641d979851116526a98f99792f0fe9c13cbde0fdae77350896d4"
+    },
     "agent-loading": {
       "title": "Agent 中哪些内容可以按需加载？",
       "collection": "notes",
@@ -228,7 +240,7 @@
       "title": "Agent 分层记忆与上下文换入",
       "collection": "notes",
       "state": "pending",
-      "digest": "3403ed60554b19470cd38b7e0bc49231accf2545537e9507fc4ed39a371ac7fd"
+      "digest": "4335ca9b45fcecb4ea88fb7567f218854cdac69fc8c216ff561dc03b4774ca07"
     },
     "agent-memory-maintenance": {
       "title": "Agent 记忆失效、删除与信任边界",
@@ -320,6 +332,12 @@
       "state": "understood",
       "digest": "d64224953ce8040ac71b6a2ba366f606490579c2b7003e49b32589b88e3ef183"
     },
+    "agent-subagents": {
+      "title": "子 Agent（Subagent）",
+      "collection": "notes",
+      "state": "pending",
+      "digest": "c9cb23b5b5db6c418e002dbb87b6b99e74c539d2af2126fcfc9d83f996410f33"
+    },
     "agent-task-state-update": {
       "title": "任务状态如何更新与处理冲突",
       "collection": "notes",
@@ -390,7 +408,7 @@
       "title": "Agent",
       "collection": "notes",
       "state": "pending",
-      "digest": "848aac6b86693ce6e79ad2af5b861beb335827385414b8c3789b990f31edadc3"
+      "digest": "eaf10ea34d57ee6e09eee3e9a0bfb290ce323f237101d77a620aae82303314df"
     },
     "api-gateway": {
       "title": "API 网关",
@@ -740,6 +758,12 @@
       "state": "pending",
       "digest": "7874dc53ab3c53b7176bb82e0d6a557050f6339aa10c56666f841e1b5f914512"
     },
+    "glob-and-grep": {
+      "title": "glob 与 grep 入门",
+      "collection": "notes",
+      "state": "pending",
+      "digest": "2edfd48880aaa4050af8a4651ed69ed9ab2f0b8a98ace8f0b128d9a0ac140d57"
+    },
     "go-channel-lifecycle": {
       "title": "Go channel 的关闭与生命周期",
       "collection": "notes",
@@ -1010,6 +1034,30 @@
       "state": "pending",
       "digest": "def582d644634c9e180b9006a4aab71f3b12c5a8778d65c96765d8eff15db962"
     },
+    "intent-clarification": {
+      "title": "意图不确定时怎样澄清与回退",
+      "collection": "notes",
+      "state": "pending",
+      "digest": "2b64c79a40ee3b586af6025d57792a33119bb3a26b011a027804e9c83655094a"
+    },
+    "intent-classification": {
+      "title": "意图分类（Intent Classification）",
+      "collection": "notes",
+      "state": "pending",
+      "digest": "b961684fcc06aade86564396cb13d2fdad11efb20143a9ca8e437997df5550f6"
+    },
+    "intent-dialogue-state": {
+      "title": "意图参数与多轮状态",
+      "collection": "notes",
+      "state": "pending",
+      "digest": "056677d0b3e29a4b1c186d3ff9cbd377fe02a71b61a35aaf08a032145f2d8bed"
+    },
+    "intent-llm": {
+      "title": "用 LLM 实现意图识别",
+      "collection": "notes",
+      "state": "pending",
+      "digest": "32f9ce59f636c5bc396081c1604cdd32261ed03c4df3e8540e84a747662879ca"
+    },
     "kafka-event-model": {
       "title": "Kafka 事件与记录",
       "collection": "notes",
@@ -1147,6 +1195,12 @@
       "collection": "notes",
       "state": "pending",
       "digest": "98024066eb2080f17f0e4132e6e7d10ffc049d3fa48e5ab1b841f3c779ffc891"
+    },
+    "multi-agent": {
+      "title": "多 Agent 协作（Multi-Agent Collaboration）",
+      "collection": "notes",
+      "state": "pending",
+      "digest": "394447809abc223d82ab4eaa6616f7f9d15766b0c2f98ff407f89c74e11d779c"
     },
     "multi-channel-payment": {
       "title": "多渠道重复扣款",
@@ -2180,6 +2234,12 @@
       "state": "unread",
       "digest": "979929caaf0b5f071bc01220e188a6cd0433517152957b3bc18abae947fded3c"
     },
+    "a2a-protocol-specification": {
+      "title": "A2A：发现、任务生命周期与协议边界",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "bc0bf5fa982055f65cf32bdeea434155379c8c56dcdcb895c5470852c37e713a"
+    },
     "agent-evaluation-infrastructure": {
       "title": "Anthropic：资源限制如何改变 Agent 评测结果",
       "collection": "readings",
@@ -2219,8 +2279,8 @@
     "anthropic-context-engineering-summary": {
       "title": "Anthropic：为每一步选择有效上下文",
       "collection": "readings",
-      "state": "unread",
-      "digest": "d63aeeb2e08026c6cc70a8c1e5cd3b6f2f43e80419d8cf843faf8748468977a4"
+      "state": "read",
+      "digest": "530d4195ab68701ecaf733f7a6ac44b1ca8e5d21a83851ee781b4c4012e1ef55"
     },
     "anthropic-contextual-retrieval": {
       "title": "Anthropic：为片段补背景后再建立索引",
@@ -2232,13 +2292,19 @@
       "title": "Anthropic：Agent 的定义、运行与选型",
       "collection": "readings",
       "state": "read",
-      "digest": "49f61acb10d4e1c4aaeb9a84e102b72555f36547d793974b1873e580b6091b19"
+      "digest": "33a54388be77f42334531b6be10b6dff7541b4ade73bfe10a6ffc16145bce359"
     },
     "anthropic-harness-design-summary": {
       "title": "Anthropic：用生成与评估分工改进长任务 Harness",
       "collection": "readings",
       "state": "unread",
       "digest": "02e249495aa350b54bd34b532130cb3c1230c9eb66d0d7dd137ad04dd2d1c174"
+    },
+    "anthropic-intent-routing": {
+      "title": "Anthropic：用分类提示与结构化输出处理用户请求",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "1cec7a5164efebca222adeeaf51a26e3de914fd82440ea9d30116f5bb7815d5d"
     },
     "anthropic-long-running-harness-summary": {
       "title": "Anthropic：长任务为什么不能只靠上下文压缩",
@@ -2258,11 +2324,23 @@
       "state": "unread",
       "digest": "059c0d34953738425ed46a4d486b1e261589b5db5912d067eb641112bb9b998b"
     },
+    "anthropic-multi-agent-research": {
+      "title": "Anthropic：多 Agent 研究系统的收益与代价",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "e6236e294666c7625c9fb0dd75a1e7c88d223ae1e592639cbfd240e11f9d4774"
+    },
     "anthropic-tool-design-summary": {
       "title": "Anthropic：如何设计有效的 Agent 工具",
       "collection": "readings",
       "state": "unread",
       "digest": "28a5ba365777401b948165ed90544a6734a5afc317d136be8ff9019e6304e9be"
+    },
+    "autogen-group-chat": {
+      "title": "AutoGen：群聊如何选择下一位 Agent",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "a1557db956cff0e667211062c8f3c88f2739ea2410d34c804d2225efeb7f372a"
     },
     "aws-agentcore-authorization-summary": {
       "title": "AWS AgentCore：把身份与工具参数交给授权策略",
@@ -2306,6 +2384,18 @@
       "state": "unread",
       "digest": "4de1438e80b497224eb7b0f0c8847ef5fe717634fc0b6070e0d752680f2d80d9"
     },
+    "clarify-when-necessary": {
+      "title": "Clarify When Necessary：何时值得追问用户",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "1efc9ad95ea7677e26ec1b71e6d2172dd2361bef76ae7d46132d03a60daf365e"
+    },
+    "claude-code-agent-collaboration": {
+      "title": "Claude Code：子 Agent 与 Agent Teams",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "60e072603a3d444d423644c692952a7ec86607c3c3665a8478bacab683296fe0"
+    },
     "claude-code-context-budget-summary": {
       "title": "Claude Code：上下文预算与压缩阈值",
       "collection": "readings",
@@ -2315,7 +2405,7 @@
     "claude-code-memory": {
       "title": "Claude Code：规则文件与自动记忆索引",
       "collection": "readings",
-      "state": "unread",
+      "state": "read",
       "digest": "0a974dd238e118f3b91f2ff2adb721a31632736e03a8ad78b29d8b91558b996b"
     },
     "claude-code-shell-permissions-summary": {
@@ -2371,6 +2461,12 @@
       "collection": "readings",
       "state": "unread",
       "digest": "8f7e31a16c9bec127b024d4577b0a8bce5b46777071dd1a1512628f266b4911b"
+    },
+    "clinc-intent-oos": {
+      "title": "CLINC：意图分类与域外请求识别",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "d1c1004222d9900ea3ac606a2ed5fb62830fa4338d2a00debbe83acd82b209c3"
     },
     "cloudflare-code-mode-summary": {
       "title": "Cloudflare Code Mode：用代码组织多步工具调用",
@@ -2531,7 +2627,7 @@
     "graphiti-memory": {
       "title": "Graphiti：随时间变化的事实图",
       "collection": "readings",
-      "state": "unread",
+      "state": "read",
       "digest": "97291a57e0f056a3ea75d83025e30ab890a02efa0d07fad8b6de13e3875b089f"
     },
     "graphrag-docs": {
@@ -2630,6 +2726,12 @@
       "state": "unread",
       "digest": "456e73ee2ca702f3a3148c8b534ff1261b9df113543fe956f5a8833344d14d3f"
     },
+    "langchain-multi-agent": {
+      "title": "LangChain：子 Agent、交接与路由的分工",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "a2ec5a2b8b195c508eb7ad47aee0dcafdf17bb5428231272cd90a323dad0a6f1"
+    },
     "langchain-planning-summary": {
       "title": "LangChain：从先规划再执行到重新规划",
       "collection": "readings",
@@ -2675,7 +2777,7 @@
     "langgraph-memory": {
       "title": "LangGraph 与 LangMem：状态持久化和记忆形成",
       "collection": "readings",
-      "state": "unread",
+      "state": "read",
       "digest": "bf066ec27c89bf86af904c78d4d0c47f33d856d768ed63caef30e9c942cb740c"
     },
     "langgraph-replanning-summary": {
@@ -2756,6 +2858,12 @@
       "state": "unread",
       "digest": "a0834dcc4939ccaf0622a1a32658f1de6381e15f493c02407065487bc0c936b6"
     },
+    "mast-multi-agent-failures": {
+      "title": "MAST：多 Agent 系统为什么失败",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "60e193c902246e5dd4f0d75c07a734bd6b7d14dcaf2fd2b1112488fb41c6e8bb"
+    },
     "mcp-architecture-summary": {
       "title": "MCP 官方架构：发现、调用与通知",
       "collection": "readings",
@@ -2795,7 +2903,7 @@
     "memgpt-memory": {
       "title": "MemGPT：用分层存储管理有限上下文",
       "collection": "readings",
-      "state": "unread",
+      "state": "read",
       "digest": "87a91e8b628c3b1d2fd2641848a96037f80dd19ce090bf9f9658ff0a32cb9725"
     },
     "memorybank-memory": {
@@ -3062,6 +3170,24 @@
       "state": "unread",
       "digest": "460c3359d9ff5870f3520e79270d381cd1eb1b4e524d51f8482e8d3a934fdec5"
     },
+    "rasa-intent-classification": {
+      "title": "Rasa 与 scikit-learn：意图分类的样本、特征与预测",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "c4af3fd9cbac96d210a8ce903e45de0b6db34b29a7ade7e74689f5ce911475c7"
+    },
+    "rasa-intent-fallback": {
+      "title": "Rasa：低置信度回退与分阶段澄清",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "274594e68e7fd0857d35de075956f84effd59bb2635d1e2141c8c82daf59a29e"
+    },
+    "rasa-slots": {
+      "title": "Rasa Slots：从抽取结果到对话记忆",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "43d6f48a56b8cc4d13abe34afa8a75cbd2269babe4e37880aef0dffa8d83b49b"
+    },
     "react-paper-summary": {
       "title": "ReAct 论文：让推理与行动相互提供信息",
       "collection": "readings",
@@ -3128,11 +3254,23 @@
       "state": "unread",
       "digest": "8fbeb0d12dbf36f6cc558db4773e7535d36c497ed8ccec90c62486b116a65247"
     },
+    "schema-guided-dialogue": {
+      "title": "SGD：用能力描述组织意图、参数与对话状态",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "bd287a074d977e469798ce5fca6ed81afc05f87cfa83066f3659da864256163a"
+    },
     "self-refine-summary": {
       "title": "Self-Refine：用具体反馈迭代修改输出",
       "collection": "readings",
       "state": "unread",
       "digest": "54ac056a9767e2241edabd61ea5880fe5bdb9d5c8649129e9f0b8d12805e66c1"
+    },
+    "shell-search-manuals": {
+      "title": "Shell 与 grep 官方文档导读：匹配规则和执行边界",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "ebc6316b45eece353be78cfa2f9e4cb35fccd94ba36dcff0ab32ad28de33a65a"
     },
     "smolagents-planning-summary": {
       "title": "smolagents：按行动步数更新计划",
@@ -21596,6 +21734,616 @@
       ],
       "source": "observed",
       "docId": "victoriametrics-cond-summary"
+    },
+    {
+      "id": "e241562d-8a99-4532-a283-fe9b59b8a8a4",
+      "kind": "state-changed",
+      "entity": "doc:langgraph-memory",
+      "title": "LangGraph 与 LangMem：状态持久化和记忆形成",
+      "time": "2026-10-13T04:54:51.179Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langgraph-memory",
+      "from": "unread",
+      "to": "read"
+    },
+    {
+      "id": "c6d8b71f-f56c-4871-9a69-bb023f4d6134",
+      "kind": "state-changed",
+      "entity": "doc:memgpt-memory",
+      "title": "MemGPT：用分层存储管理有限上下文",
+      "time": "2026-10-13T06:38:08.058Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "memgpt-memory",
+      "from": "unread",
+      "to": "read"
+    },
+    {
+      "id": "88fabb8d-a8d4-454a-a126-75e6aba3e2e7",
+      "kind": "state-changed",
+      "entity": "doc:claude-code-memory",
+      "title": "Claude Code：规则文件与自动记忆索引",
+      "time": "2026-10-13T06:40:43.367Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-code-memory",
+      "from": "unread",
+      "to": "read"
+    },
+    {
+      "id": "ce046a58-50af-4741-b315-5d9b4a7db729",
+      "kind": "state-changed",
+      "entity": "doc:anthropic-context-engineering-summary",
+      "title": "Anthropic：为每一步选择有效上下文",
+      "time": "2026-10-13T06:47:40.090Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-context-engineering-summary",
+      "from": "unread",
+      "to": "read"
+    },
+    {
+      "id": "1bd10cea-7112-462c-a982-84c2a9280889",
+      "kind": "updated",
+      "entity": "doc:agent-memory-hierarchy",
+      "title": "Agent 分层记忆与上下文换入",
+      "time": "2026-10-13T06:54:01.906Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-hierarchy"
+    },
+    {
+      "id": "17f23e07-d615-4881-accb-9e1474754f52",
+      "kind": "state-changed",
+      "entity": "doc:graphiti-memory",
+      "title": "Graphiti：随时间变化的事实图",
+      "time": "2026-10-13T06:56:35.644Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "graphiti-memory",
+      "from": "unread",
+      "to": "read"
+    },
+    {
+      "id": "72f0240d-2548-4df2-9fa8-eec02b8eb380",
+      "kind": "created",
+      "entity": "doc:agent-intent",
+      "title": "Agent 意图识别",
+      "time": "2026-10-13T09:32:13.058Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-intent"
+    },
+    {
+      "id": "d1485233-ba2d-44c7-af69-19eea30d271e",
+      "kind": "updated",
+      "entity": "doc:agent",
+      "title": "Agent",
+      "time": "2026-10-13T09:32:13.058Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent"
+    },
+    {
+      "id": "dfa5cacf-3dcb-4b0f-8d91-1c7ce16d8012",
+      "kind": "created",
+      "entity": "doc:glob-and-grep",
+      "title": "glob 与 grep 入门",
+      "time": "2026-10-13T09:32:13.058Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "glob-and-grep"
+    },
+    {
+      "id": "94bafd57-4dd4-4a43-8548-09a0f0bf884d",
+      "kind": "updated",
+      "entity": "doc:anthropic-context-engineering-summary",
+      "title": "Anthropic：为每一步选择有效上下文",
+      "time": "2026-10-13T09:32:13.058Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-context-engineering-summary"
+    },
+    {
+      "id": "c8af6406-0aa6-4ce7-94da-cfcf139b021e",
+      "kind": "updated",
+      "entity": "doc:anthropic-effective-agents-summary",
+      "title": "Anthropic：Agent 的定义、运行与选型",
+      "time": "2026-10-13T09:32:13.058Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-effective-agents-summary"
+    },
+    {
+      "id": "ab1b562a-4c77-4607-8a2c-83c6e147b1a3",
+      "kind": "created",
+      "entity": "doc:clarify-when-necessary",
+      "title": "Clarify When Necessary：何时值得追问用户",
+      "time": "2026-10-13T09:32:13.058Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "clarify-when-necessary"
+    },
+    {
+      "id": "04652937-c071-4957-a03b-78e01952ff4f",
+      "kind": "created",
+      "entity": "doc:clinc-intent-oos",
+      "title": "CLINC：意图分类与域外请求识别",
+      "time": "2026-10-13T09:32:13.058Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "clinc-intent-oos"
+    },
+    {
+      "id": "3b8372ee-b284-44da-ab8c-b683fe5e073f",
+      "kind": "created",
+      "entity": "doc:schema-guided-dialogue",
+      "title": "SGD：用能力描述组织意图、参数与对话状态",
+      "time": "2026-10-13T09:32:13.058Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "schema-guided-dialogue"
+    },
+    {
+      "id": "10582516-c468-4e5a-91d0-6e4264e4019e",
+      "kind": "created",
+      "entity": "doc:shell-search-manuals",
+      "title": "Shell 与 grep 官方文档导读：匹配规则和执行边界",
+      "time": "2026-10-13T09:32:13.058Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "shell-search-manuals"
+    },
+    {
+      "id": "7bbaa9ee-69bf-4ef0-8e79-0f0e49bbb9a3",
+      "kind": "created",
+      "entity": "doc:intent-clarification",
+      "title": "意图不确定时怎样澄清与回退",
+      "time": "2026-10-13T09:39:26.450Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-clarification"
+    },
+    {
+      "id": "00007115-c60e-478c-8d2d-94d9d9e176e6",
+      "kind": "created",
+      "entity": "doc:anthropic-intent-routing",
+      "title": "Anthropic：用分类提示与结构化输出处理用户请求",
+      "time": "2026-10-13T09:39:26.450Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-intent-routing"
+    },
+    {
+      "id": "62012d48-907f-4f6f-b469-dff80bb3443c",
+      "kind": "created",
+      "entity": "doc:rasa-intent-classification",
+      "title": "Rasa 与 scikit-learn：意图分类的样本、特征与预测",
+      "time": "2026-10-13T09:39:26.450Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "rasa-intent-classification"
+    },
+    {
+      "id": "5d197575-b0aa-4978-a789-703be6d63f4e",
+      "kind": "created",
+      "entity": "doc:rasa-intent-fallback",
+      "title": "Rasa：低置信度回退与分阶段澄清",
+      "time": "2026-10-13T09:39:26.450Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "rasa-intent-fallback"
+    },
+    {
+      "id": "eb0b9c04-85c6-418d-a768-89f9c75c040c",
+      "kind": "updated",
+      "entity": "doc:agent-intent",
+      "title": "Agent 意图识别",
+      "time": "2026-10-13T09:40:35.017Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-intent"
+    },
+    {
+      "id": "704a4cc8-bc3f-4372-9cab-f9966c3f41f6",
+      "kind": "created",
+      "entity": "doc:intent-dialogue-state",
+      "title": "意图参数与多轮状态",
+      "time": "2026-10-13T09:40:35.017Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-dialogue-state"
+    },
+    {
+      "id": "f62be847-7f39-49ae-bf88-f466d18c89dd",
+      "kind": "created",
+      "entity": "doc:intent-llm",
+      "title": "用 LLM 实现意图识别",
+      "time": "2026-10-13T09:40:35.017Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-llm"
+    },
+    {
+      "id": "3c461031-c94b-461c-9a93-bd554473246b",
+      "kind": "created",
+      "entity": "doc:rasa-slots",
+      "title": "Rasa Slots：从抽取结果到对话记忆",
+      "time": "2026-10-13T09:40:35.017Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "rasa-slots"
+    },
+    {
+      "id": "5ce227d0-ddc9-4f4d-bded-66a97d03b45c",
+      "kind": "updated",
+      "entity": "doc:schema-guided-dialogue",
+      "title": "SGD：用能力描述组织意图、参数与对话状态",
+      "time": "2026-10-13T09:40:35.017Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "schema-guided-dialogue"
+    },
+    {
+      "id": "29b4b002-a6ed-4b3d-a254-9b62214ac258",
+      "kind": "created",
+      "entity": "doc:intent-classification",
+      "title": "意图分类（Intent Classification）",
+      "time": "2026-10-13T09:40:40.319Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-classification"
+    },
+    {
+      "id": "b27c8434-49b2-4cef-937a-83466d4d4736",
+      "kind": "updated",
+      "entity": "doc:intent-classification",
+      "title": "意图分类（Intent Classification）",
+      "time": "2026-10-13T09:41:42.872Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-classification"
+    },
+    {
+      "id": "6ffdf131-8b62-4e43-890d-988f384a4b3d",
+      "kind": "updated",
+      "entity": "doc:intent-llm",
+      "title": "用 LLM 实现意图识别",
+      "time": "2026-10-13T09:41:42.872Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-llm"
+    },
+    {
+      "id": "d97ab04c-53b3-4e01-af95-7f6ca886544c",
+      "kind": "updated",
+      "entity": "doc:agent-intent",
+      "title": "Agent 意图识别",
+      "time": "2026-10-13T09:45:51.327Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-intent"
+    },
+    {
+      "id": "10d7f085-7f5d-4bab-94d8-3ac946c6fa14",
+      "kind": "updated",
+      "entity": "doc:intent-classification",
+      "title": "意图分类（Intent Classification）",
+      "time": "2026-10-13T09:45:51.327Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-classification"
+    },
+    {
+      "id": "1905c309-70c6-449b-8e20-fc82fe1f5ffb",
+      "kind": "updated",
+      "entity": "doc:intent-dialogue-state",
+      "title": "意图参数与多轮状态",
+      "time": "2026-10-13T09:45:51.327Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-dialogue-state"
+    },
+    {
+      "id": "64178ae3-26c5-4830-a60f-df9b0d657dd9",
+      "kind": "updated",
+      "entity": "doc:intent-llm",
+      "title": "用 LLM 实现意图识别",
+      "time": "2026-10-13T09:45:51.327Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-llm"
+    },
+    {
+      "id": "0e97009e-8c2e-4cf0-9526-bb0b29152024",
+      "kind": "created",
+      "entity": "doc:a2a-protocol-specification",
+      "title": "A2A：发现、任务生命周期与协议边界",
+      "time": "2026-10-13T09:45:51.327Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "a2a-protocol-specification"
+    },
+    {
+      "id": "be5afc56-0ad4-4ead-9460-4ad6ebe7d6dc",
+      "kind": "created",
+      "entity": "doc:anthropic-multi-agent-research",
+      "title": "Anthropic：多 Agent 研究系统的收益与代价",
+      "time": "2026-10-13T09:45:51.327Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-multi-agent-research"
+    },
+    {
+      "id": "8127a4c8-7ec0-4418-9ae6-186e406fdd90",
+      "kind": "created",
+      "entity": "doc:autogen-group-chat",
+      "title": "AutoGen：群聊如何选择下一位 Agent",
+      "time": "2026-10-13T09:45:51.327Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "autogen-group-chat"
+    },
+    {
+      "id": "42b293a0-9ad8-42da-ba1b-7b38a2e56ef4",
+      "kind": "created",
+      "entity": "doc:claude-code-agent-collaboration",
+      "title": "Claude Code：子 Agent 与 Agent Teams",
+      "time": "2026-10-13T09:45:51.327Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-code-agent-collaboration"
+    },
+    {
+      "id": "26dc89ae-c9d0-4270-8360-a4e375629dd9",
+      "kind": "created",
+      "entity": "doc:langchain-multi-agent",
+      "title": "LangChain：子 Agent、交接与路由的分工",
+      "time": "2026-10-13T09:45:51.327Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langchain-multi-agent"
+    },
+    {
+      "id": "ce196fd1-cdff-4b53-bf58-fea77601eaa5",
+      "kind": "created",
+      "entity": "doc:mast-multi-agent-failures",
+      "title": "MAST：多 Agent 系统为什么失败",
+      "time": "2026-10-13T09:45:51.327Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mast-multi-agent-failures"
+    },
+    {
+      "id": "bf2488d5-527b-4ff8-8f16-921a4e5763a9",
+      "kind": "created",
+      "entity": "doc:a2a",
+      "title": "A2A（Agent 间通信协议）",
+      "time": "2026-10-13T09:47:02.904Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "a2a"
+    },
+    {
+      "id": "741f5eaa-897c-4682-904e-6f36c189039b",
+      "kind": "created",
+      "entity": "doc:agent-subagents",
+      "title": "子 Agent（Subagent）",
+      "time": "2026-10-13T09:47:02.904Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-subagents"
+    },
+    {
+      "id": "9f6b74d7-037e-452f-a2d3-2a86aa129468",
+      "kind": "updated",
+      "entity": "doc:agent",
+      "title": "Agent",
+      "time": "2026-10-13T09:47:02.904Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent"
+    },
+    {
+      "id": "57b46539-47b0-4915-af15-27431a8a81a6",
+      "kind": "created",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作（Multi-Agent Collaboration）",
+      "time": "2026-10-13T09:47:02.904Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "77473b21-0b00-4999-b3f5-73dfc760d22e",
+      "kind": "updated",
+      "entity": "doc:a2a",
+      "title": "A2A（Agent 间通信协议）",
+      "time": "2026-10-13T09:49:28.789Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "a2a"
+    },
+    {
+      "id": "c649a3f1-4010-499a-bf27-14e9697c28e3",
+      "kind": "updated",
+      "entity": "doc:agent-subagents",
+      "title": "子 Agent（Subagent）",
+      "time": "2026-10-13T09:49:28.789Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-subagents"
+    },
+    {
+      "id": "3bf24692-5af8-4c25-a188-e1b6a6d37899",
+      "kind": "updated",
+      "entity": "doc:agent",
+      "title": "Agent",
+      "time": "2026-10-13T09:49:28.789Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent"
+    },
+    {
+      "id": "47e2adec-9230-4d61-9712-ab207e233842",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作（Multi-Agent Collaboration）",
+      "time": "2026-10-13T09:49:28.789Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "266c496c-e872-4f5d-9e7f-560a5dfbaf20",
+      "kind": "updated",
+      "entity": "doc:a2a-protocol-specification",
+      "title": "A2A：发现、任务生命周期与协议边界",
+      "time": "2026-10-13T09:49:28.789Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "a2a-protocol-specification"
+    },
+    {
+      "id": "1d8707c2-e716-465e-a7e8-514b82862acb",
+      "kind": "updated",
+      "entity": "doc:anthropic-multi-agent-research",
+      "title": "Anthropic：多 Agent 研究系统的收益与代价",
+      "time": "2026-10-13T09:49:28.789Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-multi-agent-research"
+    },
+    {
+      "id": "9ec7e5ce-ffe6-42a9-87e1-21c115fd6cfb",
+      "kind": "updated",
+      "entity": "doc:claude-code-agent-collaboration",
+      "title": "Claude Code：子 Agent 与 Agent Teams",
+      "time": "2026-10-13T09:49:28.789Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-code-agent-collaboration"
+    },
+    {
+      "id": "443161f9-2b31-4697-be98-9b10e1751bb3",
+      "kind": "updated",
+      "entity": "doc:langchain-multi-agent",
+      "title": "LangChain：子 Agent、交接与路由的分工",
+      "time": "2026-10-13T09:49:28.789Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langchain-multi-agent"
+    },
+    {
+      "id": "a391de99-86b8-4aa4-85bf-bc9d58752b12",
+      "kind": "updated",
+      "entity": "doc:mast-multi-agent-failures",
+      "title": "MAST：多 Agent 系统为什么失败",
+      "time": "2026-10-13T09:49:28.789Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mast-multi-agent-failures"
     }
   ]
 }
