@@ -30,7 +30,7 @@ Skill 按当前任务需要选用，只读取相关部分，设计偏好和示�
 
 ## 保存与归属
 
-1. 普通讨论不保存；用户要求添加或更新时，直接执行保存、链接维护与验收，不重复确认。把讨论整理入库时，可用项目 Skill [.agents/skills/knowledge-save/SKILL.md](.agents/skills/knowledge-save/SKILL.md) 编排流程。
+1. 普通讨论不保存；用户要求添加或更新时，直接执行保存、链接维护与验收，不重复确认。把讨论整理入库，或要求「调研整理 X」（检索资料 → 建立 Reading 依据 → 整理成文）时，使用项目 Skill [knowledge-save](.agents/skills/knowledge-save/SKILL.md) 编排流程。
 2. 读过候选正文后，按 [[docs/knowledge-management#归属判断与写回|归属标准]] 决定更新、新建、暂存或无需重复写入；不能只凭文件名、摘要或命中数量决定新建。
 3. 新建前用主题词及同义词覆盖配置中启用目录的正文检索，并用 `content/` 文件列表核对拟用文件名；候选不足时扩大措辞与范围，零命中、输出截断或索引缺项不等于内容不存在。
 4. 自己的知识笔记统一放 `content/notes/`，新建时设置 `learning_status: pending`，用户明确确认本篇所需概念已理解后才改为 `understood`；外部导读放 `content/readings/` 并记录来源，用布尔属性 `read` 标记是否读过，缺省为未读。状态切换不移动文件，也不刷新正文更新时间；notes 不设置来源元数据，正文按需引用参考；随查术语解释放 `content/glossary/`，不设置学习或阅读状态。各内容目录均平铺；目录、文件名与属性按 [[docs/metadata-and-links|格式约定]]，原始资料按 [[docs/knowledge-management#来源与巡检|来源规则]] 处理。
