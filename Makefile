@@ -1,14 +1,15 @@
 .DEFAULT_GOAL := run
 
 PORT ?= 4173
+HOST ?= 0.0.0.0
 
 .PHONY: run dev install search index lint check test test-browser build
 
 run:
-	PORT=$(PORT) npm --prefix apps/web start
+	HOST=$(HOST) PORT=$(PORT) npm --prefix apps/web start
 
 dev:
-	PORT=$(PORT) npm --prefix apps/web run dev
+	HOST=$(HOST) PORT=$(PORT) npm --prefix apps/web run dev
 
 install:
 	npm --prefix apps/web ci

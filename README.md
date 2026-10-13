@@ -1,6 +1,6 @@
 ---
 title: "视界（Horizon）"
-updated_at: "2026-10-12"
+updated_at: "2026-10-13"
 category: "知识库管理"
 tags: ["知识库", "Obsidian", "项目使用", "服务启动"]
 ---
@@ -18,6 +18,8 @@ tags: ["知识库", "Obsidian", "项目使用", "服务启动"]
 本地根目录可重命名为 `horizon`；先停止开发服务，改名后从新目录重新打开工作区并运行 `make`。启动、内容读取与构建均使用相对项目路径。只改本地目录不会改变 Git remote 或线上地址；当前远程仓库及 Pages 路径仍使用 `brain`。
 
 默认阅读服务不随代码编辑热更新，文档变化自动局部同步，保留当前阅读位置和画布；开发界面可另开 `make dev PORT=4174`。
+
+本地服务默认允许局域网访问，其他设备可打开启动日志中的「局域网访问」地址。使用 `make HOST=127.0.0.1` 可限制为仅本机访问；连接条件与状态写回范围见 [[apps/web/README#启动与使用|启动与使用说明]]。
 
 开发验收可在根目录运行 `make check`（类型与格式）、`make test`（单元、接口与检索回归）、`make test-browser`（浏览器回归）和 `make build`（应用构建）。检索直接执行 `scripts/retrieve.ts`，例如 `npm --silent --prefix apps/web run retrieve -- query 覆盖索引 回表`，也可使用 `make search q="覆盖索引 回表"`。
 

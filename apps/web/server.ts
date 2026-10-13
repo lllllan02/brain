@@ -1,5 +1,6 @@
 import type { Library } from './src/types/library.ts';
 import http from 'node:http';
+import { networkInterfaces } from 'node:os';
 import { createHash } from 'node:crypto';
 import { CONFIG } from './src/config.ts';
 import path from 'node:path';
@@ -18,6 +19,7 @@ const dir = path.dirname(fileURLToPath(import.meta.url));
 export async function startServer({
   root = path.resolve(dir, '../../content'),
   port = Number(process.env.PORT || 4173),
+  host = process.env.HOST || '0.0.0.0',
   optimizeDependencies = true,
   development = false,
 } = {}) {
@@ -142,7 +144,7 @@ export async function startServer({
       });
   await new Promise<void>((resolve, reject) => {
     server.once('error', reject);
-    server.listen(port, '127.0.0.1', () => {
+    server.listen(port, host, () => {
       server.off('error', reject);
       resolve();
     });
@@ -173,8 +175,18 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
       void close().then(() => process.exit(0));
     });
   const address = server.address();
-  if (address && typeof address !== 'string')
+  if (address && typeof address !== 'string') {
     console.log(
       `${CONFIG.brand.name} / ${CONFIG.brand.nameEn} · ${development ? '开发模式' : '稳定阅读'} · http://127.0.0.1:${address.port}`,
     );
+    if (address.address === '0.0.0.0') {
+      const addresses = new Set(
+        Object.values(networkInterfaces())
+          .flatMap((interfaces) => interfaces ?? [])
+          .filter((entry) => entry.family === 'IPv4' && !entry.internal)
+          .map((entry) => entry.address),
+      );
+      for (const ip of addresses) console.log(`局域网访问 · http://${ip}:${address.port}`);
+    }
+  }
 }
