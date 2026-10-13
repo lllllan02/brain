@@ -5,6 +5,7 @@ tags: ["Agent", "上下文管理"]
 created_at: "2026-10-11T15:24:08+08:00"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)"
+read: true
 ---
 
 **「Anthropic 将上下文工程（Context Engineering）定义为持续选择、维护模型推理时所见信息的工作，目标是用足够且高信号的输入支持下一步行动。」** 本文是其 2025-09-29 工程文章的导读。
@@ -23,7 +24,7 @@ Agent 循环不断加入工具结果和历史，输入的相关性随任务变�
 
 每次读取还会提供下一步的线索：目录和文件名帮助判断用途，大小提示内容规模，时间信息帮助判断相关性。模型逐步缩小范围，不要求先建立向量索引；针对性查询、文件搜索和局部读取也能支持这一过程。
 
-原文以 Claude Code 说明混合方式：先提供项目指令，再通过 glob、grep 等工具定位需要的文件。代价是运行时探索增加延迟，也可能走错方向或遗漏关键信息，因此工具和检索指导同样重要。此处对应原文 `Context retrieval and agentic search`，讨论的是任务资料获取。
+原文以 Claude Code 说明混合方式：先提供项目指令，再通过 [[glob-and-grep|glob、grep]] 等工具定位需要的文件。代价是运行时探索增加延迟，也可能走错方向或遗漏关键信息，因此工具和检索指导同样重要。此处对应原文 `Context retrieval and agentic search`，讨论的是任务资料获取。
 
 ## 长任务怎样延续？
 
