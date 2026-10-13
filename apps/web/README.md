@@ -1,6 +1,6 @@
 ---
 title: "视界"
-updated_at: "2026-10-12T12:25:01+08:00"
+updated_at: "2026-10-13"
 category: "项目开发"
 tags: ["知识库", "图谱", "Markdown", "服务启动", "GitHub-Pages"]
 ---
@@ -205,4 +205,6 @@ npm --prefix apps/web run preview:pages
 
 静态产物位于 `apps/web/dist-pages/`，包含与本地一致的正文、属性、搜索数据与引用关系，无需本地文档接口。预览地址为 `http://127.0.0.1:4174`。正文引用的有效附件会一并复制并改写为静态地址，沿用本地的附件目录与格式限制。
 
-推送 `main` 后，`.github/workflows/pages.yml` 自动安装依赖、导出并部署。先检查代码格式并运行单元、接口和浏览器回归测试，再进行类型检查与静态构建；任一检查失败都会阻断部署。测试使用独立样例，不依赖知识库中的固定文章或引用数量。仓库 Settings → Pages 的 Source 设为 GitHub Actions。发布地址为 [视界](https://lllllan02.github.io/brain/)。页面只读，文档更新仍直接修改源文件。
+推送 `main` 后，`.github/workflows/pages.yml` 自动安装依赖、执行类型检查与静态构建，再部署到 Pages。部署流程不运行回归测试，也不等待独立测试工作流；只更新笔记时无需重复安装浏览器和运行交互验收。仓库 Settings → Pages 的 Source 设为 GitHub Actions。发布地址为 [视界](https://lllllan02.github.io/brain/)。页面只读，文档更新仍直接修改源文件。
+
+开发验收使用 `make check`、`make test` 和 `make test-browser`。独立的 `.github/workflows/checks.yml` 在应用、脚本、根包配置、Makefile 或工作流变化的 PR 与 `main` 推送中运行格式、类型、单元、接口和浏览器检查，也可手动触发；仅修改 `content/` 不触发。测试使用独立样例，不依赖知识库中的固定文章或引用数量；失败时上传 `playwright-results`，保留截图与追踪 7 天。回归测试用于代码变更验收，内容发布只要求构建成功。

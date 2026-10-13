@@ -74,19 +74,31 @@ test('文档、元数据与图谱自动局部更新，保留阅读段落、图�
     }).observe(viewport, { childList: true, attributes: true, attributeFilter: ['class'] });
   });
   const unchanged = async () => {
-    expect(
-      await page.locator('.galaxy-viewport canvas').evaluate((el, old) => el === old, canvas),
-    ).toBe(true);
-    expect(await paragraph.evaluate((el, old) => el === old, original)).toBe(true);
-    expect(await reader.locator('.diagram-canvas svg').evaluate((el, old) => el === old, svg)).toBe(
-      true,
+    // Read one coherent snapshot. Re-resolving each locator adds browser round trips
+    // under software WebGL and can exhaust the test budget across repeated updates.
+    const state = await page.evaluate(
+      ({ canvas, original, svg }) => {
+        const viewport = document.querySelector('.galaxy-viewport');
+        const article = document.querySelector('.document-reader');
+        return {
+          sameCanvas: !!canvas && viewport?.querySelector('canvas') === canvas,
+          sameParagraph: !!original && article?.contains(original),
+          sameDiagram: !!svg && article?.querySelector('.diagram-canvas svg') === svg,
+          paragraphY: original?.getBoundingClientRect().top,
+          timeOrigin: performance.timeOrigin,
+          reentries: viewport?.getAttribute('data-test-reentries'),
+        };
+      },
+      { canvas, original, svg },
     );
-    expect(await paragraph.evaluate((el) => el.getBoundingClientRect().top)).toBeCloseTo(
-      paragraphY,
-      0,
-    );
-    expect(await page.evaluate(() => performance.timeOrigin)).toBe(timeOrigin);
-    await expect(page.locator('.galaxy-viewport')).toHaveAttribute('data-test-reentries', '0');
+    expect(state).toMatchObject({
+      sameCanvas: true,
+      sameParagraph: true,
+      sameDiagram: true,
+      timeOrigin,
+      reentries: '0',
+    });
+    expect(state.paragraphY).toBeCloseTo(paragraphY, 0);
   };
   const changedLibrary = (text: string) =>
     page.waitForResponse(

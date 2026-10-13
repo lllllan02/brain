@@ -1,0 +1,51 @@
+name: Check Horizon Web
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/web/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'Makefile'
+      - '.github/workflows/checks.yml'
+      - '.github/workflows/pages.yml'
+  pull_request:
+    paths:
+      - 'apps/web/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'Makefile'
+      - '.github/workflows/checks.yml'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-results
+          path: apps/web/test-results/
+          if-no-files-found: ignore
+          retention-days: 7
