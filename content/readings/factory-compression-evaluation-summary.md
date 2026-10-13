@@ -5,11 +5,11 @@ parent: context-compaction-evaluation
 category: "Agent"
 tags: ["上下文管理", "文本压缩", "评测"]
 created_at: "2026-10-11T15:37:35+08:00"
-updated_at: "2026-10-11T15:37:35+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Evaluating Context Compression for AI Agents](https://factory.com/news/evaluating-compression)"
 ---
 
-**Factory 用压缩后的问答探针检查事实、文件状态、后续计划和决策依据是否保留；这比摘要文字相似度更贴近任务延续，但仍不等于实际完成任务。** 本文导读对应 Factory Research 于 2025-12-16 发布的厂商自评。
+**「Factory 用压缩后的问答探针检查事实、文件状态、后续计划和决策依据是否保留；这比摘要文字相似度更贴近任务延续，但仍不等于实际完成任务。」** 本文导读对应 Factory Research 于 2025-12-16 发布的厂商自评。
 
 ## 怎样比较？
 
@@ -21,7 +21,7 @@ source: "[Evaluating Context Compression for AI Agents](https://factory.com/news
 
 Factory 将意图、文件修改、决策与下一步分栏，摘要新增移出窗口的片段，再并入既有状态。原文用登录故障示例说明：只记得「修复认证配置」，与记住具体端点、错误码和会话存储原因，支持的后续行动不同。
 
-综合评分分别为 Factory 3.70、Anthropic 3.44、OpenAI 3.35（满分 5）。三者最弱的文件轨迹维度只有 2.19–2.45，结构化摘要也未解决完整文件追踪。作者因此主张关注整项任务成本，而非仅看压缩率，并提出专门维护文件状态的方向。
+综合评分分别为 Factory 3.70、Anthropic 3.44、OpenAI 3.35（满分 5）。三者最弱的文件轨迹维度只有 2.19–2.45，结构化摘要也未解决完整文件追踪。作者因此主张**「关注整项任务成本，而非仅看压缩率」**，并提出专门维护文件状态的方向。
 
 ## 这些证据还缺什么？
 

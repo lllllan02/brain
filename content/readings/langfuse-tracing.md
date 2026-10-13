@@ -3,7 +3,7 @@ title: "Langfuse：可用于调试和评测的 Trace"
 category: "可观测性"
 tags: ["Agent", "Trace", "可观测性", "数据脱敏"]
 created_at: "2026-10-12T23:19:16+08:00"
-updated_at: "2026-10-12T23:19:16+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://langfuse.com/docs/observability/best-practices"
   - "https://langfuse.com/docs/observability/data-model"
@@ -11,7 +11,7 @@ source:
   - "https://github.com/langfuse/langfuse"
 ---
 
-**Langfuse 把执行步骤、输入输出与评分组织在同一套观测数据中；Trace 的粒度和命名会直接影响调试、筛选与评测。** 本文节选追踪结构和内容采集相关文档，核对日期为 2026-10-12，未部署仓库或验证 SDK 行为。
+**「Langfuse 把执行步骤、输入输出与评分组织在同一套观测数据中；Trace 的粒度和命名会直接影响调试、筛选与评测。」** 本文节选追踪结构和内容采集相关文档，核对日期为 2026-10-12，未部署仓库或验证 SDK 行为。
 
 ## 如何组织一次运行？
 
@@ -21,11 +21,11 @@ source:
 
 ## 为什么名称和输入输出也影响评测？
 
-评测器与看板会按步骤名称和类型筛选数据，因此名称应稳定，动态 ID 和重试次数放属性。根 observation 的输入输出应便于审核整项任务；细节载荷放到对应步骤。模型名、token 用量、Prompt 版本与环境信息则帮助比较不同运行；评分与用户反馈用于补充质量判断。
+评测器与看板会按步骤名称和类型筛选数据，因此**「名称应稳定，动态 ID 和重试次数放属性」**。根 observation 的输入输出应便于审核整项任务；细节载荷放到对应步骤。模型名、token 用量、Prompt 版本与环境信息则帮助比较不同运行；评分与用户反馈用于补充质量判断。
 
 ## 采集能力的边界
 
-[Masking 文档](https://langfuse.com/docs/observability/features/masking) 提供发送前处理敏感数据的方法。脱敏后能分析什么，取决于保留了哪些信息；只保留摘要时，不能据此声称已保存模型实际看到的完整上下文。
+[Masking 文档](https://langfuse.com/docs/observability/features/masking) 提供**「发送前处理敏感数据」**的方法。脱敏后能分析什么，取决于保留了哪些信息；只保留摘要时，不能据此声称已保存模型实际看到的完整上下文。
 
 最佳实践还建议记录 thinking。这里必须限定为「接口实际返回且允许保存的推理内容或摘要」：追踪系统无法自行取得托管模型未暴露的内部推理，模型输出的解释也不能单独证明决策原因。
 

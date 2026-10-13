@@ -5,7 +5,7 @@ parent: mysql-overview#查询与性能
 type: "article"
 tags: ["MySQL", "SQL优化", "性能排查", "Performance Schema"]
 created_at: "2026-10-12T21:32:44+08:00"
-updated_at: "2026-10-12T22:16:47+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://dev.mysql.com/doc/refman/8.4/en/slow-query-log.html"
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/performance-schema.html"
@@ -28,7 +28,7 @@ source:
 
 [Slow Query Log](https://dev.mysql.com/doc/refman/8.4/en/slow-query-log.html)默认关闭，普通记录条件涉及 `long_query_time` 和 `min_examined_row_limit`。还应检查 `slow_query_log`、`log_output` 与输出位置：即使开启日志，`log_output=NONE` 也不会留下查询记录；文件输出需要选择 FILE。
 
-文件条目中的 `Query_time` 是语句执行秒数，`Lock_time` 是获取锁的秒数，`Rows_sent` 是发给客户端的行数，`Rows_examined` 只计 Server 层检查的行，不包含存储引擎内部全部处理。因此不能直接把 examined 当成读页数或磁盘 I/O 次数。
+文件条目中的 `Query_time` 是语句执行秒数，`Lock_time` 是获取锁的秒数，`Rows_sent` 是发给客户端的行数，**「`Rows_examined` 只计 Server 层检查的行」**，不包含存储引擎内部全部处理。因此不能直接把 examined 当成读页数或磁盘 I/O 次数。
 
 手册明确：取得初始锁的时间不计入用于慢日志判断的执行时间，语句在执行完成、释放锁后才写入，日志顺序可能不同于开始执行顺序。由此不能用「尚无慢日志」排除一个仍在等待的请求，也不能把 Lock_time 当作所有类型等待的完整分解。
 
@@ -40,7 +40,7 @@ source:
 
 [语句指纹](https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/performance-schema-statement-digests.html)保留表名和结构，将字面量替换为参数标记，并去掉注释、规范空白。`user_id=7` 与 `user_id=8` 因而可以汇入同一种语句；汇总能找出重复负担，却隐藏了具体参数之间的差异，分析异常仍需取回代表性 SQL 与参数。
 
-[statement_analysis](https://dev.mysql.com/doc/refman/8.4/en/sys-statement-analysis.html)列出规范化语句的执行次数、总耗时、最大和平均耗时，以及检查行数、返回行数等，默认按总耗时降序排列。[sys 视图格式](https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/sys-schema-views.html)说明：`x$` 版本保留原始数值，可用于排序和计算，普通版本的时间通常格式化为带单位的文本。
+[statement_analysis](https://dev.mysql.com/doc/refman/8.4/en/sys-statement-analysis.html)列出规范化语句的执行次数、总耗时、最大和平均耗时，以及检查行数、返回行数等，**「默认按总耗时降序排列」**。[sys 视图格式](https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/sys-schema-views.html)说明：`x$` 版本保留原始数值，可用于排序和计算，普通版本的时间通常格式化为带单位的文本。
 
 下面是定位高累计耗时语句的只读示例；原始计时值为皮秒，除以 `10^12` 转成秒：
 
@@ -72,6 +72,6 @@ LIMIT 10;
 
 [语句汇总表](https://dev.mysql.com/doc/refman/8.4/en/performance-schema-statement-summary-tables.html)按 digest 等维度累计次数、计时与工作量；`FIRST_SEEN`、`LAST_SEEN` 标明这种语句首次和最近出现的时间。容量有限时，未能建立独立 digest 行的语句会进入 `DIGEST=NULL` 的汇总行，不能假定每种 SQL 都有单独记录。
 
-比较两次采样时，应按同一 `(SCHEMA_NAME, DIGEST)` 的累计计数作差，再由 `ΔSUM_TIMER_WAIT / ΔCOUNT_STAR` 计算窗口平均耗时；计时字段须有效且增量次数大于零。不要直接相减两次累计平均值、最大值或分位数。窗口分位数需要对应窗口的直方图或请求记录；重启、统计重置或记录变化会破坏差值可比性。这是依据累计语义得到的使用方法。
+比较两次采样时，应**「按同一 `(SCHEMA_NAME, DIGEST)` 的累计计数作差」**，再由 `ΔSUM_TIMER_WAIT / ΔCOUNT_STAR` 计算窗口平均耗时；计时字段须有效且增量次数大于零。不要直接相减两次累计平均值、最大值或分位数。窗口分位数需要对应窗口的直方图或请求记录；重启、统计重置或记录变化会破坏差值可比性。这是依据累计语义得到的使用方法。
 
 [setup_consumers](https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/performance-schema-setup-consumers-table.html)决定事件信息写到哪些目的表；手册示例中语句历史与更长历史、等待历史的默认开关不同，并存在上层采集依赖。因此排查前须核对实际启用项、计时与历史容量，空表不能单独证明没有活动；事后开启采集也不能还原之前未记录的事件。

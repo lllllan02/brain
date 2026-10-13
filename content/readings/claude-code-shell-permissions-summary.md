@@ -4,13 +4,13 @@ parent: tool-permission-design
 category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10T20:44:35+08:00"
-updated_at: "2026-10-10T20:44:35+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://code.claude.com/docs/en/permissions"
   - "https://code.claude.com/docs/en/permission-modes"
 ---
 
-**Claude Code 结合命令解析、权限规则和运行模式决定是否执行；命令匹配无法保证识别脚本的全部行为。** 以下按 2026-10-10 官方文档整理，模式细节可能随版本变化。
+**「Claude Code 结合命令解析、权限规则和运行模式决定是否执行；命令匹配无法保证识别脚本的全部行为。」** 以下按 2026-10-10 官方文档整理，模式细节可能随版本变化。
 
 ## Shell 规则能识别什么？
 
@@ -26,4 +26,4 @@ source:
 - `auto`：明确规则先处理，其余部分操作交给分类器，结合调用与会话上下文审查；存在受保护路径等例外。分类器无有效结论时拒绝，特定情形再转人工确认。
 - `dontAsk`：原本需要询问的调用直接拒绝，适合不能等待交互的环境。
 
-可借鉴的是「解析与规则 → 模式决定后续处理」的分工。分类器审查与人工批准都不等于证明任意脚本安全；规则、审批和沙箱各自承担一部分约束。SDK 的检查接入点另见[[claude-permissions-summary|Claude Agent SDK 权限摘要]]。
+可借鉴的是**「解析与规则 → 模式决定后续处理」**的分工。分类器审查与人工批准都不等于证明任意脚本安全；规则、审批和沙箱各自承担一部分约束。SDK 的检查接入点另见[[claude-permissions-summary|Claude Agent SDK 权限摘要]]。

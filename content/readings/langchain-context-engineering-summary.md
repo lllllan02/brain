@@ -3,11 +3,11 @@ title: "LangChain：写入、选择、压缩与隔离上下文"
 category: "Agent"
 tags: ["Agent", "上下文管理"]
 created_at: "2026-10-11T15:24:08+08:00"
-updated_at: "2026-10-11T15:24:08+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Context Engineering](https://www.langchain.com/blog/context-engineering-for-agents)"
 ---
 
-**LangChain 将上下文工程归纳为写入、选择、压缩与隔离四类可组合策略，分别处理信息存在哪里、何时取入、怎样缩减和由谁使用。** 本文导读对应 2025-07-02 的文章。
+**「LangChain 将上下文工程归纳为写入、选择、压缩与隔离四类可组合策略，分别处理信息存在哪里、何时取入、怎样缩减和由谁使用。」** 本文导读对应 2025-07-02 的文章。
 
 ## 问题为什么不限于窗口超长？
 
@@ -26,6 +26,6 @@ source: "[Context Engineering](https://www.langchain.com/blog/context-engineerin
 
 ## 怎样判断实现是否有效？
 
-作者建议先观察真实轨迹和 token 使用，再评测改动对任务结果的影响。LangGraph 用检查点持久化线程状态、用长期存储跨会话保存信息；节点可选择输入、处理摘要，状态字段与沙箱可承载外部数据。LangSmith 用于追踪和评测。
+作者建议**「先观察真实轨迹和 token 使用」**，再评测改动对任务结果的影响。LangGraph 用检查点持久化线程状态、用长期存储跨会话保存信息；节点可选择输入、处理摘要，状态字段与沙箱可承载外部数据。LangSmith 用于追踪和评测。
 
 这些框架能力是文中实现示例，四类策略并不依赖特定框架。文章汇集不同系统经验，不能把其中某个实验的收益直接推广到其他任务；工具数量较多时的检索方案，也需结合 [[manus-context-engineering-summary|Manus 提出的缓存与历史一致性约束]]判断。

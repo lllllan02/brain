@@ -2,18 +2,18 @@
 title: "VictoriaMetrics：WaitGroup：计数、唤醒与对齐"
 category: "Go"
 created_at: "2026-10-08"
-updated_at: "2026-10-10"
+updated_at: "2026-10-13T12:48:15+08:00"
 tags: ["Go", "WaitGroup", "源码"]
 aliases: ["WaitGroup 实现"]
 parent: victoriametrics-go-concurrency
 source: "[Go sync.WaitGroup and The Alignment Problem](https://victoriametrics.com/blog/go-sync-waitgroup/)，VictoriaMetrics"
 ---
 
-**WaitGroup 要同时处理“还剩多少任务”和“有多少人在等待”；原文用合并的原子状态解释唤醒机制，再追溯跨平台对齐问题。**
+**「WaitGroup 要同时处理“还剩多少任务”和“有多少人在等待”；原文用合并的原子状态解释唤醒机制，再追溯跨平台对齐问题。」**
 
 ## 计数如何与等待衔接
 
-原文实现把任务计数与等待者数量放入同一个 64 位状态。`Add/Done` 更新任务计数，`Wait` 登记等待者，计数归零时再唤醒。组合状态使两个数字能被一致地观察和修改，避免把相关变化拆成互相竞争的独立更新。
+原文实现把**「任务计数与等待者数量放入同一个 64 位状态」**。`Add/Done` 更新任务计数，`Wait` 登记等待者，计数归零时再唤醒。组合状态使两个数字能被一致地观察和修改，避免把相关变化拆成互相竞争的独立更新。
 
 ## 为什么布局反复变化
 

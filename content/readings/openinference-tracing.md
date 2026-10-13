@@ -3,13 +3,13 @@ title: "OpenInference：AI 操作语义与埋点仓库"
 category: "可观测性"
 tags: ["Agent", "Trace", "OpenTelemetry"]
 created_at: "2026-10-12T23:19:16+08:00"
-updated_at: "2026-10-12T23:19:16+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://github.com/Arize-ai/openinference"
   - "https://github.com/Arize-ai/openinference/blob/main/spec/semantic_conventions.md"
 ---
 
-**OpenInference 提供 AI 应用的语义约定和埋点插件，利用 OpenTelemetry 传递追踪数据。** 本文关注其如何表达模型与工具之间的信息，依据 2026-10-12 的仓库 README 和规范，未部署或运行示例。
+**「OpenInference 提供 AI 应用的语义约定和埋点插件，利用 OpenTelemetry 传递追踪数据。」** 本文关注其如何表达模型与工具之间的信息，依据 2026-10-12 的仓库 README 和规范，未部署或运行示例。
 
 ## 一个 Span 怎样说明自己做了什么？
 
@@ -23,4 +23,4 @@ source:
 
 其数据可发送到兼容 OpenTelemetry 的后端，Phoenix 和 Arize 提供原生支持。接入时仍要区分「后端接受 Span」与「后端认识这些 AI 属性」：传输兼容不能自行保证专用视图、消息展示或成本统计。
 
-OpenInference 与 [[otel-genai-tracing|OTel GenAI 约定]] 都为 AI 操作赋予语义，但字段并不相同。选择集成时应核对实际导出格式和后台支持；自动埋点覆盖的是所支持 SDK 的调用，应用自己的验收结果与业务状态仍需明确记录。
+OpenInference 与 [[otel-genai-tracing|OTel GenAI 约定]] 都为 AI 操作赋予语义，但**「字段并不相同」**。选择集成时应核对实际导出格式和后台支持；自动埋点覆盖的是所支持 SDK 的调用，应用自己的验收结果与业务状态仍需明确记录。

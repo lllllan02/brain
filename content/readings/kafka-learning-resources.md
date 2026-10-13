@@ -5,7 +5,7 @@ parent: kafka-overview
 type: "article"
 tags: ["Kafka", "消息队列"]
 created_at: "2026-10-12T19:38:04+08:00"
-updated_at: "2026-10-12T19:49:06+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://kafka.apache.org/43/getting-started/introduction/"
   - "https://kafka.apache.org/43/getting-started/quickstart/"
@@ -24,7 +24,7 @@ source:
   - "https://github.com/Snailclimb/JavaGuide/blob/main/docs/high-performance/message-queue/kafka-questions-01.md"
 ---
 
-**这组资料分别用于建立 Kafka 的整体认识、核对机制与版本、寻找实现入口和发现面试问题。** 官方文档按 4.3 路径阅读；仓库默认分支持续变化，进入源码或实验时需要另行固定版本。本导读摘取与入门主线和资料选择相关的内容，不代替完整手册，也不表示全部题目已经逐项核验。
+**「这组资料分别用于建立 Kafka 的整体认识、核对机制与版本、寻找实现入口和发现面试问题。」** 官方文档按 4.3 路径阅读；仓库默认分支持续变化，进入源码或实验时需要另行固定版本。本导读摘取与入门主线和资料选择相关的内容，不代替完整手册，也不表示全部题目已经逐项核验。
 
 ## 整体认识与第一条消息
 
@@ -36,7 +36,7 @@ source:
 
 ## 怎样查机制与参数
 
-[Design](https://kafka.apache.org/43/design/design/)的 Consumer Position 与 Message Delivery Semantics 两节可以连着读：常规消费组用每个分区的位点表示进度，降低逐条维护确认状态的成本，也允许回退读取。但业务处理与位点保存之间仍有失败窗口：先保存进度再处理，崩溃可能跳过工作；先处理再保存进度，重启可能重复。Kafka 内部输出与位点可以通过事务协调，外部系统的业务效果仍需额外配合。
+[Design](https://kafka.apache.org/43/design/design/)的 Consumer Position 与 Message Delivery Semantics 两节可以连着读：**「常规消费组用每个分区的位点表示进度」**，降低逐条维护确认状态的成本，也允许回退读取。但业务处理与位点保存之间仍有失败窗口：先保存进度再处理，崩溃可能跳过工作；先处理再保存进度，重启可能重复。Kafka 内部输出与位点可以通过事务协调，外部系统的业务效果仍需额外配合。
 
 | 要澄清的问题 | 官方定位与阅读重点 |
 | --- | --- |
@@ -48,7 +48,7 @@ source:
 
 ## 旧资料需要核对哪些版本边界
 
-[KRaft](https://kafka.apache.org/43/operations/kraft/)区分 Broker 与 Controller 角色：Controller 组成元数据 quorum，维持其可用性需要多数 Controller 存活。角色可以合并部署，但官方指出合并会减少隔离能力，不建议用于关键部署。[KRaft vs ZooKeeper](https://kafka.apache.org/43/getting-started/zk2kraft/)列出旧配置与管理方式的变化；涉及 ZooKeeper 的教程应作为旧架构资料阅读。
+[KRaft](https://kafka.apache.org/43/operations/kraft/)区分 Broker 与 Controller 角色：Controller 组成元数据 quorum，**「维持其可用性需要多数 Controller 存活」**。角色可以合并部署，但官方指出合并会减少隔离能力，不建议用于关键部署。[KRaft vs ZooKeeper](https://kafka.apache.org/43/getting-started/zk2kraft/)列出旧配置与管理方式的变化；涉及 ZooKeeper 的教程应作为旧架构资料阅读。
 
 [Consumer Rebalance Protocol](https://kafka.apache.org/43/operations/consumer-rebalance-protocol/)说明新消费者协议从 4.0 起正式可用，采用增量协调并把分配及部分心跳配置移到服务端。该页同时区分 `classic` 与 `consumer` 两种协议，并说明客户端如何启用。分析 Rebalance 时要记录实际协议、客户端版本与分配方式，不能把经典协议中的全组同步流程当作所有消费组的共同过程。
 
@@ -68,7 +68,7 @@ Design 另有 Share Consumer 章节；共享消费与常规按分区分配的消
 
 [JavaGuide：Kafka 常见问题总结](https://github.com/Snailclimb/JavaGuide/blob/main/docs/high-performance/message-queue/kafka-questions-01.md)覆盖架构、性能、可靠性、顺序、积压、Rebalance 与重试，可用来发现问题。它是题目与讲解入口；技术结论仍需按官方资料核对，性能宣传和题目出现频率不作为学习优先级依据。其中消费重试部分明确使用 Spring Kafka 2.9.3，属于特定框架版本的行为。
 
-阅读时可以把宽泛问法改成带失败条件的问题。以下是根据主题整理的追问，不是真实面试记录，也不是该资料的逐字题目：
+阅读时可以**「把宽泛问法改成带失败条件的问题」**。以下是根据主题整理的追问，不是真实面试记录，也不是该资料的逐字题目：
 
 - 「怎样避免消息丢失」 → 发送已写入但响应丢失、业务已提交但位点未提交，恢复时各会发生什么？
 - 「怎样保证顺序」 → 同一订单已按 Key 路由，增加分区或消费者并发处理后还需要什么条件？

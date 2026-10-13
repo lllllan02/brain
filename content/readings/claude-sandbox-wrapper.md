@@ -4,11 +4,11 @@ title: "Claude 的公开沙箱运行时如何包装命令"
 category: "Agent"
 tags: ["Agent", "沙箱", "源码"]
 created_at: "2026-10-10"
-updated_at: "2026-10-10"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: ["[`wrapWithSandbox`](https://github.com/anthropics/sandbox-runtime/blob/4160dcde76f9905268cb76826381665c422bfbf6/src/sandbox/sandbox-manager.ts#L1879)"]
 ---
 
-**Claude 使用的公开 `sandbox-runtime` 负责生成受限启动命令；真正执行命令的是调用方。**
+**「Claude 使用的公开 `sandbox-runtime` 负责生成受限启动命令；真正执行命令的是调用方。」**
 
 ## 包装接口做了什么
 
@@ -18,7 +18,7 @@ source: ["[`wrapWithSandbox`](https://github.com/anthropics/sandbox-runtime/blob
 
 ## 能从这份源码确认到哪里
 
-它可以解释公开库的包装机制，但最终保护范围还取决于调用方是否使用包装结果及所传配置，不能单独证明 Claude Code 每一种工具都经过同一个入口。
+它可以解释公开库的包装机制，但**「最终保护范围还取决于调用方是否使用包装结果及所传配置」**，不能单独证明 Claude Code 每一种工具都经过同一个入口。
 
 继续追踪网络可看[[claude-sandbox-network|Linux 网络隔离与代理]]；[[claude-sandbox-devcontainer|devcontainer]]则覆盖整个开发环境，是另一层边界。
 

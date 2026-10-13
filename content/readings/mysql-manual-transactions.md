@@ -5,7 +5,7 @@ parent: mysql-overview
 type: "article"
 tags: ["MySQL", "事务", "MVCC"]
 created_at: "2026-10-12T14:03:16+08:00"
-updated_at: "2026-10-12T21:37:47+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://dev.mysql.com/doc/refman/8.4/en/innodb-transaction-isolation-levels.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/innodb-consistent-read.html"
@@ -38,7 +38,7 @@ MySQL 8.4 的 InnoDB 文档从事务边界、读取可见性和冲突协调解�
 
 [隔离级别](https://dev.mysql.com/doc/refman/8.4/en/innodb-transaction-isolation-levels.html)列出读未提交、读已提交（RC）、可重复读（RR）和可串行化，InnoDB 默认 RR。基础阅读先抓住 RC 与 RR 普通查询的差异。
 
-[一致性非锁定读](https://dev.mysql.com/doc/refman/8.4/en/innodb-consistent-read.html)明确：RC 的每次一致性读使用新快照；RR 通常沿用本事务首次一致性读建立的快照，但仍能看到本事务自己的修改。不能直接把这个规则套给 UPDATE 或 `SELECT ... FOR UPDATE`。
+[一致性非锁定读](https://dev.mysql.com/doc/refman/8.4/en/innodb-consistent-read.html)明确：**「RC 的每次一致性读使用新快照」**；**「RR 通常沿用本事务首次一致性读建立的快照」**，但仍能看到本事务自己的修改。不能直接把这个规则套给 UPDATE 或 `SELECT ... FOR UPDATE`。
 
 文档的双会话示例中，A 在 RR 事务内首次查询看不到记录；B 插入并提交后，A 再次普通查询仍看不到，A 提交并开始后续查询才看到。例子说明的是快照建立时间与事务边界的关系，不表示 RR 中所有语句永远只能访问同一批行。
 
@@ -66,6 +66,6 @@ MySQL 8.4 的 InnoDB 文档从事务边界、读取可见性和冲突协调解�
 
 [死锁处理](https://dev.mysql.com/doc/refman/8.4/en/innodb-deadlocks-handling.html)要求应用准备重新执行被死锁回滚的事务，并建议缩短事务、统一访问顺序和使用合适索引。SHOW ENGINE INNODB STATUS 提供最近一次死锁信息；排查当前等待可结合 [ACID 章节](https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/mysql-acid.html)指向的 Performance Schema data_locks、data_lock_waits，找到谁持有什么、谁正在等待。
 
-[错误处理](https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/innodb-error-handling.html)明确区分：死锁回滚整个被选中的事务；锁等待超时默认只回滚当前语句，启用 innodb_rollback_on_timeout 后才整体回滚。单条语句回滚也不等于释放全部事务锁。应用的重试范围必须与回滚范围一致，[[mysql-locks-and-deadlocks|加锁与死锁卡片]]据此说明等待环与失败后的处理。
+[错误处理](https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/innodb-error-handling.html)明确区分：**「死锁回滚整个被选中的事务」**；**「锁等待超时默认只回滚当前语句」**，启用 innodb_rollback_on_timeout 后才整体回滚。单条语句回滚也不等于释放全部事务锁。应用的重试范围必须与回滚范围一致，[[mysql-locks-and-deadlocks|加锁与死锁卡片]]据此说明等待环与失败后的处理。
 
 本篇示例来自文档与源码分析，未执行并发实验；具体 SQL 的完整锁集合仍需带版本、隔离级别、索引、数据与执行计划验证。

@@ -2178,55 +2178,55 @@
       "title": "A-Mem：让新记忆改变已有记忆的组织",
       "collection": "readings",
       "state": "unread",
-      "digest": "e7cd7744675f75041ff9abf6afd28db65b1af0598d15c0530b4efb80d3f45e4e"
+      "digest": "979929caaf0b5f071bc01220e188a6cd0433517152957b3bc18abae947fded3c"
     },
     "agent-evaluation-infrastructure": {
       "title": "Anthropic：资源限制如何改变 Agent 评测结果",
       "collection": "readings",
       "state": "unread",
-      "digest": "286b2679656ce8ae2d6ab3fe3951d9ab7f4695ee9b6276afd04bfe78788e3030"
+      "digest": "4c9be06d0c755af9daf7ee53d236982fc87e38793772485d3fd329d7cd9fbedb"
     },
     "agentdojo-evaluation": {
       "title": "AgentDojo：同时测正常任务与提示注入防御",
       "collection": "readings",
       "state": "unread",
-      "digest": "b089d47fa6a9f035c4442f5b66f2753df65831785c9bd6e8df987ab78c6a10de"
+      "digest": "e9fd11cc0dd8c84521c7bea472c961b3fc07ea7bacf494690ee82967de1de359"
     },
     "agentevals-trajectory": {
       "title": "AgentEvals：轨迹匹配与模型裁判",
       "collection": "readings",
       "state": "unread",
-      "digest": "9708f56dd8295e089650ae6392278878e82faf5263d766859944de1e519754a7"
+      "digest": "0dfe5815a397fb432d1e4c64171ce5c04caf3468988ab0e656fbf16703a8806a"
     },
     "anthropic-advanced-tool-use-summary": {
       "title": "Anthropic：工具搜索、程序调用与使用示例",
       "collection": "readings",
       "state": "unread",
-      "digest": "d9dc18546d9cf56f61cd6f428feb3876a65f12ef7c2318c716ecad4054c7dc0a"
+      "digest": "bfbd8f2b388cb8af6f550df5bfdc2fdd77261b65f14bbdf7df8ab138d4f2b5ab"
     },
     "anthropic-agent-evals-summary": {
       "title": "Anthropic：如何构建可信的 Agent 评测",
       "collection": "readings",
       "state": "unread",
-      "digest": "1c937a0fd93d0515af143e507edeffedc7e352f33c4456519102c8984e132937"
+      "digest": "ee3d3aafd6419ec03727faab4034becbfa8c3e8a15d097e696f11726f4204792"
     },
     "anthropic-context-editing-summary": {
       "title": "Anthropic：按规则清理旧工具结果",
       "collection": "readings",
       "state": "unread",
-      "digest": "6fae7d29858565d4967093d68bc86f0ac0b1aee9b1ac4c0e5a313c1de90795c0"
+      "digest": "b066c6286eabee2b5e0cb62b9eaeb08cfb724013c148935978b5716452649e64"
     },
     "anthropic-context-engineering-summary": {
       "title": "Anthropic：为每一步选择有效上下文",
       "collection": "readings",
       "state": "unread",
-      "digest": "14305bdfca6184a22d2dfeb552f3264b10eb70e5e1b68b2ae25ee6a04a03d15d"
+      "digest": "d63aeeb2e08026c6cc70a8c1e5cd3b6f2f43e80419d8cf843faf8748468977a4"
     },
     "anthropic-contextual-retrieval": {
       "title": "Anthropic：为片段补背景后再建立索引",
       "collection": "readings",
       "state": "unread",
-      "digest": "2e2e3353d99b31688d368e1c83ea8007e7d2fa40a9b893a7bfda4bf2bbaa80c9"
+      "digest": "2d45a6ae8b35fd4a83ff73f268985fec350e9c126b2b57efd41ce07205c0260d"
     },
     "anthropic-effective-agents-summary": {
       "title": "Anthropic：Agent 的定义、运行与选型",
@@ -2238,997 +2238,997 @@
       "title": "Anthropic：用生成与评估分工改进长任务 Harness",
       "collection": "readings",
       "state": "unread",
-      "digest": "3cc05db0274c6f0db5b5c66926ab8db8ad0bb3e49389e5d17268f8612f9f3b30"
+      "digest": "02e249495aa350b54bd34b532130cb3c1230c9eb66d0d7dd137ad04dd2d1c174"
     },
     "anthropic-long-running-harness-summary": {
       "title": "Anthropic：长任务为什么不能只靠上下文压缩",
       "collection": "readings",
       "state": "unread",
-      "digest": "1fa97a34fd33a53692bcf1c5669e8e420a8280886feffa80597b449d1727ea8a"
+      "digest": "c7a2fcc04946696374adb31f69bb8473ca58337fa2438779f28194ea23bb3a11"
     },
     "anthropic-managed-agents-summary": {
       "title": "Anthropic：把 Harness、会话记录与沙箱解耦",
       "collection": "readings",
       "state": "unread",
-      "digest": "0ecc821b5e7d0ee774810a05a8f7378679366d0bf023cb2a7f90a0da67477877"
+      "digest": "3283b8b4eaa2705c47ab2108ca5e6c9f1fd25bd3c8d2340d51e4c7e1e7f85006"
     },
     "anthropic-memory-tool": {
       "title": "Anthropic Memory Tool：模型提出操作，应用保存文件",
       "collection": "readings",
       "state": "unread",
-      "digest": "59bd192bd3ba534a60ca6acf7940a82e560cb26b0314a96349f77ae8cb6f1d2c"
+      "digest": "059c0d34953738425ed46a4d486b1e261589b5db5912d067eb641112bb9b998b"
     },
     "anthropic-tool-design-summary": {
       "title": "Anthropic：如何设计有效的 Agent 工具",
       "collection": "readings",
       "state": "unread",
-      "digest": "3ca1be063f9d87977bf005e9afe6dde541ef6a6aba254b465b208a7616333c66"
+      "digest": "28a5ba365777401b948165ed90544a6734a5afc317d136be8ff9019e6304e9be"
     },
     "aws-agentcore-authorization-summary": {
       "title": "AWS AgentCore：把身份与工具参数交给授权策略",
       "collection": "readings",
       "state": "unread",
-      "digest": "1e5f9ffb6b9df1c7481ae276481af0d9c396d7a5e780408e80c03a91f7c339f3"
+      "digest": "52a856e6008d966359c15fed90008eebad5882db5512ecb70a4a82177539b7c8"
     },
     "aws-idempotent-retries-summary": {
       "title": "AWS：用幂等 API 保证重试安全",
       "collection": "readings",
       "state": "unread",
-      "digest": "0577fc01bd28ecf078e3018f526d3d4596add0de4cb8c257c9471d48c3e69ef3"
+      "digest": "9c83b15ece61869b7affc18bf796eb39585a678ad1b23f7134abd1325b387e11"
     },
     "aws-retries-summary": {
       "title": "AWS：超时、重试、退避与抖动",
       "collection": "readings",
       "state": "unread",
-      "digest": "4f9a8fc150e5b30b5e3c26105495e50fc5fd6c5df20a8d978bb942ee62484efc"
+      "digest": "b3c004fd5b40cd0acc0a22aa83ec034c2a9baf1fa0bda4e6e4737429fda6fdbb"
     },
     "aws-retry-errors-summary": {
       "title": "AWS SDK：按错误语义判断是否重试",
       "collection": "readings",
       "state": "unread",
-      "digest": "bafdd5de746da407d775afb96b1a3126f7054bc632370ca723803a30c74e5afd"
+      "digest": "18194681fbe0d19cab557cc6f9c6eea91f707a37bae3cc56bd2e68dd5ad804d5"
     },
     "azure-rag-chunking": {
       "title": "Azure AI Search：文档切分的单位与取舍",
       "collection": "readings",
       "state": "unread",
-      "digest": "000a4358819918a5b4f1e2febe22d86c0f1c5914e667b87e2a37c316c9a81a83"
+      "digest": "473cb117d3049019d5a605e7ebfa64a0722ef405013f3e1756431d6b044897f3"
     },
     "bfcl-evaluation": {
       "title": "BFCL V3：多轮工具调用与状态检查",
       "collection": "readings",
       "state": "unread",
-      "digest": "cd875a8f7c3f72791a23b243451e57dc8d7c05ed8d4bd5f6c7c4ec6ab3f82da7"
+      "digest": "ebfa834714255ca5c47eff2dbee7d21374d5b9726faf568f4212f1eb1ca08416"
     },
     "browser-agent-benchmarks": {
       "title": "WebArena 与 OSWorld：用环境状态验收界面操作",
       "collection": "readings",
       "state": "unread",
-      "digest": "f934ea0338b4b23848386367eee51ae0e9c587b299e46b144f196df7a59f42d5"
+      "digest": "4de1438e80b497224eb7b0f0c8847ef5fe717634fc0b6070e0d752680f2d80d9"
     },
     "claude-code-context-budget-summary": {
       "title": "Claude Code：上下文预算与压缩阈值",
       "collection": "readings",
       "state": "unread",
-      "digest": "b38ccbaf44b6224aefbc7a63ffe956afab2dfe8ccc77589fecce7de5ad06220d"
+      "digest": "a3d9f837377cb6b478d9a55e32ff10e9a027f730ef342269060db346a3da7172"
     },
     "claude-code-memory": {
       "title": "Claude Code：规则文件与自动记忆索引",
       "collection": "readings",
       "state": "unread",
-      "digest": "ef6dc6f1ec1168a56702b683e563c8d8941644d75e2c6416d96bc400835f4ccd"
+      "digest": "0a974dd238e118f3b91f2ff2adb721a31632736e03a8ad78b29d8b91558b996b"
     },
     "claude-code-shell-permissions-summary": {
       "title": "Claude Code：Shell 权限规则与无法判定的调用",
       "collection": "readings",
       "state": "unread",
-      "digest": "a2e5c049c2d14cb6be21c670a38d7d673becd3f3b308fb14c98992e0d5b907e7"
+      "digest": "ee827ca6a67c331101ae71e5d23f6be10f38b3d7809a4b6b248e7598eb8e8715"
     },
     "claude-compaction-summary": {
       "title": "Claude：服务端摘要压缩怎样接回会话",
       "collection": "readings",
       "state": "unread",
-      "digest": "7dcca9e6554f96d015bf17817a1421a03a48ba252abf99bb37a9d078d8a0e77c"
+      "digest": "5d8b32e3fd80f2d45fce8785642fac124e4b4a308b02843c292accb89a21bef6"
     },
     "claude-context-budget-summary": {
       "title": "Claude：上下文窗口与 Token 计数",
       "collection": "readings",
       "state": "unread",
-      "digest": "d14be6b648468cfc34b8fed1d96ee2a7ba9d49df975580073793a508d0375503"
+      "digest": "49d9588c4516f50a0bd48f35a4e958759282baec198737be2a427485230f841b"
     },
     "claude-permissions-summary": {
       "title": "Claude Agent SDK：权限规则如何决定工具调用",
       "collection": "readings",
       "state": "unread",
-      "digest": "e27f0fa2d71bf3883575ffd73dd041afa34e0e4e56888e4161f72306163b85d8"
+      "digest": "0ba4910dc6bd26156bbe6cc059412f8673eae807798bddf13eb2e557491dae25"
     },
     "claude-sandbox-devcontainer": {
       "title": "Claude Code 的 Bash 沙箱与 devcontainer 有何区别",
       "collection": "readings",
       "state": "unread",
-      "digest": "f9727e5024f85cb2aef077314a97dc2ed0ab81904822ce042d9c988d56f02439"
+      "digest": "a48e2b8462f8d0fe3f508bd73f724be5213ae67c21dbd408c0847ee189e463ed"
     },
     "claude-sandbox-network": {
       "title": "Claude 的 Linux 沙箱如何组合网络隔离与代理",
       "collection": "readings",
       "state": "unread",
-      "digest": "246b299ea304529fc529186171a45988af53d33e0b0ac4ee032e1bf234d3509e"
+      "digest": "dd8a05cb2a5df35666291b414db6de2f6d7682d4cb7b3900d9f92dd3f752c025"
     },
     "claude-sandbox-overview": {
       "title": "Claude Code 沙箱源码阅读入口",
       "collection": "readings",
       "state": "unread",
-      "digest": "e8f98968d05a9e5e927cd6ba939b3d7c10ef0e1796ba4e01ef5f0c7b7414c5a4"
+      "digest": "2d5bed2e1f7f3053708eaca0d9aa4f6369c8a93fbf40d9382dea8de019c11201"
     },
     "claude-sandbox-wrapper": {
       "title": "Claude 的公开沙箱运行时如何包装命令",
       "collection": "readings",
       "state": "unread",
-      "digest": "d766438b934f2cd0449968b84038012032667a6cef6131d24a43cff69b8d21a3"
+      "digest": "a72909fc36ad8f6e6926778e1d3fc8af238b150463392ede56e1359470d31e72"
     },
     "claude-tool-search": {
       "title": "Claude 的 Tool Search 与延迟加载",
       "collection": "readings",
       "state": "unread",
-      "digest": "406e197acb3b5dbad445732d9ac6e3b3256e4bf3888fcdc343ea23fa968f48e2"
+      "digest": "8f7e31a16c9bec127b024d4577b0a8bce5b46777071dd1a1512628f266b4911b"
     },
     "cloudflare-code-mode-summary": {
       "title": "Cloudflare Code Mode：用代码组织多步工具调用",
       "collection": "readings",
       "state": "unread",
-      "digest": "2aed47f2112addc5e8f67c3c7dc7a148841d6b79540344a9f1b95ac8941b150d"
+      "digest": "3500b91647a6488ae15b73cf060b893b9ac34fc3f6527332c00a1047ac303a52"
     },
     "codex-context-budget-summary": {
       "title": "Codex：上下文预算与压缩阈值",
       "collection": "readings",
       "state": "unread",
-      "digest": "96f2f1d99f1d8801cd7215dc575dc0b58c949c0bb8cb93f8b6eeb2c25751c238"
+      "digest": "d8eecf91ebe168198c5acce3df05b0628248c53822c0cea5699386d39e643844"
     },
     "codex-credential-broker": {
       "title": "Codex 如何用凭据代理替代子进程中的真实密钥",
       "collection": "readings",
       "state": "unread",
-      "digest": "897f1a027a88f242de0b801527103d50e850f4ddf9f9deb2aeecd3608672c05e"
+      "digest": "70a400f98223976aaeeefc5a9a72f39020f92410a6c3fafe8006b5e685c48fce"
     },
     "codex-exec-policy-summary": {
       "title": "Codex：命令规则、审批与沙箱如何共同决策",
       "collection": "readings",
       "state": "unread",
-      "digest": "f1da664e9fbba47d12fb1c43a66563265f2b7cfe4f6ecff1a40a1cd9dad0cd3f"
+      "digest": "ff930d5f37ee20c5ae3637781cbfd80a270bba8f8218ecd10174106a5a1feaad"
     },
     "codex-exec-session": {
       "title": "Codex 如何让长命令跨工具调用持续运行",
       "collection": "readings",
       "state": "unread",
-      "digest": "f51756511a720885e2cd6b57d7782e52d9474de2a6c83a00bc3e0f057a3b1232"
+      "digest": "8a4bfc45fa9f895aaace1056d2cd3fa321cdfcdaaa444c68393ec8f0c846aea1"
     },
     "codex-memory-pipeline": {
       "title": "Codex 源码：后台提取与跨会话整合",
       "collection": "readings",
       "state": "unread",
-      "digest": "82577b50374d53e09910ed7122ea2710b68d6cc029459bdf666878393a571779"
+      "digest": "7378386bca9fb8eedebabee9961abfbc07835d10fd6a5766a60d72dd96e9f14b"
     },
     "codex-sandbox-filesystem": {
       "title": "Codex 如何保护可写工作区内的敏感路径",
       "collection": "readings",
       "state": "unread",
-      "digest": "233e7c8dffad9ca8cbe5f5a46eefce2c82145c9dd837bf16363dbbfb27a22b20"
+      "digest": "1304f9d55b8c6283904a2afdbfd49fcc3af46be5fbb1fb4f0754641615738f68"
     },
     "codex-sandbox-launch": {
       "title": "Codex 如何把工具命令送进沙箱",
       "collection": "readings",
       "state": "unread",
-      "digest": "baa5e8ba53677826a30d0f2890a7318508c95dae9f750ca05eff214f6a678ceb"
+      "digest": "5973ee567375cd1ec132500c5bffb2d1173ba1ed9fb2bab78714d39e55cc15c9"
     },
     "codex-sandbox-overview": {
       "title": "Codex 沙箱源码阅读入口",
       "collection": "readings",
       "state": "unread",
-      "digest": "23110b603c8da4b8126a3d48c425e2aea05817726856d24eef126258017979c0"
+      "digest": "e7c946ea8b3814c70add17dd1d43219936b038659d3cb636e34c0911d38c10d6"
     },
     "codex-sandbox-platforms": {
       "title": "Codex 如何把权限策略转换为平台沙箱",
       "collection": "readings",
       "state": "unread",
-      "digest": "889a6b64b5bbb6b90ed4a7dfe6036bd3f8db4964a3e76607b14e1738356125ea"
+      "digest": "ac8a2e6013c26e0bbdf76a27bd44ce9f0a8cba7b08af3918e28c15ab2386fb76"
     },
     "codex-sandbox-retry": {
       "title": "Codex 遇到沙箱拒绝后如何决定重试",
       "collection": "readings",
       "state": "unread",
-      "digest": "523f29e27c06b5ae7dd787b672418884cffa59da754b2ba127ba13eadda7ed54"
+      "digest": "1a1b4ccd388e61eb6a810375dd9a14a84e41eae9c4ceee584b9c3a54ddd7acb8"
     },
     "codex-sandbox-tests": {
       "title": "Codex 如何测试文件边界与超时清理",
       "collection": "readings",
       "state": "unread",
-      "digest": "7a74f415c0911a2803d9de64ff32a2459e63cc53afd4cf3e4a3e6ad1bfa100ab"
+      "digest": "19ed01e312c9fcd460d0f9141af6fd99f056dfcb3b48bc4e499d9c04d1d6bfdb"
     },
     "complexity-trap-summary": {
       "title": "The Complexity Trap：旧工具结果屏蔽能否替代摘要",
       "collection": "readings",
       "state": "unread",
-      "digest": "e5541e701c43c26eeef916dae01782b940cf71803f6cb7f2747fecf517e39f08"
+      "digest": "da271561b58995191371a18cf7f08a76c34f0699af82084920ef2d3355aded4e"
     },
     "context-budget-scope-summary": {
       "title": "压缩与裁剪阈值：不同计数范围的例子",
       "collection": "readings",
       "state": "unread",
-      "digest": "6aef93e986b9f47b549dbd652d4e61c6260a1eff900eee09c957e979d11ed61d"
+      "digest": "1343e3789b6870694894e177bcc0fafd3488c3301cd7f84b588477df3d59753d"
     },
     "critic-summary": {
       "title": "CRITIC：先用工具核验，再根据证据纠正",
       "collection": "readings",
       "state": "unread",
-      "digest": "a5f4658a59dbdc590821a8f03fdd4100b6e43360cd97e0eda5d3ca0cbfd89de4"
+      "digest": "8055a7ce51c33d4cbb4bef6d0cd67010f2e8a882a6352d443150f7ca5e86f131"
     },
     "deepagents-context-offloading-summary": {
       "title": "Deep Agents：外置上下文与原文回查",
       "collection": "readings",
       "state": "unread",
-      "digest": "ffe1842da5ff473543e3482f3607ed460e03f77de1cfd865b30496b0c2cf2b50"
+      "digest": "21e8c35e9479ea14bf43c97aa9c6da3b97f9af0bd5936c4a0aba032db94b4d55"
     },
     "docling-document": {
       "title": "Docling：保留结构与来源的文档解析",
       "collection": "readings",
       "state": "unread",
-      "digest": "86d84f9465b2b32041a09c42af160c440045d5bb1b264e0ff7c96190e876792c"
+      "digest": "0ebc59b44f62b9f7e40d4a2644adfa75e8cacfaf1ead110e96b91d06eccd6cf0"
     },
     "eino-langfuse-tracing": {
       "title": "Eino 的 Langfuse Trace 集成",
       "collection": "readings",
       "state": "unread",
-      "digest": "314af87744caf4bc2e0330e53c6aa2dca88b6632f8fe15cacd6cb6a183e939c6"
+      "digest": "3f47569d89c0cbd09be2cfba77e2f6ab9d9ebb7fcbec0b4c23d8da8e87e89738"
     },
     "factory-compression-evaluation-summary": {
       "title": "Factory：怎样评测压缩后的任务状态保留",
       "collection": "readings",
       "state": "unread",
-      "digest": "9f53d72be0370f81b90eb56e418b0e9517d9311d498d0a3c44fc1a77ba742472"
+      "digest": "c0e358984da364cc9662a45fdb5f993c2ab37ae0a6ede9d37420a98701c795a4"
     },
     "fastmcp-visibility-summary": {
       "title": "FastMCP：工具可见性与会话范围",
       "collection": "readings",
       "state": "unread",
-      "digest": "90d2fdcc6d6b04ed90cfbb2f2707c23c77d8e89d2885d49cb3ee75d6c1fde3c9"
+      "digest": "40932aae2715375660943179c86f8637f5adf1e74b9d10626260f145f998bc2c"
     },
     "gaia-evaluation": {
       "title": "GAIA：以可核验答案评测通用助手",
       "collection": "readings",
       "state": "unread",
-      "digest": "4348a80cd952f5c9845fa935367f0cb20087318af9d16c70895efde974a5a4f3"
+      "digest": "a1a3b05aa6e85f827e0ce52730aee7f9ee154cc2bbd0e068b585345ded8e497f"
     },
     "gcs-retry-strategy-summary": {
       "title": "Google Cloud Storage：错误可重试与操作可重复",
       "collection": "readings",
       "state": "unread",
-      "digest": "1d5c7bf447d1ca01f3b2d39b4e4a580211bf801de44c8715df3a6882c57c64c9"
+      "digest": "9aa214041204fa7849ef2e3976c0b5bd9679d9327db486016273e148f3a2b1d9"
     },
     "gemini-tool-scheduler-summary": {
       "title": "Gemini CLI：模型声明并行与顺序屏障",
       "collection": "readings",
       "state": "unread",
-      "digest": "2a18139a768bb4b385072b171c0822fc60ced46c14b9717dea18ad7c8d772525"
+      "digest": "7bf56afcccbc3f9a5a1cbb512e5972c43ea971803d916e2dfbc6d58464de7b63"
     },
     "generative-agents-memory": {
       "title": "Generative Agents：从经历检索到高层反思",
       "collection": "readings",
       "state": "unread",
-      "digest": "911aff05e5035677f0d87cfed5973e13502dd62c1cb2da63f5b9368f4f463d1d"
+      "digest": "29de3bc9d6bf53a445256916963be65855484bbc6818e811ba60075d7e229778"
     },
     "go-backoff-retry-summary": {
       "title": "Go backoff：用函数包装一次操作",
       "collection": "readings",
       "state": "unread",
-      "digest": "c1bd8768f3ac0bec791bf18b486ce87a3af30aaf96dbf8a90a985038950ec655"
+      "digest": "701caa81103e9c435a3abf777db9137897727006bff27e869893856fe21d1b3f"
     },
     "go-sql-connections": {
       "title": "Go 官方文档导读：数据库连接池与资源归还",
       "collection": "readings",
       "state": "unread",
-      "digest": "d25c0b2e7fc9af987c67a2f1de157043a6ef707a43b3ae663daf0e0c6cc54666"
+      "digest": "4e25e979caac6bfff8e0d58b9c84f8eb7f670cee28b69a95817f573e1a1e0838"
     },
     "graphiti-memory": {
       "title": "Graphiti：随时间变化的事实图",
       "collection": "readings",
       "state": "unread",
-      "digest": "fa5f5a724eb0456cbe1b2dbcc048dd27c2e53324c92d4c60f9a47f8d3dea5a4a"
+      "digest": "97291a57e0f056a3ea75d83025e30ab890a02efa0d07fad8b6de13e3875b089f"
     },
     "graphrag-docs": {
       "title": "Microsoft GraphRAG：实体、社区与两类查询",
       "collection": "readings",
       "state": "unread",
-      "digest": "b8a2830309d5c19e460f96a3a3742f884c735c8d72619f565c85a6cc7d3cc03c"
+      "digest": "801a808b251a73f99338f717057034963cc683b7ca066d617dbdb4583c4640d3"
     },
     "grpc-error-recovery-summary": {
       "title": "gRPC：错误码怎样表达恢复方式",
       "collection": "readings",
       "state": "unread",
-      "digest": "27c1b19d56e9ec9066b1cbff19bbdf6a28574227181b65fd95c0397c7e855323"
+      "digest": "e0aebed9ec3468929b50cfd49b812068a65426fbba5e2a7048a166a5f7ac59bb"
     },
     "harbor-evaluation": {
       "title": "Harbor：把 Agent 任务封装成环境与验收程序",
       "collection": "readings",
       "state": "unread",
-      "digest": "1132ca3906b7af4b688c5ac5f7c8483c42a1a948d4a7060251d96941e5a52fc1"
+      "digest": "7977014d4bb3f0f50d215b968772379480fa900790ca292611dbb66b2a9cc9ca"
     },
     "haystack-rag-pipelines": {
       "title": "Haystack：用组件连起索引与混合检索",
       "collection": "readings",
       "state": "unread",
-      "digest": "b22e97a9052bb4ba75c05c777f1a5eaf4836386489f357d762287b54c5e49ff6"
+      "digest": "33a6beff1efdb1e39618f4a3a346291705ac82eea086b5025f06219a262dc0fe"
     },
     "http-idempotency-summary": {
       "title": "RFC 9110：HTTP 幂等语义",
       "collection": "readings",
       "state": "unread",
-      "digest": "3b6919646d4cbfebbb8464733c79d06705afcef6db3bdedd43294f3db32a0192"
+      "digest": "61789d6dbbfbfc3835e97aa14d8110646e85f689cb0d1aa8dcbae80f743bc265"
     },
     "inspect-agent-evaluation": {
       "title": "Inspect：任务、执行器、评分器与隔离环境",
       "collection": "readings",
       "state": "unread",
-      "digest": "73d02388d4571947ff98047b8925f7e6b8f5039fc81a8ed31267871f6cffc2e5"
+      "digest": "9fa403bb955c92065ef117d84f889c8ee7d734b603fe6fd821b53f988a8af8d2"
     },
     "intrinsic-self-correction-summary": {
       "title": "无外部反馈的推理纠正：为什么可能越改越错",
       "collection": "readings",
       "state": "unread",
-      "digest": "4a2abd1c334d00c1fee02df8dcf90c4785768f86eea6b47538b33760f59cbed5"
+      "digest": "0f5abaf4ea2a11a5e78271216d27eb148a8a8c580959231b7e6b1d5dbc5d8080"
     },
     "kafka-learning-resources": {
       "title": "Kafka 学习资料导读",
       "collection": "readings",
       "state": "unread",
-      "digest": "a15df68ed1710c1d59dd07f3e7dc0d9f8a2b8e9f015b6560b426398634d1be1a"
+      "digest": "3f4a1781fdb21681a35a3e8d7b23272f2b774a45c9d823e4abebd88639b9fd3e"
     },
     "kafka-model-sources": {
       "title": "Kafka 定位与事件建模导读",
       "collection": "readings",
       "state": "unread",
-      "digest": "81fda697cc06867c73b05c1c3d52ecd93037aa8e3d86df10683c97fbd453754c"
+      "digest": "e8e58df249554e43fa8a58153f33eb7501c6c5c5b1057918de0d09f3e916ac39"
     },
     "kafka-selection-sources": {
       "title": "Kafka 与同类消息队列选型导读",
       "collection": "readings",
       "state": "unread",
-      "digest": "d78e0d44c62771d68fd135e748cb02ec668ab9bfac79a3ae93923eeac2ae1a71"
+      "digest": "9303c92fec4a130d56000c8c88bb6cd5ecfb65a61317cfc5744c8a85efade862"
     },
     "langchain-context-engineering-summary": {
       "title": "LangChain：写入、选择、压缩与隔离上下文",
       "collection": "readings",
       "state": "unread",
-      "digest": "21a056bb40fce42b99e11055bf0a3c00afdf95ad90ede7d5498e5359cf3873f4"
+      "digest": "3fd50f5c83c648bb36598ca4759b2b195f89e033c6190e189ac15dcd49ff4d31"
     },
     "langchain-guardrails-summary": {
       "title": "LangChain：行为检查如何接入 Agent",
       "collection": "readings",
       "state": "unread",
-      "digest": "6d59c0c9f77acf30091b5c60a94815c455b6213f51e05dafceb3f86692dcd4e8"
+      "digest": "91995b4673ae77925ffa849e40b043ad61f82da68f25cdc671f1085bc31a9380"
     },
     "langchain-harness-anatomy-summary": {
       "title": "LangChain：从模型的限制推导 Harness 的组成",
       "collection": "readings",
       "state": "unread",
-      "digest": "7b382fd816b891e86686bf2d515df9fa0bb239353d2ed25ec266773dce2aae6b"
+      "digest": "a9e81a24e5d67bd86f6d40f7b8a402bf1ffba3e2bfcbad2785bb832421974cce"
     },
     "langchain-harness-middleware-summary": {
       "title": "LangChain：用中间件扩展 Agent 循环",
       "collection": "readings",
       "state": "unread",
-      "digest": "d3a3e3ae0e6f667904c8c5830e5dc4e58a7650ec4aedad7636f6430fe40abb02"
+      "digest": "764bedc66ab7247be5d2e318a8fd3a83093fb8ce591e3a7c273958452b3857e9"
     },
     "langchain-message-trimming-summary": {
       "title": "LangChain：消息裁剪与状态删除",
       "collection": "readings",
       "state": "unread",
-      "digest": "bc1b759f75d05585a620fdcbc8e77662edd989116716affc90c196842fe14650"
+      "digest": "1a778ed40f256efdae95dfd3f9c916c975e846d8a861effe4932cc0b76d119cb"
     },
     "langchain-model-context-summary": {
       "title": "LangChain：分别管理指令、消息与工具",
       "collection": "readings",
       "state": "unread",
-      "digest": "8b87abb8cd71a470165d16ed6e76b60857d8a7bc4bf973ffce1c809b208cec9a"
+      "digest": "456e73ee2ca702f3a3148c8b534ff1261b9df113543fe956f5a8833344d14d3f"
     },
     "langchain-planning-summary": {
       "title": "LangChain：从先规划再执行到重新规划",
       "collection": "readings",
       "state": "unread",
-      "digest": "8a99c65b73a09830262260a853ec9a4ec3e53e12ab6133745c481e0dc9ff6c3a"
+      "digest": "464d0a4a93d8dfa86a4cb0dac6ea70b201242767b16ef7ca8c57b83b2e5a9356"
     },
     "langchain-rag-architectures": {
       "title": "LangChain：固定流程、Agentic 与混合 RAG",
       "collection": "readings",
       "state": "unread",
-      "digest": "42050a6794d8c1c4f5ee06c5b94bcc2b9aa5ac50fa123b162f1dc6f0991f676a"
+      "digest": "c79cca4be5d8039b5310d062fba11174f39d2f382f141d5e16c7043d6b63ee06"
     },
     "langchain-todo-state-summary": {
       "title": "LangChain：用待办工具维护任务进度",
       "collection": "readings",
       "state": "unread",
-      "digest": "0a82da33003504fc610df75934b410872e10e39c421d052c32eb41d5a18aab29"
+      "digest": "cafd47f51f4b0fbd942ab6849092feb595fb08d4b8207f8ff2e097420e5cf631"
     },
     "langfuse-dataset-experiments": {
       "title": "Langfuse：从生产轨迹建立数据集与实验",
       "collection": "readings",
       "state": "unread",
-      "digest": "fb410377c4f030d8a5d7364f74be31431599a088f4841b684ef00ee6186c75c3"
+      "digest": "f11ae4063e3386eb8474da619e3e8082c90a738fbbca4d6920d970e59fc7d7e8"
     },
     "langfuse-tracing": {
       "title": "Langfuse：可用于调试和评测的 Trace",
       "collection": "readings",
       "state": "unread",
-      "digest": "09f53fc0574bbdc47bc07b698b4f9e1b8c07e037f11b4b129e99411d8239ba7e"
+      "digest": "e4444d7524383221dffa2148ab7c77321d7a2c71f5c05104cd747e2b691472dd"
     },
     "langgraph-checkpoints": {
       "title": "LangGraph：检查点怎样保存执行进度",
       "collection": "readings",
       "state": "unread",
-      "digest": "936fe463dd1444b49d64825703ccf7a12f4e7bde5b3f0a98467888880e2438c7"
+      "digest": "bfb65bc662d04487e036addeeebb98dddafdac71dbed422678233e0e6b7289d2"
     },
     "langgraph-human-interrupts": {
       "title": "LangGraph 与 LangChain：从中断原语到人工决策",
       "collection": "readings",
       "state": "unread",
-      "digest": "f8056d8c7c827e2c5ced58c24d3cfec2cc69a796ae0ff9bd7eb4f661ff3bbdcc"
+      "digest": "73fd5d6cea8c982e3ffb18aca0f12fabdea2dea5cb7868b3ad7c4ee29fb215ca"
     },
     "langgraph-memory": {
       "title": "LangGraph 与 LangMem：状态持久化和记忆形成",
       "collection": "readings",
       "state": "unread",
-      "digest": "de069a048fb76596d234ff37bce356b1ec4c63998c1dfe87c81605cf119407c6"
+      "digest": "bf066ec27c89bf86af904c78d4d0c47f33d856d768ed63caef30e9c942cb740c"
     },
     "langgraph-replanning-summary": {
       "title": "LangGraph：每步执行后的 Replan 节点",
       "collection": "readings",
       "state": "unread",
-      "digest": "0554b4d6959aed6e1c96279e1167b40034a48aee5fafb6ed16be90267ee60939"
+      "digest": "650496d47792641e63af4ce00b8688889bc7639970a362e0c3ffe5acb5170c24"
     },
     "langgraph-time-travel": {
       "title": "LangGraph：从检查点重放与分叉",
       "collection": "readings",
       "state": "unread",
-      "digest": "3235f6d7e3cbca9ccb94639fbb1c1340e287828be4b37f8d0528ccbc52ea55b4"
+      "digest": "fcd3b182557f8f2c802e4ebcdc42fa98abff5080d7aa878a0b6f8fd502a7e0bd"
     },
     "langgraph-tool-execution-summary": {
       "title": "LangGraph：同轮工具执行与结果回传",
       "collection": "readings",
       "state": "unread",
-      "digest": "b355aa1f2f7a18f83c93af4e474092ab5eee77b9e1c4173af8568e912db114c6"
+      "digest": "18144c11a43a2ce1d2e490f77c442684ffb93ffbbfd942c75f41b676522fdd7c"
     },
     "langmem-summarization-summary": {
       "title": "LangMem：用运行摘要延续长会话",
       "collection": "readings",
       "state": "unread",
-      "digest": "e6437847aa839e1b46a564b095e6bccde89d9630e64733230dd84e897024f9b0"
+      "digest": "a44ad5ebe1855fd06dabef36ae787b0afa43410b4d35dcc37ffa6456770e0743"
     },
     "langsmith-evaluation": {
       "title": "LangSmith：离线实验、线上评测与人工反馈",
       "collection": "readings",
       "state": "unread",
-      "digest": "8618ff0888138bb4188a417dd48c5593483bfe25ce2e9f110e71cb7425594b86"
+      "digest": "2f1e4468d24f67b5caab41e7db0766b56807ae3e549036755015d605eb7dff8a"
     },
     "letta-memory": {
       "title": "Letta：常驻记忆块与归档检索",
       "collection": "readings",
       "state": "unread",
-      "digest": "5ccc1d23244593370457693dd4d6185e775b55a3dba4095ef1ec131cadc2f60a"
+      "digest": "08430b3173cd39b1a3eaa29fb1402e084dee30d65315c1c78e8d40646913d1bf"
     },
     "llamaindex-document-management": {
       "title": "LlamaIndex：文档身份、刷新与删除",
       "collection": "readings",
       "state": "unread",
-      "digest": "1df1f55413aa50644c7b7bb1fe0538098b695b7361fb20cb8dbb1067918107d1"
+      "digest": "e22f90a7ccfda552ab63553eaf298e9ff1a6ca775fe911a2de797cf34bc842c3"
     },
     "llm-judge-evaluation": {
       "title": "MT-Bench：模型裁判的偏差与校准依据",
       "collection": "readings",
       "state": "unread",
-      "digest": "a925ec031b19bcb9e5999599680b37d0b17935efd9b35754d7ce7fb81f7803c8"
+      "digest": "d3aa600f27446b2b939e243b79819d265eacecfac6a67839a54cbe99637b90d5"
     },
     "llmcompiler-summary": {
       "title": "LLMCompiler：按依赖调度工具调用",
       "collection": "readings",
       "state": "unread",
-      "digest": "09c91aba6da11ed7e73f955e2d3b5a4523f96c5017dcb2adb095e7080e32ec07"
+      "digest": "59c0fe91e4362cff2d48d0aa51775f6e7f0c0751a45a3c6d379d0889d72250f3"
     },
     "locomo-memory": {
       "title": "LoCoMo：长对话中的事实、事件与时间关系评测",
       "collection": "readings",
       "state": "unread",
-      "digest": "7ee6d4bee675af58db485bd229fd1a8a89610da5bac8a1a5c1ce8dd34fd799ec"
+      "digest": "28855fe857e0a3b98437aa7c4b64af9a99afe5810d5dfa4a92d0c16cc9ea33e9"
     },
     "longmemeval-memory": {
       "title": "LongMemEval：跨会话记忆与经验复用评测",
       "collection": "readings",
       "state": "unread",
-      "digest": "81bb8c1edbae5b463c38687b76f8f95a5d58af6c5fe7d728bf674379173ae49c"
+      "digest": "7f6eb3640e203439d63725d732f21251784367e6a8108fc38598e6ededa76d27"
     },
     "lost-in-the-middle": {
       "title": "Lost in the Middle：长上下文中的证据位置效应",
       "collection": "readings",
       "state": "unread",
-      "digest": "a1322dc2128c46ff288cd13bf36767300844dfa3dec2716335cecf72902528a3"
+      "digest": "bad95e4497b4c7eb4396c1a01a16119e0576efb4cf0d56e6e3cbdd8a69f35a40"
     },
     "manus-context-engineering-summary": {
       "title": "Manus：上下文怎样影响成本与行动",
       "collection": "readings",
       "state": "unread",
-      "digest": "7fd8e2d09fd07779c763309970c26437d01272fa0e153963507b696136e5f8b0"
+      "digest": "a0834dcc4939ccaf0622a1a32658f1de6381e15f493c02407065487bc0c936b6"
     },
     "mcp-architecture-summary": {
       "title": "MCP 官方架构：发现、调用与通知",
       "collection": "readings",
       "state": "unread",
-      "digest": "8851b51ccc95d1c99de1ce078432562c65353fc294f301e43ca1180e6b54b181"
+      "digest": "e90b2e6f158670460a4bbb100bbb5ff97279598b8169a92abbe53a8be5c2fd55"
     },
     "mcp-resources-prompts-summary": {
       "title": "MCP Resources 与 Prompts：数据读取与消息模板",
       "collection": "readings",
       "state": "unread",
-      "digest": "0fbdd636dacf5c01ce808c9e59f18b0dfe0aa44efc1a0057b356e3cab95e3c6c"
+      "digest": "967e310fec9bf5662354d156e5f42188748fd84058e68c703f86663e69a62bae"
     },
     "mcp-specification-summary": {
       "title": "MCP 官方规范：协议约定的范围",
       "collection": "readings",
       "state": "unread",
-      "digest": "24996a92c099b2908ec75e329c4e05f65297fe91d7ccab939092ae4116b4b8de"
+      "digest": "8a92428a15b9394595019f7c00a7c8174dc0652119a8ccbe69e3469e52dd40ac"
     },
     "mcp-tools-summary": {
       "title": "MCP Tools：定义、结果与错误",
       "collection": "readings",
       "state": "unread",
-      "digest": "5424328634cedff3491236d857bd70320c7acd3d8537d0af108ef69786570325"
+      "digest": "5525ced27ed86f2e4847c4ebb2415f879cd56250a2f4c755c471d3ae44aea8bb"
     },
     "mem0-memory": {
       "title": "Mem0：追加提取、显式更新与检索",
       "collection": "readings",
       "state": "unread",
-      "digest": "d7357247fcbe962b1a483e44e38748c33463e3f40d89eb734c6b1a5e9fce8cd1"
+      "digest": "cf600779ddbbbc5daf444fdc46bbc5a644c5a0a981e0dbe0be412ad1553a6fc0"
     },
     "mem0-paper-memory": {
       "title": "Mem0 论文：事实提取、更新决策与图记忆",
       "collection": "readings",
       "state": "unread",
-      "digest": "cd15ddc88f3ffc6cbdce249327beddb6e91bbc44bc38f404375d59e4b69b0245"
+      "digest": "cd0cf0831de009f97e8b3ec42829fdc91f70befb2eb58eb39a1164fc9883ce3f"
     },
     "memgpt-memory": {
       "title": "MemGPT：用分层存储管理有限上下文",
       "collection": "readings",
       "state": "unread",
-      "digest": "9352c5d8d868534d14b08bc3d75b3f96cc867490246f272534d19550a34473d1"
+      "digest": "87a91e8b628c3b1d2fd2641848a96037f80dd19ce090bf9f9658ff0a32cb9725"
     },
     "memorybank-memory": {
       "title": "MemoryBank：分层摘要与遗忘强化策略",
       "collection": "readings",
       "state": "unread",
-      "digest": "0676fbf1a17cd583006380f8e0035a81d92535c59af2c70327ca5956b665831e"
+      "digest": "81dd5024b097c8079547a38602101769b4ce24dda9cc60b6b77b27744da8e323"
     },
     "messaging-patterns-sources": {
       "title": "消息通信与事件处理模式导读",
       "collection": "readings",
       "state": "unread",
-      "digest": "a843399e2d6f7ca6c33a101d6b557804b6554bd909b09b1300213b12568c2547"
+      "digest": "6a9f5a8133e2f53655157d0f50c73ef4e34349c6e98167b3f4603829c151a0c7"
     },
     "mysql-derived-optimization": {
       "title": "MySQL 官方手册导读：派生表、条件下推与临时结果",
       "collection": "readings",
       "state": "unread",
-      "digest": "7afb2613004f5e53d2ecfb9e0fff3026ead6ec29e4700de0c378567abf61cc5a"
+      "digest": "d6c8e0556135638f84534dcef587be26a32844b93cfb5408ff07e6e8c335fae0"
     },
     "mysql-learning-resources": {
       "title": "MySQL 学习资料导读",
       "collection": "readings",
       "state": "unread",
-      "digest": "110606a24adc013cb673442b31458e608599b90c25b21f07515909e2f8ebc34f"
+      "digest": "4af9ae2f27ddd8737416b734f9765750c52a78579911edf07a78bc1e4ba2b243"
     },
     "mysql-manual-backup": {
       "title": "MySQL 官方手册导读：备份坐标与时间点恢复",
       "collection": "readings",
       "state": "unread",
-      "digest": "87f5296abeb25dcd1a9410fea08d30285b962b668a0bb0bcf321a1ce3988e764"
+      "digest": "85f46789a1973ef8033bb3a5a0b6456df916c57f75c9ddf8a4203ebf5ce2aca0"
     },
     "mysql-manual-buffer-pool": {
       "title": "MySQL 官方手册导读：缓存保留与页面写回",
       "collection": "readings",
       "state": "unread",
-      "digest": "3c135277ad53da7991ca773b6427a98947da1d33daac689716661c01ffc23ac9"
+      "digest": "2d23156e539d0ae28f42ad2256c0a67be29c403e87eb118a1d301e02b45d2f1b"
     },
     "mysql-manual-commit": {
       "title": "MySQL 官方文档导读：提交协调与日志持久化",
       "collection": "readings",
       "state": "unread",
-      "digest": "09edab6d230b15d97d420b00658c5f0e7455bdfaf56ff06e01bc4ce63e828764"
+      "digest": "c4214863831b369fafbbe74e1519f419e228ae2f8e4dd03093636267bf0c7e12"
     },
     "mysql-manual-queries": {
       "title": "MySQL 官方手册导读：查询与索引",
       "collection": "readings",
       "state": "unread",
-      "digest": "4f673973b01c1124887cf4958beb978012f6d2ae7bbc950a6cc0317cde62f49c"
+      "digest": "58119997b82d71c4daead9f767cf867a677204f59c0769ae5d3337a86c31a29b"
     },
     "mysql-manual-recovery": {
       "title": "MySQL 官方手册导读：日志、复制与恢复",
       "collection": "readings",
       "state": "unread",
-      "digest": "6fdbd2258c012c9fe6ac86e6b420fefa7d294dc8d217c0b1f4ccea0538c99fd3"
+      "digest": "401d86d287c1652e67989785373fd0360b739a01dd88b4a997aec5c0888ebb72"
     },
     "mysql-manual-transactions": {
       "title": "MySQL 官方手册导读：事务与锁",
       "collection": "readings",
       "state": "unread",
-      "digest": "58d1d3cc584c99b0235ef288cc2c36361199200018bcc23675d4646c23c5fba1"
+      "digest": "dea0c8d32db6c43db84b736653e0efa937414478283c8e2c023450866fb2f1c8"
     },
     "mysql-pagination-sources": {
       "title": "MySQL 分页优化资料导读",
       "collection": "readings",
       "state": "unread",
-      "digest": "ad1e06a902377c9d8c99376d0fd76ddfb6b02f500e63ec2aba75dc87ec5da435"
+      "digest": "f79889c9665e5755bc176cf1c47a43a26d82368efce4a1c67ad6f964cf9c2728"
     },
     "mysql-performance-diagnostics": {
       "title": "MySQL 官方手册导读：慢查询与等待",
       "collection": "readings",
       "state": "unread",
-      "digest": "70933295d25878f8ead63fc2019db78d38cf6f5846fb2eec2cc0e24f5a270d19"
+      "digest": "a3b3694e3750d135115e4f280cdf64ad180f8e875a8237043feb2a7fb3ac5e0c"
     },
     "mysql-performance-schema-profiling": {
       "title": "MySQL 官方手册导读：语句、阶段与等待事件",
       "collection": "readings",
       "state": "unread",
-      "digest": "ee12aaa09f8db2382ab6c52634184cb606903830e3e0c76eeff11d1a1d20c4ec"
+      "digest": "01b19dc7780e0b7ac4c390c556926483b6f09e25dcf4a490aa82a992a48f4698"
     },
     "mysql-scan-resistance-readings": {
       "title": "InnoDB 扫描抗性：图解与实验导读",
       "collection": "readings",
       "state": "unread",
-      "digest": "acc049e4511e67bda600c7e27cbfb13b4f2aef395b74fb08c32cadb00798d646"
+      "digest": "43e2fe5a3f3020354437453fcb304ff17b7dee208dc6786ab1d9e26a93ce76a5"
     },
     "mysql-subquery-optimization": {
       "title": "MySQL 官方手册导读：存在性查询与子查询物化",
       "collection": "readings",
       "state": "unread",
-      "digest": "eb9fc642e8043985cda48967b14e8bd7538f0f6a6b48ce924f4096bae484ac46"
+      "digest": "afecc1258624ab187ff62bedfa299f8edec2faa5f912519a355ab0b8c23c7fda"
     },
     "mysql-temporary-tables": {
       "title": "MySQL 官方手册导读：内部临时表的存储与监测",
       "collection": "readings",
       "state": "unread",
-      "digest": "27335410842ac1af489c68dc91e39a4b38c50eb14bf71df76cdccecf277f2465"
+      "digest": "6421078b9b2ec25b35a49e5c0b0aa34870ac476c726d152d4c89d41931eb5b6e"
     },
     "openai-agents-architecture-summary": {
       "title": "OpenAI Agents API：Harness、执行环境与应用的分工",
       "collection": "readings",
       "state": "unread",
-      "digest": "c8cc841d2628a95d26a0f862ed6efead9d789b1e2aa33f3e6f5d4636b764e82e"
+      "digest": "276ef43ae72ff8b311e9a7060c3f32a8d8f5be7b10051f07bdd4534405ec2a4f"
     },
     "openai-conversation-storage-summary": {
       "title": "OpenAI：用会话 ID 保存与读取历史",
       "collection": "readings",
       "state": "unread",
-      "digest": "f012f8997c8447e49b67e11aea21fbf593d54a57d093d67d0a596919dc6fd65b"
+      "digest": "ca9598b98300ee800ba8654e0b3eabe1010047bf0d6c5aed5a8b9ed4215b3994"
     },
     "openai-function-design-summary": {
       "title": "OpenAI：怎样定义易于使用的函数工具",
       "collection": "readings",
       "state": "unread",
-      "digest": "49f85d5ea6290917ac0f6935b518ff4c195cb04097e5f0f99face292272fecca"
+      "digest": "cbd9b16ece51f5ffe4825f5ea46c297fc1a39efcda7a895229ae00fdd6234580"
     },
     "openai-guardrails-summary": {
       "title": "OpenAI：自动检查与工具审批",
       "collection": "readings",
       "state": "unread",
-      "digest": "bb01d3c640a1ad8da9979f8656971b3259dad5bca1b7c8968118634cf0d23012"
+      "digest": "200a9a6a1c4867d7ad52273b8cc11cf9485ede5ebbdbb581e09b0e16c932845a"
     },
     "openai-harness-engineering-summary": {
       "title": "OpenAI：让工程环境可被 Agent 理解、执行和验证",
       "collection": "readings",
       "state": "unread",
-      "digest": "a0a0e39f44eb0b722cba1e10e13bc2e21ab6d15da28acf5c7ce3e44e2d4a95bc"
+      "digest": "55f1c27542dc0db21729bd1a6bf1b89502a7d71a50ae99bd597141bc30186629"
     },
     "openai-instruction-updates-summary": {
       "title": "OpenAI：新要求如何替代旧指令",
       "collection": "readings",
       "state": "unread",
-      "digest": "f4d21415599a8c362c5fb62bc0a35be5691eec1a379d22e120f55a17b8b958b0"
+      "digest": "0845ed6c6360c07130c198be5f029fb982d66724673b1ca8c40c5dd54100d94d"
     },
     "openai-programmatic-tools-summary": {
       "title": "OpenAI：用程序编排工具调用",
       "collection": "readings",
       "state": "unread",
-      "digest": "96cceeaaae080e0f5be53b240a1d4cf8d757e976a287112e206b1ed575550164"
+      "digest": "8a103eb30e8e5d18d9aa64a890b1c73a6f59a9aac659a6588024499f60b38e4e"
     },
     "openai-tool-search-summary": {
       "title": "OpenAI：工具搜索与延迟加载",
       "collection": "readings",
       "state": "unread",
-      "digest": "11b47652bd93580758971d62f00b2307870b33e74efaba1cb4fc0caa14fbb6bf"
+      "digest": "5a3d3de764bbbf5c1ca713c9a1e19d4772ff81e75d3c62d8f0d1102271337cdc"
     },
     "opencode-context-budget-summary": {
       "title": "OpenCode V2：上下文预算与压缩阈值",
       "collection": "readings",
       "state": "unread",
-      "digest": "02724c40244a40d409c834fbb694116bc9a693dfff70b0b3d82f0f1c1e27257c"
+      "digest": "10bd8005071a5448e05c91a49f9686d7cdd3f08eba99ffbec3fcd4772734b627"
     },
     "opendsa-b-trees": {
       "title": "OpenDSA：B 树与 B+ 树",
       "collection": "readings",
       "state": "unread",
-      "digest": "a210125214695b9f0924f184bb37113aad6632e98809f8b20e4d17d9e59f2872"
+      "digest": "e2e37a9b51865c91337e56942838a92c7f3db8e58210ead988dbd8550d58f5f1"
     },
     "openfga-agent-authorization-summary": {
       "title": "OpenFGA：Agent 授权关系、条件与变更管理",
       "collection": "readings",
       "state": "unread",
-      "digest": "3805c047f03cba1caf367dc095ad3788e6fbfa18941a2a59d9f5a3998e895ff1"
+      "digest": "4f07b198b1836f33334bcfb2ef68495b438b56984b617b1542e6d8fba40626e7"
     },
     "openinference-tracing": {
       "title": "OpenInference：AI 操作语义与埋点仓库",
       "collection": "readings",
       "state": "unread",
-      "digest": "05d5b5d22fd8b633a1d71593672299ba426df0bf6cfb672eeb86d2d4559d02b8"
+      "digest": "94b13d14b256e9432d088fa85a2a40768c8a8b8ab9b6bbe71bda68d939375dcb"
     },
     "otel-genai-tracing": {
       "title": "OpenTelemetry：GenAI 与 Agent 的追踪约定",
       "collection": "readings",
       "state": "unread",
-      "digest": "f1163834c9c6b20bc7b9cdf89ab834d13406a0c2558e61b98b7b6ca2bb73998d"
+      "digest": "69b6e7baa8fa97d3373a403f6b2385cb921e368510aa79d5a3e79cb5f12816ef"
     },
     "otel-trace-collection": {
       "title": "OpenTelemetry：上下文传播、错误记录与采样",
       "collection": "readings",
       "state": "unread",
-      "digest": "66e556f151adbac78b6e3b2ee15a03414c7fc3c1b75fd34d7983db0ff4c60d30"
+      "digest": "a26edabd14e7f61ecfe155b43c9772fced03f96e6f87f1f68fb1a55a26e42b57"
     },
     "owasp-agent-boundaries-summary": {
       "title": "OWASP：提示注入与 Agent 执行边界",
       "collection": "readings",
       "state": "unread",
-      "digest": "d60d86a9d1f307263d2e54f7bbacc0e30088bd14855a16e101b8ef95eb53eade"
+      "digest": "e834b5b313e6d96ad6d2c2c3b6458c2c78c51e67cd7ef3bd77a6b92e76a6ec24"
     },
     "permit-agent-approvals-summary": {
       "title": "Permit：Agent 授权与审批如何组合",
       "collection": "readings",
       "state": "unread",
-      "digest": "341f73d1e1848305ccccea5d977e1f854fb84be5bf1c9006267d3168724394ae"
+      "digest": "aa9bb8adbdd577baa38848ae4700004466464da231e4d809fd18e248c58c2e52"
     },
     "pgvector-search": {
       "title": "pgvector：精确搜索、近似索引与过滤",
       "collection": "readings",
       "state": "unread",
-      "digest": "237206f6c5652531a6b3c0a75a62dcd3c507093be94eee45235b626ea5bfee10"
+      "digest": "6591573c3d5562dd071aed1d1d38e0e46df90c5a55b64fee654e9dd33b5573f6"
     },
     "pi-compaction-summary": {
       "title": "Pi：用摘要与保留边界重建上下文",
       "collection": "readings",
       "state": "unread",
-      "digest": "98218da300e490eee748feee4059a59f4b65850a466f32c2aca12bbd581ca24e"
+      "digest": "8f677401ac5ed9ef8dde0238414f1e0f4d61373d20406e73581759cd1f0a304e"
     },
     "pi-session-storage-summary": {
       "title": "Pi：从会话文件重建对话历史",
       "collection": "readings",
       "state": "unread",
-      "digest": "d8d89756d92ba7e33bbc35618cbfc34bef2f57627d2d5e95482c5445c2ff2b23"
+      "digest": "6f1102e941f0aec8d6813eadf6f22c56770b73850c8a208d09ec48262e646917"
     },
     "promptfoo-evaluation": {
       "title": "Promptfoo：用配置和断言组织评测",
       "collection": "readings",
       "state": "unread",
-      "digest": "bec883650d039fa6c012314bfc630e7760ad5027ad584aa27f4ce78f3f7cd73c"
+      "digest": "35df64e39597ac79428ec4fe7b37b8df91b83e9a192ac40e8724b95c3375e6e2"
     },
     "pydantic-retries-summary": {
       "title": "Pydantic AI：区分重试层次与预算",
       "collection": "readings",
       "state": "unread",
-      "digest": "9b7792a78721c0922789d1dccdc33c85d19bc3142048521d9724a7ae26f4e193"
+      "digest": "a7924946846fd18eda2bf620c6bfa34c690166737a0dc58f6b2a1df77e45d560"
     },
     "pydantic-tool-execution-summary": {
       "title": "Pydantic AI：工具并发、失败反馈与取消",
       "collection": "readings",
       "state": "unread",
-      "digest": "ef3d61213d4b5f3617b8881717af1360667d059963d1a5bdcba9f1464b738fad"
+      "digest": "5ef00c7e4301a75137d9bf87283f9bb2ccaa1dc7daccee2ed3c7dd1e4478c794"
     },
     "pydantic-toolsets-summary": {
       "title": "Pydantic AI：工具集如何组合、筛选与执行",
       "collection": "readings",
       "state": "unread",
-      "digest": "238a5e9248c8173a6cc62935d03713dadf6b00905b4ae9b6423859ff1aab4382"
+      "digest": "3516a063a955ec67d44e0831e678727afde3353dbada98630b7c27cede96c572"
     },
     "rag-advanced-papers": {
       "title": "HyDE、RAPTOR 与 ColPali：三种检索表示的改变",
       "collection": "readings",
       "state": "unread",
-      "digest": "f5bc939bb09989efc5159270437946ad2e1a0c1a03e051fd46abee70d60dff6d"
+      "digest": "085449919673ca37d97f65af15d09cb72c847b9b0093acf556b646fb3ac4a6e0"
     },
     "rag-evaluation-docs": {
       "title": "Ragas 与 LangSmith：评测对象、参照物和自动裁判",
       "collection": "readings",
       "state": "unread",
-      "digest": "5c8acab833ebea5b6eb2f4e09595d12395d6e7f52803a340b1be73fbad5219bd"
+      "digest": "53b92743dd37c5babe4edb17dc6807e6c062472141576c329f223b25dfa5a47a"
     },
     "rag-paper": {
       "title": "RAG 原始论文：参数知识与外部检索怎样结合",
       "collection": "readings",
       "state": "unread",
-      "digest": "6b4aa78bd16f5e101894b88c7ad9e5bfcd41804fcaa216cd95a139c42c60d04f"
+      "digest": "abe04f08a85ebbbc77601dea8379814d18d450aaf210451c392fd632ed00b950"
     },
     "rag-retrieval-ranking": {
       "title": "检索官方文档：词项评分、语义表示、融合与重排",
       "collection": "readings",
       "state": "unread",
-      "digest": "4c5234218dd7f85cad65bf566bdca943a4fba3aa1ee7a521afd5526eb1cc4651"
+      "digest": "46bf486f56fb0e4418cc993ba0f73740e1bf44361be847da12ab5b368f55ee58"
     },
     "rag-security-docs": {
       "title": "Azure 与 OWASP：RAG 的权限和文档信任边界",
       "collection": "readings",
       "state": "unread",
-      "digest": "390ee35bc620a8ebedb1ac399b4c7a2217bfab2c887af9b196c968f5ccdd8dea"
+      "digest": "460c3359d9ff5870f3520e79270d381cd1eb1b4e524d51f8482e8d3a934fdec5"
     },
     "react-paper-summary": {
       "title": "ReAct 论文：让推理与行动相互提供信息",
       "collection": "readings",
       "state": "unread",
-      "digest": "927890e55ac68ad34a23d486026baee73bcf10151fdd3b705827735cfc7cb369"
+      "digest": "5c95a38dc5774b606ef0f63519a5c9c43578fc90e9934df9d6e1a0f7a0aed2d6"
     },
     "redis-cache-docs": {
       "title": "Azure 架构文档：Cache Aside 的一致性边界",
       "collection": "readings",
       "state": "unread",
-      "digest": "b1f66cc6a92348e4f7ce677e4c86feff69fb259cd49fca2700ca495bb9d649f6"
+      "digest": "fc44b615f7ef92514e07d330cb85bdf679cfbfe12f4ddba790af40f485855227"
     },
     "redis-cluster-docs": {
       "title": "Redis 官方文档：Sentinel 与 Cluster",
       "collection": "readings",
       "state": "unread",
-      "digest": "6d4d1f9518d1904fc8b7f3e2b68aab41bce7a434cccf91a71d589ac113e32fef"
+      "digest": "b77fab4338ae8d7d47e1661bd49ffbbdd872ac3afbefb0cc14b3ec145c2618d9"
     },
     "redis-coordination-docs": {
       "title": "Redis 官方文档：租约锁与限流原子操作",
       "collection": "readings",
       "state": "unread",
-      "digest": "f34315fd9cd3b88fcba18fbffd2d1bf1c4430a282896f69262fa96092b9eaeee"
+      "digest": "33dc1613c5b1de4be26b1ddab527f10bb9790192744bc87ea70419d15011e74e"
     },
     "redis-data-model-docs": {
       "title": "Redis 官方文档与源码：数据类型和编码",
       "collection": "readings",
       "state": "unread",
-      "digest": "0451b7380c38dd99742b7a4ffabdcd46ca420ce2efb9872f9a6a399bf83bbb20"
+      "digest": "5e20bd21fa89fe27275edba9e23ff316cfd56cd222f9640018df6cd2b264ca2c"
     },
     "redis-durability-docs": {
       "title": "Redis 官方文档：持久化、复制与写入确认",
       "collection": "readings",
       "state": "unread",
-      "digest": "70c56c5a482a08f8bacb9ec5cb0b8d4eb88de51a6a8a46d0faab454c6308f604"
+      "digest": "2d01b6ae9716b18331554f0c8849ef243ab47a3347293f64fe848f9192aa7ef6"
     },
     "redis-execution-docs": {
       "title": "Redis 官方文档：执行模型、事务与脚本",
       "collection": "readings",
       "state": "unread",
-      "digest": "55944b94825e8acb9f902b08f02f7dc50dd80130950eac230d7c4fcd5b3e85a6"
+      "digest": "6da5fbb5ba48b24c2d555af2350a724daabf1d1b7f717fb9c668d0299b8cbd39"
     },
     "redis-go-projects": {
       "title": "Redis Go 项目导读：go-redis 与 Asynq",
       "collection": "readings",
       "state": "unread",
-      "digest": "522d801f5a4a69496045d9b795e4f15418b0c4416bbd1e3ef7997ba96cfbdb17"
+      "digest": "41ea1016aa2623c20e47416c75dc585a5703e7b0d538fcecb6ce4ded34dc8cf7"
     },
     "redis-memory-diagnostics-docs": {
       "title": "Redis 官方文档：过期、淘汰与延迟诊断",
       "collection": "readings",
       "state": "unread",
-      "digest": "9914275bfb3ce589b99a0cfad70472acc4ea8c33d94cf04a06097f74e3a17da5"
+      "digest": "2784954d034a0f603298a19049066769e2bdc393cb14a91f6094f7fe81483290"
     },
     "redis-streams-docs": {
       "title": "Redis 官方文档：消息保留、确认与接管",
       "collection": "readings",
       "state": "unread",
-      "digest": "dec96d7026bf9fe21884e16f5216adb9326ef254d2f413557b69fe9b1e09d179"
+      "digest": "8f90040203d547a9b4a76cbfedf635a2ff24cadfa69c979aeacb934fd0dccce9"
     },
     "reflexion-summary": {
       "title": "Reflexion：把执行反馈写成经验，指导下一次尝试",
       "collection": "readings",
       "state": "unread",
-      "digest": "baed5fbd51eb071c93f1561c56fd59c0195a69ddbab1db667ceaf7e9298a7c27"
+      "digest": "8fbeb0d12dbf36f6cc558db4773e7535d36c497ed8ccec90c62486b116a65247"
     },
     "self-refine-summary": {
       "title": "Self-Refine：用具体反馈迭代修改输出",
       "collection": "readings",
       "state": "unread",
-      "digest": "5080a01303e881be5b4a7ce8a1b89316ac3f5ab01b3e841d619c6f23d7ca0998"
+      "digest": "54ac056a9767e2241edabd61ea5880fe5bdb9d5c8649129e9f0b8d12805e66c1"
     },
     "smolagents-planning-summary": {
       "title": "smolagents：按行动步数更新计划",
       "collection": "readings",
       "state": "unread",
-      "digest": "2fca71417e77c4a6e5cee970d445945a1f42e4361854482bd28a3109424c3406"
+      "digest": "78638a4733e7e11e02278fdf25bb72f596c0e91349b746679a9699dd94d17a4f"
     },
     "stripe-error-recovery-summary": {
       "title": "Stripe：结果未知时怎样安全重试",
       "collection": "readings",
       "state": "unread",
-      "digest": "8bf4494a078997d37b4b726664e6228c4f06cb6a79ec6d62298145ab5ee46c91"
+      "digest": "e0a9d3233925b93c1a10b231e0488015603c30674ff8a7395f9053b8dc789d04"
     },
     "swe-bench-evaluation": {
       "title": "SWE-bench：通过仓库测试验收代码修改",
       "collection": "readings",
       "state": "unread",
-      "digest": "da0f7d1895b71c4faa8705dbb9c3b1cefa76dcff29491cc122ccc52e7fb4ab13"
+      "digest": "ad11b65d47be14064500a40390ff3dcf218bb963b8989eb377c2e5829136da66"
     },
     "tau-bench-evaluation": {
       "title": "τ²-bench：用户、Agent 与共享环境的交互评测",
       "collection": "readings",
       "state": "unread",
-      "digest": "5db17aa30e533c840ec5ba5f3a65a60dbdad3a84c722271a5487bf9f1fc9b778"
+      "digest": "d478829d0263c2326a24f0ae4836a241d77f0cac4195f42463e8d3caa2ae49d1"
     },
     "temporal-durable-execution": {
       "title": "Temporal：通过事件历史恢复，并等待外部决定",
       "collection": "readings",
       "state": "unread",
-      "digest": "7cb5da5ab1fd9f006678c37ad92ef900583612cdc998dc90b07cf890a53e72a7"
+      "digest": "9b594074cb5dc9f235a2079a9d826aaa480ccc41c97ecd00fc382073ad731f26"
     },
     "temporal-retry-policy-summary": {
       "title": "Temporal：用策略约束重试与停止条件",
       "collection": "readings",
       "state": "unread",
-      "digest": "c60d8d236149e143b99c188285f3e3450c72f3a8c7f772cab558f2b722559336"
+      "digest": "447e6c27e5733fd1d5a9ab07fa104d62e3bf0a93d925aebebc7e109e764cf3b5"
     },
     "victoriametrics-cond-summary": {
       "title": "VictoriaMetrics：Cond：等待条件与通知",
       "collection": "readings",
       "state": "unread",
-      "digest": "538e117363a6d0941efa722487c4938e390cf3940af5864150d0faaecd5254e0"
+      "digest": "78fdb780a3877f51d0061d646ffbec4881801e855f1b31728e180b8d071aaeb2"
     },
     "victoriametrics-go-concurrency": {
       "title": "VictoriaMetrics Go 并发文章总结",
       "collection": "readings",
       "state": "unread",
-      "digest": "cd3ef0134e62ed31a77edb71e679454aad99ee4bc9a2b7f9c59cae5b8208681c"
+      "digest": "52944199040cacc21e03d45018446590a6fff3fa64db17092e8820d1cf449e04"
     },
     "victoriametrics-mutex-summary": {
       "title": "VictoriaMetrics：Mutex：吞吐与公平的取舍",
       "collection": "readings",
       "state": "unread",
-      "digest": "2d8a492c1e6ab25672b76b9a0e4e56e67be8a44f2c88b0a6899736a691bf8817"
+      "digest": "d71e080e31bd3bd849394b14fc94e7c87e0d9631631968f55c3ad1b338e4e37e"
     },
     "victoriametrics-once-summary": {
       "title": "VictoriaMetrics：Once：执行一次与完成可见性",
       "collection": "readings",
       "state": "unread",
-      "digest": "948f605bd329026433b4488cf59da1f106dd759d82a3b1fad84307c65f980559"
+      "digest": "527ce544c89ab8f3cbc9714950cd0e5651987a9d43c845bfbba6f7fc2dc3075b"
     },
     "victoriametrics-pool-summary": {
       "title": "VictoriaMetrics：Pool：对象复用与回收",
       "collection": "readings",
       "state": "unread",
-      "digest": "c5c569598901c3cc736bfd2bd29778b8ad981901016371ecc4e2e800bb706b68"
+      "digest": "a58e2ed785ea6ec41088eae9bad1afc3bc7153ec2bd590adc6625b55f02c344a"
     },
     "victoriametrics-singleflight-summary": {
       "title": "VictoriaMetrics：singleflight：合并正在执行的请求",
       "collection": "readings",
       "state": "unread",
-      "digest": "b24b177c3ed1ef96da6827c7b98d24c05b7f6e20990b420f655b3c5967478d5a"
+      "digest": "352c2a2c40df4fd4bb936461e60df7064253f828dc6da9bded753c0058513fd6"
     },
     "victoriametrics-sync-map-summary": {
       "title": "VictoriaMetrics：sync.Map：双表机制与适用边界",
       "collection": "readings",
       "state": "unread",
-      "digest": "81f28904882f8b95c12c2e4e6d3468e1b8554fee14d897dbeeaf675338240775"
+      "digest": "5cb3a1b67a27c7a1c06bc25770773e68917ec89d104499487d023f19feb2f47f"
     },
     "victoriametrics-waitgroup-summary": {
       "title": "VictoriaMetrics：WaitGroup：计数、唤醒与对齐",
       "collection": "readings",
       "state": "unread",
-      "digest": "dd0182e6f7caebd7211bbf64a0c6d0c7efafb841e90c0499b7c5e440bcb06a9c"
+      "digest": "c643d36aece1482f9673e05100ae712161392bd93e8bf2877ae064ec0953c60d"
     },
     "voyager-skill-memory": {
       "title": "Voyager：把完成任务的程序积累为技能库",
       "collection": "readings",
       "state": "unread",
-      "digest": "3908f16e896c8c7342ef9a368c08abb7e34c3ae0645cfdfdea15b7fe50c2a01d"
+      "digest": "961ae5e8d48829ff4c0943bbdbd455cecead8fa300d3fe8fa870d59f5b2ed993"
     },
     "wal-official-docs": {
       "title": "WAL 官方文档导读：持久化顺序、提交与恢复",
       "collection": "readings",
       "state": "unread",
-      "digest": "69f3397093ffd8c0c1d1c98d6513f9df97843be5bd466b053eb6513ca0ca150a"
+      "digest": "aeb7209691b62f903d29a3b63663333398f1221fb874624ea759128b4f9c55ba"
     }
   },
   "images": {
@@ -19364,6 +19364,2238 @@
       "docId": "anthropic-effective-agents-summary",
       "from": "unread",
       "to": "read"
+    },
+    {
+      "id": "b759be75-d6e1-4e7f-ab50-2f72bd27223e",
+      "kind": "updated",
+      "entity": "doc:langgraph-memory",
+      "title": "LangGraph 与 LangMem：状态持久化和记忆形成",
+      "time": "2026-10-13T04:44:27.145Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langgraph-memory"
+    },
+    {
+      "id": "222a5567-8b47-47f3-a769-0efacfa47d63",
+      "kind": "updated",
+      "entity": "doc:a-mem-memory",
+      "title": "A-Mem：让新记忆改变已有记忆的组织",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "a-mem-memory"
+    },
+    {
+      "id": "beec7d87-8831-43df-85c7-62797aa45d1d",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation-infrastructure",
+      "title": "Anthropic：资源限制如何改变 Agent 评测结果",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation-infrastructure"
+    },
+    {
+      "id": "dd0bd74c-a317-4347-ba24-4ebbd29803a7",
+      "kind": "updated",
+      "entity": "doc:agentdojo-evaluation",
+      "title": "AgentDojo：同时测正常任务与提示注入防御",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "agentdojo-evaluation"
+    },
+    {
+      "id": "8e1b867f-8cbc-4d70-88e3-de4eaab67aff",
+      "kind": "updated",
+      "entity": "doc:agentevals-trajectory",
+      "title": "AgentEvals：轨迹匹配与模型裁判",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "agentevals-trajectory"
+    },
+    {
+      "id": "b090e9e8-3f2c-415a-b588-c1c9b34f2098",
+      "kind": "updated",
+      "entity": "doc:anthropic-advanced-tool-use-summary",
+      "title": "Anthropic：工具搜索、程序调用与使用示例",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-advanced-tool-use-summary"
+    },
+    {
+      "id": "b7ae6e38-64f8-4667-a4a4-9cc64030828a",
+      "kind": "updated",
+      "entity": "doc:anthropic-agent-evals-summary",
+      "title": "Anthropic：如何构建可信的 Agent 评测",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-agent-evals-summary"
+    },
+    {
+      "id": "2df89661-e290-4e3a-8ca9-4f46989e489f",
+      "kind": "updated",
+      "entity": "doc:anthropic-context-editing-summary",
+      "title": "Anthropic：按规则清理旧工具结果",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-context-editing-summary"
+    },
+    {
+      "id": "206dff3e-72ad-464c-8b65-addac9b0769d",
+      "kind": "updated",
+      "entity": "doc:anthropic-context-engineering-summary",
+      "title": "Anthropic：为每一步选择有效上下文",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-context-engineering-summary"
+    },
+    {
+      "id": "fd11ebc0-200c-4ddf-a992-19c3648fc6bf",
+      "kind": "updated",
+      "entity": "doc:anthropic-contextual-retrieval",
+      "title": "Anthropic：为片段补背景后再建立索引",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-contextual-retrieval"
+    },
+    {
+      "id": "4b0d927b-8699-4e88-9221-bf7ae0f7da8f",
+      "kind": "updated",
+      "entity": "doc:anthropic-harness-design-summary",
+      "title": "Anthropic：用生成与评估分工改进长任务 Harness",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-harness-design-summary"
+    },
+    {
+      "id": "db05491b-1575-4feb-ad71-c8bddd436481",
+      "kind": "updated",
+      "entity": "doc:anthropic-long-running-harness-summary",
+      "title": "Anthropic：长任务为什么不能只靠上下文压缩",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-long-running-harness-summary"
+    },
+    {
+      "id": "55423271-fefe-4c96-993a-a8ce043fefd1",
+      "kind": "updated",
+      "entity": "doc:anthropic-managed-agents-summary",
+      "title": "Anthropic：把 Harness、会话记录与沙箱解耦",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-managed-agents-summary"
+    },
+    {
+      "id": "f0c78009-940c-462f-a425-5ab5c5c1297b",
+      "kind": "updated",
+      "entity": "doc:anthropic-memory-tool",
+      "title": "Anthropic Memory Tool：模型提出操作，应用保存文件",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-memory-tool"
+    },
+    {
+      "id": "3c729782-dcfe-43b7-a941-d6127aa1c95b",
+      "kind": "updated",
+      "entity": "doc:anthropic-tool-design-summary",
+      "title": "Anthropic：如何设计有效的 Agent 工具",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-tool-design-summary"
+    },
+    {
+      "id": "4ebc87c2-1e1e-4f05-8858-25a72de86d93",
+      "kind": "updated",
+      "entity": "doc:aws-agentcore-authorization-summary",
+      "title": "AWS AgentCore：把身份与工具参数交给授权策略",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "aws-agentcore-authorization-summary"
+    },
+    {
+      "id": "dfeb9247-6734-49f3-b2c5-27e49cf0f205",
+      "kind": "updated",
+      "entity": "doc:aws-idempotent-retries-summary",
+      "title": "AWS：用幂等 API 保证重试安全",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "aws-idempotent-retries-summary"
+    },
+    {
+      "id": "958c9e68-7930-42a0-9a4a-b07bb5db8af2",
+      "kind": "updated",
+      "entity": "doc:aws-retries-summary",
+      "title": "AWS：超时、重试、退避与抖动",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "aws-retries-summary"
+    },
+    {
+      "id": "de5b1ec6-eea3-4314-a7a6-ca78c99f2f62",
+      "kind": "updated",
+      "entity": "doc:aws-retry-errors-summary",
+      "title": "AWS SDK：按错误语义判断是否重试",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "aws-retry-errors-summary"
+    },
+    {
+      "id": "09768870-d9b6-4fee-98c0-d79bbcc88649",
+      "kind": "updated",
+      "entity": "doc:azure-rag-chunking",
+      "title": "Azure AI Search：文档切分的单位与取舍",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "azure-rag-chunking"
+    },
+    {
+      "id": "b56a9873-68c8-46af-a762-195ab89ef00e",
+      "kind": "updated",
+      "entity": "doc:bfcl-evaluation",
+      "title": "BFCL V3：多轮工具调用与状态检查",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "bfcl-evaluation"
+    },
+    {
+      "id": "d701f730-b364-4187-8e3b-88de49336783",
+      "kind": "updated",
+      "entity": "doc:browser-agent-benchmarks",
+      "title": "WebArena 与 OSWorld：用环境状态验收界面操作",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "browser-agent-benchmarks"
+    },
+    {
+      "id": "e4df80ff-0457-4cfe-bd39-232e1e24091d",
+      "kind": "updated",
+      "entity": "doc:claude-code-context-budget-summary",
+      "title": "Claude Code：上下文预算与压缩阈值",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-code-context-budget-summary"
+    },
+    {
+      "id": "5eeb54ed-6e27-45b7-b542-b6361c23a59e",
+      "kind": "updated",
+      "entity": "doc:claude-code-memory",
+      "title": "Claude Code：规则文件与自动记忆索引",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-code-memory"
+    },
+    {
+      "id": "502bca13-6533-4e7e-8c15-de8c0a1c2afe",
+      "kind": "updated",
+      "entity": "doc:claude-code-shell-permissions-summary",
+      "title": "Claude Code：Shell 权限规则与无法判定的调用",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-code-shell-permissions-summary"
+    },
+    {
+      "id": "602d94d1-0b46-4562-8e32-622f9d05a695",
+      "kind": "updated",
+      "entity": "doc:claude-compaction-summary",
+      "title": "Claude：服务端摘要压缩怎样接回会话",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-compaction-summary"
+    },
+    {
+      "id": "9fb20087-f46a-4349-bb39-0f2f9d4c2baf",
+      "kind": "updated",
+      "entity": "doc:claude-context-budget-summary",
+      "title": "Claude：上下文窗口与 Token 计数",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-context-budget-summary"
+    },
+    {
+      "id": "7e26eb79-5cdf-4e91-9315-ebb38158a0ca",
+      "kind": "updated",
+      "entity": "doc:claude-permissions-summary",
+      "title": "Claude Agent SDK：权限规则如何决定工具调用",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-permissions-summary"
+    },
+    {
+      "id": "3269b6d6-0fbb-4a07-a3da-aff7f4df8f20",
+      "kind": "updated",
+      "entity": "doc:claude-sandbox-devcontainer",
+      "title": "Claude Code 的 Bash 沙箱与 devcontainer 有何区别",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-sandbox-devcontainer"
+    },
+    {
+      "id": "1fb3f635-c721-4a78-a895-0cec515f9202",
+      "kind": "updated",
+      "entity": "doc:claude-sandbox-network",
+      "title": "Claude 的 Linux 沙箱如何组合网络隔离与代理",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-sandbox-network"
+    },
+    {
+      "id": "dfe6912f-217e-48d4-b876-4035c1804965",
+      "kind": "updated",
+      "entity": "doc:claude-sandbox-overview",
+      "title": "Claude Code 沙箱源码阅读入口",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-sandbox-overview"
+    },
+    {
+      "id": "e8cee19a-9ef7-4964-b000-3c9f2841098c",
+      "kind": "updated",
+      "entity": "doc:claude-sandbox-wrapper",
+      "title": "Claude 的公开沙箱运行时如何包装命令",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-sandbox-wrapper"
+    },
+    {
+      "id": "70a2bc9d-4254-420b-9a84-757e0cbe1f18",
+      "kind": "updated",
+      "entity": "doc:claude-tool-search",
+      "title": "Claude 的 Tool Search 与延迟加载",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-tool-search"
+    },
+    {
+      "id": "ec707060-4718-42e3-b1d9-8f713b83ccc5",
+      "kind": "updated",
+      "entity": "doc:cloudflare-code-mode-summary",
+      "title": "Cloudflare Code Mode：用代码组织多步工具调用",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "cloudflare-code-mode-summary"
+    },
+    {
+      "id": "f979626a-aec9-4706-ba59-88cc74538116",
+      "kind": "updated",
+      "entity": "doc:codex-context-budget-summary",
+      "title": "Codex：上下文预算与压缩阈值",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "codex-context-budget-summary"
+    },
+    {
+      "id": "7dc18a3a-fa1c-4fb3-b93c-ec6244993dd5",
+      "kind": "updated",
+      "entity": "doc:codex-credential-broker",
+      "title": "Codex 如何用凭据代理替代子进程中的真实密钥",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "codex-credential-broker"
+    },
+    {
+      "id": "e30786ec-f3bd-469c-af06-0022166b8a20",
+      "kind": "updated",
+      "entity": "doc:codex-exec-policy-summary",
+      "title": "Codex：命令规则、审批与沙箱如何共同决策",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "codex-exec-policy-summary"
+    },
+    {
+      "id": "c4a9a797-b647-4ad2-a33c-a132a7a8858b",
+      "kind": "updated",
+      "entity": "doc:codex-exec-session",
+      "title": "Codex 如何让长命令跨工具调用持续运行",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "codex-exec-session"
+    },
+    {
+      "id": "1591c53b-810e-4725-b0e4-21f8c95b59f8",
+      "kind": "updated",
+      "entity": "doc:codex-memory-pipeline",
+      "title": "Codex 源码：后台提取与跨会话整合",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "codex-memory-pipeline"
+    },
+    {
+      "id": "21582418-b040-4de0-996b-f494f674d2ae",
+      "kind": "updated",
+      "entity": "doc:codex-sandbox-filesystem",
+      "title": "Codex 如何保护可写工作区内的敏感路径",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "codex-sandbox-filesystem"
+    },
+    {
+      "id": "d4e9097d-18e2-4c90-aaac-f92ece45797f",
+      "kind": "updated",
+      "entity": "doc:codex-sandbox-launch",
+      "title": "Codex 如何把工具命令送进沙箱",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "codex-sandbox-launch"
+    },
+    {
+      "id": "ccaa2b3d-1774-4f90-80f3-f47cccac3c6c",
+      "kind": "updated",
+      "entity": "doc:codex-sandbox-overview",
+      "title": "Codex 沙箱源码阅读入口",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "codex-sandbox-overview"
+    },
+    {
+      "id": "5cd075b8-5743-4b28-8df6-4186b863702a",
+      "kind": "updated",
+      "entity": "doc:codex-sandbox-platforms",
+      "title": "Codex 如何把权限策略转换为平台沙箱",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "codex-sandbox-platforms"
+    },
+    {
+      "id": "658607e2-c2d8-444a-861c-f6cc05bb5ef3",
+      "kind": "updated",
+      "entity": "doc:codex-sandbox-retry",
+      "title": "Codex 遇到沙箱拒绝后如何决定重试",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "codex-sandbox-retry"
+    },
+    {
+      "id": "469e4c39-2032-412c-b34e-e09adce972e3",
+      "kind": "updated",
+      "entity": "doc:codex-sandbox-tests",
+      "title": "Codex 如何测试文件边界与超时清理",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "codex-sandbox-tests"
+    },
+    {
+      "id": "d3f9f3df-79d9-4c56-a4a3-23c0444c5468",
+      "kind": "updated",
+      "entity": "doc:complexity-trap-summary",
+      "title": "The Complexity Trap：旧工具结果屏蔽能否替代摘要",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "complexity-trap-summary"
+    },
+    {
+      "id": "ae12022b-187c-4cbe-a5cf-877d0049883a",
+      "kind": "updated",
+      "entity": "doc:context-budget-scope-summary",
+      "title": "压缩与裁剪阈值：不同计数范围的例子",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "context-budget-scope-summary"
+    },
+    {
+      "id": "9a3d28a1-0814-4121-b689-0c8dc9c7706d",
+      "kind": "updated",
+      "entity": "doc:critic-summary",
+      "title": "CRITIC：先用工具核验，再根据证据纠正",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "critic-summary"
+    },
+    {
+      "id": "afdeb1a4-d7f6-43bf-b887-3cc6b43c8cf7",
+      "kind": "updated",
+      "entity": "doc:deepagents-context-offloading-summary",
+      "title": "Deep Agents：外置上下文与原文回查",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "deepagents-context-offloading-summary"
+    },
+    {
+      "id": "5b57a5a4-9ae9-4800-b754-64b3367389d1",
+      "kind": "updated",
+      "entity": "doc:docling-document",
+      "title": "Docling：保留结构与来源的文档解析",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "docling-document"
+    },
+    {
+      "id": "85157915-bee4-4430-b937-1479b47b0125",
+      "kind": "updated",
+      "entity": "doc:eino-langfuse-tracing",
+      "title": "Eino 的 Langfuse Trace 集成",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "eino-langfuse-tracing"
+    },
+    {
+      "id": "662a892e-476c-46c8-8c7b-8859b10c71e4",
+      "kind": "updated",
+      "entity": "doc:factory-compression-evaluation-summary",
+      "title": "Factory：怎样评测压缩后的任务状态保留",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "factory-compression-evaluation-summary"
+    },
+    {
+      "id": "d4f22e0e-26ee-4c2b-bc74-5e4106fb15a4",
+      "kind": "updated",
+      "entity": "doc:fastmcp-visibility-summary",
+      "title": "FastMCP：工具可见性与会话范围",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "fastmcp-visibility-summary"
+    },
+    {
+      "id": "6ddb4d21-cbd4-4b68-b077-d5d15f09b1f6",
+      "kind": "updated",
+      "entity": "doc:gaia-evaluation",
+      "title": "GAIA：以可核验答案评测通用助手",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "gaia-evaluation"
+    },
+    {
+      "id": "00357a92-d791-4bce-8ec2-da464b7e42eb",
+      "kind": "updated",
+      "entity": "doc:gcs-retry-strategy-summary",
+      "title": "Google Cloud Storage：错误可重试与操作可重复",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "gcs-retry-strategy-summary"
+    },
+    {
+      "id": "774cad02-82a1-4764-87fb-e5122068a67d",
+      "kind": "updated",
+      "entity": "doc:gemini-tool-scheduler-summary",
+      "title": "Gemini CLI：模型声明并行与顺序屏障",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "gemini-tool-scheduler-summary"
+    },
+    {
+      "id": "5bb5b8a2-b80c-4bbe-b05b-c67f126d2bea",
+      "kind": "updated",
+      "entity": "doc:generative-agents-memory",
+      "title": "Generative Agents：从经历检索到高层反思",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "generative-agents-memory"
+    },
+    {
+      "id": "1dfd36ff-4ac4-4e5d-9387-9a86b1f9ddfe",
+      "kind": "updated",
+      "entity": "doc:go-backoff-retry-summary",
+      "title": "Go backoff：用函数包装一次操作",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "go-backoff-retry-summary"
+    },
+    {
+      "id": "053ee33d-0f0a-455f-8a67-c9897343b29a",
+      "kind": "updated",
+      "entity": "doc:go-sql-connections",
+      "title": "Go 官方文档导读：数据库连接池与资源归还",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "go-sql-connections"
+    },
+    {
+      "id": "95017c39-4177-4937-a981-27f4ac5308b7",
+      "kind": "updated",
+      "entity": "doc:graphiti-memory",
+      "title": "Graphiti：随时间变化的事实图",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "graphiti-memory"
+    },
+    {
+      "id": "b84ddbd7-b9c8-485d-8582-8bcde980448a",
+      "kind": "updated",
+      "entity": "doc:graphrag-docs",
+      "title": "Microsoft GraphRAG：实体、社区与两类查询",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "graphrag-docs"
+    },
+    {
+      "id": "61366767-115d-4050-9fcd-780c5a5b7a76",
+      "kind": "updated",
+      "entity": "doc:grpc-error-recovery-summary",
+      "title": "gRPC：错误码怎样表达恢复方式",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "grpc-error-recovery-summary"
+    },
+    {
+      "id": "08b1789b-4255-4938-a7e7-d60c776aca6c",
+      "kind": "updated",
+      "entity": "doc:harbor-evaluation",
+      "title": "Harbor：把 Agent 任务封装成环境与验收程序",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "harbor-evaluation"
+    },
+    {
+      "id": "ecd6c139-0330-40fd-8c6b-25fae1a714d9",
+      "kind": "updated",
+      "entity": "doc:haystack-rag-pipelines",
+      "title": "Haystack：用组件连起索引与混合检索",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "haystack-rag-pipelines"
+    },
+    {
+      "id": "b76cc8e0-0d97-491f-86cf-33077d625fa6",
+      "kind": "updated",
+      "entity": "doc:http-idempotency-summary",
+      "title": "RFC 9110：HTTP 幂等语义",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "http-idempotency-summary"
+    },
+    {
+      "id": "0310a3c5-1141-46d9-b0d7-aa5bc0527bd3",
+      "kind": "updated",
+      "entity": "doc:inspect-agent-evaluation",
+      "title": "Inspect：任务、执行器、评分器与隔离环境",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "inspect-agent-evaluation"
+    },
+    {
+      "id": "5a2ebfb6-aac2-44e9-a92e-47eed71a6ab5",
+      "kind": "updated",
+      "entity": "doc:intrinsic-self-correction-summary",
+      "title": "无外部反馈的推理纠正：为什么可能越改越错",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "intrinsic-self-correction-summary"
+    },
+    {
+      "id": "f4e651ab-4caa-4dc7-856c-65ef224f2eb8",
+      "kind": "updated",
+      "entity": "doc:kafka-learning-resources",
+      "title": "Kafka 学习资料导读",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "kafka-learning-resources"
+    },
+    {
+      "id": "775114be-f1fc-4c2d-a2c8-6c412f6012c8",
+      "kind": "updated",
+      "entity": "doc:kafka-model-sources",
+      "title": "Kafka 定位与事件建模导读",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "kafka-model-sources"
+    },
+    {
+      "id": "1ab8409f-e34f-4b17-9fd5-38fde0233464",
+      "kind": "updated",
+      "entity": "doc:kafka-selection-sources",
+      "title": "Kafka 与同类消息队列选型导读",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "kafka-selection-sources"
+    },
+    {
+      "id": "7db350ee-2132-4430-ba84-245e2c952259",
+      "kind": "updated",
+      "entity": "doc:langchain-context-engineering-summary",
+      "title": "LangChain：写入、选择、压缩与隔离上下文",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langchain-context-engineering-summary"
+    },
+    {
+      "id": "60ca948c-41a0-4281-a965-9a92de6a65ff",
+      "kind": "updated",
+      "entity": "doc:langchain-guardrails-summary",
+      "title": "LangChain：行为检查如何接入 Agent",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langchain-guardrails-summary"
+    },
+    {
+      "id": "f0c596dd-6a94-425f-8761-1e7d4eea676f",
+      "kind": "updated",
+      "entity": "doc:langchain-harness-anatomy-summary",
+      "title": "LangChain：从模型的限制推导 Harness 的组成",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langchain-harness-anatomy-summary"
+    },
+    {
+      "id": "494154d5-b896-4a68-8517-1cfc2ba9903a",
+      "kind": "updated",
+      "entity": "doc:langchain-harness-middleware-summary",
+      "title": "LangChain：用中间件扩展 Agent 循环",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langchain-harness-middleware-summary"
+    },
+    {
+      "id": "e7b49579-8aa1-4088-82de-9ee37b7c9b83",
+      "kind": "updated",
+      "entity": "doc:langchain-message-trimming-summary",
+      "title": "LangChain：消息裁剪与状态删除",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langchain-message-trimming-summary"
+    },
+    {
+      "id": "b57f0633-b3f0-4910-a146-ab540b766ee6",
+      "kind": "updated",
+      "entity": "doc:langchain-model-context-summary",
+      "title": "LangChain：分别管理指令、消息与工具",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langchain-model-context-summary"
+    },
+    {
+      "id": "dfa050e3-58bf-471f-97b2-be8f7d53d355",
+      "kind": "updated",
+      "entity": "doc:langchain-planning-summary",
+      "title": "LangChain：从先规划再执行到重新规划",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langchain-planning-summary"
+    },
+    {
+      "id": "e046120a-df62-43a6-8eb7-7cbc0737adfb",
+      "kind": "updated",
+      "entity": "doc:langchain-rag-architectures",
+      "title": "LangChain：固定流程、Agentic 与混合 RAG",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langchain-rag-architectures"
+    },
+    {
+      "id": "c6fa7f10-fa89-460e-a39e-fb36c79c254b",
+      "kind": "updated",
+      "entity": "doc:langchain-todo-state-summary",
+      "title": "LangChain：用待办工具维护任务进度",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langchain-todo-state-summary"
+    },
+    {
+      "id": "6cc1722e-7bf3-4bc4-9976-b5a9a5865780",
+      "kind": "updated",
+      "entity": "doc:langfuse-dataset-experiments",
+      "title": "Langfuse：从生产轨迹建立数据集与实验",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langfuse-dataset-experiments"
+    },
+    {
+      "id": "58d3e71c-ba0b-417f-b2c7-0065efaf64c2",
+      "kind": "updated",
+      "entity": "doc:langfuse-tracing",
+      "title": "Langfuse：可用于调试和评测的 Trace",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langfuse-tracing"
+    },
+    {
+      "id": "806b5806-8ae2-42d4-946e-7f0ccaade712",
+      "kind": "updated",
+      "entity": "doc:langgraph-checkpoints",
+      "title": "LangGraph：检查点怎样保存执行进度",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langgraph-checkpoints"
+    },
+    {
+      "id": "6e2c9699-727f-4f10-ace0-d3ca439b6e49",
+      "kind": "updated",
+      "entity": "doc:langgraph-human-interrupts",
+      "title": "LangGraph 与 LangChain：从中断原语到人工决策",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langgraph-human-interrupts"
+    },
+    {
+      "id": "40f5ced7-dd7f-4221-bfbe-89134e1b8cbe",
+      "kind": "updated",
+      "entity": "doc:langgraph-replanning-summary",
+      "title": "LangGraph：每步执行后的 Replan 节点",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langgraph-replanning-summary"
+    },
+    {
+      "id": "44df106a-9ec8-4fd6-85ec-cfef27b4c321",
+      "kind": "updated",
+      "entity": "doc:langgraph-time-travel",
+      "title": "LangGraph：从检查点重放与分叉",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langgraph-time-travel"
+    },
+    {
+      "id": "2b9c901a-0b59-4218-aee2-1820d9f265d8",
+      "kind": "updated",
+      "entity": "doc:langgraph-tool-execution-summary",
+      "title": "LangGraph：同轮工具执行与结果回传",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langgraph-tool-execution-summary"
+    },
+    {
+      "id": "3b5d6eb8-1b33-4729-8b0b-41bdc4a84aa0",
+      "kind": "updated",
+      "entity": "doc:langmem-summarization-summary",
+      "title": "LangMem：用运行摘要延续长会话",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langmem-summarization-summary"
+    },
+    {
+      "id": "6512c7bd-a304-4eab-ac9a-f38f6110e360",
+      "kind": "updated",
+      "entity": "doc:langsmith-evaluation",
+      "title": "LangSmith：离线实验、线上评测与人工反馈",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langsmith-evaluation"
+    },
+    {
+      "id": "532134cd-b8bb-4a51-868e-cd63103854dd",
+      "kind": "updated",
+      "entity": "doc:letta-memory",
+      "title": "Letta：常驻记忆块与归档检索",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "letta-memory"
+    },
+    {
+      "id": "adc2a6a1-bf8b-43fd-8e28-ce30a7923f69",
+      "kind": "updated",
+      "entity": "doc:llamaindex-document-management",
+      "title": "LlamaIndex：文档身份、刷新与删除",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "llamaindex-document-management"
+    },
+    {
+      "id": "1a22cf67-5274-43c0-869f-6dd966433eb6",
+      "kind": "updated",
+      "entity": "doc:llm-judge-evaluation",
+      "title": "MT-Bench：模型裁判的偏差与校准依据",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "llm-judge-evaluation"
+    },
+    {
+      "id": "f3e6b358-079b-461d-8a46-4b5f3613db91",
+      "kind": "updated",
+      "entity": "doc:llmcompiler-summary",
+      "title": "LLMCompiler：按依赖调度工具调用",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "llmcompiler-summary"
+    },
+    {
+      "id": "b856404a-3d23-4929-8800-d00ff1e0a806",
+      "kind": "updated",
+      "entity": "doc:locomo-memory",
+      "title": "LoCoMo：长对话中的事实、事件与时间关系评测",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "locomo-memory"
+    },
+    {
+      "id": "ac91d8d9-2cc6-44c4-a301-801aba60ee4d",
+      "kind": "updated",
+      "entity": "doc:longmemeval-memory",
+      "title": "LongMemEval：跨会话记忆与经验复用评测",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "longmemeval-memory"
+    },
+    {
+      "id": "54615509-8ff6-4d5b-a217-baba444b3afe",
+      "kind": "updated",
+      "entity": "doc:lost-in-the-middle",
+      "title": "Lost in the Middle：长上下文中的证据位置效应",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "lost-in-the-middle"
+    },
+    {
+      "id": "45f8327e-3aa4-4fdb-bf83-e9616c9c6d32",
+      "kind": "updated",
+      "entity": "doc:manus-context-engineering-summary",
+      "title": "Manus：上下文怎样影响成本与行动",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "manus-context-engineering-summary"
+    },
+    {
+      "id": "1c0f4d39-9c47-4c1f-8715-8f988f6f7e94",
+      "kind": "updated",
+      "entity": "doc:mcp-architecture-summary",
+      "title": "MCP 官方架构：发现、调用与通知",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mcp-architecture-summary"
+    },
+    {
+      "id": "be0f40c0-d1a2-4c21-8328-1750ec535c7e",
+      "kind": "updated",
+      "entity": "doc:mcp-resources-prompts-summary",
+      "title": "MCP Resources 与 Prompts：数据读取与消息模板",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mcp-resources-prompts-summary"
+    },
+    {
+      "id": "d178ae3c-0f1f-4e7a-bcb3-2cd265f2483f",
+      "kind": "updated",
+      "entity": "doc:mcp-specification-summary",
+      "title": "MCP 官方规范：协议约定的范围",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mcp-specification-summary"
+    },
+    {
+      "id": "d9a520f9-5667-46a1-99e8-82f5abfac5b7",
+      "kind": "updated",
+      "entity": "doc:mcp-tools-summary",
+      "title": "MCP Tools：定义、结果与错误",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mcp-tools-summary"
+    },
+    {
+      "id": "67359417-02b1-47d7-8246-935f43b85e3e",
+      "kind": "updated",
+      "entity": "doc:mem0-memory",
+      "title": "Mem0：追加提取、显式更新与检索",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mem0-memory"
+    },
+    {
+      "id": "3ad63943-9fa9-40f3-bfb1-59970d280c3b",
+      "kind": "updated",
+      "entity": "doc:mem0-paper-memory",
+      "title": "Mem0 论文：事实提取、更新决策与图记忆",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mem0-paper-memory"
+    },
+    {
+      "id": "9c85495f-ff1e-47fd-a4df-ef21cb168d9d",
+      "kind": "updated",
+      "entity": "doc:memgpt-memory",
+      "title": "MemGPT：用分层存储管理有限上下文",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "memgpt-memory"
+    },
+    {
+      "id": "79489af5-7f0a-48c0-b81c-9187512f6974",
+      "kind": "updated",
+      "entity": "doc:memorybank-memory",
+      "title": "MemoryBank：分层摘要与遗忘强化策略",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "memorybank-memory"
+    },
+    {
+      "id": "ed9a81f5-54bf-494a-ac04-5cd761c5dec5",
+      "kind": "updated",
+      "entity": "doc:messaging-patterns-sources",
+      "title": "消息通信与事件处理模式导读",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "messaging-patterns-sources"
+    },
+    {
+      "id": "c4373ac1-790c-4dd7-b708-e430d3d7c434",
+      "kind": "updated",
+      "entity": "doc:mysql-derived-optimization",
+      "title": "MySQL 官方手册导读：派生表、条件下推与临时结果",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-derived-optimization"
+    },
+    {
+      "id": "648c8f6c-1d77-48c7-8033-80eedfc5111e",
+      "kind": "updated",
+      "entity": "doc:mysql-learning-resources",
+      "title": "MySQL 学习资料导读",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-learning-resources"
+    },
+    {
+      "id": "56394e64-204a-4c2c-be4f-cdfd3cb492a7",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-backup",
+      "title": "MySQL 官方手册导读：备份坐标与时间点恢复",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-backup"
+    },
+    {
+      "id": "fdf7a462-17b0-47d8-a3ff-169167b2f439",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-buffer-pool",
+      "title": "MySQL 官方手册导读：缓存保留与页面写回",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-buffer-pool"
+    },
+    {
+      "id": "a801825a-0fd4-4308-bf93-b845eaa8bca6",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-commit",
+      "title": "MySQL 官方文档导读：提交协调与日志持久化",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-commit"
+    },
+    {
+      "id": "5fa5de53-093b-43d4-881e-c18bbe967ecb",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-queries",
+      "title": "MySQL 官方手册导读：查询与索引",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-queries"
+    },
+    {
+      "id": "cf846491-6eab-4ef3-9689-e9451d2dba7d",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-recovery",
+      "title": "MySQL 官方手册导读：日志、复制与恢复",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-recovery"
+    },
+    {
+      "id": "2c00f25d-3807-4104-a1fb-8bfd0967f048",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-transactions",
+      "title": "MySQL 官方手册导读：事务与锁",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-transactions"
+    },
+    {
+      "id": "4c5c461b-612f-4781-a21d-e3c1a3b87ef2",
+      "kind": "updated",
+      "entity": "doc:mysql-pagination-sources",
+      "title": "MySQL 分页优化资料导读",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-pagination-sources"
+    },
+    {
+      "id": "176e0907-054f-4891-8d0e-341581c41ca5",
+      "kind": "updated",
+      "entity": "doc:mysql-performance-diagnostics",
+      "title": "MySQL 官方手册导读：慢查询与等待",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-performance-diagnostics"
+    },
+    {
+      "id": "2a0f8475-d623-40f7-9e59-23db1d5ebbd7",
+      "kind": "updated",
+      "entity": "doc:mysql-performance-schema-profiling",
+      "title": "MySQL 官方手册导读：语句、阶段与等待事件",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-performance-schema-profiling"
+    },
+    {
+      "id": "09403d5e-4d32-4c25-bd09-aef48fb81c55",
+      "kind": "updated",
+      "entity": "doc:mysql-scan-resistance-readings",
+      "title": "InnoDB 扫描抗性：图解与实验导读",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-scan-resistance-readings"
+    },
+    {
+      "id": "3d710a02-f3a6-4745-95ee-39ca23f7c9c5",
+      "kind": "updated",
+      "entity": "doc:mysql-subquery-optimization",
+      "title": "MySQL 官方手册导读：存在性查询与子查询物化",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-subquery-optimization"
+    },
+    {
+      "id": "c7946b81-bcb3-4331-8e64-e1f29f12bf0a",
+      "kind": "updated",
+      "entity": "doc:mysql-temporary-tables",
+      "title": "MySQL 官方手册导读：内部临时表的存储与监测",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-temporary-tables"
+    },
+    {
+      "id": "5c3784b1-78e2-48c7-8105-a98754caee09",
+      "kind": "updated",
+      "entity": "doc:openai-agents-architecture-summary",
+      "title": "OpenAI Agents API：Harness、执行环境与应用的分工",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openai-agents-architecture-summary"
+    },
+    {
+      "id": "64fd77b9-8f5a-4d0d-8532-a2c6d1f0f9c5",
+      "kind": "updated",
+      "entity": "doc:openai-conversation-storage-summary",
+      "title": "OpenAI：用会话 ID 保存与读取历史",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openai-conversation-storage-summary"
+    },
+    {
+      "id": "5704bca9-cb32-4bef-ac38-96ccd37b0c98",
+      "kind": "updated",
+      "entity": "doc:openai-function-design-summary",
+      "title": "OpenAI：怎样定义易于使用的函数工具",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openai-function-design-summary"
+    },
+    {
+      "id": "bdbbe88b-1862-423f-9fb0-5d1ca2ca1048",
+      "kind": "updated",
+      "entity": "doc:openai-guardrails-summary",
+      "title": "OpenAI：自动检查与工具审批",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openai-guardrails-summary"
+    },
+    {
+      "id": "36129306-319a-429c-926c-868321e48da9",
+      "kind": "updated",
+      "entity": "doc:openai-harness-engineering-summary",
+      "title": "OpenAI：让工程环境可被 Agent 理解、执行和验证",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openai-harness-engineering-summary"
+    },
+    {
+      "id": "308b5070-b8c4-434a-b83c-2a5c02090bcd",
+      "kind": "updated",
+      "entity": "doc:openai-instruction-updates-summary",
+      "title": "OpenAI：新要求如何替代旧指令",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openai-instruction-updates-summary"
+    },
+    {
+      "id": "0844e6af-6090-4826-9c8f-517d6b24587e",
+      "kind": "updated",
+      "entity": "doc:openai-programmatic-tools-summary",
+      "title": "OpenAI：用程序编排工具调用",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openai-programmatic-tools-summary"
+    },
+    {
+      "id": "5f2cff6a-ee6d-4f8a-90c3-c37a77beb787",
+      "kind": "updated",
+      "entity": "doc:openai-tool-search-summary",
+      "title": "OpenAI：工具搜索与延迟加载",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openai-tool-search-summary"
+    },
+    {
+      "id": "654685dd-92c5-4df2-8cc2-54c15c08dfe6",
+      "kind": "updated",
+      "entity": "doc:opencode-context-budget-summary",
+      "title": "OpenCode V2：上下文预算与压缩阈值",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "opencode-context-budget-summary"
+    },
+    {
+      "id": "b7787d39-3b80-4a05-b37f-c592177999b7",
+      "kind": "updated",
+      "entity": "doc:opendsa-b-trees",
+      "title": "OpenDSA：B 树与 B+ 树",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "opendsa-b-trees"
+    },
+    {
+      "id": "396de4ec-b239-46ea-9c13-c2af7a2399ac",
+      "kind": "updated",
+      "entity": "doc:openfga-agent-authorization-summary",
+      "title": "OpenFGA：Agent 授权关系、条件与变更管理",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openfga-agent-authorization-summary"
+    },
+    {
+      "id": "8c9e42a0-9df1-4c87-96c8-ac814c64cf83",
+      "kind": "updated",
+      "entity": "doc:openinference-tracing",
+      "title": "OpenInference：AI 操作语义与埋点仓库",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openinference-tracing"
+    },
+    {
+      "id": "a5dfa74b-ffd8-4aed-ae9c-dfeec74948ba",
+      "kind": "updated",
+      "entity": "doc:otel-genai-tracing",
+      "title": "OpenTelemetry：GenAI 与 Agent 的追踪约定",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "otel-genai-tracing"
+    },
+    {
+      "id": "c6c30463-3d51-4a27-9866-42b3f667337f",
+      "kind": "updated",
+      "entity": "doc:otel-trace-collection",
+      "title": "OpenTelemetry：上下文传播、错误记录与采样",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "otel-trace-collection"
+    },
+    {
+      "id": "313d0209-7017-446b-940a-0b64c368c9d4",
+      "kind": "updated",
+      "entity": "doc:owasp-agent-boundaries-summary",
+      "title": "OWASP：提示注入与 Agent 执行边界",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "owasp-agent-boundaries-summary"
+    },
+    {
+      "id": "34ec9301-4919-4f46-bc72-43bbcf4a3e44",
+      "kind": "updated",
+      "entity": "doc:permit-agent-approvals-summary",
+      "title": "Permit：Agent 授权与审批如何组合",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "permit-agent-approvals-summary"
+    },
+    {
+      "id": "3697325a-3652-42b8-81cc-92afdce4c67e",
+      "kind": "updated",
+      "entity": "doc:pgvector-search",
+      "title": "pgvector：精确搜索、近似索引与过滤",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "pgvector-search"
+    },
+    {
+      "id": "7e0f3605-46e4-48e7-8d81-725e9953bf99",
+      "kind": "updated",
+      "entity": "doc:pi-compaction-summary",
+      "title": "Pi：用摘要与保留边界重建上下文",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "pi-compaction-summary"
+    },
+    {
+      "id": "f15a2d2f-eb86-46f9-8ab3-9ffc492709ba",
+      "kind": "updated",
+      "entity": "doc:pi-session-storage-summary",
+      "title": "Pi：从会话文件重建对话历史",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "pi-session-storage-summary"
+    },
+    {
+      "id": "67995fce-02db-49af-9f63-58e3e684c9a0",
+      "kind": "updated",
+      "entity": "doc:promptfoo-evaluation",
+      "title": "Promptfoo：用配置和断言组织评测",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "promptfoo-evaluation"
+    },
+    {
+      "id": "76686033-1486-4ef2-933a-40cca0a7adfa",
+      "kind": "updated",
+      "entity": "doc:pydantic-retries-summary",
+      "title": "Pydantic AI：区分重试层次与预算",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "pydantic-retries-summary"
+    },
+    {
+      "id": "e4fdefd5-1be9-4d99-89e7-84dceac41325",
+      "kind": "updated",
+      "entity": "doc:pydantic-tool-execution-summary",
+      "title": "Pydantic AI：工具并发、失败反馈与取消",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "pydantic-tool-execution-summary"
+    },
+    {
+      "id": "47798945-2060-43ef-869d-8aecb6a42e9d",
+      "kind": "updated",
+      "entity": "doc:pydantic-toolsets-summary",
+      "title": "Pydantic AI：工具集如何组合、筛选与执行",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "pydantic-toolsets-summary"
+    },
+    {
+      "id": "dd9f6b0b-642e-4102-bee0-db2793c51627",
+      "kind": "updated",
+      "entity": "doc:rag-advanced-papers",
+      "title": "HyDE、RAPTOR 与 ColPali：三种检索表示的改变",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "rag-advanced-papers"
+    },
+    {
+      "id": "a8e5658c-7027-4fd8-a2ee-0d14e317b8f1",
+      "kind": "updated",
+      "entity": "doc:rag-evaluation-docs",
+      "title": "Ragas 与 LangSmith：评测对象、参照物和自动裁判",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "rag-evaluation-docs"
+    },
+    {
+      "id": "582e5583-3110-4478-8b70-db1f190db5a1",
+      "kind": "updated",
+      "entity": "doc:rag-paper",
+      "title": "RAG 原始论文：参数知识与外部检索怎样结合",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "rag-paper"
+    },
+    {
+      "id": "62c92c01-76d3-458f-825e-f9489aba3dd5",
+      "kind": "updated",
+      "entity": "doc:rag-retrieval-ranking",
+      "title": "检索官方文档：词项评分、语义表示、融合与重排",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "rag-retrieval-ranking"
+    },
+    {
+      "id": "f772560c-4909-4637-99f2-845fba11946f",
+      "kind": "updated",
+      "entity": "doc:rag-security-docs",
+      "title": "Azure 与 OWASP：RAG 的权限和文档信任边界",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "rag-security-docs"
+    },
+    {
+      "id": "a5b70ea9-d603-44b0-8dfb-a9ffb686dcb2",
+      "kind": "updated",
+      "entity": "doc:react-paper-summary",
+      "title": "ReAct 论文：让推理与行动相互提供信息",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "react-paper-summary"
+    },
+    {
+      "id": "08ed4db6-1aac-4064-a45c-2046a1ac2ebc",
+      "kind": "updated",
+      "entity": "doc:redis-cache-docs",
+      "title": "Azure 架构文档：Cache Aside 的一致性边界",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "redis-cache-docs"
+    },
+    {
+      "id": "b4e41f23-8d2a-4ce5-a4f6-2bfd41e86429",
+      "kind": "updated",
+      "entity": "doc:redis-cluster-docs",
+      "title": "Redis 官方文档：Sentinel 与 Cluster",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "redis-cluster-docs"
+    },
+    {
+      "id": "60b1bdb7-895a-429a-92d7-2749d261ef9a",
+      "kind": "updated",
+      "entity": "doc:redis-coordination-docs",
+      "title": "Redis 官方文档：租约锁与限流原子操作",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "redis-coordination-docs"
+    },
+    {
+      "id": "26b468a4-1e14-49d0-8f47-58cba83c5ac9",
+      "kind": "updated",
+      "entity": "doc:redis-data-model-docs",
+      "title": "Redis 官方文档与源码：数据类型和编码",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "redis-data-model-docs"
+    },
+    {
+      "id": "e3577312-4248-4ba5-bb6e-eb2892af0abe",
+      "kind": "updated",
+      "entity": "doc:redis-durability-docs",
+      "title": "Redis 官方文档：持久化、复制与写入确认",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "redis-durability-docs"
+    },
+    {
+      "id": "6153c4e7-387e-4d43-b049-b38f5de445b4",
+      "kind": "updated",
+      "entity": "doc:redis-execution-docs",
+      "title": "Redis 官方文档：执行模型、事务与脚本",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "redis-execution-docs"
+    },
+    {
+      "id": "3735ee3a-f5bd-4f8d-b97b-8b41b4b915f2",
+      "kind": "updated",
+      "entity": "doc:redis-go-projects",
+      "title": "Redis Go 项目导读：go-redis 与 Asynq",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "redis-go-projects"
+    },
+    {
+      "id": "e1037bcc-ab67-4a34-b4fb-d71270f4bb28",
+      "kind": "updated",
+      "entity": "doc:redis-memory-diagnostics-docs",
+      "title": "Redis 官方文档：过期、淘汰与延迟诊断",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "redis-memory-diagnostics-docs"
+    },
+    {
+      "id": "f450d90d-861e-45a0-b73c-9b0bbe74a05e",
+      "kind": "updated",
+      "entity": "doc:redis-streams-docs",
+      "title": "Redis 官方文档：消息保留、确认与接管",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "redis-streams-docs"
+    },
+    {
+      "id": "b1f9db59-54a7-4f2c-9b9a-0e16f832e5d5",
+      "kind": "updated",
+      "entity": "doc:reflexion-summary",
+      "title": "Reflexion：把执行反馈写成经验，指导下一次尝试",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "reflexion-summary"
+    },
+    {
+      "id": "03d7c375-8a8a-44a5-a1e1-0379552ac4c2",
+      "kind": "updated",
+      "entity": "doc:self-refine-summary",
+      "title": "Self-Refine：用具体反馈迭代修改输出",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "self-refine-summary"
+    },
+    {
+      "id": "f18c717d-0e5c-45c5-821b-ccce3b2bdee6",
+      "kind": "updated",
+      "entity": "doc:smolagents-planning-summary",
+      "title": "smolagents：按行动步数更新计划",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "smolagents-planning-summary"
+    },
+    {
+      "id": "0b48ff70-95a4-4631-822f-aeee5711ea44",
+      "kind": "updated",
+      "entity": "doc:stripe-error-recovery-summary",
+      "title": "Stripe：结果未知时怎样安全重试",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "stripe-error-recovery-summary"
+    },
+    {
+      "id": "ae98c6ce-750b-44a6-a3ef-816b2198b5a7",
+      "kind": "updated",
+      "entity": "doc:swe-bench-evaluation",
+      "title": "SWE-bench：通过仓库测试验收代码修改",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "swe-bench-evaluation"
+    },
+    {
+      "id": "0aa54184-3fa0-4799-9494-c1c4aef3b13b",
+      "kind": "updated",
+      "entity": "doc:tau-bench-evaluation",
+      "title": "τ²-bench：用户、Agent 与共享环境的交互评测",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "tau-bench-evaluation"
+    },
+    {
+      "id": "59d88b73-1b69-43d6-adef-c9dd6d46180a",
+      "kind": "updated",
+      "entity": "doc:temporal-durable-execution",
+      "title": "Temporal：通过事件历史恢复，并等待外部决定",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "temporal-durable-execution"
+    },
+    {
+      "id": "29b94114-e6b9-4fec-9294-fad4d1f993e2",
+      "kind": "updated",
+      "entity": "doc:temporal-retry-policy-summary",
+      "title": "Temporal：用策略约束重试与停止条件",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "temporal-retry-policy-summary"
+    },
+    {
+      "id": "055d33f3-5303-4293-9557-7faa28121548",
+      "kind": "updated",
+      "entity": "doc:victoriametrics-cond-summary",
+      "title": "VictoriaMetrics：Cond：等待条件与通知",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "victoriametrics-cond-summary"
+    },
+    {
+      "id": "fdb7ff33-0bdc-4fd3-858c-dc61e6d9c0d0",
+      "kind": "updated",
+      "entity": "doc:victoriametrics-go-concurrency",
+      "title": "VictoriaMetrics Go 并发文章总结",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "victoriametrics-go-concurrency"
+    },
+    {
+      "id": "85751f39-ecbc-472f-a6fc-94984bcc0fbe",
+      "kind": "updated",
+      "entity": "doc:victoriametrics-mutex-summary",
+      "title": "VictoriaMetrics：Mutex：吞吐与公平的取舍",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "victoriametrics-mutex-summary"
+    },
+    {
+      "id": "1ff43ec5-990d-4d00-bd29-c270bb8dfd31",
+      "kind": "updated",
+      "entity": "doc:victoriametrics-once-summary",
+      "title": "VictoriaMetrics：Once：执行一次与完成可见性",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "victoriametrics-once-summary"
+    },
+    {
+      "id": "ef3d81da-0842-4d58-9e44-3a8157ee17c0",
+      "kind": "updated",
+      "entity": "doc:victoriametrics-pool-summary",
+      "title": "VictoriaMetrics：Pool：对象复用与回收",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "victoriametrics-pool-summary"
+    },
+    {
+      "id": "330d5bfe-3659-4296-ac5f-15c51dbb46ec",
+      "kind": "updated",
+      "entity": "doc:victoriametrics-singleflight-summary",
+      "title": "VictoriaMetrics：singleflight：合并正在执行的请求",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "victoriametrics-singleflight-summary"
+    },
+    {
+      "id": "64d3aac9-3398-4a93-b377-7009f0540d9c",
+      "kind": "updated",
+      "entity": "doc:victoriametrics-sync-map-summary",
+      "title": "VictoriaMetrics：sync.Map：双表机制与适用边界",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "victoriametrics-sync-map-summary"
+    },
+    {
+      "id": "3a838f47-8a6a-4914-bc9a-35521bfbea12",
+      "kind": "updated",
+      "entity": "doc:victoriametrics-waitgroup-summary",
+      "title": "VictoriaMetrics：WaitGroup：计数、唤醒与对齐",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "victoriametrics-waitgroup-summary"
+    },
+    {
+      "id": "3df3d70a-267b-4268-a49e-538e6550188b",
+      "kind": "updated",
+      "entity": "doc:voyager-skill-memory",
+      "title": "Voyager：把完成任务的程序积累为技能库",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "voyager-skill-memory"
+    },
+    {
+      "id": "9a55cd42-d31b-4d5e-a238-d208d26d94ea",
+      "kind": "updated",
+      "entity": "doc:wal-official-docs",
+      "title": "WAL 官方文档导读：持久化顺序、提交与恢复",
+      "time": "2026-10-13T04:48:17.699Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "wal-official-docs"
+    },
+    {
+      "id": "04db5071-b43d-4945-bc9d-db147afe94f9",
+      "kind": "updated",
+      "entity": "doc:aws-idempotent-retries-summary",
+      "title": "AWS：用幂等 API 保证重试安全",
+      "time": "2026-10-13T04:50:09.678Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "aws-idempotent-retries-summary"
+    },
+    {
+      "id": "90409fe1-6405-4fa7-96f0-503ece8e3a72",
+      "kind": "updated",
+      "entity": "doc:codex-memory-pipeline",
+      "title": "Codex 源码：后台提取与跨会话整合",
+      "time": "2026-10-13T04:50:09.678Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "codex-memory-pipeline"
+    },
+    {
+      "id": "79126de3-0492-45f9-a183-179acbd81a65",
+      "kind": "updated",
+      "entity": "doc:critic-summary",
+      "title": "CRITIC：先用工具核验，再根据证据纠正",
+      "time": "2026-10-13T04:50:09.678Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "critic-summary"
+    },
+    {
+      "id": "9b272036-af96-43c7-a900-bafd3ad6ed2f",
+      "kind": "updated",
+      "entity": "doc:langgraph-checkpoints",
+      "title": "LangGraph：检查点怎样保存执行进度",
+      "time": "2026-10-13T04:50:09.678Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langgraph-checkpoints"
+    },
+    {
+      "id": "e63ba027-baeb-4a2c-b573-919501a257d1",
+      "kind": "updated",
+      "entity": "doc:mysql-manual-commit",
+      "title": "MySQL 官方文档导读：提交协调与日志持久化",
+      "time": "2026-10-13T04:50:09.678Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-manual-commit"
+    },
+    {
+      "id": "d431e621-89b0-48a3-8e75-322ee5203d7e",
+      "kind": "updated",
+      "entity": "doc:mysql-subquery-optimization",
+      "title": "MySQL 官方手册导读：存在性查询与子查询物化",
+      "time": "2026-10-13T04:50:09.678Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mysql-subquery-optimization"
+    },
+    {
+      "id": "9c871184-82a7-46e0-a4bc-739d3776b861",
+      "kind": "updated",
+      "entity": "doc:openai-agents-architecture-summary",
+      "title": "OpenAI Agents API：Harness、执行环境与应用的分工",
+      "time": "2026-10-13T04:50:09.678Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openai-agents-architecture-summary"
+    },
+    {
+      "id": "2863bfc8-857b-4082-a621-35e5f2118221",
+      "kind": "updated",
+      "entity": "doc:pydantic-tool-execution-summary",
+      "title": "Pydantic AI：工具并发、失败反馈与取消",
+      "time": "2026-10-13T04:50:09.678Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "pydantic-tool-execution-summary"
+    },
+    {
+      "id": "ae8e6283-1b6e-485e-82b0-22d76c35bb2d",
+      "kind": "updated",
+      "entity": "doc:rag-evaluation-docs",
+      "title": "Ragas 与 LangSmith：评测对象、参照物和自动裁判",
+      "time": "2026-10-13T04:50:09.678Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "rag-evaluation-docs"
+    },
+    {
+      "id": "ecdfef8a-a323-431d-ad5b-a9d1b098d974",
+      "kind": "updated",
+      "entity": "doc:react-paper-summary",
+      "title": "ReAct 论文：让推理与行动相互提供信息",
+      "time": "2026-10-13T04:50:09.678Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "react-paper-summary"
+    },
+    {
+      "id": "6bb1ba65-89d8-4d74-9a88-420415cea8d4",
+      "kind": "updated",
+      "entity": "doc:victoriametrics-cond-summary",
+      "title": "VictoriaMetrics：Cond：等待条件与通知",
+      "time": "2026-10-13T04:50:09.678Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "victoriametrics-cond-summary"
     }
   ]
 }

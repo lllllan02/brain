@@ -3,11 +3,11 @@ title: "Manus：上下文怎样影响成本与行动"
 category: "Agent"
 tags: ["Agent", "上下文管理"]
 created_at: "2026-10-11T15:24:08+08:00"
-updated_at: "2026-10-11T22:35:33+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Context Engineering for AI Agents: Lessons from Building Manus](https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus)"
 ---
 
-**Manus 把上下文工程作为快速改进 Agent 的手段，同时考虑缓存成本、信息可恢复性与行为反馈。** Yichao Ji 在 2025-07-18 的文章中总结六项生产经验；作者将其视为自身实践中的有效选择，并不主张普遍适用。
+**「Manus 把上下文工程作为快速改进 Agent 的手段，同时考虑缓存成本、信息可恢复性与行为反馈。」** Yichao Ji 在 2025-07-18 的文章中总结六项生产经验；作者将其视为自身实践中的有效选择，并不主张普遍适用。
 
 ## 为什么优先考虑缓存？
 
@@ -23,7 +23,7 @@ source: "[Context Engineering for AI Agents: Lessons from Building Manus](https:
 
 原文的 `Use the File System as Context` 给出两个例子：省略网页正文但保留 URL；省略文档内容但保留沙箱文件路径。模型通过文件读写管理窗口外的信息，后续需要时重新获取。这里管理的是资料正文与观察结果，不是工具定义。
 
-这套思路将「当前不带入」与「永久丢失」分开。应用时仍需检查引用能否访问；若要求取回当时的精确内容，应保留快照，不能把可能变化的网页 URL 当作原文备份。这是对恢复条件的补充判断，原文没有给出统一的存储或检索协议。
+这套思路将**「当前不带入」**与**「永久丢失」**分开。应用时仍需检查引用能否访问；若要求取回当时的精确内容，应保留快照，不能把可能变化的网页 URL 当作原文备份。这是对恢复条件的补充判断，原文没有给出统一的存储或检索协议。
 
 ## 如何避免行为偏离？
 
@@ -31,4 +31,4 @@ source: "[Context Engineering for AI Agents: Lessons from Building Manus](https:
 - 重复失败：保留失败动作及其错误反馈，让后续决策知道哪些尝试无效；擦去错误也会擦去证据。
 - 机械模仿：重复的行动记录可能诱发照搬。作者以批量审阅简历为例，采用受控的表述和格式变化打破单一模式。
 
-这些经验存在需要验证的组合边界：稳定历史有利于缓存，变化有助于避免模仿。阅读时应区分「改写旧前缀」与「新观察的表达方式」，原文未给出两者的统一调参规则。工具保留策略也应与 [[langchain-context-engineering-summary|LangChain 的工具检索思路]]按场景对照。
+这些经验存在需要验证的组合边界：**「稳定历史有利于缓存」**，变化有助于避免模仿。阅读时应区分「改写旧前缀」与「新观察的表达方式」，原文未给出两者的统一调参规则。工具保留策略也应与 [[langchain-context-engineering-summary|LangChain 的工具检索思路]]按场景对照。

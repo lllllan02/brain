@@ -4,17 +4,17 @@ title: "Codex 如何保护可写工作区内的敏感路径"
 category: "Agent"
 tags: ["Agent", "沙箱", "源码"]
 created_at: "2026-10-10"
-updated_at: "2026-10-10"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: ["[Linux 后端](https://github.com/openai/codex/blob/5ef96ab2785f3ecddf279639eff7b1b42c906fa4/codex-rs/linux-sandbox/README.md#L53)", "[文件服务 helper](https://github.com/openai/codex/blob/5ef96ab2785f3ecddf279639eff7b1b42c906fa4/codex-rs/exec-server/src/fs_sandbox.rs#L83)"]
 ---
 
-**Codex 可先开放工作区写入，再单独保护其中会影响执行行为的敏感路径。**
+**「Codex 可先开放工作区写入，再单独保护其中会影响执行行为的敏感路径。」**
 
 ## 为什么只检查工作区范围不够
 
 `.git`、`.codex` 等目录即使位于工作区，也可能包含仓库或执行器配置。如果仅允许“工作区内的一切写入”，这些配置就会一起开放。
 
-Linux 后端先建立默认只读的文件视图，再挂载可写根，最后对受保护子路径重新施加限制。拒绝读取的对象需要遮蔽，不能只挂成只读。
+Linux 后端先建立默认只读的文件视图，再挂载可写根，最后**「对受保护子路径重新施加限制」**。拒绝读取的对象需要遮蔽，不能只挂成只读。
 
 ## 嵌套路径与工具入口
 

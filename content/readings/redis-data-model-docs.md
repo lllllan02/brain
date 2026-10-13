@@ -8,7 +8,7 @@ source:
   - "https://redis.io/docs/latest/operate/oss_and_stack/management/optimization/memory-optimization/"
   - "https://github.com/redis/redis/tree/7.2.5/src"
 created_at: "2026-10-13T11:03:37+08:00"
-updated_at: "2026-10-13T11:03:37+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 ---
 
 本导读选取 API 类型与内存编码之间的关系，源码定位固定到 Redis 7.2.5；官方 `latest` 页面会继续变化，不能将其中新增类型或命令都视为旧版本能力。
@@ -17,9 +17,9 @@ updated_at: "2026-10-13T11:03:37+08:00"
 
 [数据类型目录](https://redis.io/docs/latest/develop/data-types/)按可执行操作区分字符串、字段映射、列表、集合、有序集合与事件流，也列出 Bitmap、HyperLogLog 和 GEO 等能力。它支持按需求找 API，但内部对象类型与这些功能分类并非一一对应。
 
-[OBJECT ENCODING](https://redis.io/docs/latest/commands/object-encoding//)展示同一类型可用不同编码：小 Hash/ZSet 可用 listpack，普通 Hash 用哈希表，普通 ZSet 用 skiplist 编码；Set 的 listpack 支持标注为 7.2 起。API 不变，内存表示可以随内容与规模转换。
+[OBJECT ENCODING](https://redis.io/docs/latest/commands/object-encoding//)展示**「同一类型可用不同编码」**：小 Hash/ZSet 可用 listpack，普通 Hash 用哈希表，普通 ZSet 用 skiplist 编码；Set 的 listpack 支持标注为 7.2 起。API 不变，内存表示可以随内容与规模转换。
 
-[内存优化说明](https://redis.io/docs/latest/management/optimization/memory-optimization/)把小对象编码解释为 CPU 与内存的交换：紧凑布局减少对象开销，但查找和更新可能增加扫描、搬移。阈值受元素数、元素大小及配置影响。文档中的节省比例是特定条件下的观察，不能代替目标业务的测量。
+[内存优化说明](https://redis.io/docs/latest/management/optimization/memory-optimization/)把小对象编码解释为 **「CPU 与内存的交换」**：紧凑布局减少对象开销，但查找和更新可能增加扫描、搬移。阈值受元素数、元素大小及配置影响。文档中的节省比例是特定条件下的观察，不能代替目标业务的测量。
 
 ## 从实现看结构为何这样组合
 

@@ -4,11 +4,11 @@ parent: agent-harness
 category: "Agent"
 tags: ["Agent", "Harness"]
 created_at: "2026-10-11T11:46:46+08:00"
-updated_at: "2026-10-11T12:33:19+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Architecture](https://developers.openai.com/api/docs/guides/agents-api/architecture)"
 ---
 
-**Agents API 将模型运行、执行环境和业务应用分工，使是否配置计算环境成为任务需求，而不是运行 Agent 的前提。**
+**「Agents API 将模型运行、执行环境和业务应用分工，使是否配置计算环境成为任务需求，而不是运行 Agent 的前提。」**
 
 ## 三部分各自负责什么？
 
@@ -18,7 +18,7 @@ source: "[Architecture](https://developers.openai.com/api/docs/guides/agents-api
 | 执行环境 | 提供命令、代码执行与文件操作 |
 | 应用服务 | 提交任务、接收事件、处理函数工具；自托管时管理环境生命周期 |
 
-这解释了「使用托管 Harness」为什么不等于「所有动作都在服务商的沙箱里执行」。模型控制、工具处理与计算资源可以由不同参与者承担。
+这解释了「使用托管 Harness」为什么不等于「所有动作都在服务商的沙箱里执行」。**「模型控制、工具处理与计算资源可以由不同参与者承担」**。
 
 ## 从不需要环境，到连接自有环境
 

@@ -4,11 +4,11 @@ parent: retry-wrapper
 category: "服务治理"
 tags: ["重试", "异常分类"]
 created_at: "2026-10-12T11:09:12+08:00"
-updated_at: "2026-10-12T11:09:12+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[backoff v7.0.0 源码](https://github.com/cenkalti/backoff/blob/v7.0.0/retry.go) · [包文档](https://pkg.go.dev/github.com/cenkalti/backoff/v7)"
 ---
 
-**backoff 把一次操作表示为返回结果与错误的函数，外层 `Retry` 负责再次调用、等待和停止。** 本文按 v7.0.0 源码核对，该版本要求 Go 1.23 或以上；不混用其他主版本接口。
+**「backoff 把一次操作表示为返回结果与错误的函数，外层 `Retry` 负责再次调用、等待和停止。」** 本文按 v7.0.0 源码核对，该版本要求 Go 1.23 或以上；不混用其他主版本接口。
 
 ## 操作怎样表达重试意图
 
@@ -18,11 +18,11 @@ source: "[backoff v7.0.0 源码](https://github.com/cenkalti/backoff/blob/v7.0.0
 
 ## 次数、时间与取消怎样配合
 
-`WithMaxTries(3)` 包含首次执行，最多重试两次。默认指数退避带随机扰动，每个并发调用应使用独立的有状态退避实例。
+`WithMaxTries(3)` **「包含首次执行，最多重试两次」**。默认指数退避带随机扰动，每个并发调用应使用独立的有状态退避实例。
 
-`WithMaxElapsedTime` 在两次尝试之间检查，不能中断正在执行的操作；设为 0 可禁用它，改用带期限的 Context。Context 可打断等待，但业务操作还需自己接收并遵守 Context，才能响应执行中的取消。
+`WithMaxElapsedTime` 在两次尝试之间检查，**「不能中断正在执行的操作」**；设为 0 可禁用它，改用带期限的 Context。Context 可打断等待，但业务操作还需自己接收并遵守 Context，才能响应执行中的取消。
 
-源码先调用操作再检查循环中的取消条件，保证至少调用一次；不能依赖外层 Context 阻止第一次业务动作，应在操作内检查并向下游传递 Context。
+源码先调用操作再检查循环中的取消条件，保证至少调用一次；**「不能依赖外层 Context 阻止第一次业务动作」**，应在操作内检查并向下游传递 Context。
 
 ## 哪些信息适合记录
 

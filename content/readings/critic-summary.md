@@ -4,7 +4,7 @@ title: "CRITIC：先用工具核验，再根据证据纠正"
 category: "Agent"
 tags: ["Agent", "自我纠正"]
 created_at: "2026-10-12T10:15:48+08:00"
-updated_at: "2026-10-12T10:15:48+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing](https://arxiv.org/html/2305.11738)"
 ---
 
@@ -20,4 +20,4 @@ source: "[CRITIC: Large Language Models Can Self-Correct with Tool-Interactive C
 
 ## 仍有哪些限制？
 
-工具反馈并不消除推理错误或误改；代码能运行也不代表理解了题意。迭代增加延迟，需设置停止条件；论文中的次数和结果不构成生产配置建议。
+**「工具反馈并不消除推理错误或误改」**；代码能运行也不代表理解了题意。迭代增加延迟，需设置停止条件；论文中的次数和结果不构成生产配置建议。

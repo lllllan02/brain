@@ -5,14 +5,14 @@ parent: context-compaction
 category: "Agent"
 tags: ["上下文管理", "文本压缩"]
 created_at: "2026-10-11T17:28:47+08:00"
-updated_at: "2026-10-11T18:48:02+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/compaction.md"
   - "https://github.com/earendil-works/pi/blob/main/packages/coding-agent/src/core/compaction/compaction.ts"
   - "https://github.com/earendil-works/pi/blob/main/packages/coding-agent/src/core/session-manager.ts"
 ---
 
-**Pi 将摘要和原始会话分别记录，用保留起点重建下一轮消息。** 本文只整理自动压缩及会话接续，依据 2026-10-11 的官方文档和 main 分支源码，未固定提交或运行验证；分支切换摘要与扩展钩子不在本文范围内。
+**「Pi 将摘要和原始会话分别记录，用保留起点重建下一轮消息。」** 本文只整理自动压缩及会话接续，依据 2026-10-11 的官方文档和 main 分支源码，未固定提交或运行验证；分支切换摘要与扩展钩子不在本文范围内。
 
 ## 程序怎样切分？
 
@@ -28,9 +28,9 @@ source:
 contextTokens > contextWindow - reserveTokens
 ```
 
-`reserveTokens` 控制多早触发，`keepRecentTokens` 控制切分时保留多大的近期历史，两者不是同一预算。核对时默认值分别为 16,384 和 20,000，可配置；这些是 Pi 的实现参数，不是通用推荐值，也不等于保留固定消息条数。
+`reserveTokens` 控制多早触发，`keepRecentTokens` 控制切分时保留多大的近期历史，**「两者不是同一预算」**。核对时默认值分别为 16,384 和 20,000，可配置；这些是 Pi 的实现参数，不是通用推荐值，也不等于保留固定消息条数。
 
-例如窗口配置为 200,000 Token 时，按默认预留量计算，阈值为 183,616，即当前估算超过该窗口的约 **91.8%** 时触发；换模型窗口后阈值也随之变化，不能概括成固定百分比。`reserveTokens` 为模型响应留空间，不是强制输出量；这条公式没有另设独立安全余量，不应重复扣除。
+例如窗口配置为 200,000 Token 时，按默认预留量计算，阈值为 183,616，即当前估算超过该窗口的约 **91.8%** 时触发；换模型窗口后阈值也随之变化，**「不能概括成固定百分比」**。`reserveTokens` 为模型响应留空间，不是强制输出量；这条公式没有另设独立安全余量，不应重复扣除。
 
 普通摘要生成的输出上限取 `floor(0.8 × reserveTokens)`，再受模型输出上限约束；默认预留量对应 13,107 Token。这只是生成上限，不是实际摘要长度。超长单轮的前缀还可能单独总结，所以不能把「20,000 + 13,107」当作最终上下文的硬上限。最终需重新计算摘要、保留消息及固定输入的总量；没有固定的压缩后占用率。具体分子、分母见[[context-budget|上下文预算的三个比例]]。
 

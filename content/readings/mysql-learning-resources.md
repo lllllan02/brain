@@ -5,7 +5,7 @@ parent: mysql-overview
 type: "article"
 tags: ["MySQL", "数据库"]
 created_at: "2026-10-12T14:45:56+08:00"
-updated_at: "2026-10-12T21:37:47+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://github.com/Snailclimb/JavaGuide/tree/main/docs/database/mysql"
   - "https://xiaolincoding.com/mysql/"
@@ -25,7 +25,7 @@ source:
   - "https://xiaolincoding.com/mysql/lock/deadlock.html"
 ---
 
-**这组资料用于发现 MySQL 的学习问题、寻找机制解释，并核对版本条件。** JavaGuide 与小林 coding 提供问题和专题讲解，CS-Notes 补充知识分类，官方手册用于核对具体行为。本导读保留资料入口与用途，不收录完整题库；资料中关于面试频率或覆盖率的宣传不作为学习优先级依据。
+**「这组资料用于发现 MySQL 的学习问题、寻找机制解释，并核对版本条件。」** JavaGuide 与小林 coding 提供问题和专题讲解，CS-Notes 补充知识分类，官方手册用于核对具体行为。本导读保留资料入口与用途，不收录完整题库；资料中关于面试频率或覆盖率的宣传不作为学习优先级依据。
 
 ## 问题与机制讲解从哪里找
 
@@ -35,7 +35,7 @@ source:
 | [小林 coding：图解 MySQL](https://xiaolincoding.com/mysql/) | 执行流程、记录与数据页、索引、事务、锁、日志、Buffer Pool 与架构 | 用图解理解机制；[索引专题](https://xiaolincoding.com/mysql/index/index_interview.html)串联索引分类、使用条件与设计，锁篇适合继续追问加锁范围和死锁场景 |
 | [CS-Notes：MySQL](https://github.com/CyC2018/CS-Notes/blob/master/notes/MySQL.md) | 索引、查询性能优化、存储引擎、数据类型、切分与复制 | 用于对照知识分类、补充遗漏方向；其中版本相关细节和概括性优化建议，使用前需结合官方手册及具体场景复核 |
 
-上述资料的目录和部分专题内容已用于范围梳理，尚未逐题核验全部答案。讨论时可以从题目切入，形成知识笔记时仍围绕机制、适用条件与取舍组织正文。
+上述资料的目录和部分专题内容已用于范围梳理，**「尚未逐题核验全部答案」**。讨论时可以从题目切入，形成知识笔记时仍围绕机制、适用条件与取舍组织正文。
 
 ## 具体行为怎样核对
 

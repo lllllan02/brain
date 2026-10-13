@@ -4,7 +4,7 @@ parent: mcp
 category: "Agent"
 tags: ["MCP", "工具调用", "协议"]
 created_at: "2026-10-11T00:40:07+08:00"
-updated_at: "2026-10-12T12:08:03+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture"
   - "https://modelcontextprotocol.io/specification/2026-07-28/server/discover"
@@ -15,13 +15,13 @@ source:
   - "https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle"
 ---
 
-**MCP 将消息语义与传输方式分开：数据层规定交互内容，传输层负责递送消息。** 本文节选官方架构与相关规范中「接入、发现、工具调用和通知」的内容，以 `2026-07-28` 为主，并对照 `2025-11-25` 的初始化流程；未运行协议示例。
+**「MCP 将消息语义与传输方式分开：数据层规定交互内容，传输层负责递送消息。」** 本文节选官方架构与相关规范中「接入、发现、工具调用和通知」的内容，以 `2026-07-28` 为主，并对照 `2025-11-25` 的初始化流程；未运行协议示例。
 
 ## 谁负责哪一段
 
 宿主应用（Host）组织模型和上下文，并为对接的服务创建客户端（Client）；服务端（Server）提供工具、资源和提示模板。MCP 约定 Client 与 Server 的交互，模型如何选择工具、Host 如何组织下一轮请求由应用决定。
 
-这一区分意味着：发现工具后，Host 仍要把定义转换成模型接口接受的形式；收到结果后，也仍要把它放回模型上下文。协议连通本身不会自动形成 Agent 循环。
+这一区分意味着：发现工具后，**「Host 仍要把定义转换成模型接口接受的形式」**；收到结果后，也仍要把它放回模型上下文。协议连通本身不会自动形成 Agent 循环。
 
 ## 传输怎样建立
 
@@ -40,7 +40,7 @@ source:
 
 服务端必须实现 `server/discover`，客户端可以选择先调用它，也可直接发送功能请求。发现结果支持缓存；每个请求仍须在 `_meta` 中声明协议版本与客户端能力，通常还带上客户端身份。HTTP 会将部分元数据映射到请求头，消息正文仍是依据。
 
-[版本规范](https://modelcontextprotocol.io/specification/2026-07-28/basic/versioning)说明，服务端逐请求接受或拒绝所声明的版本。不支持时返回 `UnsupportedProtocolVersionError` 与支持列表，客户端选择双方共同支持的版本重试；没有共同版本则报告不兼容。发现服务身份只方便展示与诊断，不能将自报身份当作可信认证。
+[版本规范](https://modelcontextprotocol.io/specification/2026-07-28/basic/versioning)说明，服务端**「逐请求接受或拒绝所声明的版本」**。不支持时返回 `UnsupportedProtocolVersionError` 与支持列表，客户端选择双方共同支持的版本重试；没有共同版本则报告不兼容。发现服务身份只方便展示与诊断，不能将自报身份当作可信认证。
 
 ## 从定义到执行结果
 
@@ -52,7 +52,7 @@ JSON-RPC `id` 关联 MCP 请求与响应。模型接口另有自己的调用标�
 
 服务端声明 `tools.listChanged` 后，Client 可用 `subscriptions/listen` 请求订阅 `toolsListChanged`。服务端先确认实际接受的通知类型，再发送相应变化通知；通知不包含完整新目录，Client 收到后重新 `tools/list` 并更新映射。
 
-通知按尽力交付，重连时可能丢失，因此客户端还需用轮询等方式保持目录新鲜。订阅是按需启用的维护机制，不是每次工具调用前的固定步骤。
+**「通知按尽力交付」**，重连时可能丢失，因此客户端还需用轮询等方式保持目录新鲜。订阅是按需启用的维护机制，不是每次工具调用前的固定步骤。
 
 ## 与旧版初始化的区别
 

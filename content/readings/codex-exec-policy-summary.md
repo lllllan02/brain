@@ -4,13 +4,13 @@ parent: tool-permission-design
 category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10T20:44:35+08:00"
-updated_at: "2026-10-10T20:44:35+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://learn.chatgpt.com/docs/agent-configuration/rules"
   - "https://github.com/openai/codex/blob/main/codex-rs/core/src/exec_policy.rs"
 ---
 
-**Codex 将命令规则、审批模式和沙箱配置共同用于执行决策；未匹配明确规则，不必然意味着必须人工审批。** 以下为 2026-10-10 文档与源码阅读，未运行验证；源码链接指向会变化的 `main`。
+**「Codex 将命令规则、审批模式和沙箱配置共同用于执行决策；未匹配明确规则，不必然意味着必须人工审批。」** 以下为 2026-10-10 文档与源码阅读，未运行验证；源码链接指向会变化的 `main`。
 
 ## 命令规则怎样表达？
 
@@ -28,4 +28,4 @@ source:
 - `Prompt`：审批模式允许时返回 `NeedsApproval`；禁止该类审批时转为拒绝。
 - 没有明确规则覆盖：结合危险命令判断、审批模式和沙箱配置处理。在 `OnRequest` 的受限沙箱下，非危险且未请求突破沙箱的命令可以直接受限执行。
 
-因此，「不询问」不能单独解释为「无限制执行」。设计上可以预先授权沙箱内的一类操作，把越界申请交给审批。实际启动和拒绝后的处理分别见[[codex-sandbox-launch|命令进入沙箱]]、[[codex-sandbox-retry|沙箱拒绝后的重试]]。
+因此，**「不询问」**不能单独解释为「无限制执行」。设计上可以预先授权沙箱内的一类操作，把越界申请交给审批。实际启动和拒绝后的处理分别见[[codex-sandbox-launch|命令进入沙箱]]、[[codex-sandbox-retry|沙箱拒绝后的重试]]。

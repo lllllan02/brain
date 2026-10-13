@@ -5,7 +5,7 @@ parent: mysql-query-resources
 type: "article"
 tags: ["MySQL", "SQL优化", "性能排查"]
 created_at: "2026-10-12T22:06:03+08:00"
-updated_at: "2026-10-12T22:20:31+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/internal-temporary-tables.html"
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/server-system-variables.html#sysvar_tmp_table_size"
@@ -20,7 +20,7 @@ source:
 
 [内部临时表说明](https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/internal-temporary-tables.html)列举物化、部分聚合、去重与窗口处理等场景。`Using temporary` 能提示某些临时表，但不覆盖全部派生或物化结果；出现标记也不说明一定写盘。
 
-默认内存引擎 TempTable 与可选 MEMORY 的限制不同，不能混用配置公式：
+默认内存引擎 **「TempTable 与可选 MEMORY 的限制不同」**，不能混用配置公式：
 
 | 路径 | 主要限制与变化 |
 | --- | --- |
@@ -36,4 +36,4 @@ source:
 
 [内部临时表的监测段](https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/internal-temporary-tables.html)说明，`Created_tmp_tables` 记录内部临时表创建，`Created_tmp_disk_tables` 不包含 TempTable 通过内存映射文件使用的磁盘空间。启用该路径时，需结合 `memory/temptable/physical_disk` 等 instrument；不能由磁盘临时表计数为零推断没有任何临时存储 I/O。
 
-[语句事件字段](https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/performance-schema-events-statements-current-table.html)提供语句级临时表数量、排序行数与归并次数，能缩小观察对象；累计全局计数则须对齐窗口和流量。自己的[[mysql-query-resources|查询资源排查]]结合这些信号判断输入量、内存与存储压力；本导读未压测或调整参数。
+[语句事件字段](https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/performance-schema-events-statements-current-table.html)提供语句级临时表数量、排序行数与归并次数，能缩小观察对象；**「累计全局计数则须对齐窗口和流量」**。自己的[[mysql-query-resources|查询资源排查]]结合这些信号判断输入量、内存与存储压力；本导读未压测或调整参数。

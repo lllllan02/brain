@@ -4,11 +4,11 @@ parent: agent-retry
 category: "Agent"
 tags: ["Agent", "重试"]
 created_at: "2026-10-10"
-updated_at: "2026-10-10"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Retries](https://pydantic.dev/docs/ai/core-concepts/retries/)"
 ---
 
-**Pydantic AI 将请求重发、模型修正和工作流重执行分开配置；它们的预算不共享，叠加后可能放大实际请求数。**
+**「Pydantic AI 将请求重发、模型修正和工作流重执行分开配置；它们的预算不共享，叠加后可能放大实际请求数。」**
 
 ## 谁在重试什么
 
@@ -18,7 +18,7 @@ source: "[Retries](https://pydantic.dev/docs/ai/core-concepts/retries/)"
 
 ## 为什么局部次数不够
 
-SDK 和传输层若各允许三次尝试，一次上层请求最多可能触发九次网络尝试。只限制 Agent 的模型轮数，不能限制这些隐藏请求。
+SDK 和传输层若各允许三次尝试，一次上层请求**「最多可能触发九次网络尝试」**。只限制 Agent 的模型轮数，不能限制这些隐藏请求。
 
 文档中的工具计数按工具名维护、成功后重置；`max_retries=N` 允许初次加 N 次重试。因此还需运行级预算，不能把单工具修正次数当作整次任务的总上限。
 

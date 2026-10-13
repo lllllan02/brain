@@ -4,11 +4,11 @@ parent: agent-harness
 category: "Agent"
 tags: ["Agent", "Harness"]
 created_at: "2026-10-11T11:46:46+08:00"
-updated_at: "2026-10-11T22:35:33+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)"
 ---
 
-**长任务需要在会话之间交接可验证的工作状态；只延长模型运行时间或压缩历史，不能保证项目持续推进。**
+**「长任务需要在会话之间交接可验证的工作状态；只延长模型运行时间或压缩历史，不能保证项目持续推进。」**
 
 ## 为什么循环与压缩仍会失败？
 
@@ -26,13 +26,13 @@ source: "[Effective harnesses for long-running agents](https://www.anthropic.com
 | 进度记录与 Git 历史 | 说明已做工作，支持追溯和恢复 |
 | 启动脚本 | 减少每次重新摸索运行环境的成本 |
 
-功能清单采用 JSON，记录功能描述、验证步骤和 `passes` 标记；初始为未通过，编码阶段要求只更新通过状态，不随意删改验收要求。`claude-progress.txt` 则记录已做工作。这为[[agent-task-state|任务状态管理]]提供了一个具体例子：完成标准与过程进度分别维护。
+功能清单采用 JSON，记录功能描述、验证步骤和 `passes` 标记；初始为未通过，编码阶段要求只更新通过状态，不随意删改验收要求。`claude-progress.txt` 则记录已做工作。这为[[agent-task-state|任务状态管理]]提供了一个具体例子：**「完成标准与过程进度分别维护」**。
 
 每次会话先读记录、启动环境并检查基础功能，再选一个未完成项实现；结束时验证、提交并更新进度。这里的「初始化 Agent」与「编码 Agent」主要是提示和阶段职责不同，并非两套底层 Harness。
 
 ## 为什么验证也是交接的一部分？
 
-改完代码、通过单元测试，不代表用户能正常使用。作者加入浏览器端到端检查，让功能清单中的状态以实际行为为依据；否则下一轮会继承错误的完成判断。
+**「改完代码、通过单元测试，不代表用户能正常使用」**。作者加入浏览器端到端检查，让功能清单中的状态以实际行为为依据；否则下一轮会继承错误的完成判断。
 
 原文也承认浏览器工具有盲区，方案主要针对全栈 Web 开发，尚不能证明适合所有长任务。
 

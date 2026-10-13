@@ -4,7 +4,7 @@ parent: tool-permission-design
 category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10"
-updated_at: "2026-10-12T12:34:08+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "[Secure AI agents with Policy in Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/secure-ai-agents-with-policy-in-amazon-bedrock-agentcore/)"
   - "[Authorization flow](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy-authorization-flow.html)"
@@ -14,7 +14,7 @@ source:
   - "[Test a policy in LOG_ONLY mode](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy-test-a-policy.html)"
 ---
 
-**网关把身份信息与本次工具调用组合成结构化授权请求，再由 Cedar 判断是否允许。** 本文聚焦 AgentCore Gateway 的 OAuth 身份映射、规则组合与执行模式；不覆盖全部策略能力。
+**「网关把身份信息与本次工具调用组合成结构化授权请求，再由 Cedar 判断是否允许。」** 本文聚焦 AgentCore Gateway 的 OAuth 身份映射、规则组合与执行模式；不覆盖全部策略能力。
 
 ## 请求如何转换？
 
@@ -35,13 +35,13 @@ MCP 工具使用 `<TargetName>___<ToolName>` 标识，避免不同接入目标�
 
 医疗 Agent 案例中，同一个 `getPatient` 工具统一检查角色为 patient，且请求参数中的患者 ID 与可信身份中的患者 ID 一致：查询自己允许，查询别人拒绝。模型和工具代码不变，决策由网关中的策略完成。
 
-策略集合采用默认拒绝：没有匹配的 permit 就不允许；匹配的 forbid 优先于 permit。公共允许规则与针对特定资源或操作的禁止规则可以组合，不必在各工具内部重复角色判断。
+策略集合采用默认拒绝：**「没有匹配的 permit 就不允许；匹配的 forbid 优先于 permit」**。公共允许规则与针对特定资源或操作的禁止规则可以组合，不必在各工具内部重复角色判断。
 
 退款例子则用身份属性与 `context.input.amount < 500` 共同限制调用。这里的金额条件是授权条件，不自动产生审批流程；需要人工审批时还要另行编排。
 
 ## 配置了规则，是否就会拦截？
 
-网关关联策略引擎后，还要选择执行模式：`ENFORCE` 按决策允许或拒绝；`LOG_ONLY` 只记录决策，不据此拦截调用。因此，日志里出现 Deny 不等于操作已被阻止，也不适合直接在需要保护的真实操作上试验拒绝规则。
+网关关联策略引擎后，还要选择执行模式：`ENFORCE` 按决策允许或拒绝；`LOG_ONLY` **「只记录决策，不据此拦截调用」**。因此，日志里出现 Deny 不等于操作已被阻止，也不适合直接在需要保护的真实操作上试验拒绝规则。
 
 单条策略另有 `ACTIVE`／`LOG_ONLY` 状态：仅 `ACTIVE` 策略参与实际允许／拒绝判定，观察中的策略只产生日志与指标。可以保留已有防护，观察新策略的判断，再将其转为生效状态；这与把整个引擎切到观察模式不同。
 

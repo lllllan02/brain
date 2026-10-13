@@ -4,11 +4,11 @@ title: "LangGraph：每步执行后的 Replan 节点"
 category: "Agent"
 tags: ["Agent", "任务规划"]
 created_at: "2026-10-12T00:56:04+08:00"
-updated_at: "2026-10-12T00:56:04+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Plan-and-Execute 官方示例（0.2.0 标签）](https://github.com/langchain-ai/langgraph/blob/0.2.0/examples/plan-and-execute/plan-and-execute.ipynb)"
 ---
 
-**这个示例把 `replan` 固定接在执行节点之后，每完成一个计划步骤就回看剩余工作。** 它没有先判断“出错了没有”才进入重规划。本文只解释该历史版本的控制流，未运行代码，不作为当前 SDK 用法。
+**「这个示例把 `replan` 固定接在执行节点之后，每完成一个计划步骤就回看剩余工作。」** 它没有先判断“出错了没有”才进入重规划。本文只解释该历史版本的控制流，未运行代码，不作为当前 SDK 用法。
 
 ## 传入什么，返回什么？
 
@@ -24,4 +24,4 @@ source: "[Plan-and-Execute 官方示例（0.2.0 标签）](https://github.com/la
 
 ## 示例没有保证什么？
 
-结束判断依赖模型是否返回回答，未独立验证任务成功；图中也未实现完整的错误分类、重试和计划安全校验。这些需要应用补充。源码定位可搜索 `replanner_prompt`、`execute_step`、`replan_step` 与 `should_end`。
+结束判断依赖模型是否返回回答，**「未独立验证任务成功」**；图中也未实现完整的错误分类、重试和计划安全校验。这些需要应用补充。源码定位可搜索 `replanner_prompt`、`execute_step`、`replan_step` 与 `should_end`。

@@ -5,7 +5,7 @@ parent: kafka-overview#定位与事件建模
 type: "article"
 tags: ["Kafka", "消息队列", "分区"]
 created_at: "2026-10-12T19:46:06+08:00"
-updated_at: "2026-10-12T20:49:46+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://kafka.apache.org/43/getting-started/introduction/"
   - "https://kafka.apache.org/43/getting-started/uses/"
@@ -23,7 +23,7 @@ source:
   - "https://kafka.apache.org/43/operations/multi-tenancy/"
 ---
 
-**本导读摘取 Kafka 的能力定位、记录结构、Topic 划分与分区路由的基础依据。** Apache 文档按 4.3 阅读；Confluent 的事件设计资料提供建模方法，其建议与 Kafka 协议约束分开理解。本篇不展开序列化实现、完整 Schema 兼容矩阵或分区迁移操作。
+**「本导读摘取 Kafka 的能力定位、记录结构、Topic 划分与分区路由的基础依据。」** Apache 文档按 4.3 阅读；Confluent 的事件设计资料提供建模方法，其建议与 Kafka 协议约束分开理解。本篇不展开序列化实现、完整 Schema 兼容矩阵或分区迁移操作。
 
 ## Kafka 提供什么能力
 
@@ -35,7 +35,7 @@ source:
 
 ## 业务含义与记录字段
 
-Confluent 的 [Event](https://developer.confluent.io/patterns/event/event/)用事件表达已经发生的事实；[Command](https://developer.confluent.io/patterns/event/command/)则表达希望接收方执行的动作。命令也可以通过 Kafka 传递，但发送被接收和动作已经完成是两个结果；需要返回值时，原文使用另一条结果流和关联标识衔接。事件与命令的区别属于应用语义，Kafka 记录格式本身不替应用作判断。
+Confluent 的 [Event](https://developer.confluent.io/patterns/event/event/)用**「事件表达已经发生的事实」**；[Command](https://developer.confluent.io/patterns/event/command/)则表达希望接收方执行的动作。命令也可以通过 Kafka 传递，但发送被接收和动作已经完成是两个结果；需要返回值时，原文使用另一条结果流和关联标识衔接。事件与命令的区别属于应用语义，Kafka 记录格式本身不替应用作判断。
 
 [ProducerRecord](https://kafka.apache.org/43/javadoc/org/apache/kafka/clients/producer/ProducerRecord.html)列出目标 Topic、可选 Partition、Key、Value、Timestamp 与 Headers；[ConsumerRecord](https://kafka.apache.org/43/javadoc/org/apache/kafka/clients/consumer/ConsumerRecord.html)进一步提供读取到的 Topic、Partition、Offset 等位置。Key 和 Value 可以为空，不应把示例中的业务字段误当成协议必填项。
 
@@ -61,4 +61,4 @@ Event 文档指出，客户端负责序列化与反序列化。Broker 保存记�
 
 具体路由按 [Producer Configs 的 partitioner.class](https://kafka.apache.org/43/configuration/producer-configs/#partitioner.class)核对：Java 默认逻辑在未显式指定分区且使用 Key 时按 Key 哈希选择分区；无 Key 时使用黏性分区逻辑，还存在忽略 Key 和自定义策略。ProducerRecord 概述中的无 Key 轮询描述与该配置页不一致，本导读不据前者归纳默认算法；其他语言客户端需查自身实现。
 
-[Basic Kafka Operations](https://kafka.apache.org/43/operations/basic-kafka-operations/)明确提醒：增加分区可能改变 Key 映射，已有数据不会自动重新分布。因此，「同 Key 进同分区」需要稳定的路由条件，不能理解为跨扩容、跨客户端和任意配置的永久保证。
+[Basic Kafka Operations](https://kafka.apache.org/43/operations/basic-kafka-operations/)明确提醒：**「增加分区可能改变 Key 映射，已有数据不会自动重新分布」**。因此，「同 Key 进同分区」需要稳定的路由条件，不能理解为跨扩容、跨客户端和任意配置的永久保证。

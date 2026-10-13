@@ -5,7 +5,7 @@ parent: mysql-overview
 type: "article"
 tags: ["MySQL", "索引", "执行计划", "SQL优化"]
 created_at: "2026-10-12T14:03:16+08:00"
-updated_at: "2026-10-12T22:08:19+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://dev.mysql.com/blog-archive/mysql-explain-analyze/"
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/optimizer-statistics.html"
@@ -95,7 +95,7 @@ MySQL 8.4 手册把「写出查询」「理解数据组织」「观察执行计�
 
 [索引物理结构](https://dev.mysql.com/doc/refman/8.4/en/innodb-physical-structure.html)按树和页解释常规索引，记录位于叶子页。默认索引页大小为 16 KB，在实例初始化时确定。手册使用 B-tree 名称；[官方 8.4 源码的 Node pointers 注释](https://github.com/mysql/mysql-server/blob/8.4/storage/innobase/btr/btr0btr.cc)进一步说明：叶子页保存索引记录，非叶子层保存用于导航的键前缀与子页号。这是区分内部页和叶子页的实现依据。由页容量有限可以推导，导航条目越宽，一页能连接的子页通常越少；树高不能仅由行数确定。
 
-[聚簇与二级索引](https://dev.mysql.com/doc/refman/8.4/en/innodb-index-types.html)进一步区分：聚簇索引保存行数据；定义主键时使用主键，否则选择首个所有列均声明 NOT NULL 的唯一索引；两者都没有时，以 6 字节递增行 ID 建立隐藏索引 `GEN_CLUST_INDEX`。二级索引记录包含索引列和主键值，需要其他行数据时，再按主键查聚簇索引。这解释了回表的额外访问，以及宽主键为什么增加二级索引空间。实际二级记录补存尚未包含的主键列，已在索引中的主键列不重复保存。
+[聚簇与二级索引](https://dev.mysql.com/doc/refman/8.4/en/innodb-index-types.html)进一步区分：**「聚簇索引保存行数据」**；定义主键时使用主键，否则选择首个所有列均声明 NOT NULL 的唯一索引；两者都没有时，以 6 字节递增行 ID 建立隐藏索引 `GEN_CLUST_INDEX`。二级索引记录包含索引列和主键值，需要其他行数据时，再按主键查聚簇索引。这解释了回表的额外访问，以及宽主键为什么增加二级索引空间。实际二级记录补存尚未包含的主键列，已在索引中的主键列不重复保存。
 
 ## 索引约束与列组合
 
@@ -111,7 +111,7 @@ MySQL 8.4 手册把「写出查询」「理解数据组织」「观察执行计�
 
 [范围优化](https://dev.mysql.com/doc/refman/8.4/en/range-optimization.html)进一步区分扫描区间与完整过滤条件：能够形成索引区间的条件用于定位，其余条件仍需检查。不能把某列未参与区间构造理解成该列在过滤或覆盖中也没有作用。
 
-范围章节用「首列等值、第二列范围、第三列另有条件」说明：构造扫描区间不等于完成全部过滤。还介绍了有限条件下的 Skip Scan：枚举缺失前导列的不同值，再逐段做范围扫描；它不是任意查询都能使用的通用替代。
+范围章节用「首列等值、第二列范围、第三列另有条件」说明：**「构造扫描区间不等于完成全部过滤」**。还介绍了有限条件下的 Skip Scan：枚举缺失前导列的不同值，再逐段做范围扫描；它不是任意查询都能使用的通用替代。
 
 [ORDER BY 优化](https://dev.mysql.com/doc/refman/8.4/en/order-by-optimization.html)说明，前导列固定为常量时，后续列的顺序可能直接用于排序；能否省去额外排序还取决于列顺序、方向和访问成本。这里可推导，联合索引列顺序应围绕查询整体设计，不能只按各列区分度排列。
 
@@ -125,7 +125,7 @@ ICP 的适用边界包括：需要读取完整行、使用受支持的访问方�
 
 [多版本与二级索引](https://dev.mysql.com/doc/refman/8.4/en/innodb-multi-versioning.html)补充覆盖访问的边界：二级记录带删除标记，或二级页被较新事务更新时，可能需要到聚簇记录核对事务可见性并读取历史版本。因此「列已覆盖」不保证运行时始终零聚簇访问。
 
-[EXPLAIN 输出](https://dev.mysql.com/doc/refman/8.4/en/explain-output.html)区分 `Using index`（索引提供所需列）和 `Using index condition`（先检查索引条目，再决定是否取行）。这些标记说明访问方式，不是耗时结论。
+[EXPLAIN 输出](https://dev.mysql.com/doc/refman/8.4/en/explain-output.html)区分 `Using index`（索引提供所需列）和 `Using index condition`（**「先检查索引条目，再决定是否取行」**）。这些标记说明访问方式，不是耗时结论。
 
 ## 前缀索引与维护成本
 
@@ -155,7 +155,7 @@ ICP 的适用边界包括：需要读取完整行、使用受支持的访问方�
 
 [EXPLAIN](https://dev.mysql.com/doc/refman/8.4/en/explain.html)提供优化器的执行计划，支持表格、JSON 和 TREE 等表示。它帮助检查表访问顺序和索引选择；有候选索引不代表优化器一定采用，统计信息也会影响选择。
 
-普通 EXPLAIN 展示计划与估算；`EXPLAIN ANALYZE` 会实际运行受支持的语句，再给出实际行数、循环次数和耗时，便于比较预期与现实。阅读重点是「访问多少数据、重复执行多少次、时间花在哪里」，不能只根据某个标记给整条 SQL 判定快慢。使用 ANALYZE 时要意识到它会执行语句；本导读没有运行 SQL，也不把文档示例当作本地性能结论。
+**「普通 EXPLAIN 展示计划与估算」**；`EXPLAIN ANALYZE` **「会实际运行受支持的语句」**，再给出实际行数、循环次数和耗时，便于比较预期与现实。阅读重点是「访问多少数据、重复执行多少次、时间花在哪里」，不能只根据某个标记给整条 SQL 判定快慢。使用 ANALYZE 时要意识到它会执行语句；本导读没有运行 SQL，也不把文档示例当作本地性能结论。
 
 [优化器统计](https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/optimizer-statistics.html)说明列直方图怎样用值分布估算过滤比例。直方图主要有助于非索引列，适用时优化器优先采用范围优化器估算；有直方图也不保证选择更快的计划。
 
@@ -177,7 +177,7 @@ Extra 补充剩余处理：`Using where` 表示条件限制输出，`Using index
 
 ## EXPLAIN ANALYZE 的行数与时间
 
-[8.4 EXPLAIN 说明](https://dev.mysql.com/doc/refman/8.4/en/explain.html)规定 ANALYZE 实际执行受支持的语句，以 TREE 输出操作节点；时间单位为毫秒，节点时间包含子节点、不包含父节点，多轮执行显示平均时间。它有执行与测量开销，不能视为只生成计划的命令。
+[8.4 EXPLAIN 说明](https://dev.mysql.com/doc/refman/8.4/en/explain.html)规定 ANALYZE 实际执行受支持的语句，以 TREE 输出操作节点；时间单位为毫秒，**「节点时间包含子节点、不包含父节点」**，多轮执行显示平均时间。它有执行与测量开销，不能视为只生成计划的命令。
 
 Norvald H. Ryeng 的 [MySQL EXPLAIN ANALYZE](https://dev.mysql.com/blog-archive/mysql-explain-analyze/)以 8.0.18 的 Sakila 数据库查询解释读法：两名员工分别关联付款记录，因此内层过滤执行两轮。过滤节点预计每轮输出 894 行，实际约 2844 行；索引查找的预计与实际行数却较接近，显示误差主要出现在日期过滤的选择率估计。
 
@@ -203,7 +203,7 @@ Norvald H. Ryeng 的 [MySQL EXPLAIN ANALYZE](https://dev.mysql.com/blog-archive/
 
 ## 分页与连接的工作量
 
-[LIMIT](https://dev.mysql.com/doc/refman/8.4/en/limit-optimization.html)说明，有序索引可帮助尽早取得所需结果；若仍需 filesort，限制返回数量并不消除前面的候选读取。排序值相同时，未被 ORDER BY 区分的行可按不同顺序返回，因此稳定分页需要完整排序边界。把偏移改成上一页键值条件，是结合该规则与范围定位作出的应用推导，并非手册保证的固定耗时方案。
+[LIMIT](https://dev.mysql.com/doc/refman/8.4/en/limit-optimization.html)说明，有序索引可帮助尽早取得所需结果；若仍需 filesort，**「限制返回数量并不消除前面的候选读取」**。排序值相同时，未被 ORDER BY 区分的行可按不同顺序返回，因此稳定分页需要完整排序边界。把偏移改成上一页键值条件，是结合该规则与范围定位作出的应用推导，并非手册保证的固定耗时方案。
 
 该节还用 `WHERE id2 > 3 ORDER BY id1 LIMIT 2` 比较两条候选路径：默认计划沿 id1 主键顺序扫描并检查过滤条件；关闭 prefer_ordering_index 后，示例转为利用包含 id2 的索引作范围访问，再执行 filesort。前者希望尽早找到足够结果，后者先缩小候选再排序。原文展示的是计划变化及估算，没有提供两者的实际耗时，不能据此推荐普遍关闭开关。对于[[mysql-index-ordering#少扫描还是省排序|过滤与排序的取舍]]，还要核对匹配数据在排序键上的分布：匹配很晚才出现时，少量 LIMIT 也可能扫描很多条目。
 
@@ -219,13 +219,13 @@ Norvald H. Ryeng 的 [MySQL EXPLAIN ANALYZE](https://dev.mysql.com/blog-archive/
 
 ## 索引变更与可见性
 
-[在线 DDL 操作表](https://dev.mysql.com/doc/refman/8.4/en/innodb-online-ddl-operations.html)说明，新增普通二级索引支持 INPLACE、通常不重建表，并允许并发 DML，但不是 INSTANT。主键变更会重新组织行数据，全文与空间索引也有不同限制。[DDL 限制](https://dev.mysql.com/doc/refman/8.4/en/innodb-online-ddl-limitations.html)指出，结束阶段需要排他元数据锁，已有事务可能让操作等待；“在线”不等于无锁或无资源成本。
+[在线 DDL 操作表](https://dev.mysql.com/doc/refman/8.4/en/innodb-online-ddl-operations.html)说明，**「新增普通二级索引支持 INPLACE」**、通常不重建表，并允许并发 DML，但不是 INSTANT。主键变更会重新组织行数据，全文与空间索引也有不同限制。[DDL 限制](https://dev.mysql.com/doc/refman/8.4/en/innodb-online-ddl-limitations.html)指出，结束阶段需要排他元数据锁，已有事务可能让操作等待；“在线”不等于无锁或无资源成本。
 
-[不可见索引](https://dev.mysql.com/doc/refman/8.4/en/invisible-indexes.html)让优化器默认忽略某索引，同时保留其存储、维护与唯一约束。它适合评估不使用索引的查询影响，并可恢复可见；不能模拟真正删除后的全部写入收益，显式或隐式主键也不能被设为不可见。
+[不可见索引](https://dev.mysql.com/doc/refman/8.4/en/invisible-indexes.html)让优化器默认忽略某索引，同时**「保留其存储、维护与唯一约束」**。它适合评估不使用索引的查询影响，并可恢复可见；不能模拟真正删除后的全部写入收益，显式或隐式主键也不能被设为不可见。
 
 ## 扩展索引访问策略
 
-[Index Merge](https://dev.mysql.com/doc/refman/8.4/en/index-merge-optimization.html)合并同表多个范围扫描，可执行并集、交集或其组合；它不合并多表扫描，也不等于建立联合索引。手册列出 OR 查询作为典型候选，具体算法有条件限制和合并成本。
+[Index Merge](https://dev.mysql.com/doc/refman/8.4/en/index-merge-optimization.html)合并同表多个范围扫描，可执行并集、交集或其组合；它不合并多表扫描，也**「不等于建立联合索引」**。手册列出 OR 查询作为典型候选，具体算法有条件限制和合并成本。
 
 [Skip Scan](https://dev.mysql.com/doc/refman/8.4/en/range-optimization.html)通过枚举缺失的前导键值，对后续列分别执行范围扫描。适用条件包括单表、只引用索引列、无 GROUP BY 或 DISTINCT、后续键范围条件等；EXPLAIN 的 `Using index for skip scan` 表示采用该策略。它保留联合索引原有列序，以多次定位绕过缺少前导条件的问题。
 

@@ -4,15 +4,15 @@ parent: retry-decision
 category: "分布式系统"
 tags: ["重试", "超时"]
 created_at: "2026-10-10"
-updated_at: "2026-10-10"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Retry Policies](https://docs.temporal.io/encyclopedia/retry-policies)"
 ---
 
-**Temporal 用声明式重试策略规定何时再执行、等待多久，以及何时停止；操作级重试和整条流程重跑是不同层次。**
+**「Temporal 用声明式重试策略规定何时再执行、等待多久，以及何时停止；操作级重试和整条流程重跑是不同层次。」**
 
 ## 重试发生在哪里
 
-Activity 是执行外部调用等操作的单元，默认带重试策略；Workflow Execution 默认没有重试策略。Activity 重试会重新派发执行任务，因此业务代码仍需能安全重复执行。
+**「Activity 是执行外部调用等操作的单元」**，默认带重试策略；**「Workflow Execution 默认没有重试策略」**。Activity 重试会重新派发执行任务，因此业务代码仍需能安全重复执行。
 
 ## 策略包含哪些约束
 

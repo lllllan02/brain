@@ -5,7 +5,7 @@ tags: ["RAG"]
 type: "article"
 parent: "rag-architecture"
 created_at: "2026-10-13T10:49:42+08:00"
-updated_at: "2026-10-13T10:49:42+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: ["https://docs.langchain.com/oss/python/deepagents/retrieval"]
 ---
 
@@ -13,11 +13,11 @@ source: ["https://docs.langchain.com/oss/python/deepagents/retrieval"]
 
 ## 已有数据源是否必须重建？
 
-文档允许直接查询 SQL、CRM 或已有文档系统，再把返回内容交给模型；自建向量库只是选择之一。自建时，loader 统一文档格式，splitter 切分，embedding 编码，vector store 存取向量，retriever 接收查询并返回文档。
+文档允许直接查询 SQL、CRM 或已有文档系统，再把返回内容交给模型；**「自建向量库只是选择之一」**。自建时，loader 统一文档格式，splitter 切分，embedding 编码，vector store 存取向量，retriever 接收查询并返回文档。
 
 ## 谁决定检索流程？
 
-2-Step RAG 由应用安排先检索后生成，调用次数较容易控制。Agentic RAG 把检索暴露为工具，由模型决定何时、如何调用；其必要条件是可访问检索工具，不要求多个 Agent。
+**「2-Step RAG 由应用安排先检索后生成」**，调用次数较容易控制。Agentic RAG 把检索暴露为工具，由模型决定何时、如何调用；其必要条件是可访问检索工具，不要求多个 Agent。
 
 Hybrid RAG 在两者之间加入查询增强、证据检查、再次检索或答案检查。这里的 hybrid 指「流程编排」，与关键词加向量的 hybrid search 不是同一维度。程序预设循环也能重试和纠错，不能据此判定已经采用 Agentic 架构。
 

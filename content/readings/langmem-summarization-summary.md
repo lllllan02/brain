@@ -5,19 +5,19 @@ parent: context-compaction
 category: "Agent"
 tags: ["上下文管理", "文本压缩"]
 created_at: "2026-10-11T16:33:09+08:00"
-updated_at: "2026-10-11T18:11:48+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://langchain-ai.github.io/langmem/guides/summarization/"
   - "https://langchain-ai.github.io/langmem/reference/short_term/"
 ---
 
-**LangMem 在模型调用前检查消息长度，用持续更新的摘要替代较早历史，并将完整消息与模型实际输入分开保存。** 本文整理官方教程及短期记忆 API，依据 2026-10-11 页面，未运行示例。
+**「LangMem 在模型调用前检查消息长度，用持续更新的摘要替代较早历史，并将完整消息与模型实际输入分开保存。」** 本文整理官方教程及短期记忆 API，依据 2026-10-11 页面，未运行示例。
 
 ## 摘要怎样接入循环？
 
 教程先在聊天节点中调用 `summarize_messages`：传入消息和已有摘要，取得本轮模型输入，再保存返回的新摘要。也可以把这一步独立为 `SummarizationNode`。在工具型 Agent 中，链路为「摘要检查 → 模型 → 工具 → 摘要检查」，每次工具返回后都重新检查，未达到阈值时不必生成摘要。
 
-教程用独立状态保存完整历史和摘要结果，界面仍可展示原始对话；模型只读取 `summarized_messages`。Checkpointer 负责延续线程状态，示例的 `InMemorySaver` 属于内存保存，不等于跨进程持久化方案。
+教程用独立状态保存完整历史和摘要结果，界面仍可展示原始对话；**「模型只读取 `summarized_messages`」**。Checkpointer 负责延续线程状态，示例的 `InMemorySaver` 属于内存保存，不等于跨进程持久化方案。
 
 ## 模型返回什么，框架返回什么？
 
@@ -38,11 +38,11 @@ history.append(reply)
 
 `RunningSummary` 同时记录摘要文本、已摘要消息 ID 集合和最后一个已摘要消息 ID。后续调用据此识别新增历史：不生成新摘要时继续带入旧摘要；需要更新时，将旧摘要与新增待压缩消息一起处理。它解决的是[[context-compaction-storage|摘要覆盖范围]]问题，避免每轮重复摘要同一段原文。
 
-摘要从较早消息开始处理，系统消息不进入摘要；如果边界落在带工具调用的消息上，对应工具结果也一起纳入，避免把调用与结果拆开。
+摘要从较早消息开始处理，系统消息不进入摘要；如果边界落在带工具调用的消息上，对应工具结果也一起纳入，**「避免把调用与结果拆开」**。
 
 ## 默认提示会怎样提炼？
 
-[摘要源码](https://github.com/langchain-ai/langmem/blob/main/src/langmem/short_term/summarization.py)中的首次提示仅要求总结会话，增量提示要求结合新消息扩展旧摘要；它们没有预设目标、约束、文件状态等栏目。因此，框架提供摘要调用与边界管理，具体保留规则需要通过 `initial_summary_prompt` 和 `existing_summary_prompt` 定制。此处核对的是 2026-10-11 的 main 分支，未固定提交。
+[摘要源码](https://github.com/langchain-ai/langmem/blob/main/src/langmem/short_term/summarization.py)中的首次提示仅要求总结会话，增量提示要求结合新消息扩展旧摘要；它们**「没有预设目标、约束、文件状态等栏目」**。因此，框架提供摘要调用与边界管理，具体保留规则需要通过 `initial_summary_prompt` 和 `existing_summary_prompt` 定制。此处核对的是 2026-10-11 的 main 分支，未固定提交。
 
 ## 三个预算分别限制什么？
 

@@ -4,7 +4,7 @@ parent: tool-scheduling
 category: "Agent"
 tags: ["Agent", "工具调用"]
 created_at: "2026-10-10"
-updated_at: "2026-10-12T13:00:57+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "[Advanced Tool Features](https://pydantic.dev/docs/ai/tools-toolsets/tools-advanced/)"
   - "[工具执行源码 _tool_execution.py](https://github.com/pydantic/pydantic-ai/blob/main/pydantic_ai_slim/pydantic_ai/_tool_execution.py)"
@@ -18,7 +18,7 @@ source:
 
 例如模型依次发出 A、B、W、C，只有 W 标为 `sequential=True`：A、B 可以重叠，二者完成后 W 单独运行，W 完成后 C 才开始。这是按模型发出顺序设置的屏障，不自动把 A、B 的结果填入 W 的参数。
 
-因此，模型一次返回多个调用，并不意味着运行时必须全部同时启动。
+因此，模型一次返回多个调用，**「并不意味着运行时必须全部同时启动」**。
 
 ## 屏障在源码中怎样实现
 

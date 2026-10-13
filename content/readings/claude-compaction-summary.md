@@ -5,11 +5,11 @@ parent: context-compaction
 category: "Agent"
 tags: ["上下文管理", "文本压缩"]
 created_at: "2026-10-11T16:33:09+08:00"
-updated_at: "2026-10-11T18:11:48+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "https://platform.claude.com/docs/en/build-with-claude/compaction"
 ---
 
-**Claude 的服务端压缩将较早会话替换为摘要；应用仍需正确回传压缩结果，并决定哪些近期消息继续保留。** 本文以官方总览为入口，整理按需、阈值、近期保留和后台压缩的核心机制，依据 2026-10-11 页面；相关接口处于 beta，未调用 API 验证。
+**「Claude 的服务端压缩将较早会话替换为摘要；应用仍需正确回传压缩结果，并决定哪些近期消息继续保留。」** 本文以官方总览为入口，整理按需、阈值、近期保留和后台压缩的核心机制，依据 2026-10-11 页面；相关接口处于 beta，未调用 API 验证。
 
 ## 谁决定什么时候压缩？
 
@@ -31,7 +31,7 @@ source: "https://platform.claude.com/docs/en/build-with-claude/compaction"
 
 ## 怎样保住近期细节和新到的消息？
 
-[保留近期交互](https://platform.claude.com/docs/en/build-with-claude/compaction-keep-recent-turns)把历史分成旧段与近期段，只摘要旧段，再组成「压缩块 + 近期原文」。这样不必依赖摘要重建刚发生的具体交互。切分需保持有效消息结构；简单聊天示例中的消息条数不能直接照搬到工具循环。
+[保留近期交互](https://platform.claude.com/docs/en/build-with-claude/compaction-keep-recent-turns)把历史分成旧段与近期段，只摘要旧段，再组成**「压缩块 + 近期原文」**。这样不必依赖摘要重建刚发生的具体交互。切分需保持有效消息结构；简单聊天示例中的消息条数不能直接照搬到工具循环。
 
 [后台压缩](https://platform.claude.com/docs/en/build-with-claude/compaction-background)允许摘要生成期间继续工作，完成后再替换已覆盖的历史，并保留后续新增消息。因此「服务端生成摘要」并不意味着客户端可以覆盖整个当前会话。需要回传 thinking 块时，还须遵守原文单列的保留条件。
 
@@ -52,6 +52,6 @@ if response.stop_reason == "compaction":
 
 ## 还需要应用检查什么？
 
-按需摘要的 `compaction.instructions` 会完整替换默认摘要提示。官方示例明确要求保留已确定的实体、字段名和用户最新未解决请求，并要求只输出摘要、不调用工具。因此，自定义提示应写全必要的保留要求。压缩块不能替代原始附件：后续仍需使用的图片或文档应重新提供。被摘要的会话内系统指令若仍需生效，也须按接口规则重新声明，不能依赖摘要维持其指令地位。
+按需摘要的 `compaction.instructions` 会**「完整替换默认摘要提示」**。官方示例明确要求保留已确定的实体、字段名和用户最新未解决请求，并要求只输出摘要、不调用工具。因此，自定义提示应写全必要的保留要求。压缩块不能替代原始附件：后续仍需使用的图片或文档应重新提供。被摘要的会话内系统指令若仍需生效，也须按接口规则重新声明，不能依赖摘要维持其指令地位。
 
-按需压缩的用量记录在 `usage.iterations`，不能只看顶层输入输出计数。它与 `context_management` 不能在同一请求中使用；兼容模型、beta 请求头及 thinking 保留要求需以对应接口页为准。本文覆盖会话接续机制，不逐项复述所有平台兼容和参数限制。
+按需压缩的用量记录在 `usage.iterations`，**「不能只看顶层输入输出计数」**。它与 `context_management` 不能在同一请求中使用；兼容模型、beta 请求头及 thinking 保留要求需以对应接口页为准。本文覆盖会话接续机制，不逐项复述所有平台兼容和参数限制。

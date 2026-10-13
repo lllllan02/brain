@@ -5,7 +5,7 @@ tags: ["RAG"]
 type: "article"
 parent: "rag-practice"
 created_at: "2026-10-13T10:49:42+08:00"
-updated_at: "2026-10-13T11:04:51+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: ["https://docs.haystack.deepset.ai/docs/creating-pipelines", "https://haystack.deepset.ai/tutorials/33_hybrid_retrieval"]
 ---
 
@@ -15,7 +15,7 @@ Haystack 用带类型输入输出的组件组成 Pipeline，适合把 RAG 各阶
 
 组件用 `add_component` 注册，用 `connect` 连接输出与下游输入，最后由 `run` 提交未由连线提供的输入。例如 text embedder 的 embedding 输出连到 retriever 的 query_embedding，再将文档交给 prompt builder，生成的请求交给模型组件。
 
-索引流程负责清洗、切分、文档编码与写入；查询流程复用这些文档表示，只对当前问题编码。这样无需每次问答重建索引，也可分别检查入库与查询问题。
+**「索引流程负责清洗、切分、文档编码与写入」**；**「查询流程复用这些文档表示，只对当前问题编码」**。这样无需每次问答重建索引，也可分别检查入库与查询问题。
 
 ## 混合检索增加了什么？
 
@@ -23,4 +23,4 @@ Haystack 用带类型输入输出的组件组成 Pipeline，适合把 RAG 各阶
 
 调用 `run` 时，查询分别传给 text_embedder 的 text、bm25_retriever 的 query 和 ranker 的 query。端口连线负责文档与向量传递，不会替代这些外部输入。
 
-组件边界使逐步替换与观察中间输出更直接，但框架不自动决定语料切分、权限策略和评测标准。教程使用内存存储、英文 PubMed 语料和指定模型，展示代码还指定 CUDA 设备；在本机或中文语料使用时需调整环境与模型。服务化还需持久化后端并管理更新与失败。
+组件边界使逐步替换与观察中间输出更直接，但**「框架不自动决定语料切分、权限策略和评测标准」**。教程使用内存存储、英文 PubMed 语料和指定模型，展示代码还指定 CUDA 设备；在本机或中文语料使用时需调整环境与模型。服务化还需持久化后端并管理更新与失败。

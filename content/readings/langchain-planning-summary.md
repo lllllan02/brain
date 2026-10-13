@@ -4,13 +4,13 @@ parent: plan-and-execute
 category: "Agent"
 tags: ["Agent", "任务规划", "执行模式"]
 created_at: "2026-10-12T00:22:57+08:00"
-updated_at: "2026-10-12T00:22:57+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "[Plan-and-Execute Agents（2023-05-10）](https://www.langchain.com/blog/plan-and-execute-agents)"
   - "[Plan-and-Execute Agents（2024-02-13）](https://www.langchain.com/blog/planning-agents)"
 ---
 
-**两篇文章共同把整体规划与具体执行分开；后篇进一步将执行反馈接回规划环节。** 本文聚焦这条演进及取舍，不展开第二篇中的 ReWOO 和 LLMCompiler。
+**「两篇文章共同把整体规划与具体执行分开；后篇进一步将执行反馈接回规划环节。」** 本文聚焦这条演进及取舍，不展开第二篇中的 ReWOO 和 LLMCompiler。
 
 ## 2023 年：为什么分开规划与执行？
 
@@ -20,7 +20,7 @@ source:
 
 ## 2024 年：怎样把结果接回计划？
 
-后篇的 Plan-and-Execute 方案让执行器完成计划中的任务，再将结果交给重规划环节，由模型判断直接回答还是生成后续计划。它减少了每次工具调用都咨询大型规划模型的需要，但基础方案仍按顺序执行任务。
+后篇的 Plan-and-Execute 方案让执行器完成计划中的任务，再将结果交给重规划环节，**「由模型判断直接回答还是生成后续计划」**。它减少了每次工具调用都咨询大型规划模型的需要，但基础方案仍按顺序执行任务。
 
 文章还介绍两条减少往返的方向：ReWOO 用变量连接步骤结果；LLMCompiler 显式表示依赖并调度就绪任务。它们体现的是计划表示与执行调度的变化，不能推导出所有先规划方案都会更快、更便宜。
 

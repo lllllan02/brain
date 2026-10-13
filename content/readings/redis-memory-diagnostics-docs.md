@@ -10,7 +10,7 @@ source:
   - "https://redis.io/docs/latest/commands/scan/"
   - "https://redis.io/docs/latest/commands/unlink/"
 created_at: "2026-10-13T11:03:37+08:00"
-updated_at: "2026-10-13T11:03:37+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 ---
 
 本导读选取会影响缓存容量与请求延迟的机制。命令可用性、字段名称和配置默认值仍需以目标版本为准。
@@ -25,12 +25,12 @@ updated_at: "2026-10-13T11:03:37+08:00"
 
 ## 每种指标实际观察什么
 
-[SLOWLOG](https://redis.io/docs/latest/commands/slowlog/)只统计命令执行，不包含与客户端通信的 I/O。慢日志为空可能来自阈值、记录窗口或耗时发生在执行以外，不能据此排除所有服务端问题。
+[SLOWLOG](https://redis.io/docs/latest/commands/slowlog/)**「只统计命令执行，不包含与客户端通信的 I/O」**。慢日志为空可能来自阈值、记录窗口或耗时发生在执行以外，不能据此排除所有服务端问题。
 
 [延迟诊断](https://redis.io/docs/latest/operate/oss_and_stack/management/optimization/latency/)分别讨论环境调度基线、慢操作、fork、交换和 AOF I/O。它建议将应用端测量与内部延迟事件结合；不同观察点回答不同问题。文中的旧硬件数值与过期循环具体参数不应直接套用于当前部署。
 
 ## 观察动作也会消耗资源
 
-[SCAN](https://redis.io/docs/latest/commands/scan/)保证完整迭代覆盖始终存在的元素，但可能重复返回；迭代中变化的元素是否被返回不确定。COUNT 是工作量提示，不能当成精确页长，因此需要游标、去重或幂等处理，并限制扫描速度。
+[SCAN](https://redis.io/docs/latest/commands/scan/)保证完整迭代覆盖始终存在的元素，但**「可能重复返回」**；迭代中变化的元素是否被返回不确定。COUNT 是工作量提示，不能当成精确页长，因此需要游标、去重或幂等处理，并限制扫描速度。
 
-[UNLINK](https://redis.io/docs/latest/commands/unlink/)将键空间摘除与内存回收分开，后者交给其他线程。它可减轻大对象同步释放的阻塞，却不会消除回收 CPU、等待期间的内存占用或之前已经发生的大响应传输。
+[UNLINK](https://redis.io/docs/latest/commands/unlink/)将**「键空间摘除与内存回收分开」**，后者交给其他线程。它可减轻大对象同步释放的阻塞，却不会消除回收 CPU、等待期间的内存占用或之前已经发生的大响应传输。

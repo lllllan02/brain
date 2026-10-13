@@ -4,11 +4,11 @@ parent: agent-harness
 category: "Agent"
 tags: ["Agent", "Harness"]
 created_at: "2026-10-11T11:46:46+08:00"
-updated_at: "2026-10-11T12:33:19+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[How Middleware Lets You Customize Your Agent Harness](https://www.langchain.com/blog/how-middleware-lets-you-customize-your-agent-harness)"
 ---
 
-**中间件把定制逻辑接入 Agent 循环的明确位置，使不同运行职责能组合使用，而不必每次重写循环。**
+**「中间件把定制逻辑接入 Agent 循环的明确位置，使不同运行职责能组合使用，而不必每次重写循环。」**
 
 ## 为什么提示词与工具参数还不够？
 
@@ -23,7 +23,7 @@ source: "[How Middleware Lets You Customize Your Agent Harness](https://www.lang
 | 包裹一次模型调用 | `wrap_model_call` | 缓存、重试、动态调整请求 |
 | 包裹一次工具执行 | `wrap_tool_call` | 控制调用、注入信息、处理结果 |
 
-「每轮」与「每次运行」不同，决定了检查频率和资源生命周期；包装调用则能控制实际执行与异常处理。
+**「每轮」**与**「每次运行」**不同，决定了检查频率和资源生命周期；包装调用则能控制实际执行与异常处理。
 
 ## 这些位置如何解决具体问题？
 
@@ -35,7 +35,7 @@ source: "[How Middleware Lets You Customize Your Agent Harness](https://www.lang
 
 Deep Agents 以 `create_agent` 为核心，再组合文件系统、子 Agent、摘要和 Skills 等中间件。业务可以复用现成组合，也能增加自己的逻辑。
 
-作者认为模型改进会改变部分中间件，但业务约束与运行控制仍需要程序承担。这是框架设计观点，不表示某个钩子自动保证业务正确。
+作者认为模型改进会改变部分中间件，但**「业务约束与运行控制仍需要程序承担」**。这是框架设计观点，不表示某个钩子自动保证业务正确。
 
 ## 原文定位
 

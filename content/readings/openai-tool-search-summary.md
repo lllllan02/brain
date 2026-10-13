@@ -4,11 +4,11 @@ parent: tool-loading
 category: "Agent"
 tags: ["Agent", "工具调用", "按需加载"]
 created_at: "2026-10-10"
-updated_at: "2026-10-11T23:21:17+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Tool search](https://developers.openai.com/api/docs/guides/tools-tool-search)"
 ---
 
-**工具搜索把完整定义的加载推迟到模型需要时，以减少上下文占用。** 以下是 Responses API 的实现，不是所有 Chat Completions 兼容接口的通用能力。
+**「工具搜索把完整定义的加载推迟到模型需要时，以减少上下文占用。」** 以下是 Responses API 的实现，不是所有 Chat Completions 兼容接口的通用能力。
 
 ## 模型先看到什么？
 
@@ -19,7 +19,7 @@ source: "[Tool search](https://developers.openai.com/api/docs/guides/tools-tool-
 - 托管搜索：请求中声明候选，由 OpenAI 搜索并加载子集；定义延迟进入上下文，不等于省去请求中的定义。
 - 客户端搜索：模型发出 `tool_search_call`，应用检索并返回 `tool_search_output`，适合依赖租户或项目状态的目录。
 
-加载出的工具按正常流程调用；新增定义追加到上下文末尾，以保留已有缓存。返回动态定义时，应校验 Schema 并仅暴露可信工具。
+加载出的工具按正常流程调用；**「新增定义追加到上下文末尾，以保留已有缓存」**。返回动态定义时，应校验 Schema 并仅暴露可信工具。
 
 客户端搜索的 `tool_search_output.tools` 记录已加载集合。保留这些会话项后，后续轮次可以继续调用，无需重复加载；移除其中的定义会让工具不可用，并破坏该位置之后的缓存。这是会话中的工具定义管理，不是工具执行结果缓存。
 

@@ -4,7 +4,7 @@ category: "消息队列"
 type: "article"
 tags: ["消息队列", "发布订阅", "流处理"]
 created_at: "2026-10-12T20:40:35+08:00"
-updated_at: "2026-10-12T20:40:35+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://learn.microsoft.com/en-us/azure/architecture/guide/technology-choices/messaging"
   - "https://learn.microsoft.com/en-us/azure/architecture/patterns/publisher-subscriber"
@@ -13,7 +13,7 @@ source:
   - "https://developer.confluent.io/patterns/event-processing/event-processor/"
 ---
 
-**这些资料解释消息系统怎样分离发送与处理、分发信息、缓冲压力，以及重新读取和计算事件。** 本篇摘取通用模式，Azure 产品配置不直接套用于 Kafka；Kafka 部分以 4.3 文档为依据。
+**「这些资料解释消息系统怎样分离发送与处理、分发信息、缓冲压力，以及重新读取和计算事件。」** 本篇摘取通用模式，Azure 产品配置不直接套用于 Kafka；Kafka 部分以 4.3 文档为依据。
 
 ## 异步与发布订阅
 
@@ -23,13 +23,13 @@ source:
 
 ## 缓冲怎样平滑负载
 
-[Queue-Based Load Leveling](https://learn.microsoft.com/en-us/azure/architecture/patterns/queue-based-load-leveling)从突发并发压垮下游的问题出发，在请求与处理之间放入缓冲，允许处理方按自己的能力取走工作。原文强调，增加消费者却不限制其总访问速率，仍会使共享数据库等下游过载。
+[Queue-Based Load Leveling](https://learn.microsoft.com/en-us/azure/architecture/patterns/queue-based-load-leveling)从突发并发压垮下游的问题出发，在请求与处理之间放入缓冲，**「允许处理方按自己的能力取走工作」**。原文强调，增加消费者却不限制其总访问速率，仍会使共享数据库等下游过载。
 
 该模式适合允许延后处理的波动负载。持续输入大于输出时，队列只会增长；需观察积压和延迟，并在安全范围内扩处理能力或限制输入。消息能保存多久、能保存多少，以及故障后是否还在，同样限制缓冲效果。
 
 ## 历史为什么能够重新处理
 
-Kafka [Design 的 Consumer Position](https://kafka.apache.org/43/design/design/#consumer-position)把消费进度表示为分区中的位置。记录保存与进度分开后，消费者可以回到旧位置，重新处理仍然存在的数据；文中举例是修复消费程序的错误后重读消息。
+Kafka [Design 的 Consumer Position](https://kafka.apache.org/43/design/design/#consumer-position)把**「消费进度表示为分区中的位置」**。记录保存与进度分开后，消费者可以回到旧位置，重新处理仍然存在的数据；文中举例是修复消费程序的错误后重读消息。
 
 这是日志系统提供重放的一种实现。重读能重新执行逻辑，却不能自动撤销已发生的外部操作，也不能找回已经清理的事件。业务应用要额外界定重放的输入范围、输出目标和副作用。
 

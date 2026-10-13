@@ -1,14 +1,14 @@
 ---
 title: "VictoriaMetrics：Once：执行一次与完成可见性"
 category: "Go"
-updated_at: "2026-10-10"
+updated_at: "2026-10-13T12:48:15+08:00"
 tags: ["Go", "Once", "初始化"]
 aliases: ["sync.Once"]
 parent: victoriametrics-go-concurrency
 source: "[Go sync.Once is Simple... Does It Really?](https://victoriametrics.com/blog/go-sync-once/)，VictoriaMetrics"
 ---
 
-**Once 的保证包含两部分：函数只执行一次，其他调用者返回时这次执行也已经结束。**
+**「Once 的保证包含两部分：函数只执行一次，其他调用者返回时这次执行也已经结束。」**
 
 ## 为什么一个 CAS 标记不够
 
@@ -18,6 +18,6 @@ source: "[Go sync.Once is Simple... Does It Really?](https://victoriametrics.com
 
 ## 失败也可能被记住
 
-`Do` 的函数发生 panic 后仍算执行过，之后不会重试；递归调用同一个 Once 会死锁。Go 1.21 的 `OnceFunc/OnceValue/OnceValues` 可包装函数与缓存返回值，其中 error 也会被缓存，panic 会在后续调用时再次触发。
+`Do` 的函数**「发生 panic 后仍算执行过，之后不会重试」**；递归调用同一个 Once 会死锁。Go 1.21 的 `OnceFunc/OnceValue/OnceValues` 可包装函数与缓存返回值，其中 error 也会被缓存，panic 会在后续调用时再次触发。
 
 因此它适合[[go-initialization|一次性初始化]]，不承担失败重试；Once 应与被保护对象共享生命周期，使用后不可复制。

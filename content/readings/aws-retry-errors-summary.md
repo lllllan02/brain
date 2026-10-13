@@ -4,11 +4,11 @@ parent: retry-decision
 category: "分布式系统"
 tags: ["重试", "异常分类"]
 created_at: "2026-10-10"
-updated_at: "2026-10-10"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Retry behavior](https://docs.aws.amazon.com/sdkref/latest/guide/feature-retry-behavior.html)"
 ---
 
-**AWS SDK 先识别服务错误码，再回退到 HTTP 状态码，把错误分为暂时故障、限流和不可重试三类。**
+**「AWS SDK 先识别服务错误码，再回退到 HTTP 状态码，把错误分为暂时故障、限流和不可重试三类。」**
 
 ## 状态码为什么不够
 
@@ -22,6 +22,6 @@ source: "[Retry behavior](https://docs.aws.amazon.com/sdkref/latest/guide/featur
 
 ## 可重试也会停止
 
-SDK 还会检查最大尝试次数与重试令牌额度；额度耗尽后停止追加请求，避免持续故障被重试放大。
+SDK 还会检查**「最大尝试次数与重试令牌额度」**；额度耗尽后停止追加请求，避免持续故障被重试放大。
 
 按 2026-10-10 页面总结：文档所述新行为当时需要启用 `AWS_NEW_RETRIES_2026`，旧行为在退避和额度等方面有差异。未运行验证，不将页面默认值推广到所有 SDK 版本。

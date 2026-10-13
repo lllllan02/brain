@@ -4,13 +4,13 @@ parent: context-budget
 category: "Agent"
 tags: ["上下文管理"]
 created_at: "2026-10-11T18:46:39+08:00"
-updated_at: "2026-10-11T18:48:02+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://code.claude.com/docs/en/model-config#default-auto-compact-thresholds"
   - "https://code.claude.com/docs/en/env-vars"
 ---
 
-**Claude Code 的触发点随模型和配置变化；知道窗口与阈值，不代表能把剩余空间拆成固定的输出预留和安全余量。**
+**「Claude Code 的触发点随模型和配置变化；知道窗口与阈值，不代表能把剩余空间拆成固定的输出预留和安全余量。」**
 
 本文依据 2026-10-11 核对的官方文档，未运行验证。比例计算沿用[[context-budget|上下文预算的计数口径]]。
 
@@ -33,4 +33,4 @@ source:
 
 ## 压缩后剩多少？
 
-这些公开参数没有规定压缩后必须降到窗口的某个比例。需要对重组后完整输入重新计数，不能用摘要长度代替整个上下文的大小。
+这些公开参数**「没有规定压缩后必须降到窗口的某个比例」**。需要对重组后完整输入重新计数，不能用摘要长度代替整个上下文的大小。

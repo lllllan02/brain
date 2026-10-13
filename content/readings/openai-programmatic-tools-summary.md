@@ -4,11 +4,11 @@ parent: tool-scheduling
 category: "Agent"
 tags: ["Agent", "工具调用"]
 created_at: "2026-10-10"
-updated_at: "2026-10-10"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Programmatic Tool Calling](https://developers.openai.com/api/docs/guides/tools-programmatic-tool-calling)"
 ---
 
-**可预测的多步调用交给代码编排，中间结果先筛选、聚合，再交给模型。** 本文聚焦 Responses API 的程序化工具调用。
+**「可预测的多步调用交给代码编排，中间结果先筛选、聚合，再交给模型。」** 本文聚焦 Responses API 的程序化工具调用。
 
 ## 调用链怎样变化？
 
@@ -20,6 +20,6 @@ source: "[Programmatic Tool Calling](https://developers.openai.com/api/docs/guid
 
 原文用并发查询库存和需求、计算缺口展示做法。适合控制流可预测、能压缩中间结果的阶段；逐步语义判断和敏感审批通常保留直接调用。
 
-每次调用仍须检查参数与权限，重试或重放需避免重复副作用。收益应与直接调用比较，同时看答案与证据质量、Token、延迟和恢复表现。
+**「每次调用仍须检查参数与权限」**，重试或重放需避免重复副作用。收益应与直接调用比较，同时看答案与证据质量、Token、延迟和恢复表现。
 
-这是[[tool-scheduling|执行调度]]的一种实现参考，不自动解决依赖与资源冲突。原文包含接续循环及 Go 等语言示例；本文按 2026-10-10 文档整理，未运行示例。
+这是[[tool-scheduling|执行调度]]的一种实现参考，**「不自动解决依赖与资源冲突」**。原文包含接续循环及 Go 等语言示例；本文按 2026-10-10 文档整理，未运行示例。

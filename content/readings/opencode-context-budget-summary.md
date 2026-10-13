@@ -4,13 +4,13 @@ parent: context-budget
 category: "Agent"
 tags: ["上下文管理"]
 created_at: "2026-10-11T18:46:39+08:00"
-updated_at: "2026-10-11T18:48:02+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://github.com/anomalyco/opencode/blob/dev/packages/core/src/session/compaction.ts"
   - "https://dev.opencode.ai/v2/docs/compaction/"
 ---
 
-**OpenCode V2 从输入容量基准中扣除预留空间，得到触发线；预留带有最低值，因此触发比例并不固定。**
+**「OpenCode V2 从输入容量基准中扣除预留空间，得到触发线；预留带有最低值，因此触发比例并不固定。」**
 
 本文依据 2026-10-11 核对的官方文档及公开源码，未固定源码提交或运行验证。比例计算沿用[[context-budget|上下文预算的计数口径]]。
 
@@ -31,4 +31,4 @@ source:
 
 ## 压缩后剩多少？
 
-[V2 文档](https://dev.opencode.ai/v2/docs/compaction/)把 15,000 定义为近似近期保留量。近期段的长工具结果还会缩短，附件改为描述；它是保留目标，不是压缩后总量。源码中的超限重试比例 70%、50%、35% 用于缩小**送去压缩的请求**，同样不是最终摘要占比。V1 参数不与此处混用。
+[V2 文档](https://dev.opencode.ai/v2/docs/compaction/)把 15,000 定义为**「近似近期保留量」**。近期段的长工具结果还会缩短，附件改为描述；它是保留目标，不是压缩后总量。源码中的超限重试比例 70%、50%、35% 用于缩小**送去压缩的请求**，同样不是最终摘要占比。V1 参数不与此处混用。

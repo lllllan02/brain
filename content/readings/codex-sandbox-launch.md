@@ -4,11 +4,11 @@ title: "Codex 如何把工具命令送进沙箱"
 category: "Agent"
 tags: ["Agent", "沙箱", "源码"]
 created_at: "2026-10-10"
-updated_at: "2026-10-10"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: ["[工具入口](https://github.com/openai/codex/blob/5ef96ab2785f3ecddf279639eff7b1b42c906fa4/codex-rs/core/src/tools/handlers/unified_exec/exec_command.rs#L231)", "[持续执行运行时](https://github.com/openai/codex/blob/5ef96ab2785f3ecddf279639eff7b1b42c906fa4/codex-rs/core/src/tools/runtimes/unified_exec.rs#L654)", "[沙箱管理器](https://github.com/openai/codex/blob/5ef96ab2785f3ecddf279639eff7b1b42c906fa4/codex-rs/sandboxing/src/manager.rs#L355)"]
 ---
 
-**Codex 把命令解析、审批决策和平台隔离分层处理，只有追到最终执行器，才能确认限制在哪里生效。**
+**「Codex 把命令解析、审批决策和平台隔离分层处理，只有追到最终执行器，才能确认限制在哪里生效。」**
 
 ## 从工具请求到进程
 
@@ -16,7 +16,7 @@ source: ["[工具入口](https://github.com/openai/codex/blob/5ef96ab2785f3ecddf
 2. `ToolOrchestrator` 组织审批与执行尝试，运行时准备实际环境。
 3. 本地沙箱管理器把权限策略转换为平台启动方式，再创建进程。
 
-因此，工具参数表达请求，审批确定允许范围，平台后端落实限制；这些职责不能仅凭某一个工具函数判断。
+因此，工具参数表达请求，**「审批确定允许范围，平台后端落实限制」**；这些职责不能仅凭某一个工具函数判断。
 
 ## 本地与远程怎样核对
 

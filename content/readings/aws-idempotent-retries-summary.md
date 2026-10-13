@@ -4,7 +4,7 @@ parent: retry-decision
 category: "分布式系统"
 tags: ["幂等", "重试"]
 created_at: "2026-10-10"
-updated_at: "2026-10-12T11:18:36+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Making retries safe with idempotent APIs](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/)"
 ---
 
@@ -14,11 +14,11 @@ source: "[Making retries safe with idempotent APIs](https://aws.amazon.com/build
 
 原文以创建 EC2 实例为例：请求超时后，调用方无法确定实例是否已经创建；直接再创建可能得到两个实例。但两个参数相同的请求，也可能本来就想创建两个实例，不能简单按参数去重。
 
-做法是用「调用方身份 + 请求 ID」识别一次操作，重试沿用该 ID。ID 还能关联日志与创建的资源，帮助核查请求结果。
+做法是用**「调用方身份 + 请求 ID」**识别一次操作，重试沿用该 ID。ID 还能关联日志与创建的资源，帮助核查请求结果。
 
 ## 服务端需要保证什么
 
-记录请求 ID 与实际资源变更需要满足原子性，避免只记了 ID 却没执行，或执行了却没记 ID。去重记录还需覆盖迟到请求可能到达的时间；保留期限取决于服务和资源生命周期。
+**「记录请求 ID 与实际资源变更需要满足原子性」**，避免只记了 ID 却没执行，或执行了却没记 ID。去重记录还需覆盖迟到请求可能到达的时间；保留期限取决于服务和资源生命周期。
 
 同一请求 ID 携带不同参数时，AWS 返回参数不匹配错误，而不是继续执行。因而重试不仅要保留标识，还要校验最初参数。这些保证依赖服务端实现，客户端自行生成 ID 并不能让任意 API 自动幂等。
 

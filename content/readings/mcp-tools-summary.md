@@ -4,12 +4,12 @@ parent: mcp
 category: "Agent"
 tags: ["MCP", "工具调用", "协议"]
 created_at: "2026-10-11T00:40:07+08:00"
-updated_at: "2026-10-12T12:27:44+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://modelcontextprotocol.io/specification/2026-07-28/server/tools"
 ---
 
-**MCP Tools 规范约定工具如何被发现和调用，以及结果、补充输入和失败如何表达。** 本文依据 `2026-07-28` 版本，未运行示例。
+**「MCP Tools 规范约定工具如何被发现和调用，以及结果、补充输入和失败如何表达。」** 本文依据 `2026-07-28` 版本，未运行示例。
 
 ## 定义与调用
 
@@ -21,7 +21,7 @@ source:
 
 ## 名称冲突与集合变化
 
-名称唯一性限于单个 Server。汇集多个服务时，客户端应自行消歧，例如使用来源前缀；`serverInfo.name` 本身不保证跨服务唯一，不能直接假定它就是唯一前缀。调用时仍需定位目标 Server 和其原工具名。[名称约定](https://modelcontextprotocol.io/specification/2026-07-28/server/tools#tool-names)
+**「名称唯一性限于单个 Server」**。汇集多个服务时，客户端应自行消歧，例如使用来源前缀；`serverInfo.name` 本身不保证跨服务唯一，不能直接假定它就是唯一前缀。调用时仍需定位目标 Server 和其原工具名。[名称约定](https://modelcontextprotocol.io/specification/2026-07-28/server/tools#tool-names)
 
 本版本中，声明 `listChanged` 的服务向已通过 `subscriptions/listen` 订阅 `toolsListChanged` 的客户端发送工具列表变更通知。客户端据此重新获取列表，并维护本地定义和调用映射；通知本身不包含完整的新目录。[变更通知](https://modelcontextprotocol.io/specification/2026-07-28/server/tools#list-changed-notification)
 
@@ -35,4 +35,4 @@ source:
 
 ## 跨调用状态
 
-原文建议购物车等状态用显式句柄关联：创建后返回 `basket_id`，后续调用携带它。已认证服务仍应逐次检查调用者对该对象的权限，不能把知道句柄当成获准访问。[状态工具](https://modelcontextprotocol.io/specification/2026-07-28/server/tools#stateful-tools)
+原文建议购物车等**「状态用显式句柄关联」**：创建后返回 `basket_id`，后续调用携带它。已认证服务仍应逐次检查调用者对该对象的权限，不能把知道句柄当成获准访问。[状态工具](https://modelcontextprotocol.io/specification/2026-07-28/server/tools#stateful-tools)

@@ -4,7 +4,7 @@ parent: context-budget
 category: "Agent"
 tags: ["上下文管理"]
 created_at: "2026-10-11T18:35:33+08:00"
-updated_at: "2026-10-11T18:48:02+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://github.com/google-gemini/gemini-cli/blob/main/packages/core/src/context/chatCompressionService.ts"
   - "https://github.com/Aider-AI/aider/blob/main/aider/history.py"
@@ -12,7 +12,7 @@ source:
   - "https://langchain-ai.github.io/langmem/reference/short_term/"
 ---
 
-**触发摘要、限制历史大小和清理工具结果可以使用不同的计数范围。** 以下按 2026-10-11 的官方文档与 main 源码核对，未运行验证；每项分别说明触发条件和处理后目标，不横向排列为窗口占用率排名。
+**「触发摘要、限制历史大小和清理工具结果可以使用不同的计数范围。」** 以下按 2026-10-11 的官方文档与 main 源码核对，未运行验证；每项分别说明触发条件和处理后目标，不横向排列为窗口占用率排名。
 
 ## Gemini CLI：50% 是触发线，30% 是历史切分目标
 
@@ -36,7 +36,7 @@ source:
 
 [[anthropic-context-editing-summary|工具结果清理]]则在启用相应策略后，默认于**输入超过 100,000 Token** 时开始；从旧工具结果清起，默认保留最近 3 次工具交互，调用参数默认保留。若改为按工具次数触发，分子就是工具次数，与窗口占用率无关。[参数表](https://platform.claude.com/docs/en/build-with-claude/context-editing#configuration-options-for-tool-result-clearing)还允许配置最小清理量；达不到则不执行。
 
-清理后剩多少取决于被替换结果的大小、保留与排除规则；既不是固定剩 3 条消息，也不是固定降到窗口某个比例。可用 Token counting 与 `applied_edits` 检查实际结果。
+清理后剩多少取决于被替换结果的大小、保留与排除规则；既不是固定剩 3 条消息，也**「不是固定降到窗口某个比例」**。可用 Token counting 与 `applied_edits` 检查实际结果。
 
 ## LangMem：应用设置消息预算
 

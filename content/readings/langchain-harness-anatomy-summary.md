@@ -4,11 +4,11 @@ parent: agent-harness
 category: "Agent"
 tags: ["Agent", "Harness"]
 created_at: "2026-10-11T11:46:46+08:00"
-updated_at: "2026-10-11T12:33:19+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source: "[The Anatomy of an Agent Harness](https://www.langchain.com/blog/the-anatomy-of-an-agent-harness)"
 ---
 
-**作者把 Harness 广义地理解为模型之外的配套系统，并从希望 Agent 具备的行为，反推需要哪些机制。** 这包括代码、配置、工具与基础设施，不代表它们必须是一个部署单元。
+**「作者把 Harness 广义地理解为模型之外的配套系统，并从希望 Agent 具备的行为，反推需要哪些机制。」** 这包括代码、配置、工具与基础设施，不代表它们必须是一个部署单元。
 
 ## 从生成输出，到操作真实任务
 
@@ -32,7 +32,7 @@ source: "[The Anatomy of an Agent Harness](https://www.langchain.com/blog/the-an
 
 ## 模型变强后，Harness 会消失吗？
 
-作者区分两种作用：补偿当前模型不足，以及提供环境、工具、状态和验证条件。前者可能随模型升级减少，后者仍有价值。模型训练与工具接口也会相互适应，因此改动 Harness 应实测，不能只凭组件更多判断效果。
+作者区分两种作用：**「补偿当前模型不足」**，以及**「提供环境、工具、状态和验证条件」**。前者可能随模型升级减少，后者仍有价值。模型训练与工具接口也会相互适应，因此改动 Harness 应实测，不能只凭组件更多判断效果。
 
 ## 原文定位
 

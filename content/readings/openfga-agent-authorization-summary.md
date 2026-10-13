@@ -4,7 +4,7 @@ parent: tool-permission-design
 category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10T20:24:03+08:00"
-updated_at: "2026-10-12T12:34:08+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "[Dynamic Conditions](https://openfga.dev/blog/dynamic-abac-expressions-announcement)"
   - "[Get Started with Modeling](https://openfga.dev/docs/modeling/getting-started)"
@@ -13,7 +13,7 @@ source:
   - "[Query Consistency Modes](https://openfga.dev/docs/interacting/consistency)"
 ---
 
-**OpenFGA 将授权模型、具体关系和调用条件分开：模型定义权限如何推导，关系记录谁获得了什么授权，条件限制本次使用。** 本文节选官方文档中与 Agent 权限表达及变更管理有关的内容。
+**「OpenFGA 将授权模型、具体关系和调用条件分开：模型定义权限如何推导，关系记录谁获得了什么授权，条件限制本次使用。」** 本文节选官方文档中与 Agent 权限表达及变更管理有关的内容。
 
 ## 权限怎样授予与撤销？
 
@@ -32,19 +32,19 @@ Write API 用 `writes` 增加关系、用 `deletes` 删除关系。删除一条�
 条件：本次 channel == 授权配置中的 allowed_channel
 ```
 
-关系授予调用能力，条件进一步限制本次请求。相同模式可用于租户、区域、资源属性和其他参数；网关在调用前提交实际上下文，执行授权判断。
+**「关系授予调用能力，条件进一步限制本次请求」**。相同模式可用于租户、区域、资源属性和其他参数；网关在调用前提交实际上下文，执行授权判断。
 
 ## 动态条件解决什么维护问题？
 
 普通 Conditions 需要在模型中声明条件及参数。新增限制可能要求修改模型；Dynamic Conditions 则把 CEL 表达式作为关系元组的数据保存，检查时使用请求上下文求值，使关系模型保持稳定。
 
-表达式应通过可信管理入口配置，并限制配置权限、校验表达式；不能让 Agent 随请求任意提供自己的授权规则。
+表达式应通过可信管理入口配置，并限制配置权限、校验表达式；**「不能让 Agent 随请求任意提供自己的授权规则」**。
 
 Dynamic Conditions 原文发表于 2026-09-21，明确为实验功能，语法与行为可能变化；「模型＋关系」不依赖采用这一实验能力。
 
 ## 规则变更何时生效？
 
-授权模型不可原地修改，每次写入产生新版本。官方建议生产请求固定 `authorization_model_id`；不传时会使用 Store 最新创建的模型。固定版本可以先测试再切换，模型版本也不等于授权关系数据的历史快照。
+**「授权模型不可原地修改」**，每次写入产生新版本。官方建议生产请求固定 `authorization_model_id`；不传时会使用 Store 最新创建的模型。固定版本可以先测试再切换，模型版本也不等于授权关系数据的历史快照。
 
 关系变更还受查询缓存影响。启用缓存时，默认的 `MINIMIZE_LATENCY` 可能继续返回旧结果；`HIGHER_CONSISTENCY` 跳过缓存查询数据库，以延迟和性能换取更及时的判断。文档说明服务缓存默认关闭，不能把缓存延迟当作所有部署必然存在的问题。
 

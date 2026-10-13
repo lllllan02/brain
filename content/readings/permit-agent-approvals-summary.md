@@ -4,13 +4,13 @@ parent: tool-permissions
 category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10T20:24:03+08:00"
-updated_at: "2026-10-12T12:25:42+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "[Human-in-the-Loop Approvals](https://docs.permit.io/permit-mcp-gateway/human-in-the-loop/)"
   - "[Access Request MCP overview](https://docs.permit.io/ai-security/access-request-mcp/overview/)"
 ---
 
-**Permit 将调用授权与审批组织为两个关口，并区分申请访问权限和确认一次操作。** 两篇文档分别展示网关统一拦截与应用接入审批工具的方式。
+**「Permit 将调用授权与审批组织为两个关口，并区分申请访问权限和确认一次操作。」** 两篇文档分别展示网关统一拦截与应用接入审批工具的方式。
 
 ## 网关怎样统一处理？
 
@@ -28,4 +28,4 @@ Access Request MCP 的访问申请获批后，会给用户分配资源上的角�
 
 操作批准则由资源上的 Reviewer 审核，获批后授予 Approved 角色及 operate 权限，工具执行前再检查。文档通过成功后撤销角色实现一次性使用；它没有在此说明并发下的原子消费保证，实现时不能仅凭「成功后撤销」推断已避免重复执行。
 
-这组资料适合参考共享审批规则、规则组合和批准的作用范围。上述产品机制按 2026-10-12 文档核对，未运行示例。
+这组资料适合参考共享审批规则、规则组合和**「批准的作用范围」**。上述产品机制按 2026-10-12 文档核对，未运行示例。

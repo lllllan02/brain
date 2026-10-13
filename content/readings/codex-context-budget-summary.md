@@ -4,7 +4,7 @@ parent: context-budget
 category: "Agent"
 tags: ["上下文管理"]
 created_at: "2026-10-11T18:46:39+08:00"
-updated_at: "2026-10-11T18:48:02+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://github.com/openai/codex/blob/main/codex-rs/models-manager/models.json"
   - "https://github.com/openai/codex/blob/main/codex-rs/protocol/src/openai_models.rs"
@@ -13,7 +13,7 @@ source:
   - "https://github.com/openai/codex/blob/main/codex-rs/core/src/compact.rs"
 ---
 
-**Codex 的原始窗口、有效窗口和自动压缩线是三个不同的数。解释百分比前，要先说明分母用的是哪一个。**
+**「Codex 的原始窗口、有效窗口和自动压缩线是三个不同的数。解释百分比前，要先说明分母用的是哪一个。」**
 
 本文依据 2026-10-11 核对的官方文档及公开源码，未固定源码提交或运行验证。比例计算沿用[[context-budget|上下文预算的计数口径]]。
 
@@ -37,4 +37,4 @@ source:
 
 ## 压缩后剩多少？
 
-[本地摘要路径](https://github.com/openai/codex/blob/main/codex-rs/core/src/compact.rs)为保留的用户文本设置约 20,000 Token 预算，再加摘要和重建的初始上下文；这不是完整压缩结果的上限，也不能套用到所有服务端压缩路径。
+[本地摘要路径](https://github.com/openai/codex/blob/main/codex-rs/core/src/compact.rs)为保留的用户文本设置约 20,000 Token 预算，再加摘要和重建的初始上下文；这**「不是完整压缩结果的上限」**，也不能套用到所有服务端压缩路径。

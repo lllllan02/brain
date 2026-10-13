@@ -4,13 +4,13 @@ parent: agent-human-in-the-loop
 category: "Agent"
 tags: ["Agent", "人工介入", "Checkpoint"]
 created_at: "2026-10-13T10:59:51+08:00"
-updated_at: "2026-10-13T10:59:51+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://docs.langchain.com/oss/python/langgraph/interrupts"
   - "https://docs.langchain.com/oss/python/langchain/human-in-the-loop"
 ---
 
-**LangGraph 提供暂停与传回输入的原语，LangChain 中间件把它组织成工具审核流程。** 本文节选这两层的衔接和恢复陷阱，按 2026-10-13 官方文档核对；未运行 Python 示例。
+**「LangGraph 提供暂停与传回输入的原语，LangChain 中间件把它组织成工具审核流程。」** 本文节选这两层的衔接和恢复陷阱，按 2026-10-13 官方文档核对；未运行 Python 示例。
 
 ## 中断如何离开节点，又如何回来？
 
@@ -22,7 +22,7 @@ source:
 
 ## 工具审核在哪一层发生？
 
-[HITL middleware](https://docs.langchain.com/oss/python/langchain/human-in-the-loop) 在模型响应之后、工具执行之前检查工具调用，依据 `interrupt_on` 构造待审动作和允许的决定类型，再触发底层中断。
+[HITL middleware](https://docs.langchain.com/oss/python/langchain/human-in-the-loop) 在**「模型响应之后、工具执行之前」**检查工具调用，依据 `interrupt_on` 构造待审动作和允许的决定类型，再触发底层中断。
 
 | 决定 | 工具层行为 |
 | --- | --- |
@@ -31,6 +31,6 @@ source:
 | `reject` | 跳过该调用，把拒绝意见交回模型 |
 | `respond` | 将人的回答直接作为工具结果，适用于 `ask_user` |
 
-`respond` 不能用来表达拒绝有副作用的动作，否则模型会把它当作成功结果。多个工具动作分别需要决定，列表顺序须对应待审动作。大幅编辑参数可能改变模型后续路径，需要特别核对。
+`respond` **「不能用来表达拒绝有副作用的动作」**，否则模型会把它当作成功结果。多个工具动作分别需要决定，列表顺序须对应待审动作。大幅编辑参数可能改变模型后续路径，需要特别核对。
 
 这些 API 提供执行语义；审批身份、权限、过期与重复提交如何进入业务校验，仍需由 [[agent-approval-protocol|人工审批协议]]明确，不能只靠一个布尔回复。

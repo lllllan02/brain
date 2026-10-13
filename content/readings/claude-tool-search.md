@@ -5,13 +5,13 @@ aliases: ["ToolSearch", "Claude Tool Search"]
 category: "Agent"
 tags: ["按需加载", "工具调用", "Claude"]
 created_at: "2026-10-09"
-updated_at: "2026-10-11T23:21:17+08:00"
+updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "[Claude API：Tool search tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool)"
   - "[Claude Code：Scale with MCP tool search](https://code.claude.com/docs/en/mcp#scale-with-mcp-tool-search)"
 ---
 
-**Claude Tool Search 通过搜索工具目录实现[[tool-loading|工具按需加载]]。** API 的协议行为与 Claude Code 的产品策略有所区别，以下依据 2026-10-11 查阅的官方文档。
+**「Claude Tool Search 通过搜索工具目录实现[[tool-loading|工具按需加载]]。」** API 的协议行为与 Claude Code 的产品策略有所区别，以下依据 2026-10-11 查阅的官方文档。
 
 ## Claude API 的机制
 
@@ -20,9 +20,9 @@ source:
 3. API 搜索工具目录，返回 `tool_reference`，并将引用展开为完整定义加入模型上下文。
 4. 模型发起正常的[[tool-calling|工具调用]]，自定义工具仍由应用执行并回传结果。
 
-`defer_loading` 控制定义何时进入模型上下文；完整定义仍须在每次请求的 `tools` 中发送，服务端才能检索和展开。搜索覆盖名称、描述和参数信息，官方提供 Regex 与 BM25 两种搜索方式，不能据此断言使用 Embedding 或向量数据库。[API 官方说明](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool)
+`defer_loading` 控制定义何时进入模型上下文；**「完整定义仍须在每次请求的 `tools` 中发送」**，服务端才能检索和展开。搜索覆盖名称、描述和参数信息，官方提供 Regex 与 BM25 两种搜索方式，不能据此断言使用 Embedding 或向量数据库。[API 官方说明](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool)
 
-继续对话时，按协议保留搜索结果与工具引用，并继续发送工具定义；API 会展开历史中的引用，因此已发现的工具可以复用，不必每轮重搜。搜索没有匹配项时返回空引用列表，不等于工具执行失败。
+继续对话时，按协议保留搜索结果与工具引用，并继续发送工具定义；API 会展开历史中的引用，因此**「已发现的工具可以复用，不必每轮重搜」**。搜索没有匹配项时返回空引用列表，不等于工具执行失败。
 
 ## Claude Code 的暴露策略
 
