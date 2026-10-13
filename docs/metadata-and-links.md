@@ -8,15 +8,15 @@ tags: ["知识库", "元数据", "命名", "链接维护"]
 
 ## 文件名与属性
 
-目录区分内容用途及知识笔记的学习状态：inbox 保存新建及仍在学习的内容，notes 保存用户明确确认已理解本篇所需概念的笔记，readings 保存外部资料的摘要与导读，glossary 保存随查术语解释，sources 保存必要的原始资料或格式转换内容，archive 归档「曾整理好、但当前先精简掉」的文档（不参与看板，恢复时移回并维护链接）。正式笔记直接平铺在 `content/notes/`，inbox 同样保持平铺；专题入口也按学习状态放入 notes 或 inbox，不用物理子目录表达专题层次。文档类型通过 type（兼容已有 classes）区分，主题归属通过单值 category 表达，tags 用于多标签检索，不再建立主题或类型子目录。网站与检索的收录范围由 `apps/web/collections.config.json` 的启用项决定，新增目录时在此声明显示名、图标、颜色和节点样式；目录业务用途仍须在管理规则中说明。
+目录只区分内容用途：notes 保存自己的知识笔记，readings 保存外部资料的摘要与导读，glossary 保存随查术语解释，sources 保存必要的原始资料，archive 保存当前归档的文档（不参与看板）。各内容目录平铺，不用物理子目录表达专题层次或学习状态。文档类型通过 type（兼容已有 classes）区分，主题归属通过单值 category 表达，tags 用于多标签检索。
 
-外部资料导读平铺在 `content/readings/`，以来源为中心组织要点与定位链接；围绕自己的问题形成的理解放入 inbox 或 notes，导读本身不随阅读完成迁移。
+自己的知识笔记统一放 `content/notes/<filename>.md`，新建时设置 `learning_status: pending`；用户明确确认本篇所需概念已理解后才改为 `understood`。字段缺省时按待学习显示，不根据文件所在目录、阅读历史或整理完成推断已理解。外部导读平铺在 `content/readings/`，用 `read: true` 表示用户确认读过本篇导读，缺省或 `false` 为未读；不推断读过全部原文或已经掌握。术语不设置这两种状态。状态修改不移动文件、不刷新 created_at 或 updated_at。
 
-除术语库外，自己的新建知识笔记默认保存到 `content/inbox/<filename>.md`，用户明确确认本篇所需概念已理解后再移入 `content/notes/`，不建立月份子目录。常规更新、补充旧文保持路径稳定，不随日期、分类或标签变化搬家；重构改变主题范围时按下述命名规则同步改名；日期通过元数据表达。网页同时收录配置中启用的目录（默认 notes、inbox、readings、glossary）；目录来源直接从路径生成，不另加学习状态字段，外观与交互见 [[apps/web/README|视界说明]]。inbox 中已有内容先更新原文件，用户确认理解并授权迁入后再移入 notes，保留有效正文、出处与原有日期，并维护受影响的引用。
+网站与检索收录范围由 `apps/web/collections.config.json` 的启用项决定，默认 notes、readings、glossary；目录来自路径，学习与阅读状态来自元数据。状态外观配置在 `apps/web/document-states.config.json`，交互见 [[apps/web/README|视界说明]]。常规补充保持路径稳定，重构改变主题范围时按命名规则同步改名并维护引用。
 
-文件名使用简短英文与短横线，如 `agent-definition.md`、`mysql-explain-type.md`。在 content 内的笔记中保持唯一，包括 inbox、notes、readings 与 glossary；只在实际冲突时加必要的限定词，不把完整分类层级拼进名称。文件名按内容适当收敛：主题能被更短、更上位的词涵盖时就用它，避免「主题 + 动作/限定」的冗余（如 OAuth 授权 → `oauth`）。README.md、AGENTS.md 等项目约定名称保留。
+文件名使用简短英文与短横线，如 `agent-definition.md`、`mysql-explain-type.md`。在 content 内的笔记中保持唯一，包括 notes、readings 与 glossary；只在实际冲突时加必要的限定词，不把完整分类层级拼进名称。文件名按内容适当收敛：主题能被更短、更上位的词涵盖时就用它，避免「主题 + 动作/限定」的冗余（如 OAuth 授权 → `oauth`）。README.md、AGENTS.md 等项目约定名称保留。
 
-内容收敛、拆分或重构后，文件名应跟随最终主题调整，不能只改 title 而沿用已不匹配的旧文件名。例如，`trace-and-span.md` 收敛为只解释 Trace、Span 已独立成篇时，应改为 `trace.md`。先核对新文件名在 content 中唯一，再按重命名流程维护全部引用；仅因措辞偏好或普通补充不反复改名，重命名也不改变 inbox/notes 的学习状态。
+内容收敛、拆分或重构后，文件名应跟随最终主题调整，不能只改 title 而沿用已不匹配的旧文件名。例如，`trace-and-span.md` 收敛为只解释 Trace、Span 已独立成篇时，应改为 `trace.md`。先核对新文件名在 content 中唯一，再按重命名流程维护全部引用；仅因措辞偏好或普通补充不反复改名，重命名也不改变元数据中的学习状态。
 
 ## 术语库
 
@@ -24,9 +24,9 @@ tags: ["知识库", "元数据", "命名", "链接维护"]
 
 正文独立于遇到该术语的话题：具体协议或项目怎样使用它，写在对应话题或实践卡片中，由使用处引用术语卡；不为返回原话题而添加应用章节或链接。术语卡只在解释自身确有需要时引用其他概念。具体话题首次使用术语时可保留使原句可读的简短释义，完整定义和通用例子集中在术语卡，场景约定留在使用处。例如 Stdio 卡解释标准流；MCP 如何通过标准流传输消息、日志如何处理，归 MCP 或其实现卡片。
 
-术语卡不参与 Inbox 与 Notes 的学习状态迁移；内容稳定程度不是分类依据，涉及版本仍需注明。
+术语卡不设置学习或阅读状态；内容稳定程度不是分类依据，涉及版本仍需注明。
 
-以具体外部资料为对象的摘要放 readings；需要理解机制、作出判断或完成实践的问题放 inbox／notes。已有同主题内容先判断归属并复用，不在不同目录复制定义。术语可被多个专题引用，不因被 MCP 使用就强设 MCP 为 parent；有清晰概念上级时沿用 parent 规则。Glossary 与其他收录目录共享文件名唯一、来源、链接及发布约束。
+以具体外部资料为对象的摘要放 readings；需要理解机制、作出判断或完成实践的问题放 notes。已有同主题内容先判断归属并复用，不在不同目录复制定义。术语可被多个专题引用，不因被 MCP 使用就强设 MCP 为 parent；有清晰概念上级时沿用 parent 规则。Glossary 与其他收录目录共享文件名唯一、来源、链接及发布约束。
 
 ## 元数据
 
@@ -43,7 +43,9 @@ tags: ["知识库", "元数据", "命名", "链接维护"]
 | `updated_at` | 正文最后实质变更时间，格式同上 | 新文及实质更新时记录；格式、属性名或路径变化不刷新 |
 | `type` / `classes` | 文档类型；新文优先单值 type，如 `concept`、`practice`、`article`、`overview`；已有 classes 是类型列表 | 有分类需求时使用，同一文档不重复维护两者 |
 | `description` | 一句话摘要，文本 | 正文开头不足以支持预览或展示时使用，避免重复维护同一摘要 |
-| `source` / `url` | 外部出处；推荐 `source: "https://…"`，可写 `source: "[原文标题](https://…)"`，多个来源使用字符串列表；兼容出处文本及 `url` / `URL` | 仅 readings 外部导读填写；inbox、notes 不填 `source` 或用 `url` / `URL` 替代。来源在标题下展示，必要的正文引用仍可保留 |
+| `source` / `url` | 外部出处；推荐 `source: "https://…"`，可写 `source: "[原文标题](https://…)"`，多个来源使用字符串列表；兼容出处文本及 `url` / `URL` | 仅 readings 外部导读填写；notes 不填 `source` 或用 `url` / `URL` 替代。来源在标题下展示，必要的正文引用仍可保留 |
+| `learning_status` | `pending`（待学习）或 `understood`（已理解） | 仅 notes 使用，新建填 pending；用户确认理解后切换，缺省按 pending 显示 |
+| `read` | YAML 布尔值 `true` / `false`，不加引号 | 仅 readings 使用；用户确认读过导读后设置 true，缺省为未读 |
 | `status` | 工作状态，文本，如 `draft`、`review`、`done` | 有实际草稿、核查或处理流程时使用，不作为事实可信度或掌握程度 |
 | `cssclasses` | 样式名称列表，用于 Obsidian CSS 片段 | 需要单篇特殊显示样式时使用 |
 
@@ -63,7 +65,7 @@ Obsidian 内置的常规属性是 tags、aliases、cssclasses，其他字段是�
 
 ## 链接与合并
 
-内部用 Obsidian 双链，不加 `.md`，笔记直接引用唯一文件名，如 `[[agent|Agent]]`、`[[mysql-explain|EXPLAIN 总览]]`。不将 inbox、notes、readings 或 glossary 目录写进常规笔记链接，不使用 `/Users/...` 等本机绝对路径。中文用于显示名，外部 URL 使用 Markdown 链接。
+内部用 Obsidian 双链，不加 `.md`，笔记直接引用唯一文件名，如 `[[agent|Agent]]`、`[[mysql-explain|EXPLAIN 总览]]`。不将 notes、readings 或 glossary 目录写进常规笔记链接，不使用 `/Users/...` 等本机绝对路径。中文用于显示名，外部 URL 使用 Markdown 链接。
 
 解析先匹配 Vault 内的准确路径，再检查路径后缀是否唯一，无法唯一确定则报告歧义，不能随意挑选同名文件。章节用 `[[目标#标题|显示名]]`，块引用用 `[[目标#^block-id]]`，附件用 `![[assets/image.png]]`；目标和锚点必须存在。管理文档位于 Vault 外，跨目录链接使用项目根路径。
 
