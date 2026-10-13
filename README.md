@@ -23,6 +23,8 @@ tags: ["知识库", "Obsidian", "项目使用", "服务启动"]
 
 开发验收可在根目录运行 `make check`（类型与格式）、`make test`（单元、接口与检索回归）、`make test-browser`（浏览器回归）和 `make build`（应用构建）。检索直接执行 `scripts/retrieve.ts`，例如 `npm --silent --prefix apps/web run retrieve -- query 覆盖索引 回表`，也可使用 `make search q="覆盖索引 回表"`。
 
+需要先查资料再成文时，可以直接说「调研整理 X」，或补充「侧重方案对比」「用于入门」「整理成一篇」等要求。[knowledge-save](.agents/skills/knowledge-save/SKILL.md#调研整理) 会串起库内查重、外部资料核对、Reading 导读与知识笔记写回；用途和深度沿用上下文，大专题边界不明确时再确认。
+
 ## 目录
 
 ```text
