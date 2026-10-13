@@ -1,20 +1,32 @@
 ---
 title: "Redis"
 category: "Redis"
-updated_at: "2026-10-09"
 tags: ["Redis", "缓存", "数据结构"]
+type: "overview"
+created_at: "2026-10-13T11:03:37+08:00"
+updated_at: "2026-10-13T11:03:37+08:00"
 ---
 
-**Redis（Remote Dictionary Server）是以键值形式组织数据、主要在内存中提供低延迟读写的数据存储系统，常用于缓存、计数器、排行榜、会话状态和消息流等场景。**
+**Redis 是通过网络共享内存数据结构的存储系统。** 应用按 key 访问字符串、集合、有序集合等对象，把计数、排序和条件更新交给服务端执行。内存访问减少磁盘读取，合适的数据结构减少应用搬运和计算；网络、命令复杂度、持久化与复制仍会影响延迟和可靠性。
 
-它的核心能力包括：
+理解 Redis 要连起三个问题：数据怎样组织，一次操作保证到哪里，故障时哪些状态还能恢复。作为缓存时，数据可以从权威存储重建；承载锁、任务或库存预扣时，则必须单独说明丢失、重复与陈旧的代价。
 
-- 内存读写：通过内存访问减少磁盘读取开销；常见命令采用串行执行模型，但并非所有工作都由一个线程完成，具体见[[redis-threading|线程模型]]。
-- 丰富的数据类型：提供 String、Hash、List、Set、Sorted Set、Stream 等[[redis-data-types|数据类型]]，可直接完成计数、集合运算、排序等操作，并用[[redis-keyspace|键的过期时间（TTL）]]管理临时数据。
-- 数据持久化：通过 [[redis-persistence|RDB 快照和 AOF 日志]]将数据保存到磁盘，用于重启恢复。
-- 高可用与扩展：通过[[redis-replication|主从复制]]保留副本，用 [[redis-high-availability|Sentinel（哨兵）]]支持故障切换，或用 [[redis-cluster|Redis Cluster]]分片扩展数据容量和处理能力。
-- 原子操作：单条命令执行具有原子性，也提供[[redis-atomic-operations|事务和 Lua 脚本]]组织多步操作；这不等于关系数据库式的事务回滚。
+以下以 Redis Open Source 的传统键值工作负载为范围，机制以 7.2 系列作共同基线，源码例子固定到 7.2.5，仅用于阅读定位。涉及 7.4、8.x 的差异会单独注明；不将某个历史版本作为部署建议，也不将托管产品行为直接套入开源版。
 
-Redis 不只是缓存，也能作为共享的数据结构存储。是否把它作为唯一数据来源，还需评估持久化、复制和可接受的数据丢失窗口。
+## 数据如何组织与执行
 
-参考：[Redis 官方入门](https://redis.io/docs/latest/develop/get-started/)。
+[[redis-data-types|数据类型与底层编码]]从访问方式解释 String、Hash、List、Set、ZSet 的选择，以及 SDS、字典、listpack、跳表分别解决的成本。[[redis-threading|请求执行与线程模型]]接着说明这些操作由谁执行，为什么命令串行仍可处理多个连接，又为什么大命令会拖慢其他请求。
+
+多步操作需要区分[[redis-atomic-operations|流水线、事务与脚本]]：减少网络等待、阻止命令交错和实现条件更新是三个不同目标。内存中的数据还受[[redis-expiration-eviction|过期与淘汰]]约束，TTL 到期、容量不足与进程 RSS 是不同问题。
+
+## 数据怎样恢复与扩展
+
+[[redis-persistence|RDB 与 AOF]]解决单节点重启恢复，[[redis-high-availability|复制与 Sentinel]]解决副本同步和主节点故障后的接替。两者可以组合，但本地落盘、副本确认、切换后仍可见各有边界。
+
+单机容量或吞吐不足时，[[redis-cluster|Cluster]]通过槽分片扩展，代价是路由、迁移与多 key 操作约束；单个热点 key 仍需业务拆分或减少访问。
+
+## 怎样用于业务与排障
+
+[[redis-cache-design|缓存设计]]把权威数据、回填竞争和回源容量放在一起判断；[[redis-coordination|锁、限流与库存预扣]]讨论短小原子操作怎样与业务正确性衔接；[[redis-streams|消息与任务处理]]比较 Pub/Sub、List、Stream 及任务框架的职责。
+
+出现超时后，[[redis-troubleshooting|延迟与容量排查]]从客户端、网络、执行和后台工作寻找证据。机制与场景连起来后，可用[[redis-interview-questions|面试问题与场景追问]]检查能否解释因果、失败窗口和取舍，而不只复述命令名称。
