@@ -1,0 +1,39 @@
+/* Mobile reading uses the viewport; lists open on demand over the article. */
+.galaxy-page .reader-toolbar .mobile-reading-list-toggle { display: none; }
+@media (max-width: 900px) {
+  .galaxy-page.galaxy-reading .analysis-wrap,
+  .galaxy-page.galaxy-reading .analysis-wrap.full-reader {
+    position: fixed; inset: 0; width: 100%; max-width: none;
+    height: 100dvh; border-radius: 0; border: 0;
+  }
+  .galaxy-page.galaxy-reading .document-reader {
+    height: 100%; border-radius: 0; border: 0;
+    padding-top: env(safe-area-inset-top);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    box-sizing: border-box;
+  }
+  .galaxy-page.galaxy-reading .reader-toolbar { min-height: 56px; padding: 6px 12px; box-sizing: border-box; }
+  .galaxy-page.galaxy-reading .read-actions { align-items: center; gap: 4px; }
+  .galaxy-page.galaxy-reading .reader-toolbar .icon-btn { width: 40px; height: 40px; flex-shrink: 0; }
+  .galaxy-page.galaxy-reading .mobile-reading-list-toggle { display: grid; }
+  .galaxy-page.galaxy-reading [aria-label="切换专注阅读"] { display: none; }
+  .galaxy-page.galaxy-reading .an-scroll { padding: 14px 20px calc(28px + env(safe-area-inset-bottom)); margin-bottom: 0; }
+  .galaxy-page.galaxy-reading .markdown { font-size: 15px; }
+  .galaxy-page.galaxy-reading .galaxy-header,
+  .galaxy-page.galaxy-reading .galaxy-views,
+  .galaxy-page.galaxy-reading .galaxy-search-dock,
+  .galaxy-page.galaxy-reading .workbench-mode,
+  .galaxy-page.galaxy-reading .cluster-fan { visibility: hidden !important; }
+  .galaxy-page.galaxy-reading.mobile-list-open .cluster-fan {
+    visibility: visible !important; z-index: calc(var(--layer-reader) + 1);
+  }
+  .galaxy-page.galaxy-reading.mobile-list-open .cluster-list {
+    position: fixed; inset: calc(56px + env(safe-area-inset-top)) 0 0;
+    width: auto; height: auto; padding: 12px 16px calc(16px + env(safe-area-inset-bottom));
+    background: #0c1119;
+  }
+  .galaxy-page.galaxy-reading.mobile-list-open .cluster-fan-lines { display: none; }
+  .galaxy-page.galaxy-reading.mobile-list-open .an-scroll { visibility: hidden; }
+  .galaxy-page.galaxy-reading.mobile-list-open .cluster-list-item strong { font-size: 14px; }
+}

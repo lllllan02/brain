@@ -21,6 +21,9 @@ test('阅读进程使用独立构建，源码和另一次构建不能替换正�
   assert.doesNotMatch(html,/@vite\/client/);
   const asset=html.match(/src="([^" ]+\.js)"/)[1];
   const before=await (await fetch(url+asset)).text();assert.match(before,/first build/);
+  const cached=await createReaderFrontend(root);assert.equal(cached.cacheHit,true);await cached.close();
+  await rm(path.join(root,'node_modules/.cache/horizon-reader'),{recursive:true,force:true});
+  assert.equal(await (await fetch(url+asset)).text(),before);
   await writeFile(path.join(root,'main.js'),'document.querySelector("#root").textContent="second build";');
   const next=await createReaderFrontend(root);await next.close();
   assert.equal(await (await fetch(url+asset)).text(),before);

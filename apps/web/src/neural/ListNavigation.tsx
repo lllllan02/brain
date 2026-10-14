@@ -1,91 +1,21 @@
-import type { ListNavigationProps, RollerOption } from '../types/ui.ts';
-import { RollerSelect } from './RollerSelect.tsx';
-import { documentFilters } from '../document-state.ts';
+import type { ListNavigationProps } from '../types/ui.ts';
 import { clusterDocuments } from './ClusterList.tsx';
 
-const modes = [
-  ['outgoing', '内链', '这篇文章链接到的文档'],
-  ['incoming', '被引', '引用这篇文章的文档'],
-  ['queue', '待阅读', '已加入待阅读的文档'],
-  ['recent', '最近阅读', '最近阅读过的文档'],
-  ['latest', '最新文档', '最近更新的文档'],
-];
-
-export function ListNavigation({
-  graph,
-  node,
-  cluster,
-  historyRef,
-  latestRef,
-  queueRef,
-  onChoose,
-  collectionFilter,
-  onFilter,
-  documentCount,
-  totalCount,
-}: ListNavigationProps) {
-  const active = cluster?.queue
-    ? 'queue'
-    : cluster?.latest
-      ? 'latest'
-      : cluster?.recent
-        ? 'recent'
-        : cluster?.document
-          ? cluster!.direction || 'outgoing'
-          : cluster
-            ? 'context'
-            : null;
-  const options: RollerOption[] = modes
-    .filter(([mode]) => node || !['outgoing', 'incoming'].includes(mode))
-    .map(([mode, label, title]) => [
-      mode,
-      label,
-      title,
-      ['outgoing', 'incoming'].includes(mode)
-        ? clusterDocuments(graph, {
-            document: node!.id,
-            direction: mode as 'incoming' | 'outgoing',
-          }).length
-        : null,
-      mode === 'queue'
-        ? queueRef
-        : mode === 'recent'
-          ? historyRef
-          : mode === 'latest'
-            ? latestRef
-            : undefined,
-    ]);
-  if (active === 'context')
-    options.unshift([
-      'context',
-      cluster!.tag ? '标签' : cluster!.category?.startsWith('collection:') ? '目录' : '分类',
-      '当前列表',
-    ]);
-  for (const option of options) {
-    if (option[0] === active && documentCount != null)
-      option[3] = collectionFilter === 'all' ? documentCount : `${documentCount}/${totalCount}`;
-  }
-  const collections: RollerOption[] = documentFilters.map(([id, label]) => [
-    id,
-    label,
-    `显示${label}文档`,
-  ]);
+export function ListNavigation({ graph, node, cluster, onChoose }: ListNavigationProps) {
+  const count = node
+    ? clusterDocuments(graph, { document: node.id, direction: 'suggested' }).length
+    : 0;
   return (
-    <div className="list-navigation-controls">
-      <RollerSelect
-        options={options}
-        active={active}
-        onChoose={(mode: string) => {
-          if (mode !== 'context') onChoose(mode);
-        }}
-        label="文档列表模式"
-      />
-      <RollerSelect
-        options={collections}
-        active={collectionFilter}
-        onChoose={onFilter}
-        label="列表类型与状态筛选"
-      />
-    </div>
+    <nav className="list-navigation-controls" aria-label="文档列表模式">
+      <button
+        type="button"
+        className="list-suggested-option"
+        disabled={!node}
+        aria-pressed={cluster?.document === node?.id && cluster?.direction === 'suggested'}
+        onClick={() => onChoose('suggested')}
+      >
+        建议阅读 <small>{count}</small>
+      </button>
+    </nav>
   );
 }

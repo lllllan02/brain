@@ -141,7 +141,7 @@ test('文档、元数据与图谱自动局部更新，保留阅读段落、图�
   await unchanged();
   const moveScroll = await scroller.evaluate((el) => el.scrollTop);
   const toolbar = reader.locator('.reader-toolbar');
-  for (const filtered of [false, true]) {
+  for (const filtered of page.viewportSize()!.width <= 900 ? [false] : [false, true]) {
     if (filtered) await page.getByTitle('按目录展开星云', { exact: true }).click();
     for (const [action, reverse, collection] of [
       ['标为已理解', '标为待学习', 'understood'],
@@ -183,7 +183,7 @@ test('稳定阅读响应不包含开发客户端且拒绝源码路径', async ({
   expect((await request.head(url + asset)).status()).toBe(200);
 });
 
-test('状态切换贯通文件、内链高亮、预览、列表筛选和节点标签', async ({ page }, testInfo) => {
+test('状态切换贯通文件、内链高亮、预览和节点标签', async ({ page }, testInfo) => {
   await writeFile(
     path.join(root, 'notes/state-board.md'),
     '---\ntitle: 状态验收\ncategory: 验收\n---\n比较 [[state-pending|待学习笔记]] 与 [[state-done|已理解笔记]]。\n\n导读：[[state-guide|阅读导读]] 与 [[state-other|另一篇未读导读]]。',
@@ -243,12 +243,6 @@ test('状态切换贯通文件、内链高亮、预览、列表筛选和节点�
   await expect(preview.locator('.link-preview-label')).toContainText('已读');
   await page.screenshot({ path: testInfo.outputPath('states-and-preview.png') });
   await page.keyboard.press('Escape');
-  // Arrow keys use the same filter control on wide and narrow layouts.
-  const filter = page.getByRole('navigation', { name: /^列表类型与状态筛选/ });
-  await filter.focus();
-  await filter.press('End');
-  await expect(page.locator('.cluster-list-item')).toHaveCount(1);
-  await expect(page.locator('.cluster-list-item')).toContainText('阅读导读');
   await page.reload();
   await expect(link).toHaveAttribute('data-state', 'read');
   expect(await readFile(path.join(root, 'notes/state-board.md'), 'utf8')).not.toContain('read:');

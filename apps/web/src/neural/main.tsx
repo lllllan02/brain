@@ -14,6 +14,7 @@ import './documents.css';
 import './horizon-theme.css';
 import './controls.css';
 import './layers.css';
+import './mobile-reader.css';
 document.title = CONFIG.brand.name;
 function App() {
   const { library, error, updateState, stateAction, revision } = useLibrary();

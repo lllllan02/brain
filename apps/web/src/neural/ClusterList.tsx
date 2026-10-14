@@ -61,9 +61,11 @@ export function clusterDocuments(graph: ReaderGraph, cluster: Cluster | null) {
   if (cluster.document) {
     const source = graph.index.get(cluster.document);
     const ids =
-      cluster.direction === 'incoming'
-        ? source?.backlinks
-        : source?.references?.map((reference) => reference.id);
+      cluster.direction === 'suggested'
+        ? source?.readingSuggestions
+        : cluster.direction === 'incoming'
+          ? source?.backlinks
+          : source?.references?.map((reference) => reference.id);
     return [...new Set(ids || [])]
       .filter((id) => id !== source?.id)
       .map((id) => graph.index.get(id))
@@ -129,9 +131,11 @@ export function ClusterList({
   const kind = timeline
     ? ''
     : shown?.document
-      ? shown.direction === 'incoming'
-        ? '被引用'
-        : '内部链接'
+      ? shown.direction === 'suggested'
+        ? '建议阅读'
+        : shown.direction === 'incoming'
+          ? '被引用'
+          : '内部链接'
       : shown?.tag
         ? '标签'
         : collection
@@ -502,7 +506,7 @@ export function ClusterList({
                                 style={documentMarkerStyle(node)}
                                 aria-hidden="true"
                               />
-                              {timeline && (
+                              {(timeline || shown.direction === 'suggested') && (
                                 <small className="cluster-history-index">
                                   {allDocuments.indexOf(node) + 1}
                                 </small>
@@ -537,9 +541,11 @@ export function ClusterList({
                               : shown.recent
                                 ? '打开文档后，这里会留下阅读足迹'
                                 : shown.document
-                                  ? shown.direction === 'incoming'
-                                    ? '还没有其他文档引用这篇文章'
-                                    : '这篇文章没有可打开的内部链接'
+                                  ? shown.direction === 'suggested'
+                                    ? '这篇文章尚未配置有效的建议阅读'
+                                    : shown.direction === 'incoming'
+                                      ? '还没有其他文档引用这篇文章'
+                                      : '这篇文章没有可打开的内部链接'
                                   : '暂时没有匹配的文档'}
                       </p>
                     )}

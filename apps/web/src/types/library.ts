@@ -28,11 +28,13 @@ export interface ParsedDocument {
   body: string;
   summary: string;
   parentTarget: string | null;
+  readingSuggestionTargets?: string[];
 }
 export interface LibraryDocument extends ParsedDocument {
   html: string;
   toc: Heading[];
   references: Reference[];
+  readingSuggestions?: string[];
   issues: { target: string; reason: string }[];
   parent: (Reference & { title: string; href: string }) | null;
   backlinks?: string[];

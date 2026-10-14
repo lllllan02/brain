@@ -45,7 +45,7 @@ export const validSize = (value: unknown): value is { width: number; height: num
   number(value.height) &&
   value.height >= 240;
 const validDirection = (value: unknown) =>
-  value === undefined || value === 'incoming' || value === 'outgoing';
+  value === undefined || value === 'incoming' || value === 'outgoing' || value === 'suggested';
 const validClusterValue = (value: unknown): value is Cluster =>
   record(value) &&
   validDirection(value.direction) &&

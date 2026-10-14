@@ -27,7 +27,8 @@ export function ReaderRelations({
     }),
     [graph, node.id],
   );
-  const outgoing = cluster?.document === node.id && cluster.direction !== 'incoming';
+  const outgoing =
+    cluster?.document === node.id && (!cluster.direction || cluster.direction === 'outgoing');
   const incoming = cluster?.document === node.id && cluster.direction === 'incoming';
   const category = Boolean(module && cluster?.category === module.id);
   const tags = node.tags || [];

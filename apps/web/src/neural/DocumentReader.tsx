@@ -24,6 +24,8 @@ export function DocumentReader({
   onClose,
   onPreview,
   onResize,
+  mobileListOpen,
+  onToggleMobileList,
   reduced,
   readingLocation,
   onReadingScroll,
@@ -167,6 +169,14 @@ export function DocumentReader({
           </div>
         </div>
         <div className="read-actions">
+          <button
+            className="icon-btn mobile-reading-list-toggle"
+            aria-label={mobileListOpen ? '返回正文' : '打开阅读列表'}
+            aria-expanded={Boolean(mobileListOpen)}
+            onClick={onToggleMobileList}
+          >
+            <Icon name={mobileListOpen ? 'close' : 'list'} size={18} />
+          </button>
           {stateControl}
           {queue && <ReadingQueueButton queue={queue} node={node} className="icon-btn" />}
           <button
@@ -224,6 +234,14 @@ export function DocumentReader({
         <div className="reader-navigation-row">
           <ReaderRelations {...relations} section="tags" />
           <div className="reader-disclosures">
+            {Boolean(node.readingSuggestions?.length) && (
+              <button
+                type="button"
+                onClick={() => onCluster({ document: node.id, direction: 'suggested' })}
+              >
+                建议阅读 <span>{node.readingSuggestions!.length}</span>
+              </button>
+            )}
             {node.toc.length > 0 && (
               <button
                 type="button"

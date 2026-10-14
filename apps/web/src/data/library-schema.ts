@@ -51,6 +51,8 @@ const document = object<LibraryDocument>({
   body: string,
   summary: string,
   parentTarget: nullable(string),
+  readingSuggestionTargets: optional(array(string)),
+  readingSuggestions: optional(array(string)),
   html: string,
   toc: array(heading),
   references: array(reference),

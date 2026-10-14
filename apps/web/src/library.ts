@@ -67,7 +67,15 @@ export function parseDocument(raw: string, file: string): ParsedDocument {
     throw new Error(`文档 ${file} 的 learning_status 必须是 pending 或 understood`);
   if (collection === 'readings' && meta.read !== undefined && typeof meta.read !== 'boolean')
     throw new Error(`文档 ${file} 的 read 必须是布尔值`);
+  if (
+    meta.reading_suggestions != null &&
+    (!Array.isArray(meta.reading_suggestions) ||
+      meta.reading_suggestions.some((item) => typeof item !== 'string' || !item.trim()))
+  )
+    throw new Error(`文档 ${file} 的 reading_suggestions 必须是非空文本组成的数组`);
   return {
+    readingSuggestionTargets:
+      (meta.reading_suggestions as string[] | null)?.map((item) => item.trim()) || [],
     state:
       collection === 'notes'
         ? meta.learning_status === 'understood'
@@ -364,7 +372,24 @@ export function renderDocument(
     }
   }
   const html = Parser.parse(Lexer.lex(doc.body, options), options);
-  return { ...doc, html, toc, references, issues, parent };
+  const readingSuggestions: string[] = [];
+  for (const target of doc.readingSuggestionTargets || []) {
+    const parts = parentParts(target);
+    const result = parts && resolveDocument(parts.target.split('#')[0], documents, doc);
+    const dest = result && result.doc;
+    const reason = !parts
+      ? '阅读建议格式无效'
+      : !dest
+        ? result!.error || '阅读建议目标不存在'
+        : dest.id === doc.id
+          ? '阅读建议不能指向自身'
+          : !references.some((ref) => ref.kind !== 'parent' && ref.id === dest.id)
+            ? '阅读建议目标未出现在正文内部链接中'
+            : null;
+    if (reason) issues.push({ target, reason });
+    else if (dest && !readingSuggestions.includes(dest.id)) readingSuggestions.push(dest.id);
+  }
+  return { ...doc, html, toc, references, issues, parent, readingSuggestions };
 }
 async function libraryFiles(root: string) {
   return (await Promise.all(CONTENT_COLLECTIONS.map((dir) => walk(root, dir)))).flat().sort();

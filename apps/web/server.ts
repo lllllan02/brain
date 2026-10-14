@@ -22,6 +22,7 @@ export async function startServer({
   host = process.env.HOST || '0.0.0.0',
   optimizeDependencies = true,
   development = false,
+  rebuild = false,
 } = {}) {
   let queue: Promise<unknown> = Promise.resolve();
   const serialize = <T>(task: () => Promise<T>): Promise<T> => {
@@ -132,7 +133,7 @@ export async function startServer({
       );
     }
   });
-  const reader = development ? null : await createReaderFrontend(dir);
+  const reader = development ? null : await createReaderFrontend(dir, { rebuild });
   const vite = !development
     ? null
     : await createViteServer({
@@ -155,6 +156,7 @@ export async function startServer({
   });
   return {
     server,
+    frontendCacheHit: reader?.cacheHit ?? false,
     async close() {
       await vite?.close();
       if (server.listening)
@@ -168,8 +170,16 @@ export async function startServer({
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const development = process.argv.includes('--dev');
-  if (!development) console.log('正在构建稳定阅读页面…');
-  const { server, close } = await startServer({ development });
+  const started = performance.now();
+  if (!development) console.log('正在准备稳定阅读页面…');
+  const { server, close, frontendCacheHit } = await startServer({
+    development,
+    rebuild: process.argv.includes('--rebuild'),
+  });
+  if (!development)
+    console.log(
+      `${frontendCacheHit ? '已复用前端缓存' : '前端构建完成'} · ${((performance.now() - started) / 1000).toFixed(2)} 秒`,
+    );
   for (const signal of ['SIGINT', 'SIGTERM'] as const)
     process.once(signal, () => {
       void close().then(() => process.exit(0));

@@ -51,7 +51,7 @@ export interface Cluster {
   category?: string;
   tag?: string;
   document?: string;
-  direction?: 'incoming' | 'outgoing';
+  direction?: 'incoming' | 'outgoing' | 'suggested';
   recent?: { id: string }[];
   latest?: { id: string }[];
   queue?: { id: string }[];

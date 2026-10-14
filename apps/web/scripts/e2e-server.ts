@@ -18,6 +18,7 @@ await writeFile(
 title: 回归起点
 category: 验收
 aliases: [自动化入口]
+reading_suggestions: [second]
 tags: [回归]
 ---
 # 回归起点

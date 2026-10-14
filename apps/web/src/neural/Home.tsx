@@ -1,4 +1,4 @@
-import { documentFilters, stateLabel } from '../document-state.ts';
+import { stateLabel } from '../document-state.ts';
 import { useReadingFlight } from './useReadingFlight.ts';
 import { useReaderLayout } from './useReaderLayout.ts';
 import { GalaxyLabels } from './GalaxyLabels.tsx';
@@ -59,21 +59,20 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
     null,
     validPinnedList,
   );
-  const [collectionFilter, setCollectionFilter] = useViewState(
-    'listCollectionFilter',
-    'all',
-    (value): value is string =>
-      typeof value === 'string' && documentFilters.some(([id]) => id === value),
-  );
+  const collectionFilter = 'all';
   const [clusterVisible, setClusterVisible] = useState(false);
+  const [mobileListOpen, setMobileListOpen] = useState(false);
+  useEffect(() => {
+    setMobileListOpen(false);
+  }, [focus.sel]);
   const [historyOpen, setHistoryOpen] = useViewState('historyOpen', false);
   const historyToggle = useRef<HTMLButtonElement>(null),
     latestToggle = useRef<HTMLButtonElement>(null);
   const [latestOpen, setLatestOpen] = useViewState('latestOpen', false);
-  const [relationMode, setRelationMode] = useViewState<'incoming' | 'outgoing'>(
+  const [relationMode, setRelationMode] = useViewState<'incoming' | 'outgoing' | 'suggested'>(
     'relationMode',
-    'outgoing',
-    (value): value is 'incoming' | 'outgoing' => value === 'incoming' || value === 'outgoing',
+    'suggested',
+    (value): value is 'incoming' | 'outgoing' | 'suggested' => value === 'suggested',
   );
   const queue = useReadingQueue();
   // Always enter through the galaxy; a previous dashboard visit is not a landing preference.
@@ -143,7 +142,10 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
   // Group filters belong to their owner; reference direction follows document navigation.
   const activeCluster = useMemo<Cluster | null>(() => {
     if (!focus.sel || timelineOpen) return null;
-    if (readerCluster?.owner === focus.sel) return readerCluster.value;
+    if (readerCluster?.owner === focus.sel) {
+      const value = readerCluster.value;
+      return value?.document ? { ...value, direction: 'suggested' } : value;
+    }
     return { document: focus.sel, direction: relationMode };
   }, [focus.sel, readerCluster, timelineOpen, relationMode]);
   const displayedCluster = useMemo(
@@ -278,6 +280,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
     if (!focus.sel) setReaderCluster(null);
   }, [focus.sel]);
   const showReaderCluster = (cluster: Cluster | null) => {
+    setMobileListOpen(Boolean(cluster));
     setPinnedList(null);
     setHistoryOpen(false);
     setLatestOpen(false);
@@ -312,6 +315,11 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
         searchInput.current?.focus();
       }
       if (event.key === 'Escape') {
+        if (mobileListOpen && window.matchMedia('(max-width: 900px)').matches) {
+          event.preventDefault();
+          setMobileListOpen(false);
+          return;
+        }
         if (searchVisible) {
           event.preventDefault();
           setSearchOpen(false);
@@ -341,7 +349,17 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
     };
     window.addEventListener('keydown', key);
     return () => window.removeEventListener('keydown', key);
-  }, [focus, query, searchVisible, setFocus, historyOpen, latestOpen, queueOpen, workbenchVisible]);
+  }, [
+    focus,
+    query,
+    searchVisible,
+    setFocus,
+    historyOpen,
+    latestOpen,
+    queueOpen,
+    workbenchVisible,
+    mobileListOpen,
+  ]);
   const reset = () => {
     setQuery('');
     setSearchOpen(false);
@@ -371,7 +389,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
   };
   return (
     <section
-      className={`galaxy-page ${workbenchVisible ? 'workbench-visible' : ''} ${node || shownNode ? 'galaxy-reading' : ''} ${displayedCluster || clusterVisible ? 'galaxy-browsing' : ''} ${timelineOpen ? 'galaxy-history-open' : ''} ${flight ? (revealedFlight === flight.key ? 'galaxy-handoff-revealing' : 'galaxy-handoff') : ''}`}
+      className={`galaxy-page ${mobileListOpen ? 'mobile-list-open' : ''} ${workbenchVisible ? 'workbench-visible' : ''} ${node || shownNode ? 'galaxy-reading' : ''} ${displayedCluster || clusterVisible ? 'galaxy-browsing' : ''} ${timelineOpen ? 'galaxy-history-open' : ''} ${flight ? (revealedFlight === flight.key ? 'galaxy-handoff-revealing' : 'galaxy-handoff') : ''}`}
       aria-label={CONFIG.brand.name}
       data-home-return={!node?.module && !displayedCluster}
       data-reader-open={Boolean(node?.module)}
@@ -636,14 +654,9 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
         queue={queue}
         navigation={
           <ListNavigation
-            collectionFilter={collectionFilter}
-            onFilter={setCollectionFilter}
             graph={graph}
             node={pinnedList?.document ? graph.index.get(pinnedList.document) : node}
             cluster={displayedCluster}
-            queueRef={queueToggle}
-            historyRef={historyToggle}
-            latestRef={latestToggle}
             onChoose={(mode) => {
               const activeMode = displayedCluster?.queue
                 ? 'queue'
@@ -659,7 +672,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
               setHistoryOpen(mode === 'recent');
               setLatestOpen(mode === 'latest');
               setQueueOpen(mode === 'queue');
-              if (mode === 'outgoing' || mode === 'incoming') {
+              if (mode === 'outgoing' || mode === 'incoming' || mode === 'suggested') {
                 setRelationMode(mode);
                 showReaderCluster({ document: node!.id, direction: mode });
               }
@@ -688,12 +701,16 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
             });
         }}
         onPresenceChange={setClusterVisible}
-        onSelect={(id, card) => selectWithFlight(id, card, () => go(id, !timelineOpen))}
+        onSelect={(id, card) => {
+          setMobileListOpen(false);
+          selectWithFlight(id, card, () => go(id, !timelineOpen));
+        }}
         onClear={() => {
           setPinnedList(null);
           reading.clear();
         }}
         onClose={() => {
+          setMobileListOpen(false);
           setPinnedList(null);
           queueOpen
             ? closeQueue()
@@ -712,6 +729,15 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
         >
           <ReaderTransition documentId={shownNode.id} reduced={reduced}>
             <DocumentReader
+              mobileListOpen={mobileListOpen}
+              onToggleMobileList={() => {
+                if (!mobileListOpen && !displayedCluster)
+                  setReaderCluster({
+                    owner: focus.sel,
+                    value: { document: focus.sel!, direction: relationMode },
+                  });
+                setMobileListOpen((open) => !open);
+              }}
               queue={queue}
               stateAction={stateAction}
               navigation={

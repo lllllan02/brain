@@ -24,6 +24,8 @@ export interface DocumentReaderProps {
   onClose(): void;
   onPreview(id: string | null): void;
   onResize(): void;
+  mobileListOpen?: boolean;
+  onToggleMobileList?(): void;
   reduced: boolean;
   readingLocation: ReadingController['location'];
   onReadingScroll(key: string, top: number): void;
@@ -42,12 +44,7 @@ export interface ListNavigationProps {
   graph: ReaderGraph;
   node: ReaderNode | undefined;
   cluster: Cluster | null;
-  historyRef: RefObject<HTMLButtonElement | null>;
-  latestRef: RefObject<HTMLButtonElement | null>;
-  queueRef: RefObject<HTMLButtonElement | null>;
   onChoose(mode: string): void;
-  collectionFilter: string;
-  onFilter(value: string): void;
   documentCount?: number | null;
   totalCount?: number;
 }
