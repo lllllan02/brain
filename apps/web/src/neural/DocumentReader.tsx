@@ -15,6 +15,8 @@ import { ReaderSources } from './ReaderSources.tsx';
 import { copyDocumentMarkdown } from './document-sources.ts';
 import { useToolbarTitle } from './useToolbarTitle.ts';
 import { useReaderResize } from './useReaderResize.ts';
+import { useReaderFontScale, readerFontScales } from './useReaderFontScale.ts';
+import './reader-font.css';
 export function DocumentReader({
   graph,
   node,
@@ -36,6 +38,7 @@ export function DocumentReader({
   const ref = useRef<HTMLElement>(null);
   const [full, setFull] = useViewState('readerFull', false);
   const [copy, setCopy] = useState('');
+  const [fontScale, setFontScale] = useReaderFontScale();
   const [tocOpen, setTocOpen] = useViewState(`toc:${node.id}`, false);
   const [detailsOpen, setDetailsOpen] = useViewState(`details:${node.id}`, false);
   const [copying, setCopying] = useState(false);
@@ -150,7 +153,12 @@ export function DocumentReader({
     }
   };
   return (
-    <section className="analysis glass document-reader" data-document-id={node.id} ref={ref}>
+    <section
+      className="analysis glass document-reader"
+      data-document-id={node.id}
+      ref={ref}
+      style={{ '--reader-font-scale': fontScale / 100 } as React.CSSProperties}
+    >
       <div className="reader-toolbar">
         <div
           className={`reader-toolbar-heading${toolbarTitle ? ' shows-title' : ''}${reduced ? ' reduced-motion' : ''}`}
@@ -169,6 +177,19 @@ export function DocumentReader({
           </div>
         </div>
         <div className="read-actions">
+          <select
+            className="reader-font-select"
+            aria-label="文档字号"
+            title="调整文档字号"
+            value={fontScale}
+            onChange={(event) => setFontScale(Number(event.target.value))}
+          >
+            {readerFontScales.map((scale) => (
+              <option key={scale} value={scale}>
+                {scale === 100 ? '字号 100%' : `${scale}%`}
+              </option>
+            ))}
+          </select>
           <button
             className="icon-btn mobile-reading-list-toggle"
             aria-label={mobileListOpen ? '返回正文' : '打开阅读列表'}

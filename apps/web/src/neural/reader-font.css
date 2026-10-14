@@ -1,0 +1,17 @@
+.galaxy-page .reader-font-select { width: 84px; min-height: 30px; padding: 4px; border: 0; border-radius: 5px; background: var(--surface); color: var(--text-2); font: inherit; font-size: 11px; cursor: pointer; }
+.galaxy-page .reader-font-select:hover { background: var(--hover); color: var(--text); }
+.galaxy-page .reader-font-select:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.galaxy-page .document-reader .markdown { font-size: calc(13px * var(--reader-font-scale, 1)); }
+.galaxy-page .document-reader .markdown h1 { font-size: calc(23px * var(--reader-font-scale, 1)); }
+.galaxy-page .document-reader .markdown h2 { font-size: calc(18px * var(--reader-font-scale, 1)); }
+.galaxy-page .document-reader .markdown h3 { font-size: calc(15px * var(--reader-font-scale, 1)); }
+.galaxy-page .document-reader .markdown h4 { font-size: calc(14px * var(--reader-font-scale, 1)); }
+.galaxy-page .document-reader .markdown :is(table, pre) { font-size: calc(11px * var(--reader-font-scale, 1)); }
+.galaxy-page .document-reader .an-title-row h2 { font-size: calc(23px * var(--reader-font-scale, 1)); }
+@media (max-width: 900px) {
+  .galaxy-page.galaxy-reading .document-reader .markdown { font-size: calc(15px * var(--reader-font-scale, 1)); }
+  .galaxy-page .reader-font-select { min-height: 40px; }
+}
+@media (max-width: 760px) {
+  .galaxy-page .document-reader .an-title-row h2 { font-size: calc(21px * var(--reader-font-scale, 1)); }
+}
