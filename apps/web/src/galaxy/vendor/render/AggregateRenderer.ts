@@ -152,6 +152,7 @@ export class AggregateRenderer {
 	private colorFn: NodeColorFn = fallbackColorFn;
 	private tokens: VisualTokens = DEEP_SPACE;
 	private tierBloomAllowed = true;
+	private pixelRatioCap = 2;
 	private framingRegion: {width: number; height: number; left: number; top: number} | null = null;
 	private lastW = 2;
 	private lastH = 2;
@@ -1139,9 +1140,7 @@ export class AggregateRenderer {
 	/** 质量档位（M4）：pixelRatio / bloom 门控 / 星空密度 / 曲线段数 / 背景层预算 */
 	applyTier(tier: QualityTier, bloomStrengthFromSettings: number): void {
 		this.tierBloomAllowed = tier.bloomAllowed;
-		const pixelRatio = effectivePixelRatio(window.devicePixelRatio, tier.pixelRatioCap);
-		this.renderer.setPixelRatio(pixelRatio);
-		this.composer.setPixelRatio(pixelRatio);
+		this.pixelRatioCap = tier.pixelRatioCap;
 		this.bloomPass.enabled = this.tokens.bloomEnabled && this.tierBloomAllowed && bloomStrengthFromSettings > 0.001;
 		// 星空按档位密度重建（一次性，毫秒级）
 		const visible = this.starfield.visible;
@@ -1217,9 +1216,16 @@ export class AggregateRenderer {
 		if (w < 2 || h < 2) return;
 		this.lastW = w;
 		this.lastH = h;
+		const pixelRatio = effectivePixelRatio(window.devicePixelRatio, this.pixelRatioCap, w, h);
+		if (this.renderer.getPixelRatio() !== pixelRatio) {
+			this.renderer.setPixelRatio(pixelRatio);
+			this.composer.setPixelRatio(pixelRatio);
+		}
 		this.updateProjection();
 		this.renderer.setSize(w, h);
 		this.composer.setSize(w, h);
+		const maxPoint = this.nodeMaterial?.uniforms['uMaxPoint'];
+		if (maxPoint) maxPoint.value = 110 * pixelRatio;
 		this.bloomPass.resolution.set(w, h);
 	}
 

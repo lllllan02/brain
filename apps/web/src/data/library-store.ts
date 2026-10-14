@@ -54,11 +54,12 @@ export function createLibraryStore(transport: Transport) {
       const next = await transport.fetch(controller.signal);
       if (!active || epoch !== generation || ticket !== revision) return;
       const old = snapshot.library;
+      if (old === next && snapshot.status === 'ready' && !snapshot.error) return;
       const unchanged =
         old?.version === next.version &&
         old.activity?.version === next.activity?.version &&
         JSON.stringify(old.activity) === JSON.stringify(next.activity);
-      const previous = new Map(old?.documents.map((doc) => [doc.id, doc]));
+      const previous = new Map(unchanged ? [] : old?.documents.map((doc) => [doc.id, doc]));
       const library = !old
         ? next
         : unchanged

@@ -476,6 +476,9 @@ export function createGalaxy(
     else camera.resetView(b.center, b.radius);
   }
   function applyFocus(move = false) {
+    // A sleeping, covered scene still needs one fresh projection after navigation
+    // or a document-state update, before it can go idle again.
+    readerLayoutDirty = true;
     focus = galaxyFocus(data, selected, category, tag);
     localReading =
       expanded && readingIndex >= 0
@@ -783,6 +786,23 @@ export function createGalaxy(
       previous = 0;
       return;
     }
+    // Reading does not need a full-rate animated backdrop. Keep transitions
+    // responsive and avoid running at 120/144 Hz on high-refresh displays.
+    const readingIdle =
+      readingIndex >= 0 &&
+      ready &&
+      !transition &&
+      !renderer.revealing &&
+      !framingTween &&
+      !camera.transitioning;
+    // The mobile article fully covers the canvas. Finish entry/data/layout work
+    // before sleeping; closing or navigating makes this condition false again.
+    if (readingIdle && width <= 900 && !queuedGraph && !readerLayoutDirty) {
+      previous = 0;
+      return;
+    }
+    const interval = 1000 / (readingIdle ? 30 : 60);
+    if (previous && now - previous < interval - 0.5) return;
     if (queuedGraph && ready && !transition && !renderer.revealing) updateGraph(queuedGraph);
     const dt = previous ? Math.min((now - previous) / 1000, MOTION.maxFrame / 1000) : 0;
     previous = now;

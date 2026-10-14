@@ -20,8 +20,9 @@ export interface QualityTier {
 }
 
 /** 同一档位下 WebGL 主渲染与后处理链共用的有效设备像素比。 */
-export function effectivePixelRatio(devicePixelRatio: number, cap: number): number {
-	return Math.min(devicePixelRatio, cap);
+export function effectivePixelRatio(devicePixelRatio: number, cap: number, width = 1, height = 1): number {
+	// Bound every full-screen postprocessing target, including on Retina/4K displays.
+	return Math.min(devicePixelRatio, cap, Math.sqrt(3_000_000 / Math.max(1, width * height)));
 }
 
 export const TIERS: Record<TierId, QualityTier> = {

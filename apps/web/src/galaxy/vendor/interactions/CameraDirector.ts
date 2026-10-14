@@ -115,6 +115,10 @@ export class CameraDirector {
 		return this.controls.target;
 	}
 
+	get transitioning(): boolean {
+		return this.tween !== null || this.path !== null;
+	}
+
 	private markInput(): void {
 		this.idleMs = 0;
 		this.cruiseAnchor = null;

@@ -67,3 +67,26 @@ test('读取与状态写回均拒绝不符合文档契约的成功响应', async
   await assert.rejects(api.fetchLibrary(),/文档数据格式无效/);
   await assert.rejects(api.updateDocumentState('broken','understood','v1'),/文档数据格式无效/);
 });
+
+test('未变化的轮询不读取 JSON，复用已验证对象；写回后重新验证', async t => {
+  let calls = 0, parsed = 0;
+  const api = await client(t, { fetch: async (_url, options) => {
+    calls++;
+    if (calls === 2) {
+      assert.equal(options.headers['If-None-Match'], '"v1"');
+      assert.equal(options.cache, 'no-store');
+      return { status: 304, json: () => { throw Error('不得解析 304'); } };
+    }
+    if (calls === 4) assert.equal(options.headers, undefined);
+    return { ok: true, headers: new Headers({ ETag: '"v1"' }), json: async () => {
+      parsed++;
+      return { documents: [], version: calls < 3 ? 'v1' : 'v2' };
+    } };
+  } });
+  const first = await api.fetchLibrary();
+  assert.equal(await api.fetchLibrary(), first);
+  assert.equal(parsed, 1);
+  await api.updateDocumentState('note', 'understood', 'v1');
+  assert.equal((await api.fetchLibrary()).version, 'v2');
+  assert.equal(parsed, 3);
+});

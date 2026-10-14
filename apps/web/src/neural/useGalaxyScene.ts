@@ -1,12 +1,8 @@
+import { createSceneOverlay } from './scene-overlay.ts';
 import { useLayoutEffect, useRef, useState, type RefObject } from 'react';
-import type { createGalaxy, GalaxyLabel } from '../galaxy/scene.ts';
+import type { createGalaxy } from '../galaxy/scene.ts';
 import type { Focus, ReaderGraph } from '../types/graph.ts';
-import type {
-  Cluster,
-  ReadingTrail as ReadingTrailData,
-  TrailProjection,
-  EnterTimeline,
-} from '../types/reading.ts';
+import type { Cluster, ReadingTrail as ReadingTrailData, EnterTimeline } from '../types/reading.ts';
 import type { useReadingHistory } from './useReadingHistory.ts';
 import { MOTION } from '../motion/tokens.ts';
 export interface GalaxyBindings {
@@ -45,16 +41,15 @@ export function useGalaxyScene({
   const latestGraph = useRef(graph);
   latestGraph.current = graph;
   const [branchesReady, setBranchesReady] = useState(false);
-  const [labels, setLabels] = useState<GalaxyLabel[]>([]);
+  const [overlay] = useState(createSceneOverlay);
   const [ready, setReady] = useState(false),
     [error, setError] = useState('');
-  const [trailProjection, setTrailProjection] = useState<TrailProjection>({ nodes: [], edges: [] });
   useLayoutEffect(() => {
     // The dashboard needs no WebGL scene. Dispose it on entry and create it
     // only for the galaxy/reader; pause() stops motion, not rendering.
     setReady(false);
     setBranchesReady(false);
-    setLabels([]);
+    overlay.clear();
     readerTimeline.current.progress = 0;
     if (readerTimeline.current.animation) readerTimeline.current.animation.currentTime = 0;
     if (workbenchVisible) return;
@@ -69,10 +64,10 @@ export function useGalaxyScene({
           latestGraph.current,
           {
             onLabels: (next) => {
-              if (active) setLabels(next);
+              if (active) overlay.setLabels(next);
             },
             onTrail: (next) => {
-              if (active) setTrailProjection(next);
+              if (active) overlay.setTrail(next);
             },
             onReady: (value) => {
               if (active) setReady(value);
@@ -149,5 +144,5 @@ export function useGalaxyScene({
     scene.current?.updateGraph(graph);
   }, [graph]);
 
-  return { ready, branchesReady, labels, error, trailProjection };
+  return { ready, branchesReady, overlay, error };
 }

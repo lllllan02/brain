@@ -1,7 +1,7 @@
 import { stateLabel } from '../document-state.ts';
 import { useReadingFlight } from './useReadingFlight.ts';
 import { useReaderLayout } from './useReaderLayout.ts';
-import { GalaxyLabels } from './GalaxyLabels.tsx';
+import { GalaxyOverlay } from './GalaxyOverlay.tsx';
 import type { HomeProps } from '../types/ui.ts';
 import type { ReaderCluster } from '../types/reading.ts';
 import type { createGalaxy } from '../galaxy/scene.ts';
@@ -21,7 +21,7 @@ import { DocumentReader } from './DocumentReader.tsx';
 import { ListNavigation } from './ListNavigation.tsx';
 import { ClusterList, clusterDocuments } from './ClusterList.tsx';
 import { Icon } from './icons.tsx';
-import { ReadingNavigation, ReadingTrail } from './ReadingHistory.tsx';
+import { ReadingNavigation } from './ReadingHistory.tsx';
 import { latestDocuments, documentHighlight } from './latest-documents.ts';
 import { activeReadingTrail, readingTrail, readingDirection } from './reading-history.ts';
 import { usePresence } from '../motion/usePresence.ts';
@@ -78,7 +78,7 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
   // Always enter through the galaxy; a previous dashboard visit is not a landing preference.
   const [homeMode, setHomeMode] = useState('galaxy');
   const workbenchVisible = homeMode === 'workbench' && !focus.sel && !focus.mod;
-  const { ready, branchesReady, labels, error, trailProjection } = useGalaxyScene({
+  const { ready, branchesReady, overlay, error } = useGalaxyScene({
     graph,
     workbenchVisible,
     host,
@@ -421,22 +421,18 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
       <Workbench graph={graph} hidden={!workbenchVisible} reading={reading} queue={queue} />
       <div className={`galaxy-viewport ${!ready || error ? 'is-loading' : ''}`} ref={host}>
         <div className="galaxy-frame" aria-hidden="true" />
-        {(historyOpen || trail?.live) && (
-          <ReadingTrail
-            projection={trailProjection}
-            route={flight && trail?.live ? { ...trail, segments: [] } : trail}
-            reduced={reduced}
-            hidden={workbenchVisible || !ready || Boolean(error)}
-          />
-        )}
-        <GalaxyLabels
-          labels={labels}
-          ready={ready && !error}
-          scene={scene}
-          focus={focus}
-          reading={reading}
-          setFocus={setFocus}
-          setReaderCluster={setReaderCluster}
+        <GalaxyOverlay
+          store={overlay}
+          trailProps={
+            historyOpen || trail?.live
+              ? {
+                  route: flight && trail?.live ? { ...trail, segments: [] } : trail,
+                  reduced,
+                  hidden: workbenchVisible || !ready || Boolean(error),
+                }
+              : null
+          }
+          labelProps={{ ready: ready && !error, scene, focus, reading, setFocus, setReaderCluster }}
         />
       </div>
       <header className="galaxy-header">
