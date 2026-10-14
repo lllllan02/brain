@@ -1,6 +1,6 @@
 import { e2ePort } from './e2e-settings.ts';
 // The browser suite serves only these disposable notes, never the private knowledge base.
-import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
+import { mkdtemp, mkdir, writeFile, rm, copyFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -23,6 +23,8 @@ tags: [回归]
 ---
 # 回归起点
 这是独立测试正文。继续阅读 [[second|回归终点]]。
+
+[[assets/demo.go|完整代码]] · [[assets/missing.go|缺失代码]]
 
 \`\`\`mermaid
 flowchart LR
@@ -62,9 +64,19 @@ category: 验收
 终点正文。返回 [[first|回归起点]]。
 `,
 );
+await mkdir(path.join(root, 'assets'));
+await writeFile(
+  path.join(root, 'assets/demo.go'),
+  'package main\n// <script>window.codeExecuted = true</script>\nfunc main() {}\n',
+);
 try {
   await build({ root: app, mode: 'pages', build: { outDir, emptyOutDir: true } });
-  const { library } = await pagesLibrary(root);
+  const { library, assets } = await pagesLibrary(root);
+  for (const [relative, file] of assets) {
+    const destination = path.join(outDir, 'documents', relative);
+    await mkdir(path.dirname(destination), { recursive: true });
+    await copyFile(file, destination);
+  }
   await writeFile(path.join(outDir, 'library.json'), JSON.stringify(library));
   const server = await preview({
     root: app,

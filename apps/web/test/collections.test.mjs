@@ -31,7 +31,7 @@ test('只改配置即可收录自定义目录、渲染图标、搜索及静态�
  await mkdir(path.join(root,'scripts'));
  await writeFile(path.join(root,'package.json'),'{"type":"module"}');
  await symlink(path.resolve('node_modules'),path.join(root,'node_modules'),'dir');
- for(const file of ['collections.ts','document-state.ts','library.ts','document-dates.ts','neural/search.ts']) await copyFile(path.resolve('src',file),path.join(root,'src',file));
+ for(const file of ['code-assets.ts','collections.ts','document-state.ts','library.ts','document-dates.ts','neural/search.ts']) await copyFile(path.resolve('src',file),path.join(root,'src',file));
  await copyFile(path.resolve('scripts/build-pages.ts'),path.join(root,'scripts/build-pages.ts'));
  await copyFile(path.resolve('document-states.config.json'),path.join(root,'document-states.config.json'));
  const config=JSON.parse(await readFile('collections.config.json','utf8'));

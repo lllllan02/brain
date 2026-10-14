@@ -1,3 +1,4 @@
+import { codeLanguage, CODE_ASSET_LIMIT } from './src/code-assets.ts';
 import type { Library } from './src/types/library.ts';
 import http from 'node:http';
 import { networkInterfaces } from 'node:os';
@@ -5,7 +6,7 @@ import { createHash } from 'node:crypto';
 import { CONFIG } from './src/config.ts';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { createServer as createViteServer } from 'vite';
 import { createReaderFrontend } from './src/reader-frontend.ts';
 import { createLibraryLoader, safeAsset } from './src/library.ts';
@@ -103,13 +104,21 @@ export async function startServer({
           url.searchParams.get('path') || '',
           url.searchParams.get('from') || '',
         );
-        const type = asset && mime[path.extname(asset.file).toLowerCase()];
+        const isCode = asset && codeLanguage(asset.path);
+        const type =
+          asset &&
+          (isCode ? 'text/plain; charset=utf-8' : mime[path.extname(asset.file).toLowerCase()]);
         if (!type) {
           res.writeHead(404, headers);
           return res.end('未找到');
         }
+        if (isCode && (await stat(asset!.file)).size > CODE_ASSET_LIMIT) {
+          res.writeHead(413, headers);
+          return res.end('代码附件超过 256 KiB');
+        }
         res.writeHead(200, {
           ...headers,
+          'X-Content-Type-Options': 'nosniff',
           'Content-Type': type,
           'Content-Security-Policy': "default-src 'none'; sandbox",
         });

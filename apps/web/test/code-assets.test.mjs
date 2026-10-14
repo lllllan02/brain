@@ -1,0 +1,38 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,mkdir,writeFile,rm,symlink} from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import {loadLibrary} from '../src/library.ts';
+import {pagesLibrary} from '../scripts/build-pages.ts';
+import {startServer} from '../server.ts';
+import {CODE_ASSET_LIMIT} from '../src/code-assets.ts';
+
+test('代码附件不产生知识节点，本地接口和静态导出保留文本与访问边界',async t=>{
+ const root=await mkdtemp(path.join(os.tmpdir(),'horizon-code-'));
+ t.after(()=>rm(root,{recursive:true,force:true}));
+ for(const dir of ['notes','assets'])await mkdir(path.join(root,dir));
+ const code='<script>alert(1)</script>\n';
+ await writeFile(path.join(root,'assets/demo.html'),code);
+ await writeFile(path.join(root,'assets/large.go'),'x'.repeat(CODE_ASSET_LIMIT+1));
+ await writeFile(path.join(root,'private.go'),'private');
+ await symlink(path.join(root,'private.go'),path.join(root,'assets/escape.go'));
+ await writeFile(path.join(root,'notes/a.md'),'[[assets/demo.html|完整代码]] [代码](../assets/demo.html) [[assets/escape.go]] [[assets/missing.go]] [[assets/large.go]]');
+ const local=await loadLibrary(root);
+ assert.equal(local.documents.length,1);
+ assert.equal(local.documents[0].references.length,0);
+ assert.match(local.documents[0].html,/class="wiki-link code-asset-link"/);
+ assert.match(local.documents[0].html,/data-code-language="xml"/);
+ const exported=await pagesLibrary(root);
+ assert.deepEqual([...exported.assets.keys()],['assets/demo.html.txt']);
+ assert.match(exported.library.documents[0].html,/href="\.\/documents\/assets\/demo.html.txt"/);
+ assert.doesNotMatch(exported.library.documents[0].html,/\/api\/asset/);
+ const app=await startServer({root,port:0,optimizeDependencies:false,development:true});t.after(()=>app.close());
+ const base=`http://127.0.0.1:${app.server.address().port}/api/asset?path=`;
+ const response=await fetch(base+encodeURIComponent('assets/demo.html'));
+ assert.equal(response.status,200);assert.equal(await response.text(),code);
+ assert.match(response.headers.get('content-type'),/^text\/plain/);
+ assert.equal(response.headers.get('x-content-type-options'),'nosniff');
+ for(const file of ['private.go','assets/escape.go','assets/missing.go','../../private.go'])assert.equal((await fetch(base+encodeURIComponent(file))).status,404,file);
+ assert.equal((await fetch(base+'assets/large.go')).status,413);
+});

@@ -1,6 +1,7 @@
+import { codeLanguage, CODE_ASSET_LIMIT } from '../src/code-assets.ts';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { mkdir, writeFile, copyFile } from 'node:fs/promises';
+import { mkdir, writeFile, copyFile, stat } from 'node:fs/promises';
 import { build } from 'vite';
 import { loadLibrary, safeAsset } from '../src/library.ts';
 const app = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -17,9 +18,14 @@ export async function pagesLibrary(root: string, { includeActivity = false } = {
     for (const [, url] of urls) {
       const parsed = new URL(url.replaceAll('&amp;', '&'), 'http://local');
       const asset = await safeAsset(root, parsed.searchParams.get('path') || '', doc.path);
-      if (asset && /\.(png|jpe?g|gif|webp|pdf|mp3|mp4)$/i.test(asset.path)) {
-        assets.set(asset.path, asset.file);
-        const href = './documents/' + asset.path.split('/').map(encodeURIComponent).join('/');
+      if (
+        asset &&
+        (/\.(png|jpe?g|gif|webp|pdf|mp3|mp4)$/i.test(asset.path) ||
+          (codeLanguage(asset.path) && (await stat(asset.file)).size <= CODE_ASSET_LIMIT))
+      ) {
+        const exportedPath = codeLanguage(asset.path) ? asset.path + '.txt' : asset.path;
+        assets.set(exportedPath, asset.file);
+        const href = './documents/' + exportedPath.split('/').map(encodeURIComponent).join('/');
         doc.html = doc.html.replaceAll(url, href);
       } else {
         doc.html = doc.html.replaceAll(url, '#');

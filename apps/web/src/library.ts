@@ -1,3 +1,4 @@
+import { codeLanguage } from './code-assets.ts';
 import type { marked } from 'marked';
 type MarkedOptions = marked.MarkedOptions;
 interface WikiToken {
@@ -278,6 +279,12 @@ export function renderDocument(
       ? `<span class="embed-card">${link}<span>${escape(dest.summary)}</span></span>`
       : link;
   };
+  const codeLink = (target: string, label: string) => {
+    const language = codeLanguage(target);
+    if (!language) return null;
+    const url = `/api/asset?path=${encodeURIComponent(target)}&from=${encodeURIComponent(doc.path)}`;
+    return `<a class="wiki-link code-asset-link" href="${escape(url)}" data-code-language="${language}" data-code-name="${escape(target.split('/').pop() || target)}">${escape(label)}</a>`;
+  };
   const config = {
     extensions: [
       {
@@ -290,6 +297,8 @@ export function renderDocument(
         },
         renderer(token: WikiToken) {
           const [target, label] = token.value.replaceAll('\\|', '|').split('|');
+          const code = codeLink(target, label || target);
+          if (code) return code;
           if (/\.(png|jpe?g|gif|webp|svg|pdf|mp3|mp4)$/i.test(target)) {
             const url = `/api/asset?path=${encodeURIComponent(target)}&from=${encodeURIComponent(doc.path)}`;
             return token.embed && /\.(png|jpe?g|gif|webp)$/i.test(target)
@@ -325,6 +334,8 @@ export function renderDocument(
       link(href: string, _title: string | null, text: string) {
         if (/^(https?:|mailto:)/i.test(href))
           return `<a href="${escape(href)}" target="_blank" rel="noopener noreferrer">${text} ↗</a>`;
+        const code = codeLink(href, text.replace(/<[^>]*>/g, ''));
+        if (code) return code;
         if (href.startsWith('#'))
           return `<a href="#/doc/${encodeURIComponent(doc.id)}/${encodeURIComponent(slug(decodeURIComponent(href.slice(1))))}">${text}</a>`;
         if (/^[a-z][a-z0-9+.-]*:/i.test(href) || href.startsWith('//'))

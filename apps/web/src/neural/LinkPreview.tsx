@@ -83,7 +83,9 @@ export const LinkPreview = memo(function LinkPreview({
     const contains = (parent: Node | null | undefined, target: EventTarget | null) =>
       target instanceof Node && parent?.contains(target);
     const inPreview = (target: EventTarget | null) =>
-      contains(cardRef.current, target) || contains(actionRef.current, target);
+      contains(cardRef.current, target) ||
+      contains(actionRef.current, target) ||
+      (target instanceof Element && Boolean(target.closest('.code-asset-preview')));
     const find = (target: EventTarget | null) =>
       target instanceof Element
         ? target.closest<HTMLElement>('.markdown a[href], .read-relation[data-preview-href]')
@@ -189,6 +191,7 @@ export const LinkPreview = memo(function LinkPreview({
       if (!inPreview(event.target)) close();
     };
     const click = (event: MouseEvent) => {
+      if ((event.target as Element).closest('.code-asset-preview, .code-asset-link')) return;
       if (contains(actionRef.current, event.target)) return;
       if ((event.target as Element).closest<HTMLElement>('.link-preview-close') && active) {
         suppressed = active.element;

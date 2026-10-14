@@ -1,3 +1,4 @@
+import { CodeAssetPreview } from './CodeAssetPreview.tsx';
 import React, { memo, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { type ViewerImage, ImageViewer, imageForViewer } from './ImageViewer.tsx';
 import { renderDiagrams } from './diagrams.ts';
@@ -54,6 +55,7 @@ export const MarkdownArticle = memo(function MarkdownArticle({
   return (
     <>
       <article className="markdown" ref={ref} onClick={open} onKeyDown={open} />
+      <CodeAssetPreview root={ref} html={html} />
       {image && <ImageViewer image={image} onClose={() => setImage(null)} />}
     </>
   );
