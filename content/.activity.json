@@ -126,7 +126,7 @@
       "title": "Agent 评分器与模型裁判校准",
       "collection": "notes",
       "state": "pending",
-      "digest": "e63eec67ed9f7c488c37025967a6ccec2cecabc6eb7e0d6f3f90a9194f0f4f94"
+      "digest": "4f45bb519552a7efb2bd52d958555d45a50098acf4bbebdd59c8131b45a798aa"
     },
     "agent-evaluation-harness": {
       "title": "Agent 评测运行系统（Evaluation Harness）",
@@ -204,7 +204,7 @@
       "title": "Agent 意图识别",
       "collection": "notes",
       "state": "pending",
-      "digest": "3847c7a5ab8abbfd72c019accdabe675e0d3041427d868e753999ef488b40786"
+      "digest": "4ee949777b2d2b14188821c2eb13cc265dbc4dbfca68214a54b5d1af8cd45556"
     },
     "agent-loading": {
       "title": "Agent 中哪些内容可以按需加载？",
@@ -631,6 +631,12 @@
       "collection": "notes",
       "state": "pending",
       "digest": "78cb69ba0adaa2c8a8da9170ad2b608815fe2fb306a3d5682b05730c0a5827a1"
+    },
+    "data-annotation": {
+      "title": "数据标注",
+      "collection": "notes",
+      "state": "pending",
+      "digest": "5e4803ae0819162989087f8a8944dfd0b3453d3b4f6518e5e762979d2549bf59"
     },
     "database-index": {
       "title": "索引（Index）",
@@ -1061,14 +1067,14 @@
     "intent-rules": {
       "title": "用规则实现意图识别",
       "collection": "notes",
-      "state": "pending",
-      "digest": "9f4cb60f8fc9dea05248dede33cd1f4fe5597231e2f64649b0aac1358c5fa52e"
+      "state": "understood",
+      "digest": "be5d2cf3c43c8b081d9bd076bac2663ebe3b8a8b66a92e29053cc8e58c492b88"
     },
     "intent-text-classifier": {
       "title": "用文本分类器实现意图识别",
       "collection": "notes",
       "state": "pending",
-      "digest": "ff55ed537f74461cb9a926e9e7466224ad9d3d341f3f1e5d4b40400114f9cc00"
+      "digest": "69df899512863c838a9e663f99f6da102733efdb98043dec331f643a7876d28b"
     },
     "kafka-event-model": {
       "title": "Kafka 事件与记录",
@@ -2360,6 +2366,12 @@
       "state": "unread",
       "digest": "52a856e6008d966359c15fed90008eebad5882db5512ecb70a4a82177539b7c8"
     },
+    "aws-data-labeling": {
+      "title": "AWS：数据标注怎样形成训练依据",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "c37b0ffa34c167dac0bc007b6a44d981a3e211ed101da27d80af97719c11498b"
+    },
     "aws-idempotent-retries-summary": {
       "title": "AWS：用幂等 API 保证重试安全",
       "collection": "readings",
@@ -2381,7 +2393,7 @@
     "azure-clu-intent-design": {
       "title": "Azure CLU：类别设计、None 意图与评估口径",
       "collection": "readings",
-      "state": "unread",
+      "state": "read",
       "digest": "008a1ed7775ceb6135accb2045a453817d8910ccae166a0d2fa500e7bcb666a5"
     },
     "azure-rag-chunking": {
@@ -2689,6 +2701,12 @@
       "collection": "readings",
       "state": "unread",
       "digest": "9fa403bb955c92065ef117d84f889c8ee7d734b603fe6fd821b53f988a8af8d2"
+    },
+    "instructgpt-human-feedback": {
+      "title": "InstructGPT：示范答案与偏好标注怎样用于训练",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "b99a6956a71989b86ea590ff0d84c5ba7afb776762bb4250151eea834f237f5f"
     },
     "intent-production-testing": {
       "title": "Lex、Dialogflow 与 Rasa：对话测试和发布检查",
@@ -22728,6 +22746,158 @@
       ],
       "source": "observed",
       "docId": "agent-intent"
+    },
+    {
+      "id": "acb257d9-7690-4982-bb1d-4202cf946ad6",
+      "kind": "state-changed",
+      "entity": "doc:azure-clu-intent-design",
+      "title": "Azure CLU：类别设计、None 意图与评估口径",
+      "time": "2026-10-14T00:33:45.218Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "azure-clu-intent-design",
+      "from": "unread",
+      "to": "read"
+    },
+    {
+      "id": "3c2a091d-fc0d-4dce-ad9a-dd4b638872d7",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation-graders",
+      "title": "Agent 评分器与模型裁判校准",
+      "time": "2026-10-14T00:37:43.963Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation-graders"
+    },
+    {
+      "id": "2b6d14ec-ad24-409c-bce8-e2f854cb36fa",
+      "kind": "created",
+      "entity": "doc:data-annotation",
+      "title": "数据标注",
+      "time": "2026-10-14T00:37:43.963Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "data-annotation"
+    },
+    {
+      "id": "0a4f64e2-dcc2-4c4f-8a1f-08d4678a71c9",
+      "kind": "updated",
+      "entity": "doc:intent-text-classifier",
+      "title": "用文本分类器实现意图识别",
+      "time": "2026-10-14T00:37:43.963Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-text-classifier"
+    },
+    {
+      "id": "eb90a82e-f7c5-457e-b368-fe25eb542425",
+      "kind": "created",
+      "entity": "doc:aws-data-labeling",
+      "title": "AWS：数据标注怎样形成训练依据",
+      "time": "2026-10-14T00:37:43.963Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "aws-data-labeling"
+    },
+    {
+      "id": "670e8339-e32a-454f-bc06-857b4d5eb798",
+      "kind": "created",
+      "entity": "doc:instructgpt-human-feedback",
+      "title": "InstructGPT：示范答案与偏好标注怎样用于训练",
+      "time": "2026-10-14T00:37:43.963Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "instructgpt-human-feedback"
+    },
+    {
+      "id": "163befa1-57a2-473e-be60-4223f8926c79",
+      "kind": "updated",
+      "entity": "doc:agent-intent",
+      "title": "Agent 意图识别",
+      "time": "2026-10-14T00:40:31.827Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-intent"
+    },
+    {
+      "id": "98ccc312-1c7f-4cf6-9a1b-cf6910073676",
+      "kind": "updated",
+      "entity": "doc:intent-rules",
+      "title": "用规则实现意图识别",
+      "time": "2026-10-14T00:42:31.981Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-rules"
+    },
+    {
+      "id": "0de04bfe-4f55-42a7-9976-edeacbb4ac19",
+      "kind": "updated",
+      "entity": "doc:intent-rules",
+      "title": "用规则实现意图识别",
+      "time": "2026-10-14T00:44:01.241Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-rules"
+    },
+    {
+      "id": "2109aa02-7da4-4541-8c21-49e23bef5f8a",
+      "kind": "state-changed",
+      "entity": "doc:rasa-intent-classification",
+      "title": "Rasa 与 scikit-learn：意图分类的样本、特征与预测",
+      "time": "2026-10-14T00:47:17.141Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "rasa-intent-classification",
+      "from": "unread",
+      "to": "read"
+    },
+    {
+      "id": "6bb9054a-8fbd-46b4-810d-7cf099a80a4b",
+      "kind": "state-changed",
+      "entity": "doc:rasa-intent-classification",
+      "title": "Rasa 与 scikit-learn：意图分类的样本、特征与预测",
+      "time": "2026-10-14T00:47:20.394Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "rasa-intent-classification",
+      "from": "read",
+      "to": "unread"
+    },
+    {
+      "id": "adbfa38f-7433-4189-9404-5d3af6dc568c",
+      "kind": "state-changed",
+      "entity": "doc:intent-rules",
+      "title": "用规则实现意图识别",
+      "time": "2026-10-14T00:51:13.537Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-rules",
+      "from": "pending",
+      "to": "understood"
     }
   ]
 }

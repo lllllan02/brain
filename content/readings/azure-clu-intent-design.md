@@ -5,7 +5,7 @@ tags: ["Agent", "意图识别"]
 source:
   - "https://learn.microsoft.com/en-us/azure/ai-services/language-service/conversational-language-understanding/concepts/best-practices"
   - "https://learn.microsoft.com/en-us/azure/ai-services/language-service/conversational-language-understanding/concepts/evaluation-metrics"
-read: false
+read: true
 created_at: "2026-10-13T22:09:24+08:00"
 updated_at: "2026-10-13T22:09:24+08:00"
 ---
