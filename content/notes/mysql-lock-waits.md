@@ -8,6 +8,9 @@ type: "practice"
 tags: ["MySQL", "事务", "性能排查"]
 created_at: "2026-10-12T22:06:03+08:00"
 updated_at: "2026-10-12T22:06:03+08:00"
+reading_suggestions:
+  - mysql-locks-and-deadlocks
+  - mysql-performance-diagnostics
 ---
 
 **锁等待排查是在请求者、阻塞事务和被锁对象之间建立依赖，找到锁为何迟迟未释放的过程。** 等待中的 SQL 是受影响者；处理它的索引或超时，未必能解除阻塞源。以下以 MySQL 8.4、InnoDB 为范围。

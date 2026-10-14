@@ -7,6 +7,13 @@ category: "Agent"
 tags: ["Agent", "Checkpoint", "持久化"]
 created_at: "2026-10-09"
 updated_at: "2026-10-13T11:10:51+08:00"
+reading_suggestions:
+  - agent-checkpoint-runtime
+  - agent-resume-practice
+  - agent-resume-failure
+  - langgraph-checkpoints
+  - agent-temporal-approval
+  - langgraph-time-travel
 ---
 
 **检查点（Checkpoint）是运行到某个边界时保存的状态记录，包含继续任务需要的数据和执行位置。**

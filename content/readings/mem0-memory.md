@@ -11,6 +11,8 @@ source:
   - "https://docs.mem0.ai/core-concepts/memory-operations/update"
   - "https://docs.mem0.ai/core-concepts/memory-operations/search"
   - "https://github.com/mem0ai/mem0/blob/b7ad69afda6b6ed030347c66d48a13e4de9dec08/mem0/memory/main.py"
+reading_suggestions:
+  - mem0-paper-memory
 ---
 
 **「Mem0 封装从消息提取、保存到检索的记忆服务；当前文档将 `add` 定义为追加式写入，纠正已有条目使用 `update`。」** 文档核对于 2026-10-12，Python 源码固定于 `b7ad69afda6b6ed030347c66d48a13e4de9dec08`；未调用模型或部署服务。

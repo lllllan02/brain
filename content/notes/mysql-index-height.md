@@ -6,6 +6,9 @@ parent: mysql-index-structure
 tags: ["MySQL", "B+树", "索引"]
 created_at: "2026-10-12T15:25:39+08:00"
 updated_at: "2026-10-12T15:39:31+08:00"
+reading_suggestions:
+  - mysql-index-height-io
+  - mysql-manual-queries
 ---
 
 **InnoDB 希望用较少的页访问找到记录，因此需要让索引树保持较矮。** 降低树高的价值在于缩短查找路径，减少逐层访问页面的成本。

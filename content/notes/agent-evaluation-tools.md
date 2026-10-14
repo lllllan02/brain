@@ -6,6 +6,13 @@ category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T11:00:15+08:00"
 updated_at: "2026-10-13T11:00:15+08:00"
+reading_suggestions:
+  - inspect-agent-evaluation
+  - harbor-evaluation
+  - agentevals-trajectory
+  - promptfoo-evaluation
+  - langfuse-dataset-experiments
+  - langsmith-evaluation
 ---
 
 **评测工具应按缺少的能力选择：运行任务、组织数据与实验、计算分数是三个不同职责。** 先明确数据、环境和验收，再接入能减少重复工作的工具。

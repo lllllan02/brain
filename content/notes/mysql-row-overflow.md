@@ -6,6 +6,9 @@ parent: mysql-clustered-index
 tags: ["MySQL", "聚簇索引", "页"]
 created_at: "2026-10-12T16:12:02+08:00"
 updated_at: "2026-10-12T16:53:52+08:00"
+reading_suggestions:
+  - mysql-covering-index
+  - mysql-manual-queries
 ---
 
 **溢出页（Overflow Page）是存放行记录中页外字段内容的数据页。**

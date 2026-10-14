@@ -6,6 +6,9 @@ category: "Agent"
 tags: ["MCP", "工具调用", "协议"]
 created_at: "2026-10-11T01:07:45+08:00"
 updated_at: "2026-10-11T01:16:08+08:00"
+reading_suggestions:
+  - mcp-client
+  - tool-permission-design
 ---
 
 **stdio Server 将业务函数注册成工具，通过标准输入输出接收调用并返回结果。** 以下用内存订单查询展示实现，Server 本身不调用模型。

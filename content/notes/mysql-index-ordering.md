@@ -6,6 +6,10 @@ parent: mysql-indexes
 tags: ["索引", "SQL优化"]
 created_at: "2026-10-12T17:42:58+08:00"
 updated_at: "2026-10-12T22:08:19+08:00"
+reading_suggestions:
+  - mysql-composite-index
+  - mysql-index-access-cost
+  - mysql-index-pagination
 ---
 
 **利用索引排序，是按索引已有的键序读取记录，使结果满足 ORDER BY，省去额外排序。** 关键在于扫描得到的顺序是否符合查询要求，不是排序列有没有出现在某个索引中。以下讨论 MySQL 8.4、InnoDB。

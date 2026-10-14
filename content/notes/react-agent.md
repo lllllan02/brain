@@ -7,6 +7,10 @@ category: "Agent"
 tags: ["Agent", "ReAct", "执行模式"]
 created_at: "2026-10-09"
 updated_at: "2026-10-12T00:40:27+08:00"
+reading_suggestions:
+  - agent-loop
+  - react-paper-summary
+  - plan-and-execute
 ---
 
 **ReAct（Reasoning and Acting）是让模型交替进行推理与行动、利用行动结果调整后续判断的模式。**

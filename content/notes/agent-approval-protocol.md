@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "人工介入", "权限"]
 created_at: "2026-10-13T11:07:38+08:00"
 updated_at: "2026-10-13T11:07:38+08:00"
+reading_suggestions:
+  - sandbox-execution
+  - agent-resume-practice
+  - openai-guardrails-summary
 ---
 
 人批准了草稿 v1，不代表也批准后来生成的 v2。**审批需要绑定具体提案；回复校验通过后，程序才能把原任务变为可执行。** 以下是自建服务的协议设计，适用于需要保存并恢复的审核流程。

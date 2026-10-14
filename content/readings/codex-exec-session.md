@@ -6,6 +6,9 @@ tags: ["Agent", "沙箱", "源码"]
 created_at: "2026-10-10"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: ["[`unified_exec`](https://github.com/openai/codex/blob/5ef96ab2785f3ecddf279639eff7b1b42c906fa4/codex-rs/core/src/unified_exec/mod.rs#L1)", "[进程管理器](https://github.com/openai/codex/blob/5ef96ab2785f3ecddf279639eff7b1b42c906fa4/codex-rs/core/src/unified_exec/process_manager.rs#L879)"]
+reading_suggestions:
+  - codex-sandbox-launch
+  - sandbox-processes
 ---
 
 **「Codex 的执行会话保存仍在运行的进程，使长命令能跨多次工具调用持续交互。」**

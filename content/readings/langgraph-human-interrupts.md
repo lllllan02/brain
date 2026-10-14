@@ -8,6 +8,8 @@ updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://docs.langchain.com/oss/python/langgraph/interrupts"
   - "https://docs.langchain.com/oss/python/langchain/human-in-the-loop"
+reading_suggestions:
+  - agent-approval-protocol
 ---
 
 **「LangGraph 提供暂停与传回输入的原语，LangChain 中间件把它组织成工具审核流程。」** 本文节选这两层的衔接和恢复陷阱，按 2026-10-13 官方文档核对；未运行 Python 示例。

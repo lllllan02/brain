@@ -6,6 +6,10 @@ parent: mysql-indexes
 updated_at: "2026-10-12T17:19:22+08:00"
 tags: ["索引条件下推", "ICP", "回表"]
 aliases: ["ICP", "索引条件下推"]
+reading_suggestions:
+  - mysql-composite-index
+  - mysql-covering-index
+  - mysql-manual-queries
 ---
 
 **索引条件下推（Index Condition Pushdown，ICP）是一种将部分 WHERE 条件从 Server 层交给存储引擎，在索引记录上提前过滤的查询优化。** 「下推」的是条件判断；在 InnoDB 的二级索引访问中，它能减少不符合条件的行的回表读取。

@@ -8,6 +8,11 @@ type: "practice"
 tags: ["MySQL", "性能排查", "SQL优化"]
 created_at: "2026-10-12T22:06:03+08:00"
 updated_at: "2026-10-12T22:06:03+08:00"
+reading_suggestions:
+  - mysql-statement-tracing
+  - mysql-buffer-pool-lifecycle
+  - mysql-dirty-page-flushing
+  - mysql-temporary-tables
 ---
 
 **查询资源排查是把语句的处理量与同时间段的 CPU、内存和存储活动对齐，判断延迟来自多做工作，还是等待共享资源。** 计划合理不保证实例有足够资源；实例 I/O 高也不能直接证明某条 SQL 在等待磁盘。以下以 MySQL 8.4、InnoDB 为范围。

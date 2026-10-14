@@ -7,6 +7,12 @@ category: "Agent"
 tags: ["上下文管理", "持久化"]
 created_at: "2026-10-09"
 updated_at: "2026-10-11T22:04:58+08:00"
+reading_suggestions:
+  - history-storage
+  - pi-compaction-summary
+  - langmem-summarization-summary
+  - context-loading
+  - agent-checkpoint-recovery
 ---
 
 **压缩摘要与历史文件配合使用：历史保存原始消息，摘要记录哪些旧消息已被总结，读取时用摘要替代这部分输入。** 原文仍可回查，不必因压缩而删除。

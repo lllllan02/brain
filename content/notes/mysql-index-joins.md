@@ -6,6 +6,9 @@ parent: mysql-indexes
 tags: ["索引", "SQL优化", "JOIN"]
 created_at: "2026-10-12T17:42:58+08:00"
 updated_at: "2026-10-12T17:42:58+08:00"
+reading_suggestions:
+  - mysql-index-access-cost
+  - mysql-manual-queries
 ---
 
 **JOIN 是按连接条件组合多个表中记录的操作。** 索引在连接中的作用，是帮助每次匹配快速找到另一张表的候选，或先减少参与连接的行。以下讨论 MySQL 8.4、InnoDB。

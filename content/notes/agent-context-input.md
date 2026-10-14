@@ -7,6 +7,10 @@ category: "Agent"
 tags: ["Agent", "上下文管理"]
 created_at: "2026-10-09"
 updated_at: "2026-10-11T16:15:42+08:00"
+reading_suggestions:
+  - agent-loop
+  - agent-context
+  - agent-task-state
 ---
 
 **Agent 上下文（Context）是一次模型调用实际收到、用于本轮判断的输入信息。**

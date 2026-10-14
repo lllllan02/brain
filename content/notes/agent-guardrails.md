@@ -7,6 +7,12 @@ category: "Agent"
 tags: ["Agent", "行为约束"]
 created_at: "2026-10-09"
 updated_at: "2026-10-13T11:04:15+08:00"
+reading_suggestions:
+  - guardrail-execution
+  - tool-permission-design
+  - agent-human-in-the-loop
+  - agent-sandbox
+  - agent-evaluation-safety
 ---
 
 **行为约束（Guardrails）是检查 Agent 输入、动作和输出，并控制其能否继续执行的一组机制。** 提示词说明规则，检测器判断是否符合规则，运行程序负责放行、拒绝、暂停或终止。

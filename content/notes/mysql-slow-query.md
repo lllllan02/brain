@@ -8,6 +8,13 @@ type: "practice"
 tags: ["MySQL", "SQL优化", "性能排查"]
 created_at: "2026-10-12T21:32:44+08:00"
 updated_at: "2026-10-12T22:16:47+08:00"
+reading_suggestions:
+  - db-connection-pool
+  - mysql-statement-tracing
+  - mysql-query-plans
+  - mysql-lock-waits
+  - mysql-query-resources
+  - mysql-query-optimization
 ---
 
 **慢查询排查是结合请求耗时、语句记录、执行计划和等待信息，定位数据库请求延迟来源的诊断过程。** 扫描很多行、等待锁、等待 I/O，以及应用尚未取得连接，都可能表现为「查得慢」，需要用不同证据区分。以下以 MySQL 8.4、InnoDB 为范围。

@@ -7,6 +7,13 @@ category: "Agent"
 tags: ["上下文管理", "文本压缩"]
 created_at: "2026-10-09"
 updated_at: "2026-10-11T21:21:19+08:00"
+reading_suggestions:
+  - context-budget
+  - context-trimming
+  - context-compaction-prompt
+  - context-compaction-storage
+  - context-loading
+  - context-compaction-evaluation
 ---
 
 **上下文压缩（Context Compaction）是将部分历史提炼成较短摘要，与保留的原始消息共同构成后续输入的机制。** 对话和工具结果不断增长，有限窗口无法一直容纳完整历史。相比直接[[context-trimming|裁剪]]，压缩能延续旧历史中的目标、进度与关键结论，但会损失部分细节。

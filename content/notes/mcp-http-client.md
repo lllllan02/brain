@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["MCP", "工具调用", "协议"]
 created_at: "2026-10-11T01:16:08+08:00"
 updated_at: "2026-10-11T01:16:08+08:00"
+reading_suggestions:
+  - mcp-client
+  - mcp-http-server
+  - mcp-flow
 ---
 
 **Streamable HTTP Client 通过 URL 连接已经运行的 MCP Server，发现工具并调用。** 它不启动 Server 子进程，其余调用逻辑与[[mcp-client|stdio Client]]相同。

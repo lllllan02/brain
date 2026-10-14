@@ -6,6 +6,10 @@ parent: mysql-buffer-pool-lifecycle
 tags: ["MySQL", "持久化", "数据恢复"]
 created_at: "2026-10-12T19:10:47+08:00"
 updated_at: "2026-10-12T21:20:50+08:00"
+reading_suggestions:
+  - wal
+  - mysql-manual-recovery
+  - mysql-manual-buffer-pool
 ---
 
 脏页最终要写回数据文件。如果直接覆盖磁盘上的旧页，写到一半掉电，就可能留下**新旧内容混合、内部结构不一致的坏页**；内存中的完整新页也会随掉电丢失。

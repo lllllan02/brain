@@ -7,6 +7,10 @@ category: "Agent"
 tags: ["Agent", "工具调用"]
 created_at: "2026-10-10"
 updated_at: "2026-10-12T12:11:11+08:00"
+reading_suggestions:
+  - openai-function-design-summary
+  - anthropic-tool-design-summary
+  - agent-trace
 ---
 
 **工具接口设计围绕模型使用工具的三个环节：选对工具、填对参数、读懂结果。** 名称、描述、参数和返回值，都应帮助模型减少猜测。

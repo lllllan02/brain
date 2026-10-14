@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["MCP", "工具调用", "Go"]
 created_at: "2026-10-11T10:12:32+08:00"
 updated_at: "2026-10-11T10:27:06+08:00"
+reading_suggestions:
+  - tool-calling-go
+  - mcp-server
+  - mcp-http-client
+  - tool-registry
 ---
 
 **在普通工具调用程序中，将「本地声明工具、本地执行函数」替换为「从 MCP Server 发现工具、通过 Client 调用」。** 模型侧仍然使用相同的函数工具格式，不需要改成另一种模型调用协议。

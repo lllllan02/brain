@@ -7,6 +7,8 @@ tags: ["上下文管理", "文本压缩", "评测"]
 created_at: "2026-10-11T15:37:35+08:00"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Evaluating Context Compression for AI Agents](https://factory.com/news/evaluating-compression)"
+reading_suggestions:
+  - complexity-trap-summary
 ---
 
 **「Factory 用压缩后的问答探针检查事实、文件状态、后续计划和决策依据是否保留；这比摘要文字相似度更贴近任务延续，但仍不等于实际完成任务。」** 本文导读对应 Factory Research 于 2025-12-16 发布的厂商自评。

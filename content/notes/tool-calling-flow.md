@@ -6,6 +6,9 @@ category: "Agent"
 tags: ["Agent", "工具调用", "API"]
 created_at: "2026-10-10"
 updated_at: "2026-10-12T11:53:56+08:00"
+reading_suggestions:
+  - tool-calling-go
+  - tool-calling-chat-completions
 ---
 
 **工具调用是模型提出调用请求、程序执行工具，再把结果交回模型的过程。** 模型负责选择工具和生成输入，程序负责实际执行并组织下一轮模型请求。

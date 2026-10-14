@@ -7,6 +7,12 @@ category: "Agent"
 tags: ["Agent", "Harness"]
 created_at: "2026-10-09"
 updated_at: "2026-10-11T12:14:02+08:00"
+reading_suggestions:
+  - langchain-harness-anatomy-summary
+  - openai-agents-architecture-summary
+  - anthropic-long-running-harness-summary
+  - anthropic-harness-design-summary
+  - agent-evaluation-harness
 ---
 
 **Agent Harness 是围绕模型建立的运行系统，负责组织输入、执行模型提出的动作、回传结果，并控制执行边界。** 模型提供决策能力，Harness 使决策能够持续作用于实际任务。

@@ -6,6 +6,10 @@ parent: redis
 tags: ["Redis", "分布式锁", "限流", "Lua"]
 created_at: "2026-10-13T11:03:37+08:00"
 updated_at: "2026-10-13T11:03:37+08:00"
+reading_suggestions:
+  - distributed-locks
+  - rate-limiting
+  - redis-coordination-docs
 ---
 
 **Redis 能原子地修改自身状态，业务正确性还取决于租约、重试和外部资源是否接受这次操作。** 锁、限流和库存预扣都需要先界定这个保证范围。

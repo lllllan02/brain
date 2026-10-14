@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["上下文管理", "文本压缩", "评测"]
 created_at: "2026-10-11T19:07:23+08:00"
 updated_at: "2026-10-11T19:07:23+08:00"
+reading_suggestions:
+  - anthropic-context-engineering-summary
+  - factory-compression-evaluation-summary
+  - complexity-trap-summary
 ---
 
 **上下文压缩评估是检查缩减历史后，Agent 是否仍能准确延续任务，以及节省的资源是否超过摘要和信息恢复的代价。** 摘要更短、文字更流畅，都不能单独证明压缩有效。

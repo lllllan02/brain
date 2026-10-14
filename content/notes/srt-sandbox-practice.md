@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+reading_suggestions:
+  - bubblewrap-sandbox-practice
+  - sandbox-credentials
+  - sandbox-implementations
 ---
 
 **SRT（Sandbox Runtime）根据配置，借助操作系统的隔离能力，带着访问限制启动本机程序。** 使用时不需要像 Docker 那样准备镜像、管理容器，而是把原来的 `python task.py` 交给 srt 启动。

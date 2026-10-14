@@ -9,6 +9,8 @@ source:
   - "[Guardrails](https://openai.github.io/openai-agents-python/guardrails/)"
   - "[Guardrails and human review](https://developers.openai.com/api/docs/guides/agents/guardrails-approvals)"
   - "[Human-in-the-loop](https://openai.github.io/openai-agents-python/human_in_the_loop/)"
+reading_suggestions:
+  - sandbox-execution
 ---
 
 **「自动检查根据规则决定是否继续，审批记录对具体操作的批准或拒绝。」** 本文聚焦 OpenAI Agents Python SDK 的检查覆盖与暂停恢复，不展开全部工具类型的配置。

@@ -8,6 +8,9 @@ type: "concept"
 tags: ["MySQL", "binlog", "数据恢复"]
 created_at: "2026-10-12T21:32:22+08:00"
 updated_at: "2026-10-12T21:32:22+08:00"
+reading_suggestions:
+  - mysql-instance-recovery
+  - mysql-manual-backup
 ---
 
 **时间点恢复（Point-in-Time Recovery，PITR）是先恢复一个可用备份，再按顺序应用后续 Binlog，将数据库推进到目标事务边界的方法。** 备份提供起点，连续增量日志补回起点之后的合法变化；二者缺一，能够到达的历史状态就会受限。

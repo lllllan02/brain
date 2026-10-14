@@ -6,6 +6,9 @@ parent: mysql-indexes
 tags: ["MySQL", "索引", "主键", "联合索引"]
 created_at: "2026-10-12T16:12:02+08:00"
 updated_at: "2026-10-12T16:12:02+08:00"
+reading_suggestions:
+  - mysql-clustered-key
+  - mysql-composite-index
 ---
 
 **主键、唯一、联合与聚簇描述不同维度：约束、列的组合和行数据的组织方式。同一个索引可以同时具有多个属性。** 以下讨论 MySQL 8.4、InnoDB 的常规树索引。

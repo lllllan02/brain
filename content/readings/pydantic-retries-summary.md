@@ -6,6 +6,8 @@ tags: ["Agent", "重试"]
 created_at: "2026-10-10"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Retries](https://pydantic.dev/docs/ai/core-concepts/retries/)"
+reading_suggestions:
+  - pydantic-tool-execution-summary
 ---
 
 **「Pydantic AI 将请求重发、模型修正和工作流重执行分开配置；它们的预算不共享，叠加后可能放大实际请求数。」**

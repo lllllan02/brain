@@ -7,6 +7,11 @@ category: "Agent"
 tags: ["上下文管理"]
 created_at: "2026-10-09"
 updated_at: "2026-10-11T18:53:08+08:00"
+reading_suggestions:
+  - context-layering
+  - context-trimming
+  - context-compaction
+  - pi-compaction-summary
 ---
 
 模型的上下文窗口有限，对话消息和工具结果却会不断追加，不能让输入无限增长。因此，Agent 需要在窗口耗尽前，通过[[context-trimming|裁剪]]或[[context-compaction|压缩]]缩减上下文。

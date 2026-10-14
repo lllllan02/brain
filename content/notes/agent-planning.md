@@ -7,6 +7,12 @@ category: "Agent"
 tags: ["Agent", "任务规划"]
 created_at: "2026-10-09"
 updated_at: "2026-10-12T23:06:34+08:00"
+reading_suggestions:
+  - agent-loop
+  - react-agent
+  - plan-and-execute
+  - agent-replanning
+  - tool-scheduling
 ---
 
 **ReAct 组织逐步决策，Plan-and-Execute 分开整体规划与单步执行，Replanning 调整剩余计划；三者可以组合。**

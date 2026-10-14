@@ -8,6 +8,8 @@ updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://planetscale.com/learn/courses/mysql-for-developers/examples/deferred-joins"
   - "https://www.percona.com/blog/mysql-order-by-limit-performance-optimization/"
+reading_suggestions:
+  - mysql-manual-queries
 ---
 
 **「两份资料分别解释怎样降低偏移分页的取行成本，以及怎样让排序与结果定位减少查询工作。」** PlanetScale 用同一分页查询比较延迟关联前后；Percona 讨论索引顺序、过滤成本和静态结果的位置预计算。以下保留与分页相关的论证，不将示例耗时作为通用性能承诺。

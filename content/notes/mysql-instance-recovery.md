@@ -8,6 +8,11 @@ type: "concept"
 tags: ["MySQL", "事务", "持久化", "数据恢复"]
 created_at: "2026-10-12T21:32:22+08:00"
 updated_at: "2026-10-12T21:32:22+08:00"
+reading_suggestions:
+  - mysql-transaction-commit
+  - mysql-dirty-page-flushing
+  - mysql-doublewrite
+  - mysql-point-in-time-recovery
 ---
 
 **崩溃恢复（Crash Recovery）是 MySQL 异常退出后，重启时依据持久化日志恢复数据页并处理未完成事务的过程。** InnoDB 用 Redo 补回修改，用 Undo 撤销应回滚的修改；开启 Binlog 时，普通内部准备事务的去留还需结合 Binlog 判断。

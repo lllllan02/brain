@@ -6,6 +6,9 @@ category: "Agent"
 tags: ["MCP", "工具调用", "协议"]
 created_at: "2026-10-11T01:11:26+08:00"
 updated_at: "2026-10-11T01:16:08+08:00"
+reading_suggestions:
+  - mcp-server
+  - mcp-flow
 ---
 
 **stdio Client 启动 Server 子进程，通过标准输入输出发现工具、发起调用并读取结果。** 本例调用[[mcp-server|订单查询 Server]]。

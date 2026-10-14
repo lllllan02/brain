@@ -7,6 +7,8 @@ type: "concept"
 tags: ["Kafka", "分区", "日志"]
 created_at: "2026-10-12T19:46:06+08:00"
 updated_at: "2026-10-12T20:59:44+08:00"
+reading_suggestions:
+  - kafka-model-sources
 ---
 
 Kafka 用 Topic 组织业务事件，再用分区分担读写：**「Topic 决定哪些记录放在一起，分区决定这些记录怎样分开存储和处理。」**

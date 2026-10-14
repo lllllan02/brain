@@ -5,6 +5,8 @@ tags: ["Agent", "上下文管理"]
 created_at: "2026-10-11T15:24:08+08:00"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Context Engineering](https://www.langchain.com/blog/context-engineering-for-agents)"
+reading_suggestions:
+  - manus-context-engineering-summary
 ---
 
 **「LangChain 将上下文工程归纳为写入、选择、压缩与隔离四类可组合策略，分别处理信息存在哪里、何时取入、怎样缩减和由谁使用。」** 本文导读对应 2025-07-02 的文章。

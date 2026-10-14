@@ -6,6 +6,11 @@ parent: mysql-index-pagination
 tags: ["索引", "SQL优化", "分页"]
 created_at: "2026-10-12T17:56:27+08:00"
 updated_at: "2026-10-12T18:04:41+08:00"
+reading_suggestions:
+  - mysql-index-pagination
+  - mysql-covering-index
+  - mysql-index-access-cost
+  - mysql-pagination-sources
 ---
 
 **深分页是偏移量很大的分页查询。** 优化有两条路径：仍按页码访问时，降低被跳过记录的读取成本；允许连续翻页时，用键值边界消除偏移扫描。没有通用的「多少页开始算深」阈值。

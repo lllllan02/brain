@@ -6,6 +6,9 @@ parent: redis
 tags: ["Redis", "RDB", "AOF", "持久化"]
 created_at: "2026-10-13T11:03:37+08:00"
 updated_at: "2026-10-13T11:03:37+08:00"
+reading_suggestions:
+  - redis-durability-docs
+  - redis-high-availability
 ---
 
 **持久化决定单节点重启后能重建哪些数据；选择要同时考虑可丢失窗口、恢复时间和运行时开销。** RDB 保存某个时点的状态，AOF 保存可恢复状态的写入记录，两者可组合使用。

@@ -6,6 +6,9 @@ category: "Agent"
 tags: ["MCP", "工具调用", "协议"]
 created_at: "2026-10-11T10:06:16+08:00"
 updated_at: "2026-10-12T12:27:44+08:00"
+reading_suggestions:
+  - mcp-tools-summary
+  - mcp-resources-prompts-summary
 ---
 
 **Tool（工具）提供可调用的操作，Resource（资源）提供可读取的数据，Prompt（提示模板）提供组织模型任务的消息。** 三者区分的是服务端暴露什么能力，不能只按返回内容是否为文本来判断。

@@ -7,6 +7,10 @@ parent: mysql-query-optimization
 tags: ["MySQL", "SQL优化"]
 created_at: "2026-10-12T22:02:26+08:00"
 updated_at: "2026-10-12T22:32:45+08:00"
+reading_suggestions:
+  - mysql-index-joins
+  - mysql-subquery-optimization
+  - mysql-query-plans
 ---
 
 **只需判断「有没有匹配」时，用 EXISTS 表达需求，可让数据库有机会省去不必要的重复匹配与去重。** 以下以 MySQL 8.4、InnoDB 为范围；是否提速仍需核对执行计划。

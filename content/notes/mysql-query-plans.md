@@ -7,6 +7,11 @@ parent: mysql-overview#查询与性能
 tags: ["MySQL", "执行计划", "SQL优化"]
 created_at: "2026-10-12T21:32:44+08:00"
 updated_at: "2026-10-12T22:52:51+08:00"
+reading_suggestions:
+  - mysql-index-access-cost
+  - mysql-explain-reading
+  - mysql-query-optimization
+  - mysql-slow-query
 ---
 
 **执行计划（Query Execution Plan）是数据库执行一条 SQL 时采用的操作安排，包括访问路径、连接顺序与算法，以及过滤、排序和聚合方式。** SQL 描述需要什么结果，同一结果可能有多种取数方法。

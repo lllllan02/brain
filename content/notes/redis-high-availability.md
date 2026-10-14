@@ -6,6 +6,10 @@ parent: redis
 tags: ["Redis", "复制", "Sentinel", "故障切换"]
 created_at: "2026-10-13T11:03:37+08:00"
 updated_at: "2026-10-13T11:03:37+08:00"
+reading_suggestions:
+  - redis-durability-docs
+  - redis-cluster-docs
+  - redis-cluster
 ---
 
 **复制维护数据副本，Sentinel 在非分片部署中发现主节点故障并协调接替。** 副本数量增加可以提高可用性，但异步复制仍有已确认写入在切换后丢失的窗口。

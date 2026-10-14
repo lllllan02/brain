@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "Trace", "埋点"]
 created_at: "2026-10-12T23:28:23+08:00"
 updated_at: "2026-10-13T01:35:20+08:00"
+reading_suggestions:
+  - agent-trace-spans
+  - agent-trace-viewing
+  - agent-checkpoint-recovery
 ---
 
 **Trace ID 归并一次运行，Parent Span ID 表达步骤包含关系；并行分支从同一个父 Context 开始，重试则为每次尝试保留独立记录。** 执行先后和模型提出的工具关系不能单靠父子树表达。

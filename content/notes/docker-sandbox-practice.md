@@ -6,6 +6,9 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+reading_suggestions:
+  - container-images
+  - docker-sandboxes-practice
 ---
 
 **Docker 根据镜像启动一组隔离的进程，通过挂载、网络和资源参数形成容器边界。** 普通 Linux 容器仍共享宿主内核：命名空间分开文件挂载、网络等视图，cgroup 管资源额度；不是给每个容器启动独立内核。

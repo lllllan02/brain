@@ -6,6 +6,9 @@ tags: ["Agent", "沙箱", "源码"]
 created_at: "2026-10-10"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: ["[工具入口](https://github.com/openai/codex/blob/5ef96ab2785f3ecddf279639eff7b1b42c906fa4/codex-rs/core/src/tools/handlers/unified_exec/exec_command.rs#L231)", "[持续执行运行时](https://github.com/openai/codex/blob/5ef96ab2785f3ecddf279639eff7b1b42c906fa4/codex-rs/core/src/tools/runtimes/unified_exec.rs#L654)", "[沙箱管理器](https://github.com/openai/codex/blob/5ef96ab2785f3ecddf279639eff7b1b42c906fa4/codex-rs/sandboxing/src/manager.rs#L355)"]
+reading_suggestions:
+  - codex-sandbox-platforms
+  - codex-sandbox-retry
 ---
 
 **「Codex 把命令解析、审批决策和平台隔离分层处理，只有追到最终执行器，才能确认限制在哪里生效。」**

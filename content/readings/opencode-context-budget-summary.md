@@ -8,6 +8,8 @@ updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://github.com/anomalyco/opencode/blob/dev/packages/core/src/session/compaction.ts"
   - "https://dev.opencode.ai/v2/docs/compaction/"
+reading_suggestions:
+  - context-budget
 ---
 
 **「OpenCode V2 从输入容量基准中扣除预留空间，得到触发线；预留带有最低值，因此触发比例并不固定。」**

@@ -6,6 +6,9 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+reading_suggestions:
+  - srt-sandbox-practice
+  - docker-sandbox-practice
 ---
 
 **Worktree 分开任务工作副本，文件、网络与凭据边界由外层执行沙箱提供。** 它适合避免多个 Agent 直接改同一份工作文件。

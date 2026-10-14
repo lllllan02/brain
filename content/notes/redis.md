@@ -6,6 +6,19 @@ tags: ["Redis", "缓存", "数据结构"]
 type: "overview"
 created_at: "2026-10-13T11:03:37+08:00"
 updated_at: "2026-10-13T11:03:37+08:00"
+reading_suggestions:
+  - redis-data-types
+  - redis-threading
+  - redis-atomic-operations
+  - redis-expiration-eviction
+  - redis-persistence
+  - redis-high-availability
+  - redis-cluster
+  - redis-cache-design
+  - redis-coordination
+  - redis-streams
+  - redis-troubleshooting
+  - redis-interview-questions
 ---
 
 **Redis 是通过网络共享内存数据结构的存储系统。** 应用按 key 访问字符串、集合、有序集合等对象，把计数、排序和条件更新交给服务端执行。内存访问减少磁盘读取，合适的数据结构减少应用搬运和计算；网络、命令复杂度、持久化与复制仍会影响延迟和可靠性。

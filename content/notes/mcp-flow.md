@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["MCP", "工具调用", "协议"]
 created_at: "2026-10-09"
 updated_at: "2026-10-12T12:13:32+08:00"
+reading_suggestions:
+  - mcp-capabilities
+  - mcp-tool-calling-go
+  - mcp-permissions
+  - mcp-architecture-summary
 ---
 
 **MCP 接入的主线是：连接服务 → 发现工具 → 模型提出调用 → 服务端执行 → 结果交回模型。** 宿主应用（Host）组织模型与上下文，内部的客户端（Client）负责通信，服务端（Server）保存工具定义与执行实现。

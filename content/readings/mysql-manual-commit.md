@@ -11,6 +11,8 @@ source:
   - "https://dev.mysql.com/doc/refman/8.4/en/innodb-parameters.html#sysvar_innodb_flush_log_at_trx_commit"
   - "https://dev.mysql.com/doc/refman/8.4/en/replication-options-binary-log.html#sysvar_sync_binlog"
   - "https://dev.mysql.com/doc/dev/mysql-server/8.4.11/group__Binary__Log.html"
+reading_suggestions:
+  - mysql-instance-recovery
 ---
 
 本篇节选 MySQL 8.4 手册与 8.4.11 开发文档中普通 InnoDB 事务的内部提交、组提交与恢复判定。范围不包含应用显式 XA、半同步复制和所有错误分支。

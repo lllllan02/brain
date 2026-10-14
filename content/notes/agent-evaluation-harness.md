@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T10:57:59+08:00"
 updated_at: "2026-10-13T11:06:45+08:00"
+reading_suggestions:
+  - agent-harness
+  - inspect-agent-evaluation
+  - harbor-evaluation
+  - agent-evaluation-infrastructure
 ---
 
 **Evaluation Harness 是组织任务初始化、被测 Agent 执行、证据采集、评分和汇总的运行系统。** [[agent-harness|Agent Harness]]负责完成任务；评测运行系统负责在明确条件下检验它。

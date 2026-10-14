@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "Checkpoint", "持久化"]
 created_at: "2026-10-13T11:07:38+08:00"
 updated_at: "2026-10-13T11:10:51+08:00"
+reading_suggestions:
+  - agent-task-state
+  - langgraph-checkpoints
+  - agent-resume-failure
 ---
 
 Agent 已生成草稿，准备等待审核。要让当前进程退出后仍能继续，需要保存一份**「新进程读到后，就能决定下一步」**的记录。保存消息只是其中一部分，还要保存控制状态。

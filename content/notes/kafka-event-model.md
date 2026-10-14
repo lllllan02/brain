@@ -7,6 +7,8 @@ type: "concept"
 tags: ["Kafka", "事件建模"]
 created_at: "2026-10-12T19:46:06+08:00"
 updated_at: "2026-10-12T19:46:06+08:00"
+reading_suggestions:
+  - kafka-model-sources
 ---
 
 **业务事件描述发生了什么，Kafka Record 是承载这份信息的记录。** 「订单已付款」陈述事实；「请为订单扣款」要求执行动作，是命令。两者都可以用记录传输，但接收后的责任不同，应用需要先约定语义。

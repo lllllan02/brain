@@ -6,6 +6,8 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+reading_suggestions:
+  - docker-sandbox-practice
 ---
 
 **Docker Sandboxes 本地产品为 Agent 创建独立内核的 microVM，宿主侧代理再管理网络与凭据。** 虚拟机负责执行环境的隔离，代理负责检查请求和注入认证，两者分工配合。

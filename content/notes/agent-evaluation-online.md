@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T11:00:15+08:00"
 updated_at: "2026-10-13T11:00:15+08:00"
+reading_suggestions:
+  - agent-trace-evaluation
+  - langfuse-dataset-experiments
+  - langsmith-evaluation
 ---
 
 **离线评测在受控任务上比较版本，线上评测检查真实流量中的质量变化；发布判断需要把两种证据连接起来。** 离线高分可能遗漏实际任务，线上满意度又可能缺少明确的正确答案。

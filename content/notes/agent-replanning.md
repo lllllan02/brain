@@ -7,6 +7,11 @@ category: "Agent"
 tags: ["Agent", "任务规划"]
 created_at: "2026-10-12T00:56:04+08:00"
 updated_at: "2026-10-12T11:27:16+08:00"
+reading_suggestions:
+  - agent-feedback-mechanisms
+  - agent-task-state-update
+  - langgraph-replanning-summary
+  - agent-trace
 ---
 
 **Replanning 是根据执行反馈或新要求，调整任务剩余步骤的机制。** 例如，原计划排查数据库，但指标显示应用 CPU 异常，就需要改变后续排查方向，即使工具调用本身成功。

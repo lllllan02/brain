@@ -6,6 +6,9 @@ parent: mysql-index-structure
 tags: ["MySQL", "B+树", "索引"]
 created_at: "2026-10-12T15:25:39+08:00"
 updated_at: "2026-10-12T15:50:46+08:00"
+reading_suggestions:
+  - mysql-index-height
+  - opendsa-b-trees
 ---
 
 **B+ 树「只有叶子节点保存数据条目」，且「叶子之间按键顺序相连」：前者让内部页容纳更多导航分支，后者便于范围扫描，因此更契合 InnoDB 减少页访问、兼顾等值与范围查询的需要。**

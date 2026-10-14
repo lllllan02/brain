@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10T20:33:24+08:00"
 updated_at: "2026-10-12T13:23:44+08:00"
+reading_suggestions:
+  - openfga-agent-authorization-summary
+  - claude-permissions-summary
+  - codex-exec-policy-summary
+  - sandbox-execution
 ---
 
 **权限规则用主体、动作、资源和条件匹配请求，给出允许或拒绝，并为允许的操作附加审批、认证等要求。** 下图展示一套通用设计：规则如何驱动判定，以及请求何时停止、暂停或执行；具体字段与组合策略需按产品实现。

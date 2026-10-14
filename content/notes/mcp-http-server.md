@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["MCP", "工具调用", "协议"]
 created_at: "2026-10-11T01:16:08+08:00"
 updated_at: "2026-10-11T01:16:08+08:00"
+reading_suggestions:
+  - mcp-server
+  - mcp-http-client
+  - tool-permission-design
 ---
 
 **Streamable HTTP Server 独立监听 HTTP 地址，将 MCP 请求交给注册的工具处理。** 与[[mcp-server|stdio Server]]使用相同的订单查询逻辑，差别在于通信入口。

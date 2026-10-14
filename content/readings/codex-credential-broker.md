@@ -6,6 +6,8 @@ tags: ["Agent", "沙箱", "源码"]
 created_at: "2026-10-10"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: ["[网络代理运行时](https://github.com/openai/codex/blob/5ef96ab2785f3ecddf279639eff7b1b42c906fa4/codex-rs/network-proxy/src/runtime.rs#L514)", "[目标绑定测试](https://github.com/openai/codex/blob/5ef96ab2785f3ecddf279639eff7b1b42c906fa4/codex-rs/network-proxy/src/credential_broker_tests.rs#L1412)"]
+reading_suggestions:
+  - sandbox-credentials
 ---
 
 **「Codex 的凭据代理把子进程拿到的占位值，与目标服务收到的真实凭据分开，减少直接暴露密钥的需要。」**

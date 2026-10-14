@@ -6,6 +6,8 @@ tags: ["Agent", "沙箱", "源码"]
 created_at: "2026-10-10"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: ["[管理器的 `transform`](https://github.com/openai/codex/blob/5ef96ab2785f3ecddf279639eff7b1b42c906fa4/codex-rs/sandboxing/src/manager.rs#L355)", "[Linux 后端](https://github.com/openai/codex/blob/5ef96ab2785f3ecddf279639eff7b1b42c906fa4/codex-rs/linux-sandbox/README.md#L1)"]
+reading_suggestions:
+  - codex-sandbox-filesystem
 ---
 
 **「Codex 先表达统一权限策略，再由平台后端转换成可执行的隔离配置；后端的能力和失败处理决定实际效果。」**

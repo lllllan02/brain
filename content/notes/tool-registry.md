@@ -7,6 +7,11 @@ category: "Agent"
 tags: ["Agent", "工具调用", "工具注册"]
 created_at: "2026-10-09"
 updated_at: "2026-10-12T12:19:34+08:00"
+reading_suggestions:
+  - pydantic-toolsets-summary
+  - mcp-tools-summary
+  - tool-loading
+  - sandbox-execution
 ---
 
 **工具注册表（Tool Registry）是程序管理工具的目录，保存「工具名 → 定义与执行入口」的对应关系。** 它让不同来源的工具能够统一被查找和调用，可以只是 Agent 程序内的一张表，无需独立部署。

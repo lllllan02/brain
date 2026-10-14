@@ -7,6 +7,15 @@ category: "Agent"
 tags: ["MCP", "工具调用", "协议"]
 created_at: "2026-10-09"
 updated_at: "2026-10-12T12:27:44+08:00"
+reading_suggestions:
+  - mcp-capabilities
+  - mcp-flow
+  - mcp-server
+  - mcp-client
+  - mcp-http-server
+  - mcp-http-client
+  - mcp-permissions
+  - mcp-specification-summary
 ---
 
 **MCP（Model Context Protocol，模型上下文协议）是 AI 应用与外部服务之间的开放通信协议，统一工具、资源和提示模板的发现与使用方式。**

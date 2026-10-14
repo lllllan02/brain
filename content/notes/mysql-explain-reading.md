@@ -6,6 +6,13 @@ parent: mysql-query-plans
 updated_at: "2026-10-12T22:52:51+08:00"
 tags: ["MySQL", "执行计划", "SQL优化"]
 aliases: ["EXPLAIN 字段与取值", "怎么读 EXPLAIN 结果", "EXPLAIN 读法", "EXPLAIN 字段"]
+reading_suggestions:
+  - mysql-explain-select-type
+  - mysql-explain-type
+  - mysql-explain-extra
+  - mysql-index-predicates
+  - mysql-query-optimization
+  - mysql-slow-query
 ---
 
 **用 EXPLAIN 优化 SQL，要先还原取数与处理过程，再找出大量扫描、过晚过滤、重复访问或庞大中间结果，最后用实际执行验证改动。** 判断依据是完成业务所需结果付出了多少工作，以及时间主要花在哪里；某个字段的取值只能提供线索。

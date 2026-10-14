@@ -12,6 +12,9 @@ source:
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/server-system-variables.html#sysvar_temptable_max_ram"
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/server-system-variables.html#sysvar_temptable_max_mmap"
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/performance-schema-events-statements-current-table.html"
+reading_suggestions:
+  - mysql-derived-optimization
+  - mysql-query-resources
 ---
 
 本导读节选 MySQL 8.4 内部临时表的存储限制和诊断口径。它们是执行语句时由服务器建立的中间存储，与应用显式 CREATE TEMPORARY TABLE 不同；派生结果为什么需要保存、何时能够合并，另由[[mysql-derived-optimization|派生表与物化导读]]解释。

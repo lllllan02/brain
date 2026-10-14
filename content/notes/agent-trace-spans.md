@@ -6,6 +6,12 @@ category: "Agent"
 tags: ["Agent", "Trace", "可观测性", "埋点"]
 created_at: "2026-10-13T01:06:26+08:00"
 updated_at: "2026-10-13T01:35:20+08:00"
+reading_suggestions:
+  - trace
+  - span
+  - agent-trace-structure
+  - eino-langfuse-tracing
+  - agent-trace-verification
 ---
 
 **一次操作的记录从创建 Span 开始，到填入输出或错误并结束 Span 为止。** Eino 可以自动记录模型和工具边界，应用补充根运行与自己的业务步骤。

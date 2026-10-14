@@ -8,6 +8,8 @@ updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://code.claude.com/docs/en/permissions"
   - "https://code.claude.com/docs/en/permission-modes"
+reading_suggestions:
+  - claude-permissions-summary
 ---
 
 **「Claude Code 结合命令解析、权限规则和运行模式决定是否执行；命令匹配无法保证识别脚本的全部行为。」** 以下按 2026-10-10 官方文档整理，模式细节可能随版本变化。

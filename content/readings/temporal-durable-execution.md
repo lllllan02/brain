@@ -9,6 +9,9 @@ source:
   - "https://docs.temporal.io/workflow-execution"
   - "https://docs.temporal.io/develop/go/workflows/basics"
   - "https://docs.temporal.io/develop/go/workflows/message-passing"
+reading_suggestions:
+  - agent-temporal-approval
+  - temporal-retry-policy-summary
 ---
 
 **「Temporal 用事件历史恢复工作流，Go 代码中的等待由 SDK 转换为可恢复的执行过程。」** 本文只总结恢复与外部输入，不覆盖完整平台部署；依据 2026-10-13 官方文档，未运行 Temporal 服务。

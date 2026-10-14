@@ -7,6 +7,15 @@ category: "Agent"
 tags: ["Agent", "上下文管理"]
 created_at: "2026-10-09"
 updated_at: "2026-10-11T23:47:04+08:00"
+reading_suggestions:
+  - agent-context-input
+  - context-layering
+  - agent-task-state
+  - context-budget
+  - context-trimming
+  - context-compaction
+  - history-storage
+  - context-loading
 ---
 
 **Agent 上下文管理（Context Management）是在有限窗口内，为每次模型调用选择、更新和组织输入的机制。** 对话与工具结果持续增长，但模型每轮需要的是当前有效的规则、任务进度和相关证据，不能一直追加全部历史。

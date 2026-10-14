@@ -7,6 +7,23 @@ type: "overview"
 tags: ["MySQL", "数据库"]
 created_at: "2026-10-12T14:03:16+08:00"
 updated_at: "2026-10-12T22:16:47+08:00"
+reading_suggestions:
+  - mysql-query-execution
+  - mysql-storage-layout
+  - mysql-buffer-pool-lifecycle
+  - mysql-indexes
+  - mysql-query-plans
+  - mysql-query-optimization
+  - mysql-transaction-boundaries
+  - mysql-isolation-levels
+  - mysql-mvcc
+  - mysql-locks-and-deadlocks
+  - mysql-log-roles
+  - mysql-transaction-commit
+  - mysql-instance-recovery
+  - mysql-point-in-time-recovery
+  - mysql-slow-query
+  - db-connection-pool
 ---
 
 **MySQL 是通过表和 SQL 管理数据的关系型数据库管理系统。** 服务端解析、优化和执行 SQL，[[storage-engine|存储引擎]]负责底层数据访问；索引改善访问效率，事务与锁协调并发，日志、复制与备份分别支撑不同故障下的数据保护。本专题以 MySQL 8.4、InnoDB 为范围。

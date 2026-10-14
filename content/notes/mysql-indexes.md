@@ -6,6 +6,16 @@ parent: mysql-overview
 tags: ["MySQL", "索引", "B+树"]
 created_at: "2026-10-12T15:03:03+08:00"
 updated_at: "2026-10-12T18:17:22+08:00"
+reading_suggestions:
+  - mysql-index-structure
+  - mysql-clustered-index
+  - mysql-index-classification
+  - mysql-composite-index
+  - mysql-index-predicates
+  - mysql-covering-index
+  - mysql-index-condition-pushdown
+  - mysql-index-access-cost
+  - mysql-index-maintenance
 ---
 
 **索引（Index）是数据库按键值组织记录或记录定位信息、用于加速数据访问的数据结构。** 它提供额外的查找路径，让查询有机会少扫描、少取行或少排序；代价是存储空间和写入维护。以下以 MySQL 8.4、InnoDB 为范围。

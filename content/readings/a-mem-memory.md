@@ -6,6 +6,8 @@ tags: ["Agent", "记忆", "检索"]
 created_at: "2026-10-13T10:44:40+08:00"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "https://arxiv.org/html/2502.12110v11"
+reading_suggestions:
+  - graphiti-memory
 ---
 
 **「A-Mem 把交互保存为可关联的笔记，并在加入新笔记时修订相关旧笔记的描述与标签。」** Xu 等人的论文借鉴 Zettelkasten；本篇依据 v11 第 3—4 节，未部署其实现。

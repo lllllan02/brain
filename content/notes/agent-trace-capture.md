@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["Agent", "Trace", "数据脱敏", "采样"]
 created_at: "2026-10-12T23:28:23+08:00"
 updated_at: "2026-10-13T01:35:20+08:00"
+reading_suggestions:
+  - agent-trace-spans
+  - otel-genai-tracing
+  - langfuse-tracing
+  - otel-trace-collection
 ---
 
 **排查 Agent 决策需要区分工具原始结果、处理后的上下文，以及实际发出的模型请求；内容采集策略决定这些证据还能保留多少。** 仅有 token 数或一段摘要，可以分析成本，却通常不足以复核模型是否看到了关键事实。

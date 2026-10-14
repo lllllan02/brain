@@ -6,6 +6,12 @@ category: "Agent"
 tags: ["Agent", "行为约束", "工具调用"]
 created_at: "2026-10-13T11:04:15+08:00"
 updated_at: "2026-10-13T11:08:17+08:00"
+reading_suggestions:
+  - tool-permission-design
+  - agent-human-in-the-loop
+  - openai-guardrails-summary
+  - agent-trace
+  - agent-evaluation-safety
 ---
 
 **行为约束通过执行前后的检查点落实：检查器返回判定，运行程序决定是否调用工具、怎样处理结果以及能否继续。** 只记录违规或提醒模型，不能保证动作被阻止。

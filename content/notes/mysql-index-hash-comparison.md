@@ -6,6 +6,8 @@ parent: mysql-index-structure
 tags: ["MySQL", "B+树", "索引"]
 created_at: "2026-10-12T15:25:39+08:00"
 updated_at: "2026-10-12T15:59:40+08:00"
+reading_suggestions:
+  - mysql-manual-queries
 ---
 
 **B+ 树「保留键的顺序」，能同时支持等值定位、范围查询与有序访问；哈希索引「不保留键序」，主要适合等值定位。因此，B+ 树更契合 InnoDB 常规索引的多种查询需求。**

@@ -5,6 +5,8 @@ tags: ["Agent", "Checkpoint", "重放"]
 created_at: "2026-10-12T23:28:23+08:00"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "https://docs.langchain.com/oss/python/langgraph/use-time-travel"
+reading_suggestions:
+  - agent-checkpoint-recovery
 ---
 
 **「LangGraph 的时间旅行依赖检查点：复用此前保存的状态，重新执行所选检查点之后的节点。」** 本文节选 Replay、Fork 与执行边界，依据 2026-10-12 官方文档，未运行示例。

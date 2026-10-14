@@ -7,6 +7,9 @@ tags: ["Agent", "A2A", "协议"]
 learning_status: pending
 created_at: "2026-10-13T17:41:05+08:00"
 updated_at: "2026-10-13T17:41:05+08:00"
+reading_suggestions:
+  - agent-subagents
+  - a2a-protocol-specification
 ---
 
 **A2A（Agent2Agent）是独立 Agent 系统之间交换能力描述、消息、任务状态与产物的开放协议。** 通信双方可以使用不同框架、模型和内部工具，不必公开彼此的内部实现。

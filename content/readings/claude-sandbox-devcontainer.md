@@ -6,6 +6,9 @@ tags: ["Agent", "沙箱", "源码"]
 created_at: "2026-10-10"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: ["[devcontainer 配置](https://github.com/anthropics/claude-code/blob/2301018b1f61073c501a8e7a4813ef48c239163b/.devcontainer/devcontainer.json#L1)", "[初始化防火墙脚本](https://github.com/anthropics/claude-code/blob/2301018b1f61073c501a8e7a4813ef48c239163b/.devcontainer/init-firewall.sh#L1)"]
+reading_suggestions:
+  - claude-sandbox-wrapper
+  - sandbox-lifecycle
 ---
 
 **「Bash 沙箱限制进入该路径的命令，devcontainer 则为整套开发环境提供容器边界；两者可以组合。」**

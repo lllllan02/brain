@@ -6,6 +6,10 @@ parent: mysql-explain-reading
 updated_at: "2026-10-12T22:13:41+08:00"
 tags: ["MySQL", "执行计划", "SQL优化"]
 aliases: ["EXPLAIN Extra", "MySQL EXPLAIN Extra"]
+reading_suggestions:
+  - mysql-covering-index
+  - mysql-index-condition-pushdown
+  - mysql-manual-queries
 ---
 
 **`Extra` 补充说明表访问之外的处理、所用优化策略和特殊结果。** 同一行可以同时出现多个标记；以下按 MySQL 8.4 解释，依据[[mysql-manual-queries#EXPLAIN 的字段与常见标记|官方输出与临时表说明]]。

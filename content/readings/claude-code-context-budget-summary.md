@@ -8,6 +8,9 @@ updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://code.claude.com/docs/en/model-config#default-auto-compact-thresholds"
   - "https://code.claude.com/docs/en/env-vars"
+reading_suggestions:
+  - context-budget
+  - claude-compaction-summary
 ---
 
 **「Claude Code 的触发点随模型和配置变化；知道窗口与阈值，不代表能把剩余空间拆成固定的输出预留和安全余量。」**

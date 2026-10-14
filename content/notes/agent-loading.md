@@ -7,6 +7,11 @@ category: "Agent"
 tags: ["Agent", "按需加载"]
 created_at: "2026-10-11T21:11:22+08:00"
 updated_at: "2026-10-11T21:11:22+08:00"
+reading_suggestions:
+  - context-loading
+  - tool-loading
+  - agent-memory-retrieval
+  - context-budget
 ---
 
 **Agent 的按需加载，是根据当前任务需要，逐步提供资料、指令或工具定义的组织方式。** 这些内容全部预先带入会占用窗口，也会增加无关信息；先提供必要线索，再展开细节，可以让每轮输入更聚焦。

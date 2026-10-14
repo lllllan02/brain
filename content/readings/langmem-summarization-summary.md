@@ -9,6 +9,8 @@ updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://langchain-ai.github.io/langmem/guides/summarization/"
   - "https://langchain-ai.github.io/langmem/reference/short_term/"
+reading_suggestions:
+  - context-compaction-storage
 ---
 
 **「LangMem 在模型调用前检查消息长度，用持续更新的摘要替代较早历史，并将完整消息与模型实际输入分开保存。」** 本文整理官方教程及短期记忆 API，依据 2026-10-11 页面，未运行示例。

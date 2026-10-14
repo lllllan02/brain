@@ -7,6 +7,9 @@ tags: ["Redis", "延迟", "排查"]
 type: "practice"
 created_at: "2026-10-13T11:03:37+08:00"
 updated_at: "2026-10-13T11:03:37+08:00"
+reading_suggestions:
+  - redis-memory-diagnostics-docs
+  - redis-go-projects
 ---
 
 **调用方的 Redis 延迟包含客户端等待、网络传输、服务端排队与执行，以及响应读取；SLOWLOG 只覆盖其中的命令执行时间。** 排查先定位时间花在哪里，再选能减少该项成本的措施。

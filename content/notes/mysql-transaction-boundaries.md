@@ -7,6 +7,10 @@ type: "concept"
 tags: ["MySQL", "事务"]
 created_at: "2026-10-12T21:32:30+08:00"
 updated_at: "2026-10-12T21:32:30+08:00"
+reading_suggestions:
+  - transaction
+  - mysql-isolation-levels
+  - mysql-manual-transactions
 ---
 
 **事务边界是同一连接中一组操作开始、提交或回滚的位置，决定哪些修改一起生效。** MySQL 8.4 的 InnoDB 支持[[transaction|事务的 ACID 特性]]，但应用仍需正确划定操作范围、检查业务条件并处理失败。

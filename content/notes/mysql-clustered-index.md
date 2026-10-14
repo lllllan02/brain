@@ -6,6 +6,11 @@ parent: mysql-indexes
 updated_at: "2026-10-12T16:58:43+08:00"
 tags: ["MySQL", "聚簇索引", "主键", "二级索引"]
 aliases: ["InnoDB 聚簇索引", "聚簇索引", "Clustered Index", "聚簇键"]
+reading_suggestions:
+  - mysql-index-structure
+  - mysql-clustered-key
+  - mysql-covering-index
+  - mysql-row-overflow
 ---
 
 **聚簇索引（Clustered Index）是一种叶子保存行记录的索引结构。**

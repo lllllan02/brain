@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "Trace", "可观测性", "采样"]
 created_at: "2026-10-13T01:24:08+08:00"
 updated_at: "2026-10-13T01:35:20+08:00"
+reading_suggestions:
+  - agent-trace-capture
+  - opentelemetry-collector
+  - agent-trace-evaluation
 ---
 
 **可靠性要分层验证：执行是否被记录、记录是否完整导出、平台是否正确接收，以及业务结果是否正确。** 界面上出现一棵树，只证明其中一部分数据可见。

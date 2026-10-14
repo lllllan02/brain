@@ -6,6 +6,8 @@ tags: ["Agent", "Harness"]
 created_at: "2026-10-11T11:46:46+08:00"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)"
+reading_suggestions:
+  - agent-task-state
 ---
 
 **「长任务需要在会话之间交接可验证的工作状态；只延长模型运行时间或压缩历史，不能保证项目持续推进。」**

@@ -6,6 +6,8 @@ parent: mysql-explain-reading
 updated_at: "2026-10-12T22:13:41+08:00"
 tags: ["MySQL", "执行计划", "子查询"]
 aliases: ["EXPLAIN select_type", "MySQL EXPLAIN select_type"]
+reading_suggestions:
+  - mysql-manual-queries
 ---
 
 **`select_type` 描述查询块在整个语句中的类型。** 以下是 MySQL 8.4 表格格式列出的 SELECT 类型，依据[[mysql-manual-queries#EXPLAIN 的字段与常见标记|官方输出说明]]。

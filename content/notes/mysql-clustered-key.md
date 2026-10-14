@@ -6,6 +6,8 @@ parent: mysql-clustered-index
 tags: ["MySQL", "聚簇索引", "主键"]
 created_at: "2026-10-12T16:12:02+08:00"
 updated_at: "2026-10-12T16:12:02+08:00"
+reading_suggestions:
+  - mysql-manual-queries
 ---
 
 **InnoDB 按「主键 → 所有列均为 NOT NULL 的首个唯一索引 → 隐藏行 ID」选择聚簇键，因此没有显式主键的表也有聚簇索引。** 聚簇键决定行记录在聚簇树中的组织顺序，二级索引也要依靠它定位行。

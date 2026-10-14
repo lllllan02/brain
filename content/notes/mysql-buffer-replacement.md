@@ -6,6 +6,9 @@ parent: mysql-buffer-pool-lifecycle
 tags: ["MySQL", "缓存"]
 created_at: "2026-10-12T19:10:47+08:00"
 updated_at: "2026-10-12T20:32:23+08:00"
+reading_suggestions:
+  - mysql-dirty-page-flushing
+  - mysql-scan-resistance-readings
 ---
 
 **缓冲池容量有限，装不下所有数据，因此需要淘汰策略：为新页腾出空间，同时尽量留下后续还会使用的页，减少重复读盘。**

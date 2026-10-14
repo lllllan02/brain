@@ -6,6 +6,9 @@ category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T10:57:59+08:00"
 updated_at: "2026-10-13T10:57:59+08:00"
+reading_suggestions:
+  - anthropic-agent-evals-summary
+  - llm-judge-evaluation
 ---
 
 **评分器（Grader）是依据任务标准和执行证据作出判断的程序、模型或人工流程。** 它也是可能出错的系统，需要独立验证。

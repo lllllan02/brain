@@ -7,6 +7,8 @@ tags: ["上下文管理", "文本压缩"]
 created_at: "2026-10-11T16:33:09+08:00"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "https://platform.claude.com/docs/en/build-with-claude/compaction"
+reading_suggestions:
+  - anthropic-context-editing-summary
 ---
 
 **「Claude 的服务端压缩将较早会话替换为摘要；应用仍需正确回传压缩结果，并决定哪些近期消息继续保留。」** 本文以官方总览为入口，整理按需、阈值、近期保留和后台压缩的核心机制，依据 2026-10-11 页面；相关接口处于 beta，未调用 API 验证。

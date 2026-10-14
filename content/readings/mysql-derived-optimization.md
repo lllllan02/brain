@@ -10,6 +10,8 @@ source:
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/derived-table-optimization.html"
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/derived-condition-pushdown-optimization.html"
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/internal-temporary-tables.html"
+reading_suggestions:
+  - mysql-intermediate-results
 ---
 
 **「这三节 MySQL 8.4 手册说明：子查询的书写层次不等于执行边界；需要保留中间结果时，仍应尽量减少构建量，并比较复用收益与临时存储成本。」** 本导读聚焦非递归 SELECT 的派生表与 CTE，以及相关临时表行为，不展开临时表全部参数与存储格式。

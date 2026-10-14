@@ -8,6 +8,9 @@ type: "practice"
 tags: ["MySQL", "性能排查", "Performance Schema"]
 created_at: "2026-10-12T22:06:03+08:00"
 updated_at: "2026-10-12T22:06:03+08:00"
+reading_suggestions:
+  - mysql-performance-schema-profiling
+  - mysql-lock-waits
 ---
 
 **语句追踪是按线程与事件标识，将一条 SQL 和它的执行阶段、等待记录对应起来的诊断方法。** 执行计划说明怎样取数，追踪帮助判断执行期间时间花在哪里；以下以 MySQL 8.4 为范围。

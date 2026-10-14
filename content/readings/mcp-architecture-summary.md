@@ -13,6 +13,8 @@ source:
   - "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/stdio"
   - "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http"
   - "https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle"
+reading_suggestions:
+  - mcp-tools-summary
 ---
 
 **「MCP 将消息语义与传输方式分开：数据层规定交互内容，传输层负责递送消息。」** 本文节选官方架构与相关规范中「接入、发现、工具调用和通知」的内容，以 `2026-07-28` 为主，并对照 `2025-11-25` 的初始化流程；未运行协议示例。

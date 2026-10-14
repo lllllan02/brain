@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["Agent", "沙箱", "工具调用"]
 created_at: "2026-10-09"
 updated_at: "2026-10-10"
+reading_suggestions:
+  - sandbox-processes
+  - sandbox-concurrency
+  - codex-exec-session
+  - worktree-sandbox-usage
 ---
 
 **生命周期决定任务之间共享什么，以及结束后哪些状态还会留下。** 每次创建全新环境更容易分开状态，但重复准备依赖有成本；一直复用则可能让文件、凭据或后台服务影响下一项任务。

@@ -10,6 +10,10 @@ source:
   - "https://github.com/Aider-AI/aider/blob/main/aider/history.py"
   - "https://platform.claude.com/docs/en/build-with-claude/context-editing"
   - "https://langchain-ai.github.io/langmem/reference/short_term/"
+reading_suggestions:
+  - claude-compaction-summary
+  - anthropic-context-editing-summary
+  - langmem-summarization-summary
 ---
 
 **「触发摘要、限制历史大小和清理工具结果可以使用不同的计数范围。」** 以下按 2026-10-11 的官方文档与 main 源码核对，未运行验证；每项分别说明触发条件和处理后目标，不横向排列为窗口占用率排名。

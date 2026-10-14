@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T11:03:11+08:00"
 updated_at: "2026-10-13T11:03:11+08:00"
+reading_suggestions:
+  - agent-trace-evaluation
+  - inspect-agent-evaluation
+  - agent-evaluation-statistics
 ---
 
 **最小评测程序要让输入、执行环境和验收规则分开，并能从失败分数回到实际证据。** 先用可控实现验证这条链路，再接入模型，能避免在 Agent 和评分器同时出错时无法定位。

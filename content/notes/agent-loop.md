@@ -7,6 +7,9 @@ category: "Agent"
 tags: ["Agent", "反馈循环", "工具调用"]
 created_at: "2026-10-09"
 updated_at: "2026-10-11T11:08:32+08:00"
+reading_suggestions:
+  - tool-calling
+  - agent-context
 ---
 
 **最小 Agent Loop 是让模型决策、程序执行工具、结果回传模型的反馈循环。** 实现只需模型调用、工具执行、上下文保存和循环控制，可以放在同一段程序中。

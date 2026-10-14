@@ -6,6 +6,12 @@ parent: mysql-overview#执行流程与存储
 tags: ["MySQL", "缓存", "持久化"]
 created_at: "2026-10-12T19:05:16+08:00"
 updated_at: "2026-10-12T19:44:39+08:00"
+reading_suggestions:
+  - mysql-buffer-replacement
+  - mysql-read-ahead
+  - wal
+  - mysql-dirty-page-flushing
+  - mysql-doublewrite
 ---
 
 **缓冲池（Buffer Pool）是 InnoDB 按页缓存表和索引数据的内存区域，通过复用页面和延迟写回减少数据文件 I/O。** 以下以 MySQL 8.4、常规未压缩页为范围。

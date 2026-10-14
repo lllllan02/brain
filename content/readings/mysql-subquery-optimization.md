@@ -11,6 +11,8 @@ source:
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/subquery-materialization.html"
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/subquery-optimization-with-exists.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/distinct-optimization.html"
+reading_suggestions:
+  - mysql-existence-queries
 ---
 
 **这些手册章节解释了 MySQL 8.4 怎样处理「是否存在匹配」：避免无用的重复结果、复用子查询结果，或把外层值传入内层缩小查找范围。** 节选范围是 SELECT 中的存在性判断及其执行策略，不覆盖所有标量子查询和数据修改语句优化。

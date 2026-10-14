@@ -7,6 +7,8 @@ source:
   - "https://learn.microsoft.com/en-us/azure/architecture/best-practices/caching"
 created_at: "2026-10-13T11:03:37+08:00"
 updated_at: "2026-10-13T12:48:15+08:00"
+reading_suggestions:
+  - cache-consistency
 ---
 
 这两份架构说明将缓存视为减少重复读取和计算的副本，并讨论如何在失效与容量约束下使用。以下节选通用模式，不展开 Azure 产品部署。

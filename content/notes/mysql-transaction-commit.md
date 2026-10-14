@@ -8,6 +8,10 @@ type: "concept"
 tags: ["MySQL", "事务", "持久化", "binlog"]
 created_at: "2026-10-12T21:32:22+08:00"
 updated_at: "2026-10-12T21:32:22+08:00"
+reading_suggestions:
+  - mysql-dirty-page-flushing
+  - mysql-instance-recovery
+  - mysql-manual-commit
 ---
 
 开启 Binlog 后，一次 InnoDB 事务既要改变本机数据，也要留下可供复制和增量恢复的变更记录。若两边各自提交，崩溃可能留下「本机已提交、Binlog 缺失」或相反的状态，之后重放就会与本机结果不一致。

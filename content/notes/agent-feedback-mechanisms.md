@@ -6,6 +6,12 @@ category: "Agent"
 tags: ["Agent", "自我纠正", "重试", "任务规划"]
 created_at: "2026-10-12T11:27:16+08:00"
 updated_at: "2026-10-12T11:42:07+08:00"
+reading_suggestions:
+  - agent-retry
+  - agent-self-correction
+  - agent-replanning
+  - agent-checkpoint-recovery
+  - agent-human-in-the-loop
 ---
 
 **重试、反思、自我纠正和重新规划可以共同完成一次调整。它们描述不同职责，不是互斥的模块，也不是每次必经的固定步骤。**

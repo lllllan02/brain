@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+reading_suggestions:
+  - docker-sandbox-practice
+  - sandbox-concurrency
+  - sandbox-processes
 ---
 
 **资源限制防止一项任务耗尽机器资源，影响其他任务或服务。** 文件和网络权限即使正确，程序仍可能死循环、占满内存、不断创建进程或写满磁盘。

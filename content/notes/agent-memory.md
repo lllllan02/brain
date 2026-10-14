@@ -7,6 +7,17 @@ category: "Agent"
 tags: ["Agent", "记忆"]
 created_at: "2026-10-09"
 updated_at: "2026-10-13T10:44:40+08:00"
+reading_suggestions:
+  - agent-memory-hierarchy
+  - agent-memory-storage
+  - agent-memory-writing
+  - agent-memory-retrieval
+  - agent-memory-consolidation
+  - agent-memory-experience
+  - agent-memory-maintenance
+  - agent-memory-practice
+  - agent-memory-evaluation
+  - agent-memory-selection
 ---
 
 **Agent 记忆是运行系统保存、组织和调用过去信息，使其影响后续任务的信息管理机制。** 它让 Agent 延续任务、沿用偏好、接受纠正并复用经验。本文聚焦文件、数据库、摘要和技能等外部记忆，不展开模型参数训练。

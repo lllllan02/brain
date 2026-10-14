@@ -6,6 +6,13 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+reading_suggestions:
+  - srt-sandbox-practice
+  - docker-sandbox-practice
+  - gvisor-sandbox-practice
+  - firecracker-sandbox-practice
+  - e2b-sandbox-practice
+  - sandbox-projects
 ---
 
 **选型是在隔离边界、环境可复现性和维护成本之间取舍。** 先明确需要防止哪些访问、是否要防内核漏洞逃逸，再比较依赖、兼容性和交付方式。

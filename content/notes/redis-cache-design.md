@@ -6,6 +6,10 @@ parent: redis
 tags: ["Redis", "缓存", "一致性", "热点"]
 created_at: "2026-10-13T11:03:37+08:00"
 updated_at: "2026-10-13T11:03:37+08:00"
+reading_suggestions:
+  - cache-patterns
+  - cache-consistency
+  - cache-overload-protection
 ---
 
 **Redis 缓存设计先确定权威数据和可接受陈旧时间，再决定读写流程与故障时的回源预算。** 提升命中率不能替代一致性与容量判断。

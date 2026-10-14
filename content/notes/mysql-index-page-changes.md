@@ -6,6 +6,8 @@ parent: mysql-index-structure
 tags: ["MySQL", "B+树", "索引"]
 created_at: "2026-10-12T15:25:39+08:00"
 updated_at: "2026-10-12T15:56:30+08:00"
+reading_suggestions:
+  - mysql-manual-queries
 ---
 
 **页分裂把一个页中的部分记录移到新页，页合并把相邻页的记录集中到一个页。它们解决页面过满或过于稀疏的问题，代价是「搬移记录、调整页面和维护导航关系」。**

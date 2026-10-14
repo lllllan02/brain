@@ -6,6 +6,12 @@ category: "Agent"
 tags: ["Agent", "记忆"]
 created_at: "2026-10-12T23:24:47+08:00"
 updated_at: "2026-10-13T10:44:40+08:00"
+reading_suggestions:
+  - codex-memory-pipeline
+  - langgraph-memory
+  - mem0-paper-memory
+  - mem0-memory
+  - graphiti-memory
 ---
 
 **记忆写入是把交互转成有证据、有适用范围、可维护的记录；新信息到来时，还要判断它是在补充、纠正还是描述另一种情况。** 保存全部聊天可以提供证据，但不能替代这层判断。

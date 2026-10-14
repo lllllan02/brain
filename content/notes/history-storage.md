@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["Agent", "上下文管理", "持久化"]
 created_at: "2026-10-09"
 updated_at: "2026-10-11T21:55:05+08:00"
+reading_suggestions:
+  - pi-session-storage-summary
+  - openai-conversation-storage-summary
+  - context-compaction-storage
+  - agent-checkpoint-recovery
 ---
 
 **对话历史存储是按会话保留用户消息、模型回复、工具调用与结果，让后续交互和原文回查有记录可用。** 进程内的消息列表只能延续当前运行；需要关闭后继续对话，就要把记录持久保存。

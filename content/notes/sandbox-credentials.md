@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+reading_suggestions:
+  - codex-credential-broker
+  - docker-sandboxes-practice
+  - e2b-sandbox-practice
 ---
 
 **凭据保护要解决：任务需要调用有认证的服务，但不应因此获得可随意复制的真实密钥。** 把 key 放进程序可读的环境变量或文件，它就可能进入日志、输出或外发请求。

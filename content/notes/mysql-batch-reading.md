@@ -6,6 +6,9 @@ parent: mysql-index-pagination
 tags: ["SQL优化", "分页"]
 created_at: "2026-10-12T17:56:27+08:00"
 updated_at: "2026-10-12T17:56:27+08:00"
+reading_suggestions:
+  - mysql-index-pagination
+  - mysql-manual-queries
 ---
 
 **分批读取是把大结果集拆成多次有界查询、逐批处理的读取方式。** 大 LIMIT 真正要求返回大量数据，主要要控制单次查询、传输与应用处理的资源占用；它与大 OFFSET 丢弃大量结果的问题不同。

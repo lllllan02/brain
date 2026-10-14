@@ -6,6 +6,11 @@ parent: mysql-overview#执行流程与存储
 tags: ["MySQL", "执行计划", "存储引擎"]
 created_at: "2026-10-12T19:05:16+08:00"
 updated_at: "2026-10-12T19:05:16+08:00"
+reading_suggestions:
+  - mysql-index-structure
+  - mysql-buffer-pool-lifecycle
+  - mysql-index-condition-pushdown
+  - mysql-manual-recovery
 ---
 
 **SQL 执行流程是 MySQL 将 SQL 文本转换成执行计划，再访问数据并返回结果的处理过程。** Server 层负责理解语句与组织执行，InnoDB 负责索引、记录、事务可见性和底层页访问。以下以 MySQL 8.4 的普通文本查询为例。

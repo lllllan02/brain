@@ -6,6 +6,8 @@ tags: ["Agent", "工具调用"]
 created_at: "2026-10-10"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Programmatic Tool Calling](https://developers.openai.com/api/docs/guides/tools-programmatic-tool-calling)"
+reading_suggestions:
+  - tool-scheduling
 ---
 
 **「可预测的多步调用交给代码编排，中间结果先筛选、聚合，再交给模型。」** 本文聚焦 Responses API 的程序化工具调用。

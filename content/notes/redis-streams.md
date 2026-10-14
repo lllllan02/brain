@@ -6,6 +6,10 @@ parent: redis
 tags: ["Redis", "消息队列", "幂等"]
 created_at: "2026-10-13T11:03:37+08:00"
 updated_at: "2026-10-13T11:03:37+08:00"
+reading_suggestions:
+  - redis-streams-docs
+  - redis-high-availability
+  - redis-go-projects
 ---
 
 **选 Redis 消息方案，先区分实时通知、取走任务和保留可追踪事件。** 可靠处理需要把消息保留、领取、业务提交、确认和失败接管连起来。

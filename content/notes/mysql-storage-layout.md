@@ -6,6 +6,10 @@ parent: mysql-overview#执行流程与存储
 tags: ["MySQL", "页", "存储引擎"]
 created_at: "2026-10-12T19:05:16+08:00"
 updated_at: "2026-10-12T19:05:16+08:00"
+reading_suggestions:
+  - mysql-clustered-index
+  - mysql-row-overflow
+  - mysql-buffer-pool-lifecycle
 ---
 
 **InnoDB 用表空间管理数据文件中的存储空间，用页组织和访问数据；表的行记录保存在聚簇索引叶子页中。** 表空间回答「空间放在哪里」，索引回答「按什么顺序查找」，两者共同描述同一份数据。以下以 MySQL 8.4、普通非分区 InnoDB 表为例。

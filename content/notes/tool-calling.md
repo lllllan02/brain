@@ -7,6 +7,16 @@ category: "Agent"
 tags: ["Agent", "工具调用"]
 created_at: "2026-10-09"
 updated_at: "2026-10-12T13:50:46+08:00"
+reading_suggestions:
+  - tool-calling-flow
+  - tool-interface-design
+  - tool-registry
+  - tool-loading
+  - tool-permissions
+  - tool-scheduling
+  - sandbox-execution
+  - agent-retry
+  - mcp
 ---
 
 **工具调用（Tool Calling）是模型提出操作请求、外部程序执行操作，再把结果交回模型的交互机制。**

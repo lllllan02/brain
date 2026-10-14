@@ -6,6 +6,9 @@ parent: mysql-indexes
 tags: ["索引", "SQL优化"]
 created_at: "2026-10-12T17:42:58+08:00"
 updated_at: "2026-10-12T17:42:58+08:00"
+reading_suggestions:
+  - mysql-composite-index
+  - mysql-index-access-cost
 ---
 
 **索引定位是根据查询条件，在有序索引中确定查找点或扫描区间的过程。** 条件必须能转成索引键上的边界，才能跳过无关条目。以下以 MySQL 8.4、InnoDB 为范围，SQL 为假设示例。

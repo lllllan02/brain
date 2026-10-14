@@ -6,6 +6,8 @@ tags: ["Agent", "沙箱", "源码"]
 created_at: "2026-10-10"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: ["[网络桥接实现](https://github.com/anthropics/sandbox-runtime/blob/4160dcde76f9905268cb76826381665c422bfbf6/src/sandbox/linux-sandbox-utils.ts#L1344)", "[目标过滤](https://github.com/anthropics/sandbox-runtime/blob/4160dcde76f9905268cb76826381665c422bfbf6/src/sandbox/sandbox-manager.ts#L458)"]
+reading_suggestions:
+  - sandbox-network
 ---
 
 **「Claude 的 Linux 沙箱将“阻止直连”与“允许受控出口”分开：网络命名空间负责隔离，宿主代理负责过滤。」**

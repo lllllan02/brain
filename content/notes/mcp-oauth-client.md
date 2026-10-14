@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["MCP", "OAuth", "授权"]
 created_at: "2026-10-11T09:58:18+08:00"
 updated_at: "2026-10-11T10:54:33+08:00"
+reading_suggestions:
+  - mcp-http-client
+  - oauth-code
+  - oauth-token
 ---
 
 桌面或命令行 Client 使用当前用户的权限访问远程 MCP Server 时，可以在[[mcp-http-client|HTTP Client]]上增加 OAuth 处理器：**「应用负责浏览器授权与回调，SDK 负责协议处理与令牌使用」**，后续工具调用方式不变。

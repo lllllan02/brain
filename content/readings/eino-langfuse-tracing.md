@@ -12,6 +12,8 @@ source:
   - "https://pkg.go.dev/github.com/cloudwego/eino-ext/callbacks/langfuse/v2@v2.0.2"
   - "https://www.cloudwego.io/docs/eino/core_modules/eino_adk/adk_agent_callback/"
   - "https://langfuse.com/integrations/native/opentelemetry"
+reading_suggestions:
+  - langfuse-dataset-experiments
 ---
 
 **「Go 项目使用 Eino 时，可以复用 CloudWeGo 维护的 Langfuse 回调扩展，自动记录框架组件，再补业务验收与上下文加工。」** Eino 负责运行，回调负责观测映射与导出，Langfuse 负责存储和查看。它不是 Langfuse 官方通用 Go SDK。

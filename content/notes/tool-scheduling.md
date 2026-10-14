@@ -6,6 +6,12 @@ category: "Agent"
 tags: ["Agent", "工具调用"]
 created_at: "2026-10-10"
 updated_at: "2026-10-12T13:00:57+08:00"
+reading_suggestions:
+  - sandbox-concurrency
+  - tool-scheduler-example
+  - pydantic-tool-execution-summary
+  - llmcompiler-summary
+  - agent-retry
 ---
 
 **工具执行调度负责决定多个工具调用何时启动、哪些可以同时执行。** 全部串行会让独立调用互相等待，全部并发又可能破坏先后顺序或争用资源。

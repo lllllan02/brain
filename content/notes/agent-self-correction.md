@@ -7,6 +7,11 @@ category: "Agent"
 tags: ["Agent", "自我纠正"]
 created_at: "2026-10-09"
 updated_at: "2026-10-12T11:35:56+08:00"
+reading_suggestions:
+  - agent-reflection-design
+  - self-refine-summary
+  - intrinsic-self-correction-summary
+  - agent-feedback-mechanisms
 ---
 
 **反思（Reflection）侧重依据目标与证据判断问题，自我纠正（Self-Correction）侧重据此修改做法并验证效果。** Agent 生成了答案或完成了调用，并不意味着满足任务要求；两者配合，让执行结果能够影响后续行动。

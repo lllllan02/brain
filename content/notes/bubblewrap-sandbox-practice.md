@@ -6,6 +6,9 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+reading_suggestions:
+  - sandbox-resources
+  - srt-sandbox-practice
 ---
 
 **bubblewrap 在启动 Linux 程序前，为它准备一套单独的资源视图。** 例如只让它看到指定的工具、输入与输出目录，并使用隔开的网络环境；底层仍是宿主 Linux 内核，没有启动另一套操作系统。

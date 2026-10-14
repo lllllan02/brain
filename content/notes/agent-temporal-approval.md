@@ -7,6 +7,10 @@ tags: ["Agent", "人工介入", "持久化", "Go"]
 created_at: "2026-10-13T11:07:38+08:00"
 updated_at: "2026-10-13T11:10:51+08:00"
 type: practice
+reading_suggestions:
+  - temporal-durable-execution
+  - agent-approval-protocol
+  - agent-resume-practice
 ---
 
 自建状态机需要维护存储、调度和唤醒。使用 Temporal 时，可把这部分交给工作流服务：**工作流等待人的消息，批准后调度发布操作，事件历史支持工作进程重启后的恢复。** 业务仍负责审批权限和发布接口幂等。

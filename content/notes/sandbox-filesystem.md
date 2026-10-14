@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+reading_suggestions:
+  - sandbox-lifecycle
+  - docker-sandbox-practice
+  - codex-sandbox-filesystem
 ---
 
 **文件边界要防止程序读取无关或敏感内容，也要防止它修改任务范围之外的文件。** 例如运行项目测试，通常只需源码、依赖和一个输出目录，不需要整个用户主目录。

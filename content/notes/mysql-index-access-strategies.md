@@ -6,6 +6,9 @@ parent: mysql-indexes
 tags: ["索引", "执行计划"]
 created_at: "2026-10-12T17:42:58+08:00"
 updated_at: "2026-10-12T17:42:58+08:00"
+reading_suggestions:
+  - mysql-composite-index
+  - mysql-manual-queries
 ---
 
 **索引合并（Index Merge）是对同一张表执行多个索引范围扫描，再合并候选结果的访问策略。**

@@ -6,6 +6,8 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+reading_suggestions:
+  - codex-sandbox-tests
 ---
 
 **边界验证要确认任务能正常工作，也确认它确实越不过限制。** 只看到请求失败，可能是依赖没装、服务没启动或网络本身故障，并不能证明沙箱有效。

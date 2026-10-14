@@ -6,6 +6,10 @@ parent: mysql-indexes
 tags: ["MySQL", "索引", "前缀索引"]
 created_at: "2026-10-12T15:29:11+08:00"
 updated_at: "2026-10-12T17:29:15+08:00"
+reading_suggestions:
+  - mysql-composite-index
+  - mysql-covering-index
+  - mysql-index-access-cost
 ---
 
 **前缀索引（Prefix Index）是只将字符串列的前 N 个字符或字节作为索引键的索引。** 以下讨论 MySQL 8.4、InnoDB 的 B+ 树二级索引。

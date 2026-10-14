@@ -6,6 +6,8 @@ parent: mysql-index-structure
 tags: ["MySQL", "B+树", "索引"]
 created_at: "2026-10-12T15:25:39+08:00"
 updated_at: "2026-10-12T15:53:05+08:00"
+reading_suggestions:
+  - mysql-manual-queries
 ---
 
 **树高不等于读盘次数：缓存命中可以减少读盘，范围扫描与回表又可能增加页面访问。** 树高只描述从根到叶子的层数，不能直接代表整条查询的 I/O 成本。

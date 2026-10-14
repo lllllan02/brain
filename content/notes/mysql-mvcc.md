@@ -8,6 +8,10 @@ created_at: "2026-10-09"
 updated_at: "2026-10-12T21:32:30+08:00"
 tags: ["MySQL", "MVCC", "事务"]
 aliases: ["InnoDB MVCC", "MySQL 多版本并发控制"]
+reading_suggestions:
+  - mysql-isolation-levels
+  - mysql-locks-and-deadlocks
+  - mysql-manual-transactions
 ---
 
 **MVCC（Multi-Version Concurrency Control，多版本并发控制）是一种保留历史版本、按可见性规则读取数据的并发控制机制。** 在 MySQL 8.4 的 InnoDB 中，它主要支撑 RC、RR 下普通 SELECT 的一致性非锁定读，让读者取得适用版本，减少等待写事务释放行锁的需要。

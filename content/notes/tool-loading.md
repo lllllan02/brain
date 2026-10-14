@@ -7,6 +7,11 @@ category: "Agent"
 tags: ["Agent", "工具调用", "按需加载"]
 created_at: "2026-10-09"
 updated_at: "2026-10-11T23:27:18+08:00"
+reading_suggestions:
+  - tool-registry
+  - claude-tool-search
+  - openai-tool-search-summary
+  - fastmcp-visibility-summary
 ---
 
 **工具按需加载是根据任务需要，才把相关工具的完整定义提供给模型的机制。** 加载的是用途说明、参数 Schema 等调用信息；工具本身已经在[[tool-registry|注册表]]接入，无需重新加载代码或注册函数。

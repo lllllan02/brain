@@ -8,6 +8,10 @@ created_at: "2026-10-09"
 updated_at: "2026-10-12T21:32:30+08:00"
 tags: ["MySQL", "事务"]
 aliases: ["InnoDB 隔离级别", "Isolation Level"]
+reading_suggestions:
+  - mysql-mvcc
+  - mysql-locks-and-deadlocks
+  - mysql-manual-transactions
 ---
 
 **事务隔离级别（Transaction Isolation Level）是一组规定并发事务读取与加锁行为的规则。** MySQL 8.4 的 InnoDB 默认使用可重复读（RR）；分析结果时，还要区分普通查询、锁定读和写操作。

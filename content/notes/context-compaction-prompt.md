@@ -7,6 +7,10 @@ category: "Agent"
 tags: ["上下文管理", "文本压缩"]
 created_at: "2026-10-11T16:48:17+08:00"
 updated_at: "2026-10-11T17:34:14+08:00"
+reading_suggestions:
+  - pi-compaction-summary
+  - langmem-summarization-summary
+  - factory-compression-evaluation-summary
 ---
 
 **摘要提示词要说明继续任务需要保留的信息，以及如何区分已完成、未验证和待办状态。** 模型总结程序选定的历史，保留边界与原始消息由程序管理。

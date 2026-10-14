@@ -9,6 +9,9 @@ updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "[Claude API：Tool search tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool)"
   - "[Claude Code：Scale with MCP tool search](https://code.claude.com/docs/en/mcp#scale-with-mcp-tool-search)"
+reading_suggestions:
+  - tool-loading
+  - anthropic-advanced-tool-use-summary
 ---
 
 **「Claude Tool Search 通过搜索工具目录实现[[tool-loading|工具按需加载]]。」** API 的协议行为与 Claude Code 的产品策略有所区别，以下依据 2026-10-11 查阅的官方文档。

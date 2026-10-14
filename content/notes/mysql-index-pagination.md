@@ -6,6 +6,10 @@ parent: mysql-indexes
 tags: ["索引", "SQL优化", "分页"]
 created_at: "2026-10-12T17:42:58+08:00"
 updated_at: "2026-10-12T18:00:18+08:00"
+reading_suggestions:
+  - mysql-index-ordering
+  - mysql-deep-pagination
+  - mysql-batch-reading
 ---
 
 **分页是按指定顺序，每次返回结果集一部分记录的查询方式。** 优化时要分清：哪些记录只为跳过而读取，哪些数据确实需要返回。

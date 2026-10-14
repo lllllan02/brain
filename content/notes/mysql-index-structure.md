@@ -6,6 +6,14 @@ parent: mysql-indexes
 updated_at: "2026-10-12T15:59:40+08:00"
 tags: ["MySQL", "B+树", "索引结构", "页"]
 aliases: ["B+树", "InnoDB 索引结构"]
+reading_suggestions:
+  - multiway-balanced-search-tree
+  - mysql-index-height
+  - mysql-index-btree-comparison
+  - mysql-index-hash-comparison
+  - mysql-clustered-index
+  - mysql-index-height-io
+  - mysql-index-page-changes
 ---
 
 **B+ 树（B+ tree）是一种[[multiway-balanced-search-tree|多路平衡查找树]]：内部节点负责导航，数据条目集中在叶子，叶子按键顺序相连。** 这种分工有利于减少定位时的页访问，也便于范围扫描，适合 InnoDB 的常规索引。

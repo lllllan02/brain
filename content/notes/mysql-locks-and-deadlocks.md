@@ -7,6 +7,9 @@ type: "concept"
 tags: ["MySQL", "事务", "并发", "死锁"]
 created_at: "2026-10-12T21:32:30+08:00"
 updated_at: "2026-10-12T21:32:30+08:00"
+reading_suggestions:
+  - mysql-mvcc
+  - mysql-manual-transactions
 ---
 
 **锁（Lock）是一种通过限制冲突访问来协调事务的并发控制机制。** MySQL 8.4 的 InnoDB 用它保护记录及必要的索引间隙；锁范围取决于隔离级别、实际扫描的索引、条件与记录是否存在，等待关系形成环时可能发生死锁。

@@ -7,6 +7,10 @@ updated_at: "2026-10-12T22:06:03+08:00"
 tags: ["连接池", "排队", "性能排查"]
 type: "practice"
 aliases: ["连接池打满", "连接池耗尽"]
+reading_suggestions:
+  - go-sql-connections
+  - mysql-lock-waits
+  - mysql-query-plans
 ---
 
 **连接池排查是结合借连接等待、连接占用时长和归还路径，判断请求为何排队的过程。** 池打满可能来自上限不足，也可能是 SQL、事务或结果处理拖长了占用；先确定连接被谁占着，再调整容量。

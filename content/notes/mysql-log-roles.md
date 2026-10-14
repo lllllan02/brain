@@ -7,6 +7,10 @@ type: "concept"
 tags: ["MySQL", "事务", "持久化", "binlog"]
 created_at: "2026-10-12T21:32:22+08:00"
 updated_at: "2026-10-12T21:32:22+08:00"
+reading_suggestions:
+  - wal
+  - mysql-transaction-commit
+  - mysql-manual-recovery
 ---
 
 MySQL 8.4 的 InnoDB 修改数据时，既要在异常退出后恢复修改，也要能撤销事务、读取历史版本和向其他实例传播变化。**Redo、Undo、Binlog 分别保存这些用途需要的信息，共同参与一次写入。**

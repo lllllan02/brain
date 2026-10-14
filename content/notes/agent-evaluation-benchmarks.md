@@ -6,6 +6,15 @@ category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T11:00:15+08:00"
 updated_at: "2026-10-13T11:06:45+08:00"
+reading_suggestions:
+  - bfcl-evaluation
+  - tau-bench-evaluation
+  - swe-bench-evaluation
+  - browser-agent-benchmarks
+  - gaia-evaluation
+  - harbor-evaluation
+  - agentdojo-evaluation
+  - longmemeval-memory
 ---
 
 **基准测试（Benchmark）是一组任务、环境、执行协议和评分方法，测量的是这些条件下的系统表现。** 选基准时先看它要求 Agent 做什么、检查什么结果，再看总分。

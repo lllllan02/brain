@@ -6,6 +6,12 @@ category: "Agent"
 tags: ["Agent", "工具调用"]
 created_at: "2026-10-10"
 updated_at: "2026-10-12T13:00:57+08:00"
+reading_suggestions:
+  - tool-registry
+  - sandbox-concurrency
+  - pydantic-tool-execution-summary
+  - llmcompiler-summary
+  - aws-retries-summary
 ---
 
 **两种调度共用依赖、资源与容量检查，区别在于完成一个调用后，能否立刻补入后续调用。** 以下是 Go 风格教学伪代码，未编译运行；辅助函数是本文约定，不是 SDK 接口。

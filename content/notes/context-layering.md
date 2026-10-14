@@ -7,6 +7,12 @@ category: "Agent"
 tags: ["上下文管理"]
 created_at: "2026-10-09"
 updated_at: "2026-10-11T22:26:04+08:00"
+reading_suggestions:
+  - agent-context-input
+  - agent-task-state
+  - context-budget
+  - context-trimming
+  - context-compaction
 ---
 
 **上下文分层是按信息用途，分别决定保留、更新和缩减方式的管理方法。** 同样是旧内容，任务约束可能仍有效，进度需要替换为最新状态，冗长日志则可能只需保留结论。把它们统一按时间裁剪，容易删掉要求、留下过时信息。

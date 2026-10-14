@@ -7,6 +7,14 @@ tags: ["Agent", "多Agent协作", "工程选型"]
 learning_status: pending
 created_at: "2026-10-13T17:41:05+08:00"
 updated_at: "2026-10-13T17:41:05+08:00"
+reading_suggestions:
+  - agent-vs-workflow
+  - agent-subagents
+  - langchain-multi-agent
+  - a2a
+  - agent-task-state
+  - mast-multi-agent-failures
+  - agent-evaluation
 ---
 
 **多 Agent 协作是让多个具有各自任务、上下文或能力配置的 Agent，通过委派、交接或消息交换共同完成目标的组织方式。** 它可以分散上下文负担、并行探索和复用独立能力，也引入通信、协调与验收成本。

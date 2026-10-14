@@ -7,6 +7,9 @@ tags: ["Agent", "Checkpoint", "人工介入", "Go"]
 created_at: "2026-10-13T10:59:51+08:00"
 updated_at: "2026-10-13T11:07:38+08:00"
 type: practice
+reading_suggestions:
+  - agent-approval-protocol
+  - agent-resume-failure
 ---
 
 **把「等待」「批准」「执行」分别保存，人工审批就能跨进程继续。** 本例固定一份待发布草稿，不接模型和真实服务，只观察决定如何变成下一次运行的输入。

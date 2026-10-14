@@ -6,6 +6,9 @@ category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T10:57:59+08:00"
 updated_at: "2026-10-13T11:06:45+08:00"
+reading_suggestions:
+  - anthropic-agent-evals-summary
+  - inspect-agent-evaluation
 ---
 
 **评测报告应同时说明任务覆盖、重复次数、分母和不确定性。** 单次成功说明这次做成了，平均分提高也可能来自采样波动、环境变化或特定切片的退化被掩盖。

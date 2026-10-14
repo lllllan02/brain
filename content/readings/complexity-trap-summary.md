@@ -7,6 +7,8 @@ tags: ["上下文管理", "文本压缩", "评测"]
 created_at: "2026-10-11T15:37:35+08:00"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "[The Complexity Trap，v3](https://arxiv.org/html/2508.21433v3)"
+reading_suggestions:
+  - factory-compression-evaluation-summary
 ---
 
 **「在受测软件工程任务中，屏蔽较早的工具结果是与模型摘要竞争力相当的成本基线；但它不能限制历史无限增长，也不保证解题率不下降。」** Tobias Lindenbauer 等人的研究比较完整历史、观察屏蔽与模型摘要，本文依据 2025-10-27 的 v3。

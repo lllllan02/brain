@@ -6,6 +6,9 @@ parent: mysql-indexes
 tags: ["索引", "SQL优化", "DDL"]
 created_at: "2026-10-12T17:42:58+08:00"
 updated_at: "2026-10-12T17:42:58+08:00"
+reading_suggestions:
+  - mysql-index-access-cost
+  - mysql-manual-queries
 ---
 
 **索引维护是围绕查询与约束需求，创建、验证、调整和移除索引的管理过程。** 它既要保留读取收益，也要控制额外空间、写入和变更成本。以下以 MySQL 8.4、InnoDB 为范围；命令是示例，未在实际数据库执行。

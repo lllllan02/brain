@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["Agent", "记忆", "检索"]
 created_at: "2026-10-09"
 updated_at: "2026-10-13T10:44:40+08:00"
+reading_suggestions:
+  - agent-memory-hierarchy
+  - longmemeval-memory
+  - context-budget
+  - agent-memory-evaluation
 ---
 
 **记忆读取要回答三个问题：何时查询、哪些记录适用、最终让模型看到多少。** 相似度检索只解决其中一部分。

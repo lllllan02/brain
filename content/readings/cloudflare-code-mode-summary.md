@@ -6,6 +6,8 @@ tags: ["Agent", "工具调用"]
 created_at: "2026-10-10"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Cloudflare Code Mode 官方文档](https://developers.cloudflare.com/agents/tools/codemode/)"
+reading_suggestions:
+  - anthropic-advanced-tool-use-summary
 ---
 
 **「Cloudflare Code Mode 将工具暴露为带类型的方法，让模型用代码完成多步调用和数据处理，再返回需要的结果。」**

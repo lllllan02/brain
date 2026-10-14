@@ -59,6 +59,9 @@ source:
   - "https://dev.mysql.com/doc/refman/8.4/en/fulltext-search.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/innodb-fulltext-index.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/spatial-index-optimization.html"
+reading_suggestions:
+  - mysql-index-ordering
+  - mysql-manual-recovery
 ---
 
 MySQL 8.4 手册把「写出查询」「理解数据组织」「观察执行计划」分在不同章节。本篇节选这条阅读路径，帮助理解索引为什么影响查询成本，不是整本手册摘要，也不提供面试题频率统计。

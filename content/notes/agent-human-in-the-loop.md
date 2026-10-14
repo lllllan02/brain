@@ -7,6 +7,11 @@ category: "Agent"
 tags: ["Agent", "人工介入"]
 created_at: "2026-10-09"
 updated_at: "2026-10-13T11:10:51+08:00"
+reading_suggestions:
+  - tool-permissions
+  - agent-checkpoint-recovery
+  - agent-approval-protocol
+  - agent-resume-practice
 ---
 
 **人工介入（Human-in-the-Loop，HITL）是在自动执行过程中，把特定决策、审核或操作交给人完成，再由程序处理其结果的机制。** 自动权限校验属于[[agent-guardrails|行为约束]]；需要人判断或提供信息时，才进入人工介入。

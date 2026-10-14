@@ -7,6 +7,9 @@ tags: ["Agent", "记忆", "Go", "源码阅读"]
 created_at: "2026-10-12T23:24:47+08:00"
 updated_at: "2026-10-12T23:43:29+08:00"
 type: practice
+reading_suggestions:
+  - anthropic-memory-tool
+  - codex-memory-pipeline
 ---
 
 **一个小型跨会话偏好记忆，只需明确范围、保存记录、按需读取，并让纠正能替换旧值。** 自然语言提取可以后接模型；先把确定性的读写行为做对，才容易定位模型接入后的问题。

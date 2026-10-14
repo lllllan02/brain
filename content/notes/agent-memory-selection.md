@@ -6,6 +6,13 @@ category: "Agent"
 tags: ["Agent", "记忆", "工程选型"]
 created_at: "2026-10-12T23:24:47+08:00"
 updated_at: "2026-10-12T23:24:47+08:00"
+reading_suggestions:
+  - claude-code-memory
+  - langgraph-memory
+  - mem0-memory
+  - letta-memory
+  - graphiti-memory
+  - agent-memory-evaluation
 ---
 
 **先判断现有系统缺的是状态保存、记忆形成、检索，还是整套 Agent 运行机制，再选择组件。** 这些层可以组合，不能把文件、向量库、LangGraph 和 Letta 当成承担同一职责的四个选项。

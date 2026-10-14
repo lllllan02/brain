@@ -7,6 +7,13 @@ tags: ["Redis", "面试"]
 type: "practice"
 created_at: "2026-10-13T11:03:37+08:00"
 updated_at: "2026-10-13T11:03:37+08:00"
+reading_suggestions:
+  - redis-atomic-operations
+  - redis-high-availability
+  - redis-cache-design
+  - redis-coordination
+  - redis-streams
+  - redis-troubleshooting
 ---
 
 **回答 Redis 问题，可以沿「需求与前提 → 操作过程 → 失败窗口 → 取舍与验证」展开。** 以下题目依据机制与公开项目构造，不代表真实面试记录或考查频率。表中的思路是判断范围，完整机制由对应卡片承接。

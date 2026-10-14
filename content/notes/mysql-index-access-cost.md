@@ -6,6 +6,10 @@ parent: mysql-indexes
 tags: ["MySQL", "索引", "执行计划", "SQL优化"]
 created_at: "2026-10-12T15:29:11+08:00"
 updated_at: "2026-10-12T17:29:15+08:00"
+reading_suggestions:
+  - mysql-covering-index
+  - mysql-index-condition-pushdown
+  - mysql-manual-queries
 ---
 
 **索引选择是优化器为查询比较可用访问路径、决定使用哪个索引或扫描整表的决策过程。** MySQL 8.4 按估算成本作出选择：能用某个索引，只说明存在这条路径，不代表它的总代价最低。

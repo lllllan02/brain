@@ -6,6 +6,12 @@ category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T10:57:59+08:00"
 updated_at: "2026-10-13T10:57:59+08:00"
+reading_suggestions:
+  - agent-trace-structure
+  - agentevals-trajectory
+  - bfcl-evaluation
+  - agent-memory-evaluation
+  - context-compaction-evaluation
 ---
 
 **结果评测判断任务是否完成，轨迹评测检查关键行为与执行约束；两者结合才能区分「做成了」和「按要求做成了」。** 轨迹是可观察事件，不要求取得模型隐藏的思维过程。

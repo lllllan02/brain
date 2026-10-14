@@ -5,6 +5,23 @@ category: "Agent"
 tags: ["Agent", "工程选型"]
 created_at: "2026-10-09"
 updated_at: "2026-10-13T17:41:05+08:00"
+reading_suggestions:
+  - agent-vs-workflow
+  - agent-loop
+  - agent-harness
+  - agent-intent
+  - tool-calling
+  - agent-context
+  - agent-planning
+  - agent-memory
+  - agent-feedback-mechanisms
+  - agent-checkpoint-recovery
+  - agent-guardrails
+  - agent-human-in-the-loop
+  - agent-sandbox
+  - multi-agent
+  - agent-trace
+  - agent-evaluation
 ---
 
 **LLM Agent（智能体）是以大模型为决策核心，在给定目标与约束下自主选择动作，并根据执行结果持续调整行动的系统。**

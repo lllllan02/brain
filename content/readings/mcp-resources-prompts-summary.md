@@ -9,6 +9,8 @@ source:
   - "https://modelcontextprotocol.io/specification/2026-07-28/server/index"
   - "https://modelcontextprotocol.io/specification/2026-07-28/server/resources"
   - "https://modelcontextprotocol.io/specification/2026-07-28/server/prompts"
+reading_suggestions:
+  - mcp-tools-summary
 ---
 
 **「Resources 提供可寻址的数据，Prompts 提供可按参数获取的消息模板；宿主决定如何把它们用于模型交互。」** 本文节选官方 `2026-07-28` 规范中的交互定位、发现与获取、内容形式及必要边界，未运行示例，不展开缓存、通知和错误码细则。

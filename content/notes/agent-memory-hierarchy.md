@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["Agent", "记忆", "上下文管理"]
 created_at: "2026-10-13T10:44:40+08:00"
 updated_at: "2026-10-13T14:53:59+08:00"
+reading_suggestions:
+  - memgpt-memory
+  - letta-memory
+  - claude-code-memory
+  - agent-memory-retrieval
 ---
 
 **分层记忆（Memory Hierarchy）是一种按需组织模型输入的机制：少量必要信息留在上下文，大量历史与细节保存在外部，需要时再取回。** 历史可以不断增长，每次推理能读取的内容却有限，因此要控制本轮输入的范围。

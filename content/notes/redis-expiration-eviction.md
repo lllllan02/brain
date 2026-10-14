@@ -6,6 +6,9 @@ parent: redis
 tags: ["Redis", "TTL", "内存淘汰"]
 created_at: "2026-10-13T11:03:37+08:00"
 updated_at: "2026-10-13T11:03:37+08:00"
+reading_suggestions:
+  - redis-cache-design
+  - redis-memory-diagnostics-docs
 ---
 
 **过期根据生存时间（Time to Live，TTL）判断数据何时失效，淘汰在内存压力下选择牺牲哪些 key。** key 可以尚未到期就被淘汰；到期后物理内存也不一定立即归还操作系统。

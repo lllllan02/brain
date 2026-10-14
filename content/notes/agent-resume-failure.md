@@ -7,6 +7,10 @@ tags: ["Agent", "Checkpoint", "幂等", "Go"]
 created_at: "2026-10-13T11:07:38+08:00"
 updated_at: "2026-10-13T11:07:38+08:00"
 type: practice
+reading_suggestions:
+  - agent-resume-practice
+  - idempotency
+  - aws-idempotent-retries-summary
 ---
 
 审批已经落盘，任务也保存了执行进度，仍可能重复发布。原因是**「远端操作成功」和「本地保存完成」发生在不同的提交点**；恢复不能只看本地是否标记成功。

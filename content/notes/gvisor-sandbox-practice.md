@@ -6,6 +6,8 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+reading_suggestions:
+  - docker-sandbox-practice
 ---
 
 **gVisor 给程序提供一个「替身内核」，减少不可信代码直接攻击宿主内核的机会。** 普通 Docker 容器虽然限制了文件、网络等资源，但程序仍直接使用共享的宿主 Linux 内核。

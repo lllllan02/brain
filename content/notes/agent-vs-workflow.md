@@ -5,6 +5,8 @@ title: "Agent 与工作流有什么区别"
 category: "Agent"
 updated_at: "2026-10-11"
 tags: ["Agent", "工作流", "自主决策", "工程选型"]
+reading_suggestions:
+  - agent
 ---
 
 **工作流（Workflow）按预设规则决定执行路径，Agent 由模型根据目标和执行结果决定下一步动作。** 核心区别是「谁决定下一步」，而非是否调用模型；两者也可以组合使用。

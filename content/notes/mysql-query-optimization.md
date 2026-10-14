@@ -7,6 +7,17 @@ parent: mysql-overview#查询与性能
 tags: ["MySQL", "SQL优化"]
 created_at: "2026-10-12T21:32:44+08:00"
 updated_at: "2026-10-12T22:52:51+08:00"
+reading_suggestions:
+  - mysql-explain-reading
+  - mysql-index-predicates
+  - mysql-composite-index
+  - mysql-covering-index
+  - mysql-index-condition-pushdown
+  - mysql-index-joins
+  - mysql-existence-queries
+  - mysql-intermediate-results
+  - mysql-deep-pagination
+  - mysql-batch-reading
 ---
 
 **查询优化（Query Optimization）是在满足结果语义和业务需求的前提下，调整 SQL、索引或取数方式，减少查询所需工作的过程。** MySQL 8.4 中，扫描、取行、连接、排序和结果传输可能分别占用时间；「走了索引」不能说明这些工作都已减少。

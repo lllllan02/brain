@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["MCP", "OAuth", "权限"]
 created_at: "2026-10-11T10:06:16+08:00"
 updated_at: "2026-10-11T10:06:16+08:00"
+reading_suggestions:
+  - tool-permission-design
+  - mcp-oauth-client
+  - sandbox-execution
 ---
 
 **「接入 Server、访问业务数据、批准一次操作」是不同的权限判断。** Client 接入常见有三种情形：

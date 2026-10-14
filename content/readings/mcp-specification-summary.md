@@ -7,6 +7,8 @@ created_at: "2026-10-11T00:40:07+08:00"
 updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://modelcontextprotocol.io/specification/2026-07-28"
+reading_suggestions:
+  - mcp-architecture-summary
 ---
 
 **「MCP 在 JSON-RPC 消息格式之上，约定外部能力如何声明、请求和返回，使不同应用与服务能够按共同接口交互。」** 本文依据官方规范 `2026-07-28` 版本。

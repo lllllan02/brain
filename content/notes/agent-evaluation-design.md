@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T10:57:59+08:00"
 updated_at: "2026-10-13T11:06:45+08:00"
+reading_suggestions:
+  - agent-trace-evaluation
+  - tau-bench-evaluation
+  - langsmith-evaluation
 ---
 
 **评测设计是把用户目标转成可执行任务、可核验结果和明确的比较条件。** 数据集决定测哪些能力，评分规则决定什么算成功；两者都应先于调参确定。

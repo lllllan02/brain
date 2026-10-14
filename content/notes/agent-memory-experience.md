@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "记忆", "自我纠正"]
 created_at: "2026-10-13T10:44:40+08:00"
 updated_at: "2026-10-13T10:44:40+08:00"
+reading_suggestions:
+  - agent-self-correction
+  - reflexion-summary
+  - voyager-skill-memory
 ---
 
 **经验记忆保存任务条件、采取的行动和实际结果；技能复用进一步把已验证的方法组织为可重复使用的步骤或程序。** 前者帮助判断过去发生了什么，后者减少相似任务中的重复探索。

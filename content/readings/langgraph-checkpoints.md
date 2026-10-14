@@ -8,6 +8,9 @@ updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://docs.langchain.com/oss/python/langgraph/persistence"
   - "https://docs.langchain.com/oss/python/langgraph/checkpointers"
+reading_suggestions:
+  - agent-resume-failure
+  - langgraph-time-travel
 ---
 
 **「LangGraph 把执行进度保存为线程内的图状态，并用检查点恢复后续调度。」** 本文节选官方持久化文档中的保存对象、提交时机与故障恢复，按 2026-10-13 页面核对；未运行 Python SDK。

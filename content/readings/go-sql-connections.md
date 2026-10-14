@@ -12,6 +12,8 @@ source:
   - "https://pkg.go.dev/database/sql#DB.Conn"
   - "https://go.dev/doc/database/querying"
   - "https://pkg.go.dev/os/signal"
+reading_suggestions:
+  - db-connection-pool
 ---
 
 本导读选取 Go `database/sql` 的连接管理、状态统计和结果释放规则，用于解释「应用等待很久，但数据库 SQL 记录不慢」的情况。MySQL 连接行为还取决于驱动与服务端配置，文中的接口规则不保证某个驱动的超时或取消效果。

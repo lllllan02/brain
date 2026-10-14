@@ -204,7 +204,7 @@
       "title": "Agent 意图识别",
       "collection": "notes",
       "state": "pending",
-      "digest": "74badf2dedc9641d979851116526a98f99792f0fe9c13cbde0fdae77350896d4"
+      "digest": "3847c7a5ab8abbfd72c019accdabe675e0d3041427d868e753999ef488b40786"
     },
     "agent-loading": {
       "title": "Agent 中哪些内容可以按需加载？",
@@ -1038,25 +1038,37 @@
       "title": "意图不确定时怎样澄清与回退",
       "collection": "notes",
       "state": "pending",
-      "digest": "2b64c79a40ee3b586af6025d57792a33119bb3a26b011a027804e9c83655094a"
-    },
-    "intent-classification": {
-      "title": "意图分类（Intent Classification）",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "b961684fcc06aade86564396cb13d2fdad11efb20143a9ca8e437997df5550f6"
+      "digest": "6f3b69964146456b7c02e0099f4d5099cc6509ebc3d423cfd67c90a6172b928a"
     },
     "intent-dialogue-state": {
       "title": "意图参数与多轮状态",
       "collection": "notes",
       "state": "pending",
-      "digest": "056677d0b3e29a4b1c186d3ff9cbd377fe02a71b61a35aaf08a032145f2d8bed"
+      "digest": "6f4c4d735a5b40b751dfe6ba89836237bea7c8f47d42a757efd0c43260a619a4"
+    },
+    "intent-evaluation": {
+      "title": "意图识别的评测与上线",
+      "collection": "notes",
+      "state": "pending",
+      "digest": "57ca9eaf8149b48a58d847e902ee0767abc9417c7ffc12c618f03f3539322942"
     },
     "intent-llm": {
       "title": "用 LLM 实现意图识别",
       "collection": "notes",
       "state": "pending",
-      "digest": "32f9ce59f636c5bc396081c1604cdd32261ed03c4df3e8540e84a747662879ca"
+      "digest": "aba8f28d8a73343f3d1b3ddad2abc12713c11c942f27e0d6f079c1306ca5f56a"
+    },
+    "intent-rules": {
+      "title": "用规则实现意图识别",
+      "collection": "notes",
+      "state": "pending",
+      "digest": "9f4cb60f8fc9dea05248dede33cd1f4fe5597231e2f64649b0aac1358c5fa52e"
+    },
+    "intent-text-classifier": {
+      "title": "用文本分类器实现意图识别",
+      "collection": "notes",
+      "state": "pending",
+      "digest": "ff55ed537f74461cb9a926e9e7466224ad9d3d341f3f1e5d4b40400114f9cc00"
     },
     "kafka-event-model": {
       "title": "Kafka 事件与记录",
@@ -2304,7 +2316,7 @@
       "title": "Anthropic：用分类提示与结构化输出处理用户请求",
       "collection": "readings",
       "state": "unread",
-      "digest": "1cec7a5164efebca222adeeaf51a26e3de914fd82440ea9d30116f5bb7815d5d"
+      "digest": "2e9208a532f736b10948e3553763be9ee0c1272558a932e61565d3f8aee6a363"
     },
     "anthropic-long-running-harness-summary": {
       "title": "Anthropic：长任务为什么不能只靠上下文压缩",
@@ -2365,6 +2377,12 @@
       "collection": "readings",
       "state": "unread",
       "digest": "18194681fbe0d19cab557cc6f9c6eea91f707a37bae3cc56bd2e68dd5ad804d5"
+    },
+    "azure-clu-intent-design": {
+      "title": "Azure CLU：类别设计、None 意图与评估口径",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "008a1ed7775ceb6135accb2045a453817d8910ccae166a0d2fa500e7bcb666a5"
     },
     "azure-rag-chunking": {
       "title": "Azure AI Search：文档切分的单位与取舍",
@@ -2564,6 +2582,12 @@
       "state": "unread",
       "digest": "21e8c35e9479ea14bf43c97aa9c6da3b97f9af0bd5936c4a0aba032db94b4d55"
     },
+    "dialogflow-intent-design": {
+      "title": "Dialogflow CX：类别、作用范围与参数收集",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "afad170f74ee265c23ffb332a3a3aa2834bd6ee9f5a06a02ed0d6ec690f76207"
+    },
     "docling-document": {
       "title": "Docling：保留结构与来源的文档解析",
       "collection": "readings",
@@ -2665,6 +2689,12 @@
       "collection": "readings",
       "state": "unread",
       "digest": "9fa403bb955c92065ef117d84f889c8ee7d734b603fe6fd821b53f988a8af8d2"
+    },
+    "intent-production-testing": {
+      "title": "Lex、Dialogflow 与 Rasa：对话测试和发布检查",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "78e0c05d8d1cad2f5f9849652c8bb24cee92cfa8b4e133887dfc5622b449298b"
     },
     "intrinsic-self-correction-summary": {
       "title": "无外部反馈的推理纠正：为什么可能越改越错",
@@ -2774,6 +2804,12 @@
       "state": "unread",
       "digest": "73fd5d6cea8c982e3ffb18aca0f12fabdea2dea5cb7868b3ad7c4ee29fb215ca"
     },
+    "langgraph-intent-routing": {
+      "title": "LangGraph：结构化分类如何接入条件路由",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "7882773b1b18a0cb25bc3a584574c5b9e71ef67be76aa2d2557673af5866f9a5"
+    },
     "langgraph-memory": {
       "title": "LangGraph 与 LangMem：状态持久化和记忆形成",
       "collection": "readings",
@@ -2815,6 +2851,12 @@
       "collection": "readings",
       "state": "unread",
       "digest": "08430b3173cd39b1a3eaa29fb1402e084dee30d65315c1c78e8d40646913d1bf"
+    },
+    "lex-intent-recovery": {
+      "title": "Amazon Lex V2：候选意图、回退与会话恢复",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "eb1e6daeb7dbce524d12ea2a5e01803e29d2aff48fea51d00336d92989e2a75c"
     },
     "llamaindex-document-management": {
       "title": "LlamaIndex：文档身份、刷新与删除",
@@ -3174,13 +3216,19 @@
       "title": "Rasa 与 scikit-learn：意图分类的样本、特征与预测",
       "collection": "readings",
       "state": "unread",
-      "digest": "c4af3fd9cbac96d210a8ce903e45de0b6db34b29a7ade7e74689f5ce911475c7"
+      "digest": "489f1ca890f172832d6adf001d72f841e6bc506e1b80a403de1ee0402c437fde"
     },
     "rasa-intent-fallback": {
       "title": "Rasa：低置信度回退与分阶段澄清",
       "collection": "readings",
       "state": "unread",
       "digest": "274594e68e7fd0857d35de075956f84effd59bb2635d1e2141c8c82daf59a29e"
+    },
+    "rasa-nlu-data-practice": {
+      "title": "Rasa：从真实会话维护 NLU 训练数据",
+      "collection": "readings",
+      "state": "unread",
+      "digest": "b0dad84b81aa87aa596a1e153acae6f7213a5bb8da9b4fd61d1228570e4910c3"
     },
     "rasa-slots": {
       "title": "Rasa Slots：从抽取结果到对话记忆",
@@ -22344,6 +22392,342 @@
       ],
       "source": "observed",
       "docId": "mast-multi-agent-failures"
+    },
+    {
+      "id": "7a38b945-a0cf-47ea-a745-71d8aa681f94",
+      "kind": "updated",
+      "entity": "doc:agent-intent",
+      "title": "Agent 意图识别",
+      "time": "2026-10-13T14:01:04.849Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-intent"
+    },
+    {
+      "id": "10de60ca-1d29-4faa-93e8-21fb8b9c0dce",
+      "kind": "updated",
+      "entity": "doc:intent-clarification",
+      "title": "意图不确定时怎样澄清与回退",
+      "time": "2026-10-13T14:01:04.849Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-clarification"
+    },
+    {
+      "id": "40b678e3-a17e-4c6a-ade9-f17f987fe1ae",
+      "kind": "updated",
+      "entity": "doc:intent-llm",
+      "title": "用 LLM 实现意图识别",
+      "time": "2026-10-13T14:01:04.849Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-llm"
+    },
+    {
+      "id": "88000f25-0b0d-4974-80da-99699de2f6a1",
+      "kind": "created",
+      "entity": "doc:intent-rules",
+      "title": "用规则实现意图识别",
+      "time": "2026-10-13T14:01:04.849Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-rules"
+    },
+    {
+      "id": "1034937b-9119-4211-be73-3feec2918b3b",
+      "kind": "created",
+      "entity": "doc:intent-text-classifier",
+      "title": "用文本分类器实现意图识别",
+      "time": "2026-10-13T14:01:04.849Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-text-classifier"
+    },
+    {
+      "id": "c71a1534-edac-4f78-b0dc-c2d3d9758501",
+      "kind": "updated",
+      "entity": "doc:anthropic-intent-routing",
+      "title": "Anthropic：用分类提示与结构化输出处理用户请求",
+      "time": "2026-10-13T14:01:04.849Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-intent-routing"
+    },
+    {
+      "id": "f6f29292-94b1-4bbb-a40e-0f443cad2818",
+      "kind": "updated",
+      "entity": "doc:rasa-intent-classification",
+      "title": "Rasa 与 scikit-learn：意图分类的样本、特征与预测",
+      "time": "2026-10-13T14:01:04.849Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "rasa-intent-classification"
+    },
+    {
+      "id": "d5285bfc-94e4-4f2a-995b-6d7fef8c5369",
+      "kind": "updated",
+      "entity": "doc:intent-rules",
+      "title": "用规则实现意图识别",
+      "time": "2026-10-13T14:01:15.244Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-rules"
+    },
+    {
+      "id": "e1c8ead2-d4f4-4b69-af1a-4d696009e9a1",
+      "kind": "updated",
+      "entity": "doc:intent-text-classifier",
+      "title": "用文本分类器实现意图识别",
+      "time": "2026-10-13T14:01:15.244Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-text-classifier"
+    },
+    {
+      "id": "4c889480-be5d-4e35-bfda-150e89411859",
+      "kind": "updated",
+      "entity": "doc:intent-llm",
+      "title": "用 LLM 实现意图识别",
+      "time": "2026-10-13T14:01:28.831Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-llm"
+    },
+    {
+      "id": "8ebf9f0e-9c02-4728-8a86-fad03ce7566b",
+      "kind": "updated",
+      "entity": "doc:agent-intent",
+      "title": "Agent 意图识别",
+      "time": "2026-10-13T14:02:00.843Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-intent"
+    },
+    {
+      "id": "10091c16-3848-42e3-b1ee-2815e3baf803",
+      "kind": "updated",
+      "entity": "doc:intent-text-classifier",
+      "title": "用文本分类器实现意图识别",
+      "time": "2026-10-13T14:02:28.837Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-text-classifier"
+    },
+    {
+      "id": "81c52905-a07c-4537-b31e-79eee32fb3bb",
+      "kind": "created",
+      "entity": "doc:azure-clu-intent-design",
+      "title": "Azure CLU：类别设计、None 意图与评估口径",
+      "time": "2026-10-13T14:09:24.744Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "azure-clu-intent-design"
+    },
+    {
+      "id": "a02962b8-6313-492e-a313-1a3331903d59",
+      "kind": "created",
+      "entity": "doc:dialogflow-intent-design",
+      "title": "Dialogflow CX：类别、作用范围与参数收集",
+      "time": "2026-10-13T14:09:24.744Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "dialogflow-intent-design"
+    },
+    {
+      "id": "a7d88801-b86f-4bbe-b2a9-cbb927026f52",
+      "kind": "created",
+      "entity": "doc:intent-production-testing",
+      "title": "Lex、Dialogflow 与 Rasa：对话测试和发布检查",
+      "time": "2026-10-13T14:09:24.744Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "intent-production-testing"
+    },
+    {
+      "id": "2d81b269-8421-40ed-aa89-af8406522ba8",
+      "kind": "created",
+      "entity": "doc:langgraph-intent-routing",
+      "title": "LangGraph：结构化分类如何接入条件路由",
+      "time": "2026-10-13T14:09:24.744Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langgraph-intent-routing"
+    },
+    {
+      "id": "67dde679-f206-4bcf-b7f7-7c043715f59f",
+      "kind": "created",
+      "entity": "doc:lex-intent-recovery",
+      "title": "Amazon Lex V2：候选意图、回退与会话恢复",
+      "time": "2026-10-13T14:09:24.744Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "lex-intent-recovery"
+    },
+    {
+      "id": "ba2cd6c9-c22b-42fa-b58d-e7e497ee9c0a",
+      "kind": "created",
+      "entity": "doc:rasa-nlu-data-practice",
+      "title": "Rasa：从真实会话维护 NLU 训练数据",
+      "time": "2026-10-13T14:09:24.744Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "rasa-nlu-data-practice"
+    },
+    {
+      "id": "c41d93d4-ce8f-4436-91b3-513dc3af86ab",
+      "kind": "updated",
+      "entity": "doc:agent-intent",
+      "title": "Agent 意图识别",
+      "time": "2026-10-14T00:16:57.908Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-intent"
+    },
+    {
+      "id": "83826c69-3e33-4249-a059-626812eb8cc9",
+      "kind": "updated",
+      "entity": "doc:intent-clarification",
+      "title": "意图不确定时怎样澄清与回退",
+      "time": "2026-10-14T00:16:57.908Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-clarification"
+    },
+    {
+      "id": "1a60c526-315f-412e-ac41-3afbc685b47c",
+      "kind": "updated",
+      "entity": "doc:intent-dialogue-state",
+      "title": "意图参数与多轮状态",
+      "time": "2026-10-14T00:16:57.908Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-dialogue-state"
+    },
+    {
+      "id": "c82f6f02-a028-4b1b-895a-2c162c2e9e18",
+      "kind": "created",
+      "entity": "doc:intent-evaluation",
+      "title": "意图识别的评测与上线",
+      "time": "2026-10-14T00:16:57.908Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-evaluation"
+    },
+    {
+      "id": "25222db5-5b6c-464f-b8fe-eb0b752c76c3",
+      "kind": "updated",
+      "entity": "doc:intent-llm",
+      "title": "用 LLM 实现意图识别",
+      "time": "2026-10-14T00:16:57.908Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-llm"
+    },
+    {
+      "id": "65ec9c0c-6f66-470b-ae41-8da6d9bb0020",
+      "kind": "updated",
+      "entity": "doc:intent-rules",
+      "title": "用规则实现意图识别",
+      "time": "2026-10-14T00:16:57.908Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-rules"
+    },
+    {
+      "id": "5ebe626c-c408-4dab-9dd4-592aec8e0c1c",
+      "kind": "updated",
+      "entity": "doc:intent-text-classifier",
+      "title": "用文本分类器实现意图识别",
+      "time": "2026-10-14T00:16:57.908Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-text-classifier"
+    },
+    {
+      "id": "3f359b84-b926-4384-9b05-fee8e76822e3",
+      "kind": "updated",
+      "entity": "doc:anthropic-intent-routing",
+      "title": "Anthropic：用分类提示与结构化输出处理用户请求",
+      "time": "2026-10-14T00:16:57.908Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-intent-routing"
+    },
+    {
+      "id": "1f21aff6-d81e-4823-a25c-b2a60b5fba6c",
+      "kind": "updated",
+      "entity": "doc:agent-intent",
+      "title": "Agent 意图识别",
+      "time": "2026-10-14T00:22:11.139Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-intent"
+    },
+    {
+      "id": "67c87443-a70f-4ef5-bb3e-ff261bf097a9",
+      "kind": "updated",
+      "entity": "doc:agent-intent",
+      "title": "Agent 意图识别",
+      "time": "2026-10-14T00:24:15.279Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-intent"
     }
   ]
 }

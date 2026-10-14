@@ -6,6 +6,9 @@ parent: mysql-buffer-pool-lifecycle
 tags: ["MySQL", "缓存", "页"]
 created_at: "2026-10-12T19:10:47+08:00"
 updated_at: "2026-10-12T20:47:50+08:00"
+reading_suggestions:
+  - mysql-buffer-replacement
+  - mysql-manual-buffer-pool
 ---
 
 缓冲池缓存已加载的页；要进一步减少后续读盘等待，还可以预测接下来需要哪些页，提前加载。

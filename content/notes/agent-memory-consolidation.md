@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["Agent", "记忆"]
 created_at: "2026-10-13T10:44:40+08:00"
 updated_at: "2026-10-13T10:44:40+08:00"
+reading_suggestions:
+  - agent-memory-writing
+  - generative-agents-memory
+  - a-mem-memory
+  - agent-memory-maintenance
 ---
 
 **记忆整合（Memory Consolidation）是比较多条已有记录，形成更易复用的概括、关联或当前认识的处理过程。** 它减少以后逐条重读的工作，同时需要保留推导依据，避免越概括越偏离原意。

@@ -7,6 +7,9 @@ parent: mysql-query-optimization
 tags: ["MySQL", "SQL优化"]
 created_at: "2026-10-12T22:02:26+08:00"
 updated_at: "2026-10-12T22:02:26+08:00"
+reading_suggestions:
+  - mysql-query-plans
+  - mysql-derived-optimization
 ---
 
 **中间结果是查询执行中供后续操作使用的数据；优化重点是减少无用的构建、传递和重复计算，同时保留结果语义。** 中间结果不一定完整保存成表，也可能在操作节点间逐行传递。以下讨论 MySQL 8.4、InnoDB。

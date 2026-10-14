@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["Agent", "沙箱", "限流", "过载保护"]
 created_at: "2026-10-09"
 updated_at: "2026-10-10T21:10:22+08:00"
+reading_suggestions:
+  - sandbox-resources
+  - tool-scheduling
+  - rate-limiting
+  - sandbox-processes
 ---
 
 **并发控制防止多个任务的总消耗压垮服务。** 单个沙箱即使有内存上限，同时启动太多仍可能超出机器容量。它限制执行环境的总量，[[tool-scheduling|工具调度]]另行判断调用之间的依赖与资源冲突。

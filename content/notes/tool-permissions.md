@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10"
 updated_at: "2026-10-12T13:01:35+08:00"
+reading_suggestions:
+  - tool-permission-design
+  - permit-agent-approvals-summary
+  - sandbox-execution
 ---
 
 **权限限定 Agent 能做什么，审批决定需要额外批准的操作能否继续。** 模型只提出调用，程序依据有效授权控制执行。

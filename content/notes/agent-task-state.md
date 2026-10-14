@@ -7,6 +7,11 @@ category: "Agent"
 tags: ["Agent", "状态管理"]
 created_at: "2026-10-09"
 updated_at: "2026-10-11T23:07:41+08:00"
+reading_suggestions:
+  - agent-context
+  - agent-task-state-update
+  - langchain-todo-state-summary
+  - context-loading
 ---
 
 **任务状态管理（Task State Management）是把当前任务的目标、约束、进度和待办，从历史中提取出来，作为独立记录持续维护。**

@@ -11,6 +11,8 @@ source:
   - "https://learn.chatgpt.com/docs/config-file/config-reference"
   - "https://github.com/openai/codex/blob/main/codex-rs/core/src/session/context_window.rs"
   - "https://github.com/openai/codex/blob/main/codex-rs/core/src/compact.rs"
+reading_suggestions:
+  - context-budget
 ---
 
 **「Codex 的原始窗口、有效窗口和自动压缩线是三个不同的数。解释百分比前，要先说明分母用的是哪一个。」**

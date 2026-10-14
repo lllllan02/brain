@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "状态管理"]
 created_at: "2026-10-09"
 updated_at: "2026-10-11T23:16:14+08:00"
+reading_suggestions:
+  - agent-task-state
+  - agent-replanning
+  - openai-instruction-updates-summary
 ---
 
 **任务状态随有效要求和执行证据更新：模型判断变化，程序校验并保存。旧记录不能压过用户的新要求或实际结果。**

@@ -22,6 +22,8 @@ source:
   - "https://github.com/twmb/franz-go"
   - "https://github.com/confluentinc/confluent-kafka-go"
   - "https://github.com/Snailclimb/JavaGuide/blob/main/docs/high-performance/message-queue/kafka-questions-01.md"
+reading_suggestions:
+  - kafka-model-sources
 ---
 
 **「这组资料分别用于建立 Kafka 的整体认识、核对机制与版本、寻找实现入口和发现面试问题。」** 官方文档按 4.3 路径阅读；仓库默认分支持续变化，进入源码或实验时需要另行固定版本。本导读摘取与入门主线和资料选择相关的内容，不代替完整手册，也不表示全部题目已经逐项核验。

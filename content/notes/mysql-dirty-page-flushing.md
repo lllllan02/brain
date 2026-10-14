@@ -6,6 +6,9 @@ parent: mysql-buffer-pool-lifecycle
 tags: ["MySQL", "持久化", "页"]
 created_at: "2026-10-12T19:10:47+08:00"
 updated_at: "2026-10-12T20:55:22+08:00"
+reading_suggestions:
+  - wal
+  - mysql-manual-buffer-pool
 ---
 
 修改先留在缓冲池里，可以延后写盘；但脏页和 Redo 都不能无限积累。**InnoDB 需要持续把修改写回数据文件，为缓存回收和旧日志空间复用创造条件。**

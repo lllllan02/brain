@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["Agent", "自我纠正"]
 created_at: "2026-10-12T10:15:48+08:00"
 updated_at: "2026-10-12T10:41:52+08:00"
+reading_suggestions:
+  - self-refine-summary
+  - critic-summary
+  - intrinsic-self-correction-summary
+  - anthropic-agent-evals-summary
 ---
 
 **有效的反思（Reflection）需要明确的标准、可靠的证据，以及可验证的修改。** 核心流程是：

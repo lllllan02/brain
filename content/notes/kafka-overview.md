@@ -7,6 +7,11 @@ type: "overview"
 tags: ["Kafka", "消息队列", "日志"]
 created_at: "2026-10-12T19:38:04+08:00"
 updated_at: "2026-10-12T20:59:44+08:00"
+reading_suggestions:
+  - kafka-use-cases
+  - kafka-event-model
+  - kafka-topics-partitions
+  - kafka-learning-resources
 ---
 
 **Kafka 是以分区日志保存、传递事件的分布式事件流平台。** 生产者写入事件，Broker 保存数据，消费者按自己的进度读取。日志保留与消费进度分开，因此履约、分析等不同应用可以读取同一批订单事件，也可以重放仍在保留范围内的历史数据。

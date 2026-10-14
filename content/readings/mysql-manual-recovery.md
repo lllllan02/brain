@@ -15,6 +15,11 @@ source:
   - "https://dev.mysql.com/doc/refman/8.4/en/binary-log.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/replication.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/point-in-time-recovery.html"
+reading_suggestions:
+  - wal
+  - mysql-manual-buffer-pool
+  - mysql-manual-commit
+  - mysql-manual-backup
 ---
 
 MySQL 8.4 手册把实例崩溃恢复、复制和备份恢复分开介绍，因为三者解决的故障不同。本篇节选职责与基本过程，不包含恢复命令、参数调优或集群部署步骤。

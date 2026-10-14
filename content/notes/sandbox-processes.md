@@ -6,6 +6,9 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+reading_suggestions:
+  - sandbox-lifecycle
+  - codex-exec-session
 ---
 
 **清理任务不能只停止最初那条命令，因为它可能启动了后台服务和更多子进程。** 例如测试脚本退出后，HTTP 服务仍可能占用端口、内存并继续写文件。

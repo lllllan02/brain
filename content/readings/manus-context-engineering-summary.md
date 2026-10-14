@@ -5,6 +5,10 @@ tags: ["Agent", "上下文管理"]
 created_at: "2026-10-11T15:24:08+08:00"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Context Engineering for AI Agents: Lessons from Building Manus](https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus)"
+reading_suggestions:
+  - context-loading
+  - agent-task-state
+  - langchain-context-engineering-summary
 ---
 
 **「Manus 把上下文工程作为快速改进 Agent 的手段，同时考虑缓存成本、信息可恢复性与行为反馈。」** Yichao Ji 在 2025-07-18 的文章中总结六项生产经验；作者将其视为自身实践中的有效选择，并不主张普遍适用。

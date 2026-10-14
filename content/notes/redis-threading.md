@@ -6,6 +6,9 @@ parent: redis
 tags: ["Redis", "事件循环", "性能"]
 created_at: "2026-10-13T11:03:37+08:00"
 updated_at: "2026-10-13T11:03:37+08:00"
+reading_suggestions:
+  - redis-atomic-operations
+  - redis-execution-docs
 ---
 
 **Redis 的常规命令主要由主线程串行执行，同时通过事件循环处理多个连接；后台工作还会使用其他线程或进程。** 「单线程」描述的是特定工作，不代表整个进程只有一个线程，也不能推导出应用的多步业务操作天然安全。

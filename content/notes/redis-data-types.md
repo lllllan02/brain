@@ -6,6 +6,9 @@ parent: redis
 tags: ["Redis", "数据结构"]
 created_at: "2026-10-13T11:03:37+08:00"
 updated_at: "2026-10-13T11:03:37+08:00"
+reading_suggestions:
+  - redis-data-model-docs
+  - redis-streams
 ---
 
 **数据类型决定能执行什么操作，底层编码决定怎样花费内存和 CPU。** 选型先看访问方式，再看规模与操作成本；同为 Hash，几项短字段和几十万项长字段的内存布局可能不同。

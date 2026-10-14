@@ -6,6 +6,15 @@ aliases: ["Agent Trace 要记录什么", "Agent Tracing"]
 category: "Agent"
 updated_at: "2026-10-13T01:24:08+08:00"
 tags: ["Agent", "Trace", "可观测性", "错例回流", "数据脱敏"]
+reading_suggestions:
+  - trace
+  - span
+  - agent-trace-spans
+  - agent-trace-structure
+  - agent-trace-capture
+  - agent-trace-verification
+  - agent-trace-viewing
+  - agent-trace-evaluation
 ---
 
 **Agent Trace 是一次 Agent 运行中相互关联的操作记录，用于还原模型获得的信息、提出的动作、程序执行结果与任务验收情况。** 只保存最终回复，无法区分上下文不足、工具选错、执行失败和结果误读。

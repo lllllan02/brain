@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["Agent", "Trace", "可观测性"]
 created_at: "2026-10-13T01:24:08+08:00"
 updated_at: "2026-10-13T01:24:08+08:00"
+reading_suggestions:
+  - agent-trace-structure
+  - agent-trace-capture
+  - agent-trace-verification
+  - agent-trace-evaluation
 ---
 
 **先在列表中圈定异常运行，再用调用树看归属、时间线看等待、输入输出查证据，最后用评分判断是否符合业务预期。** 不同视图回答不同问题，不应只盯着节点颜色。

@@ -5,6 +5,12 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-13T12:48:15+08:00"
+reading_suggestions:
+  - srt-sandbox-practice
+  - claude-sandbox-wrapper
+  - claude-sandbox-network
+  - claude-sandbox-devcontainer
+  - codex-sandbox-overview
 ---
 
 **「这组导读从 Claude 的公开命令包装库追到 Linux 网络隔离，再比较开发容器覆盖的范围。」** 材料为 sandbox-runtime `4160dcd` 与 claude-code `2301018` 的公开配置，不代表 Claude Code 全部内部工具实现；未运行验证。

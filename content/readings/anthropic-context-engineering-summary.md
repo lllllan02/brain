@@ -6,6 +6,9 @@ created_at: "2026-10-11T15:24:08+08:00"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)"
 read: true
+reading_suggestions:
+  - context-loading
+  - glob-and-grep
 ---
 
 **「Anthropic 将上下文工程（Context Engineering）定义为持续选择、维护模型推理时所见信息的工作，目标是用足够且高信号的输入支持下一步行动。」** 本文是其 2025-09-29 工程文章的导读。

@@ -6,6 +6,9 @@ parent: mysql-indexes
 updated_at: "2026-10-12T16:25:49+08:00"
 tags: ["覆盖索引", "回表", "索引"]
 aliases: ["覆盖索引", "Covering Index"]
+reading_suggestions:
+  - mysql-clustered-index
+  - mysql-index-condition-pushdown
 ---
 
 **回表是一种取行操作：先从二级索引取得聚簇键（通常是主键），再用它到聚簇索引查找行记录。**

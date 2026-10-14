@@ -7,6 +7,10 @@ category: "Agent"
 tags: ["Agent", "任务规划", "执行模式"]
 created_at: "2026-10-09"
 updated_at: "2026-10-12T00:50:05+08:00"
+reading_suggestions:
+  - react-agent
+  - agent-replanning
+  - langchain-planning-summary
 ---
 
 **Plan-and-Execute 是先生成任务计划，再逐步执行计划的组织模式。** 它将整体任务拆解与单步执行分开，让执行某一步时仍有明确的整体目标和后续安排。

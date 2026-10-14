@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+reading_suggestions:
+  - sandbox-credentials
+  - srt-sandbox-practice
+  - claude-sandbox-network
 ---
 
 **网络边界限制程序能连接谁，防止它把可读数据随意发出去，或访问任务不需要的服务。** 能读取项目源码，不等于应该允许把源码上传到任意网站。

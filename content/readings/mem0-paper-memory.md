@@ -6,6 +6,8 @@ tags: ["Agent", "记忆", "检索"]
 created_at: "2026-10-13T10:44:40+08:00"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "https://arxiv.org/html/2504.19413v1"
+reading_suggestions:
+  - mem0-memory
 ---
 
 **「Mem0 的 2025 年论文将记忆形成分为事实提取和更新决策，并比较文本条目与关系图的效果。」** 本篇依据 v1 第 2—4 节；论文算法与 [[mem0-memory|当前 Mem0 API 和固定提交实现]]分别阅读，未复现实验。

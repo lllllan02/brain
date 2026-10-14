@@ -6,6 +6,12 @@ category: "Agent"
 tags: ["Agent", "记忆", "持久化"]
 created_at: "2026-10-09"
 updated_at: "2026-10-13T10:44:40+08:00"
+reading_suggestions:
+  - langgraph-memory
+  - claude-code-memory
+  - graphiti-memory
+  - longmemeval-memory
+  - agent-memory-consolidation
 ---
 
 **先确定需要保留的信息与更新单位，再选择文件、数据库和索引。** 向量表示用于找相近内容，原文、来源、范围和有效状态仍需可追踪；仅存 embedding 无法解释“为什么相信这条记忆”。

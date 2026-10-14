@@ -21,6 +21,8 @@ source:
   - "https://kafka.apache.org/43/configuration/producer-configs/"
   - "https://kafka.apache.org/43/operations/basic-kafka-operations/"
   - "https://kafka.apache.org/43/operations/multi-tenancy/"
+reading_suggestions:
+  - kafka-selection-sources
 ---
 
 **「本导读摘取 Kafka 的能力定位、记录结构、Topic 划分与分区路由的基础依据。」** Apache 文档按 4.3 阅读；Confluent 的事件设计资料提供建模方法，其建议与 Kafka 协议约束分开理解。本篇不展开序列化实现、完整 Schema 兼容矩阵或分区迁移操作。

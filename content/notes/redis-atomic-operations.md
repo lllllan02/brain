@@ -6,6 +6,9 @@ parent: redis
 tags: ["Redis", "事务", "Lua", "Pipeline"]
 created_at: "2026-10-13T11:03:37+08:00"
 updated_at: "2026-10-13T11:03:37+08:00"
+reading_suggestions:
+  - redis-execution-docs
+  - redis-cluster
 ---
 
 **Pipeline 减少等待往返，MULTI/EXEC 组织不被其他命令穿插的执行，Lua 将读取、判断和修改放到服务端一次完成。** 三者都不能单凭名称保证业务只发生一次，执行结果丢失后的重试仍需判断。

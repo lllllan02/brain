@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T11:00:15+08:00"
 updated_at: "2026-10-13T11:06:45+08:00"
+reading_suggestions:
+  - agent-guardrails
+  - agent-retry
+  - agent-checkpoint-recovery
+  - agentdojo-evaluation
 ---
 
 **安全评测检查 Agent 是否遵守授权和数据边界；鲁棒性评测检查输入扰动、工具故障或中断后能否维持正确行为。** 两者都应同时观察正常任务能否完成。

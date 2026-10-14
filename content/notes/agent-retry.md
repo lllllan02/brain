@@ -7,6 +7,12 @@ category: "Agent"
 tags: ["Agent", "重试"]
 created_at: "2026-10-09"
 updated_at: "2026-10-12T11:27:16+08:00"
+reading_suggestions:
+  - retry-decision
+  - retry-wrapper
+  - pydantic-retries-summary
+  - agent-checkpoint-recovery
+  - agent-feedback-mechanisms
 ---
 
 **Agent 重试（Retry）是在调用失败或校验未通过后，按策略再次尝试相应操作的恢复机制。** 它可以接入模型请求、工具执行、输出校验和任务步骤，并非 Agent 主链路中的固定一步。

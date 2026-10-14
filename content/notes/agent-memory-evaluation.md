@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "记忆", "评测", "可观测性"]
 created_at: "2026-10-09"
 updated_at: "2026-10-13T10:44:40+08:00"
+reading_suggestions:
+  - agent-trace
+  - locomo-memory
+  - longmemeval-memory
 ---
 
 **评估记忆要观察一系列交互之后，后续任务是否更正确、更省成本，并且能及时接受纠正。** 数据库里有记录和检索命中，都不能单独证明效果。

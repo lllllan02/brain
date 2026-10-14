@@ -7,6 +7,11 @@ tags: ["Agent", "多Agent协作", "上下文管理"]
 learning_status: pending
 created_at: "2026-10-13T17:41:05+08:00"
 updated_at: "2026-10-13T17:41:05+08:00"
+reading_suggestions:
+  - agent-harness
+  - langchain-multi-agent
+  - claude-code-agent-collaboration
+  - agent-sandbox
 ---
 
 **子 Agent 是由调用方委派子任务、运行自身模型与工具循环，并向调用方交付结果的 Agent。** 主 Agent 通常保留整体目标与汇总责任；「子」描述的是委派关系，不要求不同模型、独立机器或新进程。

@@ -6,6 +6,8 @@ parent: mysql-explain-reading
 updated_at: "2026-10-12T22:13:41+08:00"
 tags: ["MySQL", "执行计划", "索引"]
 aliases: ["EXPLAIN type", "MySQL EXPLAIN type", "访问方式"]
+reading_suggestions:
+  - mysql-manual-queries
 ---
 
 **`type` 描述 MySQL 怎样访问当前表。** 它既用于单表查询，也用于连接中的表访问；以下取值按 MySQL 8.4 的[[mysql-manual-queries#EXPLAIN 的字段与常见标记|官方说明]]解释。

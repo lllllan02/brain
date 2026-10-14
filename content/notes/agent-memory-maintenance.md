@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["Agent", "记忆", "TTL"]
 created_at: "2026-10-12T23:24:47+08:00"
 updated_at: "2026-10-13T10:44:40+08:00"
+reading_suggestions:
+  - mem0-memory
+  - graphiti-memory
+  - codex-memory-pipeline
+  - anthropic-memory-tool
 ---
 
 **记忆需要持续判断是否仍适用，并让失效或删除沿着索引、摘要和缓存传播。** 错误信息一旦长期保存，可能在多个新会话中反复影响判断。

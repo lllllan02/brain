@@ -7,6 +7,11 @@ category: "Agent"
 tags: ["上下文管理"]
 created_at: "2026-10-09"
 updated_at: "2026-10-11T16:30:26+08:00"
+reading_suggestions:
+  - context-budget
+  - langchain-message-trimming-summary
+  - anthropic-context-editing-summary
+  - context-compaction
 ---
 
 **上下文裁剪与筛选通过选择保留哪些原文来缩减输入。** 裁剪通常按时间、数量取舍，如滑动窗口只保留近期交互；筛选侧重任务相关性，两者可以组合。

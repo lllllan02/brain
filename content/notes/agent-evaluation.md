@@ -6,6 +6,17 @@ category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T11:03:11+08:00"
 updated_at: "2026-10-13T11:06:45+08:00"
+reading_suggestions:
+  - agent-evaluation-design
+  - agent-evaluation-graders
+  - agent-evaluation-harness
+  - agent-evaluation-trajectory
+  - agent-evaluation-statistics
+  - agent-evaluation-safety
+  - agent-evaluation-benchmarks
+  - agent-evaluation-tools
+  - agent-evaluation-practice
+  - agent-evaluation-online
 ---
 
 **Agent 评测是在明确任务、环境和资源约束下，让 Agent 实际执行，再依据结果与过程证据判断能力、可靠性和代价的方法。** 它帮助回答三类问题：任务能否完成，改动是否改善，以及系统是否适合实际使用。

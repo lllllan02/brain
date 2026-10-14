@@ -23,6 +23,9 @@ source:
   - "https://xiaolincoding.com/mysql/transaction/mvcc.html"
   - "https://xiaolincoding.com/mysql/lock/how_to_lock.html"
   - "https://xiaolincoding.com/mysql/lock/deadlock.html"
+reading_suggestions:
+  - mysql-manual-queries
+  - mysql-manual-transactions
 ---
 
 **「这组资料用于发现 MySQL 的学习问题、寻找机制解释，并核对版本条件。」** JavaGuide 与小林 coding 提供问题和专题讲解，CS-Notes 补充知识分类，官方手册用于核对具体行为。本导读保留资料入口与用途，不收录完整题库；资料中关于面试频率或覆盖率的宣传不作为学习优先级依据。

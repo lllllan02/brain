@@ -6,6 +6,10 @@ category: "Agent"
 tags: ["Agent", "Trace", "评测", "错例回流"]
 created_at: "2026-10-12T23:28:23+08:00"
 updated_at: "2026-10-13T11:22:00+08:00"
+reading_suggestions:
+  - anthropic-agent-evals-summary
+  - langfuse-dataset-experiments
+  - langgraph-time-travel
 ---
 
 **错例回流要把失败轨迹转成「可重新执行的输入、受控环境和独立验收条件」，再用新运行验证改动。** 保存 Trace 只保留了观察材料，尚未提供正确答案或完整测试环境。

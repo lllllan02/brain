@@ -13,6 +13,8 @@ source:
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/performance-schema-events-waits-current-table.html"
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/performance-schema-obtaining-parent-events.html"
   - "https://dev.mysql.com/doc/refman/8.4/en/performance-schema-setup-consumers-table.html"
+reading_suggestions:
+  - mysql-statement-tracing
 ---
 
 本导读节选 MySQL 8.4 手册的事件剖析方法：先确定一条语句，再关联它的阶段和等待。它解释运行时耗时的组成，不替代 EXPLAIN 对访问路径的说明，也不覆盖应用取得连接前的排队。

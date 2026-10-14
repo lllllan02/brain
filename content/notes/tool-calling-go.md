@@ -6,6 +6,9 @@ category: "Agent"
 tags: ["工具调用", "Go", "API"]
 created_at: "2026-10-11T10:18:25+08:00"
 updated_at: "2026-10-11T10:27:06+08:00"
+reading_suggestions:
+  - tool-calling-chat-completions
+  - mcp-tool-calling-go
 ---
 
 **模型返回工具名和参数，Go 程序执行本地函数，再把结果交回模型。** 本例用只读的假订单数据演示完整循环：声明 `query_order` → 模型提出调用 → 本地查询 → 回传状态 → 模型回答。

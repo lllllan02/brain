@@ -7,6 +7,11 @@ type: "concept"
 tags: ["Kafka", "消息队列"]
 created_at: "2026-10-12T19:46:06+08:00"
 updated_at: "2026-10-12T20:49:46+08:00"
+reading_suggestions:
+  - async-messaging
+  - load-leveling
+  - event-replay
+  - kafka-selection-sources
 ---
 
 **在消息队列产品中，Kafka 的选型价值在于把分区日志、独立消费进度和数据接入／流处理工具组合起来，支持同一批事件被持续复用。** 当需求只是[[async-messaging|异步解耦]]或[[load-leveling|削峰填谷]]时，这还不足以成为选择 Kafka 的理由。

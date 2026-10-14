@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-10"
+reading_suggestions:
+  - sandbox-implementations
+  - codex-sandbox-launch
+  - claude-sandbox-wrapper
+  - claude-sandbox-devcontainer
 ---
 
 **同一个 Agent 可以支持多种执行方式，比较方案时应先确定「命令在哪里运行」。** 以下是项目公开说明中的代表性路径，取舍属于架构分析。

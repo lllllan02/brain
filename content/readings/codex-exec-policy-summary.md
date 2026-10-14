@@ -8,6 +8,9 @@ updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "https://learn.chatgpt.com/docs/agent-configuration/rules"
   - "https://github.com/openai/codex/blob/main/codex-rs/core/src/exec_policy.rs"
+reading_suggestions:
+  - codex-sandbox-launch
+  - codex-sandbox-retry
 ---
 
 **「Codex 将命令规则、审批模式和沙箱配置共同用于执行决策；未匹配明确规则，不必然意味着必须人工审批。」** 以下为 2026-10-10 文档与源码阅读，未运行验证；源码链接指向会变化的 `main`。

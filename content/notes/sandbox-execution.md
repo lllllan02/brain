@@ -6,6 +6,11 @@ category: "Agent"
 tags: ["Agent", "沙箱", "权限"]
 created_at: "2026-10-09"
 updated_at: "2026-10-10T21:10:22+08:00"
+reading_suggestions:
+  - tool-permissions
+  - sandbox-network
+  - codex-sandbox-launch
+  - codex-sandbox-retry
 ---
 
 **执行流程要同时解决“这次操作是否获准”和“运行后最多能做什么”。** 允许执行 `python test.py`，不意味着脚本可以任意读文件、联网或启动无限子进程。

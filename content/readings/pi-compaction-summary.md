@@ -10,6 +10,8 @@ source:
   - "https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/compaction.md"
   - "https://github.com/earendil-works/pi/blob/main/packages/coding-agent/src/core/compaction/compaction.ts"
   - "https://github.com/earendil-works/pi/blob/main/packages/coding-agent/src/core/session-manager.ts"
+reading_suggestions:
+  - context-budget
 ---
 
 **「Pi 将摘要和原始会话分别记录，用保留起点重建下一轮消息。」** 本文只整理自动压缩及会话接续，依据 2026-10-11 的官方文档和 main 分支源码，未固定提交或运行验证；分支切换摘要与扩展钩子不在本文范围内。

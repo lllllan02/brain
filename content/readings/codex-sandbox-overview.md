@@ -5,6 +5,14 @@ category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
 updated_at: "2026-10-13T12:48:15+08:00"
+reading_suggestions:
+  - codex-sandbox-launch
+  - codex-sandbox-platforms
+  - codex-sandbox-filesystem
+  - codex-credential-broker
+  - codex-exec-session
+  - codex-sandbox-retry
+  - codex-sandbox-tests
 ---
 
 **「这组源码导读追踪 Codex 的工具请求如何经过审批、进入平台沙箱，并在持续运行与失败重试时维持边界。」** 阅读范围为 `5ef96ab` 固定版本，各篇提供源码定位；未运行验证。

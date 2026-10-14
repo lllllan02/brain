@@ -6,6 +6,8 @@ parent: mysql-indexes
 tags: ["索引", "SQL优化"]
 created_at: "2026-10-12T17:42:58+08:00"
 updated_at: "2026-10-12T17:42:58+08:00"
+reading_suggestions:
+  - mysql-manual-queries
 ---
 
 **GROUP BY 是按指定列的相同取值，将输入行归组并计算聚合结果的操作。** 在 MySQL 8.4 中，索引能否帮助分组，取决于相同组能否按键序找到，以及聚合是否需要读取组内所有记录。

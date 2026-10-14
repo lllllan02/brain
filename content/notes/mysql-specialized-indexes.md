@@ -6,6 +6,8 @@ parent: mysql-indexes
 tags: ["索引", "全文检索", "JSON"]
 created_at: "2026-10-12T17:42:58+08:00"
 updated_at: "2026-10-12T17:42:58+08:00"
+reading_suggestions:
+  - mysql-manual-queries
 ---
 
 普通 B+ 树按列值排列，适合等值与范围查找。但「包含某个词」「位于某片区域」「数组含有某个元素」需要不同的查找入口。MySQL 8.4、InnoDB 为这些需求提供以下索引；它们不是普通索引的通用替代品。

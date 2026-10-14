@@ -6,6 +6,9 @@ parent: mysql-indexes
 tags: ["MySQL", "索引", "联合索引"]
 created_at: "2026-10-12T15:29:11+08:00"
 updated_at: "2026-10-12T17:02:00+08:00"
+reading_suggestions:
+  - mysql-covering-index
+  - mysql-manual-queries
 ---
 
 **联合索引（Composite Index）是由多列共同组成的索引。** 在 MySQL 8.4、InnoDB 的常规树索引中，它按列的先后顺序排列组合键，用于多条件查询。

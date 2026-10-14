@@ -6,6 +6,9 @@ parent: redis
 tags: ["Redis", "Cluster", "分片"]
 created_at: "2026-10-13T11:03:37+08:00"
 updated_at: "2026-10-13T11:03:37+08:00"
+reading_suggestions:
+  - redis-cluster-docs
+  - consistent-hashing
 ---
 
 **Redis Cluster 将 key 映射到固定槽，再把槽分配给不同主节点，结合副本提供分片级接替。** 它扩展总容量和可分散的负载，但一个 key 仍由一个分片处理。

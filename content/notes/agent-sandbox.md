@@ -7,6 +7,18 @@ tags: ["Agent", "沙箱"]
 aliases: ["Sandbox", "沙箱"]
 created_at: "2026-10-09"
 updated_at: "2026-10-10T21:10:22+08:00"
+reading_suggestions:
+  - sandbox-filesystem
+  - sandbox-network
+  - sandbox-credentials
+  - sandbox-resources
+  - sandbox-lifecycle
+  - sandbox-processes
+  - sandbox-concurrency
+  - sandbox-execution
+  - sandbox-verification
+  - sandbox-implementations
+  - sandbox-projects
 ---
 
 **沙箱（Sandbox）是限制程序访问范围和资源用量的执行环境。** 让 Agent 修改项目、运行测试时，需要给它完成任务的能力，同时限制误操作和不可信代码的影响。

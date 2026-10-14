@@ -20,6 +20,10 @@ source:
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/innodb-error-handling.html"
   - "https://github.com/mysql/mysql-server/blob/8.4/storage/innobase/include/read0types.h"
   - "https://docs.oracle.com/cd/E17952_01/mysql-8.4-en/commit.html"
+reading_suggestions:
+  - mysql-transaction-boundaries
+  - mysql-mvcc
+  - mysql-locks-and-deadlocks
 ---
 
 MySQL 8.4 的 InnoDB 文档从事务边界、读取可见性和冲突协调解释事务与并发。本篇节选边界、快照、历史版本、基本锁范围及失败处理，辅以 8.4 分支的 ReadView 实现，不穷举加锁规则、参数调优和提交恢复流程。
