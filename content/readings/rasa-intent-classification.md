@@ -7,9 +7,11 @@ source:
   - "https://legacy-docs-oss.rasa.com/docs/rasa/components/"
   - "https://scikit-learn.org/stable/modules/feature_extraction.html"
   - "https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression"
+  - "https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html"
+  - "https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html"
 read: false
 created_at: "2026-10-13T17:38:22+08:00"
-updated_at: "2026-10-13T17:38:22+08:00"
+updated_at: "2026-10-13T21:59:35+08:00"
 ---
 
 **意图分类需要把「输入文字」转换成「类别判断」：开发者定义标签和样本，特征组件把文本变成数字，分类器据此输出候选。** 本篇节选 Rasa Open Source 3.x 旧版文档的 NLU 部分，并用 scikit-learn 官方文档解释数字表示与线性分类；不覆盖 Rasa 的完整对话策略，也不是当前产品安装教程。
@@ -39,3 +41,9 @@ Rasa 的 [Components](https://legacy-docs-oss.rasa.com/docs/rasa/components/#int
 - `DIETClassifier` 共享 Transformer 做意图分类和实体识别，将句子和意图标签放到同一向量空间，通过训练拉近正确标签、拉远负样本；实体由另一标注层预测。它可使用外部预训练表示，但自身不提供预训练语言模型。
 
 这些组件说明「固定标签分类」可以采用不同算法，并不限于关键词匹配。文档的接口与架构解释不能证明某个模型在中文退款业务上的效果；标签设计、样本覆盖和测试仍需面向实际业务完成。
+
+## 怎样对应到可调用的接口？
+
+2026-10-13 核对的 scikit-learn API 文档中，`TfidfVectorizer(analyzer="char", ngram_range=(2, 4))` 把连续 2～4 个字符作为特征；`fit` 学习词表与 IDF，`transform` 复用训练所得状态。中文示例因此可以先用字符片段，无需依赖按空格切词。
+
+`LogisticRegression.fit(X, y)` 学习分类参数，`predict_proba(X)` 返回各类概率，列顺序由 `classes_` 给出。应用应将标签与对应列配对后排序，不能假定第一列就是自己定义的第一类。此处补充的是接口对应关系，不代表这些参数已在订单数据上调优。
