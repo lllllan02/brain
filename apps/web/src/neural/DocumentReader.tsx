@@ -17,6 +17,7 @@ import { useToolbarTitle } from './useToolbarTitle.ts';
 import { useReaderResize } from './useReaderResize.ts';
 import { useReaderFontScale, readerFontScales } from './useReaderFontScale.ts';
 import './reader-font.css';
+import { SelectionCopy } from './SelectionCopy.tsx';
 export function DocumentReader({
   graph,
   node,
@@ -375,6 +376,7 @@ export function DocumentReader({
         )}
         <p className="read-path">{node.path}</p>
       </div>
+      <SelectionCopy key={node.id} readerRef={ref} node={node} />
       <ExternalLinkPreview readerRef={ref} html={node.html} />
       <LinkPreview
         queue={queue}
