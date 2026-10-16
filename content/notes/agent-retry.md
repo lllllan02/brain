@@ -1,12 +1,12 @@
 ---
-learning_status: understood
+learning_status: pending
 parent: agent
 title: "Agent 重试"
 aliases: ["Agent Retry", "Task Retry"]
 category: "Agent"
 tags: ["Agent", "重试"]
 created_at: "2026-10-09"
-updated_at: "2026-10-12T11:27:16+08:00"
+updated_at: "2026-10-16T18:51:25+08:00"
 reading_suggestions:
   - retry-decision
   - retry-wrapper
@@ -46,4 +46,4 @@ reading_suggestions:
 
 **「重试负责再次尝试，Reflection 负责检查问题并提出修改指导。」** 两者可以组合，但重试不一定需要模型反思。
 
-例如，同一次查询遇到暂时断连，可在确认安全后等待重发；若查询参数填错，就先校验或反思、修正参数，再尝试。[[agent-self-correction|反思与自我纠正]]解决的是「改什么」，再次执行是落实纠正的一步；若需要改变剩余任务的步骤或策略，则进入[[agent-replanning|重新规划]]。
+例如，同一次查询遇到暂时断连，可在确认安全后等待重发；若查询参数填错，就先校验或反思、修正参数，再尝试。[[agent-reflection|反思]]帮助判断「改什么」，[[agent-self-correction|自我纠正]]落实修改与验证，再次执行是其中可能需要的一步；若需要改变剩余任务的步骤或策略，则进入[[agent-replanning|重新规划]]。

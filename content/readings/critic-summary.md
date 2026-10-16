@@ -1,10 +1,10 @@
 ---
-parent: agent-reflection-design
+parent: agent-reflection
 title: "CRITIC：先用工具核验，再根据证据纠正"
 category: "Agent"
 tags: ["Agent", "自我纠正"]
 created_at: "2026-10-12T10:15:48+08:00"
-updated_at: "2026-10-13T12:48:15+08:00"
+updated_at: "2026-10-16T19:16:32+08:00"
 source: "[CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing](https://arxiv.org/html/2305.11738)"
 ---
 
@@ -13,6 +13,8 @@ source: "[CRITIC: Large Language Models Can Self-Correct with Tool-Interactive C
 ## 怎样产生有依据的反馈？
 
 模型先生成答案，再根据任务调用搜索、解释器等工具核验。工具响应与原答案一起形成批评依据，随后用于修改答案；无需更新模型权重。编程任务可利用解释器的报错和执行值，事实问答可利用搜索证据。
+
+论文第 3.3 节讨论按任务选择工具，也提到可以自动选择；实际实验为不同任务预设了工具，以便评估。核验目标同样按任务指定，例如真实性、可行性或安全性。因此，这项方法支持「用工具补证据」，不代表已经提供任意任务的标准生成器或完整验证器。
 
 ## 实验支持什么？
 

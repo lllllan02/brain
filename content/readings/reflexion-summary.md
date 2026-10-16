@@ -1,5 +1,5 @@
 ---
-parent: agent-self-correction
+parent: agent-reflection
 title: "Reflexion：把执行反馈写成经验，指导下一次尝试"
 category: "Agent"
 tags: ["Agent", "自我纠正"]

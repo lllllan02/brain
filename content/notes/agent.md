@@ -4,7 +4,7 @@ title: "Agent"
 category: "Agent"
 tags: ["Agent", "工程选型"]
 created_at: "2026-10-09"
-updated_at: "2026-10-13T17:41:05+08:00"
+updated_at: "2026-10-16T18:51:25+08:00"
 reading_suggestions:
   - agent-vs-workflow
   - agent-loop
@@ -50,7 +50,7 @@ Agent 通过「模型决策 → 程序执行工具 → 结果回传 → 模型�
 
 ## 失败、中断与执行边界怎样处理？
 
-暂时故障可以在确认安全后有限[[agent-retry|重试]]；参数、策略或结果有误时，需要依据反馈[[agent-self-correction|修正行动]]并重新验证。两者都应限制次数、耗时与费用，反复尝试不保证成功。 [[agent-feedback-mechanisms|反馈与调整机制]]统一比较重试、反思、纠正和重新规划，说明它们何时独立使用、何时组合。
+暂时故障可以在确认安全后有限[[agent-retry|重试]]；参数、策略或结果有误时，可通过[[agent-reflection|反思]]结合目标与证据判断问题，再由[[agent-self-correction|自我纠正]]落实修改并验证。这些调整都应限制次数、耗时与费用，反复尝试不保证成功。 [[agent-feedback-mechanisms|反馈与调整机制]]统一比较重试、反思、纠正和重新规划，说明它们何时独立使用、何时组合。
 
 跨越多次运行的任务需要[[history-storage|保存对话历史]]，并通过[[agent-checkpoint-recovery|检查点（Checkpoint）与中断恢复]]记录从哪里继续、哪些动作已完成。恢复任务时仍需核对外部操作的结果，避免重复执行。
 

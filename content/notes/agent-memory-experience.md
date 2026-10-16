@@ -5,7 +5,7 @@ parent: agent-memory
 category: "Agent"
 tags: ["Agent", "记忆", "自我纠正"]
 created_at: "2026-10-13T10:44:40+08:00"
-updated_at: "2026-10-13T10:44:40+08:00"
+updated_at: "2026-10-16T18:51:25+08:00"
 reading_suggestions:
   - agent-self-correction
   - reflexion-summary
@@ -20,7 +20,7 @@ reading_suggestions:
 
 更有用的经验是：「项目甲的测试入口位于 apps/api；根目录没有对应脚本；在该目录执行指定命令通过。」它保留环境、失败原因和验证依据。若需要复用为工作步骤，则先读取项目配置、定位测试入口，再执行并检查退出状态，而不是硬编码一次经历的路径。
 
-这里的[[agent-self-correction|反思与自我纠正]]负责找出并修复当前问题；记忆决定哪些结果值得跨任务保存，二者可以配合。
+[[agent-reflection|反思]]负责分析当前问题并提出建议，[[agent-self-correction|自我纠正]]落实修改与验证；记忆决定哪些结果值得跨任务保存，三者可以配合。
 
 ## 可以保存哪种形态？
 

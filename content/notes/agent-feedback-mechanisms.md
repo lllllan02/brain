@@ -1,13 +1,14 @@
 ---
-learning_status: understood
+learning_status: pending
 title: "Agent 的反馈与调整机制"
 parent: agent
 category: "Agent"
 tags: ["Agent", "自我纠正", "重试", "任务规划"]
 created_at: "2026-10-12T11:27:16+08:00"
-updated_at: "2026-10-12T11:42:07+08:00"
+updated_at: "2026-10-16T20:16:52+08:00"
 reading_suggestions:
   - agent-retry
+  - agent-reflection
   - agent-self-correction
   - agent-replanning
   - agent-checkpoint-recovery
@@ -21,8 +22,8 @@ reading_suggestions:
 | 机制 | 核心作用 |
 | --- | --- |
 | [[agent-retry\|重试（Retry）]] | 再次尝试操作，可以原样重发，也可以先修正再试 |
-| [[agent-self-correction\|反思（Reflection）]] | 对照目标与证据检查问题，提出修改指导，也可判断无需修改 |
-| 自我纠正（Self-Correction） | 根据反馈修改参数、行动或产物，并验证效果 |
+| [[agent-reflection\|反思（Reflection）]] | 对照目标与证据检查问题，提出修改指导，也可判断无需修改 |
+| [[agent-self-correction\|自我纠正（Self-Correction）]] | 根据反馈修改参数、行动或产物，并验证效果 |
 | [[agent-replanning\|重新规划（Replanning）]] | 调整剩余步骤、依赖或策略，既可纠错，也可适应新目标 |
 
 这里按职责区分：**「反思给出判断与指导，纠正落实修改并验证。」** 广义自我纠正可以包含反思，不要求拆成两个模块或两次模型调用；规则、工具和人工也能直接提供纠正依据。
@@ -33,7 +34,7 @@ reading_suggestions:
 
 ![[assets/agent-feedback-mechanisms.png|重试、反思、自我纠正和重新规划共享反馈并协作，修改后返回计划或结果节点继续验证]]
 
-**「按问题选择处理方式，不固定逐级升级。」** 暂时故障按[[retry-decision|重试决策]]处理；明确的参数错误可直接修正；需要分析时，按[[agent-reflection-design|有效反思的方法]]提供标准与证据。中断后从哪里继续，则由[[agent-checkpoint-recovery|检查点恢复]]处理。
+**「按问题选择处理方式，不固定逐级升级。」** 暂时故障按[[retry-decision|重试决策]]处理；明确的参数错误可直接修正；需要分析时，按[[agent-reflection#反思怎样形成完整循环？|有效反思的方法]]提供标准与证据。中断后从哪里继续，则由[[agent-checkpoint-recovery|检查点恢复]]处理。
 
 框架名称可能覆盖多个职责：[[pydantic-retries-summary|Pydantic AI 的 Retry]]也包含模型修正，[[langgraph-replanning-summary|LangGraph 的 replan 示例]]同时检查进度与更新计划。应看实际行为；[[self-refine-summary|Self-Refine]]修改当前输出，[[reflexion-summary|Reflexion]]将反馈写成后续尝试可用的经验，后者是具体方法名。
 
