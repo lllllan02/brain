@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "MySQL MVCC（多版本并发控制）"
+title: "MySQL MVCC"
 category: "MySQL"
 parent: mysql-overview#事务与并发
 type: "concept"

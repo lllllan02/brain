@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Agent 记忆最小实现与源码阅读"
+title: "Agent 记忆实现"
 parent: agent-memory
 category: "Agent"
 tags: ["Agent", "记忆", "Go", "源码阅读"]

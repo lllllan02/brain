@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: agent
-title: "Agent 记忆（Memory）"
+title: "Agent 记忆"
 aliases: ["Agent Memory", "Long-term Memory", "长期记忆"]
 category: "Agent"
 tags: ["Agent", "记忆"]

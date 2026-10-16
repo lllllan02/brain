@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "ZooKeeper 客户端如何连接与发送请求"
+title: "ZooKeeper 客户端通信"
 category: "分布式系统"
 created_at: "2026-10-09"
 updated_at: "2026-10-09"

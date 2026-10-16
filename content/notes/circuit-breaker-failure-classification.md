@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "哪些错误应该计入熔断？"
+title: "熔断错误分类"
 category: "服务治理"
 updated_at: "2026-10-08"
 tags: ["熔断", "异常分类", "故障统计"]

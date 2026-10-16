@@ -1,7 +1,7 @@
 ---
 learning_status: understood
 parent: agent
-title: "Agent Harness 是什么"
+title: "Agent Harness"
 aliases: ["Harness", "Agent Harness"]
 category: "Agent"
 tags: ["Agent", "Harness"]

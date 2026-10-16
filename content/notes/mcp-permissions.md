@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "MCP 的接入授权与权限边界"
+title: "MCP 授权与权限"
 parent: mcp
 category: "Agent"
 tags: ["MCP", "OAuth", "权限"]

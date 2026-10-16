@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: sandbox-implementations
-title: "bubblewrap 沙箱的大致用法"
+title: "bubblewrap 沙箱用法"
 category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"

@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "RAG 的架构与适用边界"
+title: "RAG 架构"
 category: "RAG"
 tags: ["RAG"]
 type: "overview"

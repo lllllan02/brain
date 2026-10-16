@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Go 切片（Slice）"
+title: "Go 切片"
 category: "Go"
 updated_at: "2026-10-08"
 tags: ["Go", "切片", "内存"]

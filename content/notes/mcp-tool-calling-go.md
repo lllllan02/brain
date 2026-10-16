@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "MCP 工具调用的 Go 最小实现"
+title: "Go MCP 工具调用"
 parent: mcp-flow
 category: "Agent"
 tags: ["MCP", "工具调用", "Go"]

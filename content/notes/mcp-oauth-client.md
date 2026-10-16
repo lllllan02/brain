@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "MCP Client 的最小 OAuth 接入"
+title: "MCP OAuth 接入"
 parent: mcp-permissions
 category: "Agent"
 tags: ["MCP", "OAuth", "授权"]

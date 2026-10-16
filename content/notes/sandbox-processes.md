@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: agent-sandbox
-title: "沙箱如何约束和清理子进程"
+title: "沙箱子进程管理"
 category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"

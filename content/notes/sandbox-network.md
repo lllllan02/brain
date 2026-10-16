@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: agent-sandbox
-title: "沙箱如何限制网络访问"
+title: "沙箱网络访问控制"
 category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"

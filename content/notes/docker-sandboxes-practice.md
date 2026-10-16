@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: sandbox-implementations
-title: "Docker Sandboxes：面向 Agent 的沙箱产品"
+title: "Docker Sandboxes"
 category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"

@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: agent-trace
-title: "Agent Trace 的 Span 创建与结束"
+title: "Agent Span 生命周期"
 category: "Agent"
 tags: ["Agent", "Trace", "可观测性", "埋点"]
 created_at: "2026-10-13T01:06:26+08:00"

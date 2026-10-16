@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "InnoDB 怎样选择聚簇键"
+title: "InnoDB 聚簇键选择"
 category: "MySQL"
 parent: mysql-clustered-index
 tags: ["MySQL", "聚簇索引", "主键"]

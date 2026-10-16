@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "MCP 的完整接入流程"
+title: "MCP 接入流程"
 parent: mcp
 category: "Agent"
 tags: ["MCP", "工具调用", "协议"]

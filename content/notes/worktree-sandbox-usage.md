@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: sandbox-implementations
-title: "Git Worktree 怎样与执行沙箱配合"
+title: "Worktree 与执行沙箱"
 category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"

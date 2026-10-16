@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Agent 评测的随机性、统计与版本比较"
+title: "Agent 评测统计"
 parent: agent-evaluation
 category: "Agent"
 tags: ["Agent", "评测"]

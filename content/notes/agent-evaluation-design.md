@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Agent 评测目标与数据集设计"
+title: "Agent 评测设计"
 parent: agent-evaluation
 category: "Agent"
 tags: ["Agent", "评测"]

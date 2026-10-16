@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: agent
-title: "Agent 中哪些内容可以按需加载？"
+title: "Agent 按需加载"
 aliases: ["Agent 按需加载", "渐进式披露"]
 category: "Agent"
 tags: ["Agent", "按需加载"]

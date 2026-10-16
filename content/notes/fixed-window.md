@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "固定窗口限流（Fixed Window）"
+title: "固定窗口限流"
 category: "服务治理"
 updated_at: "2026-10-07"
 tags: ["限流", "固定窗口"]

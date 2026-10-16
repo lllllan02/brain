@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: agent-sandbox
-title: "工具调用如何经过权限检查与沙箱执行"
+title: "沙箱执行流程"
 category: "Agent"
 tags: ["Agent", "沙箱", "权限"]
 created_at: "2026-10-09"

@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Cookie（浏览器状态数据）"
+title: "Cookie"
 category: "HTTP"
 created_at: "2026-10-09"
 updated_at: "2026-10-09"

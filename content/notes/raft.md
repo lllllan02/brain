@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Raft 是什么"
+title: "Raft"
 category: "分布式系统"
 updated_at: "2026-10-08"
 tags: ["Raft", "共识", "复制"]

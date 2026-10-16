@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "存储引擎（Storage Engine）"
+title: "存储引擎"
 category: "数据存储"
 created_at: "2026-10-09"
 updated_at: "2026-10-09"

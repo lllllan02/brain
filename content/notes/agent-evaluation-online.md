@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Agent 离线回归、线上评测与发布判断"
+title: "Agent 线上评测与发布"
 parent: agent-evaluation
 category: "Agent"
 tags: ["Agent", "评测"]

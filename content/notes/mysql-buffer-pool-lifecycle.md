@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "InnoDB 缓冲池与脏页写回"
+title: "InnoDB 缓冲池"
 category: "MySQL"
 parent: mysql-overview#执行流程与存储
 tags: ["MySQL", "缓存", "持久化"]

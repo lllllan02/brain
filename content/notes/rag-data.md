@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "RAG 数据准备与索引链路"
+title: "RAG 数据准备"
 category: "RAG"
 tags: ["RAG", "知识库", "来源追溯"]
 type: "overview"

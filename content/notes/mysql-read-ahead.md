@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "InnoDB 预读（Read-Ahead）"
+title: "InnoDB 预读"
 category: "MySQL"
 parent: mysql-buffer-pool-lifecycle
 tags: ["MySQL", "缓存", "页"]

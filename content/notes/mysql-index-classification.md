@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "主键、唯一、联合与聚簇索引怎样区分"
+title: "索引分类"
 category: "MySQL"
 parent: mysql-indexes
 tags: ["MySQL", "索引", "主键", "联合索引"]

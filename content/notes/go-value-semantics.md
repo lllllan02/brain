@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Go 值语义（Value Semantics）"
+title: "Go 值语义"
 category: "Go"
 updated_at: "2026-10-08"
 tags: ["Go", "参数传递", "指针"]

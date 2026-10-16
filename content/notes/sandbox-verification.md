@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: agent-sandbox
-title: "如何验证沙箱边界生效"
+title: "沙箱边界验证"
 category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"

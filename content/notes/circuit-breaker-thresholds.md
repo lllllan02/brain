@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "失败累计到什么程度，才应该触发熔断？"
+title: "熔断阈值"
 category: "服务治理"
 updated_at: "2026-10-08"
 tags: ["熔断", "滑动窗口", "失败率", "慢调用"]

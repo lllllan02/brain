@@ -1,7 +1,7 @@
 ---
 learning_status: understood
 parent: agent-self-correction
-title: "怎样组织有效的 Reflection"
+title: "Agent 反思设计"
 category: "Agent"
 tags: ["Agent", "自我纠正"]
 created_at: "2026-10-12T10:15:48+08:00"

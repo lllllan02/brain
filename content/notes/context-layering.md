@@ -1,7 +1,7 @@
 ---
 learning_status: understood
 parent: agent-context
-title: "上下文分层（Context Layering）"
+title: "上下文分层"
 aliases: ["Context Layering"]
 category: "Agent"
 tags: ["上下文管理"]

@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "SSO 如何建立各应用的登录会话"
+title: "SSO 会话建立"
 category: "身份认证"
 created_at: "2026-10-09"
 updated_at: "2026-10-09"

@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "短码（Short Code）"
+title: "短码"
 category: "系统设计"
 created_at: "2026-10-09"
 updated_at: "2026-10-09"

@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "MCP 的 Tool、Resource 与 Prompt 有什么区别"
+title: "MCP 能力类型"
 parent: mcp
 category: "Agent"
 tags: ["MCP", "工具调用", "协议"]

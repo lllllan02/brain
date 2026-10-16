@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "RAG 文档切分与上下文保留"
+title: "RAG 文档切分"
 category: "RAG"
 tags: ["RAG", "文档片段", "上下文构建"]
 type: "note"

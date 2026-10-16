@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "为什么 InnoDB 选择 B+ 树而不是哈希索引"
+title: "B+ 树与哈希索引"
 category: "MySQL"
 parent: mysql-index-structure
 tags: ["MySQL", "B+树", "索引"]

@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "埋点（Instrumentation）"
+title: "埋点"
 category: "可观测性"
 created_at: "2026-10-09"
 updated_at: "2026-10-09"

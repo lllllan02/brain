@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Go 内存滞留（Memory Retention）"
+title: "Go 内存滞留"
 category: "Go"
 updated_at: "2026-10-08"
 tags: ["Go", "GC", "内存滞留"]

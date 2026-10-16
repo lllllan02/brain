@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Go 切片扩容（Slice Growth）"
+title: "Go 切片扩容"
 category: "Go"
 updated_at: "2026-10-08"
 tags: ["Go", "切片", "源码"]

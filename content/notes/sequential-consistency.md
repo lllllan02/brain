@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "顺序一致性（Sequential Consistency）"
+title: "顺序一致性"
 category: "分布式系统"
 created_at: "2026-10-09"
 updated_at: "2026-10-09"

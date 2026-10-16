@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Agent 记忆整合与证据保留"
+title: "Agent 记忆整合"
 parent: agent-memory
 category: "Agent"
 tags: ["Agent", "记忆"]

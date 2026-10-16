@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "限流（Rate Limiting）"
+title: "限流"
 category: "服务治理"
 updated_at: "2026-10-07"
 tags: ["限流", "过载保护"]

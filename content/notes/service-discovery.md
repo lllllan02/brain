@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "服务发现（Service Discovery）"
+title: "服务发现"
 category: "服务治理"
 updated_at: "2026-10-09"
 tags: ["服务发现", "注册中心"]

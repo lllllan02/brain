@@ -1,5 +1,5 @@
 ---
-title: "子 Agent（Subagent）"
+title: "子 Agent"
 aliases: ["子智能体", "Agent as Tool", "子Agent"]
 parent: multi-agent
 category: "Agent"

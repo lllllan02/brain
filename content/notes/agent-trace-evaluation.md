@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: agent-trace
-title: "从 Agent 错例轨迹到回归用例"
+title: "Agent 错例回归"
 category: "Agent"
 tags: ["Agent", "Trace", "评测", "错例回流"]
 created_at: "2026-10-12T23:28:23+08:00"

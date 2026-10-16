@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Go 逃逸分析（Escape Analysis）"
+title: "Go 逃逸分析"
 category: "Go"
 created_at: "2026-01-18"
 updated_at: "2026-10-08"

@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "RAG 重排（Reranking）"
+title: "RAG 重排"
 category: "RAG"
 tags: ["RAG", "重排", "相关性排序"]
 type: "note"

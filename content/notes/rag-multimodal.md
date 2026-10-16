@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "多模态 RAG 与图表证据"
+title: "多模态 RAG"
 category: "RAG"
 tags: ["RAG", "多模态", "来源追溯"]
 type: "note"

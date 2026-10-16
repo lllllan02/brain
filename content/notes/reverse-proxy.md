@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "反向代理（Reverse Proxy）"
+title: "反向代理"
 category: "网络服务"
 updated_at: "2026-10-09"
 tags: ["反向代理", "负载均衡", "缓冲"]

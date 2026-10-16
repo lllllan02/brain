@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "InnoDB 页分裂与页合并：变化与代价"
+title: "InnoDB 页分裂与合并"
 category: "MySQL"
 parent: mysql-index-structure
 tags: ["MySQL", "B+树", "索引"]

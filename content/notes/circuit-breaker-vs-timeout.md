@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "已经有超时，为什么还需要熔断？"
+title: "超时、重试与熔断"
 category: "服务治理"
 updated_at: "2026-10-08"
 tags: ["熔断", "超时", "重试", "资源保护"]

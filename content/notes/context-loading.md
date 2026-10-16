@@ -1,7 +1,7 @@
 ---
 learning_status: understood
 parent: agent-context
-title: "上下文按需加载（Just-in-Time Context）"
+title: "上下文按需加载"
 aliases: ["Just-in-Time Context", "上下文外置", "外部存储与按需加载"]
 category: "Agent"
 tags: ["上下文管理", "按需加载"]

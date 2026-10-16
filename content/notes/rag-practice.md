@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "RAG 最小实现与验证路径"
+title: "RAG 实现与验证"
 category: "RAG"
 tags: ["RAG", "Go", "评测"]
 type: "practice"

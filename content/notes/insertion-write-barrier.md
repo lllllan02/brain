@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "插入写屏障（Insertion Barrier）"
+title: "插入写屏障"
 category: "计算机基础"
 created_at: "2026-10-08"
 updated_at: "2026-10-08"

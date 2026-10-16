@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: agent-sandbox
-title: "Agent 沙箱的实现方案与权衡"
+title: "Agent 沙箱选型"
 category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"

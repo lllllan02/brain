@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "RAG 进阶方案与选择依据"
+title: "RAG 进阶方案"
 category: "RAG"
 tags: ["RAG", "检索", "选型"]
 type: "overview"

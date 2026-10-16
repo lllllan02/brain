@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: agent-sandbox
-title: "沙箱中的工具如何使用凭据"
+title: "沙箱凭据保护"
 category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"

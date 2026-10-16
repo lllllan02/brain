@@ -1,7 +1,7 @@
 ---
 learning_status: understood
 parent: agent-context
-title: "上下文压缩（Context Compaction）"
+title: "上下文压缩"
 aliases: ["Context Compaction", "上下文摘要", "上下文压缩怎样执行"]
 category: "Agent"
 tags: ["上下文管理", "文本压缩"]

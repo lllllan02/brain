@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "熔断后，是降级还是快速失败？"
+title: "熔断后的失败处理"
 category: "服务治理"
 updated_at: "2026-10-08"
 tags: ["熔断", "降级", "快速失败", "业务边界"]

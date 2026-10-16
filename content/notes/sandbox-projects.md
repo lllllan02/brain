@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: agent-sandbox
-title: "实际 Agent 如何组织沙箱"
+title: "Agent 项目的沙箱实践"
 category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"

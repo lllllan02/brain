@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "从订单示例实现最小 Agent 评测"
+title: "Agent 评测示例"
 parent: agent-evaluation
 category: "Agent"
 tags: ["Agent", "评测"]

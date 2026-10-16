@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Agent Benchmark 的覆盖范围与使用边界"
+title: "Agent 基准测试"
 parent: agent-evaluation
 category: "Agent"
 tags: ["Agent", "评测"]

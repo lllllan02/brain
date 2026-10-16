@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "RAG 生成、引用与证据不足处理"
+title: "RAG 答案生成"
 category: "RAG"
 tags: ["RAG", "答案生成", "引用校验"]
 type: "note"

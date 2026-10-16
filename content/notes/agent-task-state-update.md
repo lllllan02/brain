@@ -1,7 +1,7 @@
 ---
 learning_status: understood
 parent: agent-task-state
-title: "任务状态如何更新与处理冲突"
+title: "任务状态更新与冲突"
 category: "Agent"
 tags: ["Agent", "状态管理"]
 created_at: "2026-10-09"

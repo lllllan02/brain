@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "背压（Backpressure）"
+title: "背压"
 category: "并发编程"
 updated_at: "2026-10-07"
 tags: ["背压", "流量控制", "队列"]

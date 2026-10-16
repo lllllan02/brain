@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "删除写屏障（Deletion Barrier）"
+title: "删除写屏障"
 category: "计算机基础"
 created_at: "2026-10-08"
 updated_at: "2026-10-08"

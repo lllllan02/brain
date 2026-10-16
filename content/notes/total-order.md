@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "全序性（Total Order）"
+title: "全序性"
 category: "分布式系统"
 created_at: "2026-10-09"
 updated_at: "2026-10-09"

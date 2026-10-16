@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "令牌桶限流（Token Bucket）"
+title: "令牌桶限流"
 category: "服务治理"
 updated_at: "2026-10-07"
 tags: ["限流", "令牌桶"]

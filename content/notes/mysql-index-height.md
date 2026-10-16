@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "InnoDB 为什么需要较矮的 B+ 树"
+title: "InnoDB 索引树高"
 category: "MySQL"
 parent: mysql-index-structure
 tags: ["MySQL", "B+树", "索引"]

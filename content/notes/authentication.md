@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "认证（Authentication）"
+title: "认证"
 category: "身份认证"
 updated_at: "2026-10-08"
 tags: ["认证", "身份", "凭证"]

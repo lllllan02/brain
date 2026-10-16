@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "熔断（Circuit Breaker）"
+title: "熔断"
 category: "服务治理"
 updated_at: "2026-10-08"
 tags: ["熔断", "降级", "服务治理"]

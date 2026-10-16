@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Agent 评测运行系统（Evaluation Harness）"
+title: "Agent 评测运行系统"
 parent: agent-evaluation
 category: "Agent"
 tags: ["Agent", "评测"]

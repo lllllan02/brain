@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "服务注册中心（Service Registry）"
+title: "服务注册中心"
 category: "服务治理"
 created_at: "2026-10-09"
 updated_at: "2026-10-09"

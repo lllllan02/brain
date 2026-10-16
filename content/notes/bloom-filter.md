@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "布隆过滤器（Bloom Filter）"
+title: "布隆过滤器"
 category: "缓存设计"
 created_at: "2026-01-21"
 updated_at: "2026-10-08"

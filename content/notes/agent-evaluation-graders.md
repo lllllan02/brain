@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Agent 评分器与模型裁判校准"
+title: "Agent 评分器"
 parent: agent-evaluation
 category: "Agent"
 tags: ["Agent", "评测"]

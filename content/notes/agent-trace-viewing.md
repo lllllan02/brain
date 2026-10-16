@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: agent-trace
-title: "Langfuse 中的 Trace 监测与查看"
+title: "Langfuse Trace 查看"
 category: "Agent"
 tags: ["Agent", "Trace", "可观测性"]
 created_at: "2026-10-13T01:24:08+08:00"

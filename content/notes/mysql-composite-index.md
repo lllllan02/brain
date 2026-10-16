@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "联合索引与最左前缀匹配原则"
+title: "联合索引"
 category: "MySQL"
 parent: mysql-indexes
 tags: ["MySQL", "索引", "联合索引"]

@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "为什么 InnoDB 选择 B+ 树而不是经典 B 树"
+title: "B 树与 B+ 树"
 category: "MySQL"
 parent: mysql-index-structure
 tags: ["MySQL", "B+树", "索引"]

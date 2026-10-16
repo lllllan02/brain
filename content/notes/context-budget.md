@@ -1,7 +1,7 @@
 ---
 learning_status: understood
 parent: agent-context
-title: "上下文预算（Token Budgeting）"
+title: "上下文预算"
 aliases: ["Token Budgeting", "Context Budget", "Token 预算"]
 category: "Agent"
 tags: ["上下文管理"]

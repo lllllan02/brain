@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Go 接口与 nil（typed nil）"
+title: "Go 接口与 nil"
 category: "Go"
 updated_at: "2026-10-08"
 tags: ["Go", "接口", "nil"]

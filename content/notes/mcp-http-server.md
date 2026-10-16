@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "MCP Server 的最小实现（Streamable HTTP）"
+title: "MCP Streamable HTTP 服务端"
 parent: mcp
 category: "Agent"
 tags: ["MCP", "工具调用", "协议"]

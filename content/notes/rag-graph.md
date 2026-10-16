@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "GraphRAG 的关系检索与全局综合"
+title: "GraphRAG"
 category: "RAG"
 tags: ["RAG", "检索", "知识图谱"]
 type: "note"

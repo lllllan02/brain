@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "短链接（Short URL）"
+title: "短链接"
 category: "系统设计"
 updated_at: "2026-10-09"
 tags: ["短链接"]

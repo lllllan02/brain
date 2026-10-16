@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "选主（Leader Election）"
+title: "选主"
 category: "分布式系统"
 created_at: "2026-10-09"
 updated_at: "2026-10-09"

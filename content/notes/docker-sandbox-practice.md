@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: sandbox-implementations
-title: "用普通 Docker 容器运行任务"
+title: "Docker 容器沙箱"
 category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"

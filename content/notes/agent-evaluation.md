@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Agent 评测（Evaluation）"
+title: "Agent 评测"
 parent: agent
 category: "Agent"
 tags: ["Agent", "评测"]

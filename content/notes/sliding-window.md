@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "滑动窗口限流（Sliding Window）"
+title: "滑动窗口限流"
 category: "服务治理"
 updated_at: "2026-10-07"
 tags: ["限流", "滑动窗口"]

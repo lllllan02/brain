@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Agent 评测工具的分工与选型"
+title: "Agent 评测工具选型"
 parent: agent-evaluation
 category: "Agent"
 tags: ["Agent", "评测"]

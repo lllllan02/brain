@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Go channel 的关闭与生命周期"
+title: "Go channel 生命周期"
 category: "Go"
 updated_at: "2026-10-08"
 tags: ["Go", "channel", "并发"]

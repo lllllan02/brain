@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: agent-trace
-title: "Agent Trace 的内容采集与保留"
+title: "Agent Trace 内容采集"
 category: "Agent"
 tags: ["Agent", "Trace", "数据脱敏", "采样"]
 created_at: "2026-10-12T23:28:23+08:00"

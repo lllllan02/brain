@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "负载均衡（Load Balancing）"
+title: "负载均衡"
 category: "网络服务"
 created_at: "2026-10-09"
 updated_at: "2026-10-09"

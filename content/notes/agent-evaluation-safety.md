@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Agent 安全、鲁棒性与故障恢复评测"
+title: "Agent 安全与鲁棒性评测"
 parent: agent-evaluation
 category: "Agent"
 tags: ["Agent", "评测"]

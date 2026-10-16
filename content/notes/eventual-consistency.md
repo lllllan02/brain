@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "最终一致性（Eventual Consistency）"
+title: "最终一致性"
 category: "分布式系统"
 created_at: "2026-10-09"
 updated_at: "2026-10-09"

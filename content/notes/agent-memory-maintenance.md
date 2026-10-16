@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Agent 记忆失效、删除与信任边界"
+title: "Agent 记忆维护"
 parent: agent-memory
 category: "Agent"
 tags: ["Agent", "记忆", "TTL"]

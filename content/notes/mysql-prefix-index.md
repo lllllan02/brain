@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "前缀索引（Prefix Index）"
+title: "前缀索引"
 category: "MySQL"
 parent: mysql-indexes
 tags: ["MySQL", "索引", "前缀索引"]

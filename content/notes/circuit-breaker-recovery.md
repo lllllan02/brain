@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "停止调用后，如何判断恢复？"
+title: "熔断恢复"
 category: "服务治理"
 updated_at: "2026-10-08"
 tags: ["熔断", "半开状态", "故障恢复", "限流"]

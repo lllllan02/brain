@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "分布式锁（Distributed Lock）"
+title: "分布式锁"
 category: "分布式系统"
 updated_at: "2026-10-09"
 tags: ["分布式锁", "Redis", "etcd", "ZooKeeper"]

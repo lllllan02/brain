@@ -1,6 +1,6 @@
 ---
 learning_status: understood
-title: "普通工具调用的 Go 最小实现"
+title: "Go 工具调用示例"
 parent: tool-calling-flow
 category: "Agent"
 tags: ["工具调用", "Go", "API"]

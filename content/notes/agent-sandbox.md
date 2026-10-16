@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: agent
-title: "Agent 沙箱（Sandbox）"
+title: "Agent 沙箱"
 category: "Agent"
 tags: ["Agent", "沙箱"]
 aliases: ["Sandbox", "沙箱"]

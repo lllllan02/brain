@@ -1,7 +1,7 @@
 ---
 learning_status: understood
 parent: agent
-title: "Agent 与工作流有什么区别"
+title: "Agent 与工作流"
 category: "Agent"
 updated_at: "2026-10-11"
 tags: ["Agent", "工作流", "自主决策", "工程选型"]

@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Go 调度器如何处理阻塞与抢占"
+title: "Go 调度中的阻塞与抢占"
 category: "Go"
 created_at: "2026-10-08"
 updated_at: "2026-10-08"

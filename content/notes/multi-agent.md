@@ -1,5 +1,5 @@
 ---
-title: "多 Agent 协作（Multi-Agent Collaboration）"
+title: "多 Agent 协作"
 aliases: ["多智能体协作", "Multi-Agent Systems", "MAS"]
 parent: agent
 category: "Agent"

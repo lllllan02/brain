@@ -1,7 +1,7 @@
 ---
 learning_status: pending
 parent: agent-trace
-title: "Agent Trace 的调用关联与并行记录"
+title: "Agent Trace 调用关联"
 category: "Agent"
 tags: ["Agent", "Trace", "埋点"]
 created_at: "2026-10-12T23:28:23+08:00"

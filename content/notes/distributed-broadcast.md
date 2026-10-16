@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "分布式广播（Distributed Broadcast）"
+title: "分布式广播"
 category: "分布式系统"
 created_at: "2026-10-09"
 updated_at: "2026-10-09"

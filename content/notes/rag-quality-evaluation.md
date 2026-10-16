@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "RAG 质量评测与失败归因"
+title: "RAG 质量评测"
 category: "RAG"
 tags: ["RAG", "评测", "检索评测"]
 type: "note"

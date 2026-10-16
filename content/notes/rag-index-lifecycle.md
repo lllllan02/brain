@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "RAG 索引更新、删除与版本迁移"
+title: "RAG 索引维护"
 category: "RAG"
 tags: ["RAG", "索引", "版本管理"]
 type: "note"

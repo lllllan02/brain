@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "授权（Authorization）"
+title: "授权"
 category: "身份认证"
 updated_at: "2026-10-08"
 tags: ["授权", "权限", "Scope"]

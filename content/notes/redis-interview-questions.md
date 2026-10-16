@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "Redis 面试问题与场景追问"
+title: "Redis 面试题"
 category: "Redis"
 parent: redis
 tags: ["Redis", "面试"]

@@ -1,6 +1,6 @@
 ---
 learning_status: pending
-title: "InnoDB 的表空间、页与行记录"
+title: "InnoDB 存储结构"
 category: "MySQL"
 parent: mysql-overview#执行流程与存储
 tags: ["MySQL", "页", "存储引擎"]
