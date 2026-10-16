@@ -1,14 +1,13 @@
 ---
 learning_status: pending
-title: "人工审批怎样绑定动作并处理回复"
+title: "人工审批协议"
 parent: agent-human-in-the-loop
 category: "Agent"
 tags: ["Agent", "人工介入", "权限"]
 created_at: "2026-10-13T11:07:38+08:00"
-updated_at: "2026-10-13T11:07:38+08:00"
+updated_at: "2026-10-14T15:06:31+08:00"
 reading_suggestions:
   - sandbox-execution
-  - agent-resume-practice
   - openai-guardrails-summary
 ---
 
@@ -51,7 +50,7 @@ RETURNING task_id;
 
 只有返回一行才推进任务；其余写入必须与这次迁移同事务提交。零行表示条件已不满足，要区分过期、旧版本或已处理。重复的同一请求可返回原决定，相冲突的决定应拒绝；超时处理也竞争同一个待处理状态。
 
-批准记录只证明决定已生效，尚不证明工具已执行。[[agent-resume-practice|Go 审批示例]]用独立的 `decide` 和 `run` 命令展示这一区别；它的文件版本检查仅适用于单写入者，不能替代数据库并发控制。
+批准记录只证明决定已生效，尚不证明工具已执行。文件版本检查若只适用于单写入者，就不能替代数据库并发控制。
 
 ## 决定怎样改变后续执行？
 

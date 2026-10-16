@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>检查点如何让新进程接手</title>
+<style>
+:root{color-scheme:light;--ink:#24384c;--muted:#607182;--line:#53718c;--blue:#e8f0f7;--green:#e7f0e9}*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);font-family:"PingFang SC","Microsoft YaHei",sans-serif}main{max-width:1164px;margin:auto;padding:32px}figure{margin:0}.frame{overflow-x:auto}svg{display:block;width:1100px;min-width:1100px;height:620px}svg text{fill:var(--ink);font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:19px}.small{font-size:16px;fill:var(--muted)}.label{font-size:21px;font-weight:600}.edge{fill:none;stroke:var(--line);stroke-width:2;marker-end:url(#arrow)}.outline{stroke:var(--line);stroke-width:2;stroke-linejoin:round}.muted{fill:var(--muted)}figcaption{margin:12px 0 0;color:var(--muted);font-size:16px;line-height:1.6}@media(max-width:600px){main{padding:20px}}@media print{main{padding:0}.frame{overflow:visible}svg{width:100%;min-width:0;height:auto}}
+</style>
+<main><figure><div class="frame">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 620" role="img" aria-labelledby="resume-title resume-desc">
+<title id="resume-title">检查点如何让新进程接手</title><desc id="resume-desc">原进程保存草稿和等待审批状态后退出。持久存储中的记录保留。审批通过并校验后状态变为待发布，调度器让新进程读取同一份草稿，继续发布。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#53718c" stroke-width="1.5"/></marker>
+<g id="draft"><path d="M0 0 H42 L58 16 V76 H0 Z" fill="#fff" stroke="#53718c" stroke-width="2" stroke-linejoin="round"/><path d="M42 0 V16 H58" fill="#dce9f3" stroke="#53718c" stroke-width="2"/><path d="M13 34 H43 M13 45 H43 M13 56 H32" fill="none" stroke="#a4bbcf" stroke-width="3" stroke-linecap="round"/></g>
+<g id="server"><rect width="100" height="76" rx="8" fill="#e8f0f7" stroke="#53718c" stroke-width="2"/><path d="M0 38H100" stroke="#53718c" stroke-width="2"/><circle cx="17" cy="19" r="3" fill="#53718c"/><circle cx="17" cy="57" r="3" fill="#53718c"/><path d="M34 19H80 M34 57H80" stroke="#849fb5" stroke-width="4" stroke-linecap="round"/></g></defs>
+<rect width="1100" height="620" fill="white"/>
+<text x="36" y="48" style="font-size:30px;font-weight:600">检查点如何让新进程接手</text>
+<text x="36" y="80" class="small">示例：草稿审批后发布</text>
+<text x="48" y="144" class="label">中断前</text><text x="424" y="144" class="label">持久存储</text><text x="854" y="144" class="label">恢复时</text>
+<!-- Edges are deliberately limited to the saved state and its consumer. -->
+<path class="edge" d="M292 282H406"/><text x="320" y="267" class="small">保存</text>
+<path class="edge" d="M716 282H822"/><text x="734" y="267" class="small">读取</text>
+<path class="edge" d="M560 526V462"/><text x="580" y="499" class="small">校验后更新</text>
+<!-- Original process and its output -->
+<path d="M48 172H312V438H48Z" fill="#f8fafb"/>
+<use href="#server" x="72" y="196"/>
+<text x="72" y="307" class="label">进程 A</text>
+<use href="#draft" x="216" y="196"/>
+<text x="204" y="307">草稿 v3</text>
+<path d="M72 343H288" stroke="#d8e0e5"/>
+<circle cx="82" cy="383" r="10" fill="#fff" stroke="#81909e" stroke-width="1.5"/>
+<path d="M78 379L86 387M86 379L78 387" stroke="#81909e" stroke-width="1.5"/>
+<text x="104" y="390" class="muted">保存后退出</text>
+<!-- One durable record, with its condition changing in place. -->
+<path d="M424 172H684L708 196V450H424Z" fill="#fff" class="outline"/>
+<path d="M684 172V196H708" fill="#e8f0f7" class="outline"/>
+<text x="448" y="212" class="label">任务 T42</text>
+<path d="M448 230H684" stroke="#d7e0e7"/>
+<use href="#draft" x="448" y="250" transform="translate(112 62.5) scale(.75)"/>
+<text x="512" y="278" class="label">草稿 v3</text>
+<text x="512" y="307" class="small">审批单 A7</text>
+<text x="448" y="348" class="small">执行位置</text>
+<rect x="444" y="364" width="244" height="54" rx="4" fill="#e7f0e9"/>
+<text x="460" y="398">等审批</text><path class="edge" d="M538 391H568"/><text x="586" y="398" style="fill:#315d49;font-weight:600">待发布</text>
+<!-- Replacement worker uses the same draft. -->
+<use href="#server" x="846" y="196"/>
+<text x="830" y="307" class="label">新进程 B</text>
+<text x="832" y="178" class="small">调度器安排执行</text>
+<use href="#draft" x="992" y="196"/>
+<text x="982" y="307">草稿 v3</text>
+<path d="M846 342H1052" stroke="#d8e0e5"/>
+<path class="edge" d="M870 371V404H910"/>
+<text x="926" y="412" class="label">继续发布</text>
+<!-- Approval is the condition, not a second exposition panel. -->
+<path d="M448 526H672V576H448V561Q458 551 448 541Z" fill="#f0f5f1" stroke="#5c7b66" stroke-width="1.8"/>
+<text x="474" y="558" style="fill:#315d49">A7 同意草稿 v3</text>
+<text x="424" y="608" class="small">同一份记录跨进程保留，审批只更新恢复条件。</text>
+</svg></div><figcaption>新进程读取已保存的草稿与执行位置，接续未完成的步骤。</figcaption></figure></main></html>

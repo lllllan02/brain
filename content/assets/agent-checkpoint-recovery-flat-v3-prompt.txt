@@ -1,0 +1,28 @@
+Redesign the attached Chinese infographic about Agent interruption recovery into an elegant restrained flat vector explanatory diagram. The attachment is CONTENT REFERENCE ONLY. Radically change its visual design. Preserve the meaning, not its illustrated glossy appearance.
+
+Target: sophisticated technical publication illustration, somewhere between a bare line diagram and rich illustrated infographic. Precise shapes with a little character, measured medium-fine consistent dark-slate outlines, subtle small corner radius, flat desaturated fills on selected objects, clean white background, abundant but purposeful negative space. Quiet dark gray typography, medium weight titles, excellent Chinese sans-serif readability. Muted slate blue and sage plus a tiny ochre fault accent. No gradients anywhere, no shadows, no perspective or 3D, no glossy icon highlights, no cartoon clipart, no shields/gears/lightbulbs/flags, no pill badges, no decorative chevron ribbons, no numbered circles, no billboard headline, no large slogan footer, no ornate page frame. No repetitive equal-card dashboard. Beauty from proportion, grouping, visual rhythm, varied object silhouettes, useful small details. Concrete recognizable records and simple two-slot process/server icons. No anthropomorphic avatars.
+
+Landscape 3:2 high-resolution graphic, generous outer margins. Title top left, modest: "Agent 的中断恢复机制". Smaller subtitle: "进程可以退出，已保存的任务进度仍然保留".
+
+Main composition follows time LEFT TO RIGHT through four loosely spaced stages across the top two thirds. Stage labels plain text: "保存进度", "中断等待", "满足恢复条件", "继续执行". No surrounding four column boxes; differentiate the objects themselves.
+1: Simple flat process object "进程 A" beside a folded-corner document "草稿 v3". Downward thin arrow "保存" into a checkpoint record.
+2: Faded gray stopped process "进程 A 退出", short caption "无需保持线程或连接". Show checkpoint still intact beneath, no arrow implying shutdown writes new state.
+3: Small rectangular approval slip "A7 同意 v3", caption "校验当前草稿版本", down arrow "更新状态" into ready record.
+4: Small plain label "调度器" above a simple server labeled "新进程 B"; alongside same flat sheet "草稿 v3" and a minimal external-service endpoint "发布". Arrow from stage 3 ready checkpoint TO new process B labeled "读取". Distinct subsequent arrow from publish down to completed record labeled "保存回执". Ensure process B reads READY record, never completed record.
+Checkpoint row: one pale almost-white gray-blue horizontal storage zone, with NO thick border, labeled "持久存储". Four state snapshots of same task, aligned with stages but positioned with enough room for connectors. Record sheets have small dog-ear corner and two small field dividers, simple readable texts:
+snapshot 1: "任务 T42 · 草稿 v3", "审批 A7", "等待审批".
+snapshot 2: "任务 T42 · 草稿 v3", "审批 A7", "等待审批", small caption "记录仍在".
+snapshot 3: "任务 T42 · 草稿 v3", "审批 A7 已同意", "可执行：发布".
+snapshot 4: "任务 T42 · 草稿 v3", "回执已保存", "已完成".
+Indicate evolution left-to-right through small calm arrows. Do not put a big document icon within each record; the sheet IS the object. A light accent stripe/flat small field fill is enough for state differences.
+Make each flow arrow unambiguous and avoid crossings, oversize arrowheads and multiple-bend detours. The publication success versus receipt-saving gap is the specific fault observation point; a small ochre tick at that connection can be labeled "故障窗口", never connect fault callout from completed-state record.
+
+Bottom third: a discreet horizontal separator. Left narrower column simple heading "恢复边界" with 3 compact lines:
+"意外退出：从最近可靠检查点继续"
+"未保存的工作可能重做"
+"主动等待：条件满足后才继续"
+No icons per sentence, no boxes around these lines.
+Right wider area title "发布成功，但回执尚未保存". Two minimal concrete objects shown side-by-side, an external endpoint with existing document labeled "远端：已发布" versus a checkpoint record missing a receipt labeled "本地：未完成". Small ≠ separating the two. Use a very light warm tinted patch only beneath this pair, not a huge warning frame. Below exact short explanatory text: "此时崩溃 → 恢复后可能重复发布".
+Below that exact solution: "按稳定操作 ID 去重，或先核对远端结果".
+
+Chinese text accurate and readable. Meaning remains the same as source. Cut decorative repetition and UI chrome, not core recovery logic. No logos, signatures or watermarks. Result should look like a skilled information designer made a precise, warm, understated vector illustration, not generic AI clipart.

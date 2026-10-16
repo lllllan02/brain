@@ -1,14 +1,13 @@
 ---
-learning_status: pending
-title: "恢复时为什么可能重复执行"
+learning_status: understood
+title: "中断恢复中的重复执行"
 parent: agent-checkpoint-recovery
 category: "Agent"
-tags: ["Agent", "Checkpoint", "幂等", "Go"]
+tags: ["Agent", "Checkpoint", "幂等"]
 created_at: "2026-10-13T11:07:38+08:00"
-updated_at: "2026-10-13T11:07:38+08:00"
-type: practice
+updated_at: "2026-10-14T16:08:21+08:00"
+type: concept
 reading_suggestions:
-  - agent-resume-practice
   - idempotency
   - aws-idempotent-retries-summary
 ---
@@ -27,32 +26,16 @@ reading_suggestions:
 
 前两行在本地看起来一样。更频繁地保存不能让远端效果和本地记录自动成为一个事务；必须让执行端帮助识别同一次操作。
 
-## 用 Go 制造这个窗口
+## 怎样让重试不产生第二次效果？
 
-沿用[[agent-resume-practice|Go 审批示例]]的源码，下面命令可以独立运行。`-crash-after-effect` 在模拟服务写入后调用 `os.Exit(23)`，故意不保存任务回执。
+[[idempotency|幂等]]让同一次操作重复调用时，不产生额外的业务效果。调用方在首次执行前生成并保存稳定的操作 ID，恢复时继续使用它；执行端根据这个 ID 识别重试：
 
-```sh
-failure_demo_dir=$(mktemp -d)
-go build -o "$failure_demo_dir/demo" content/assets/agent-resume-demo.go
-"$failure_demo_dir/demo" -dir "$failure_demo_dir" -action init
-"$failure_demo_dir/demo" -dir "$failure_demo_dir" -action decide \
-  -request approval-1 -version 1 -decision approve
+- 已有记录且参数相同，返回原回执。
+- 已有记录但参数不同，拒绝请求，避免同一 ID 被用于不同操作。
+- 没有记录，执行操作并保存结果。
 
-# 预期退出码 23；接住它，使 set -e 脚本也能继续。
-"$failure_demo_dir/demo" -dir "$failure_demo_dir" -action run \
-  -crash-after-effect || test "$?" -eq 23
+这样，即使发布成功后本地未保存回执，恢复时再次调用也能取回原结果，再保存完成状态。
 
-"$failure_demo_dir/demo" -dir "$failure_demo_dir" -action show
-"$failure_demo_dir/demo" -dir "$failure_demo_dir" -action run
-cat "$failure_demo_dir/effects.json"
-```
-
-故障运行输出 `effect_created=true`；随后查看任务，仍是 `executing`。恢复运行输出 `effect_created=false` 并写入 `done`，效果文件中仍只有一条记录。此路径已于 2026-10-13 在 Go 1.25.6、macOS arm64 验证；它没有调用真实发布接口。
-
-## 为什么再次调用没有产生第二次效果？
-
-程序在 `init` 时生成并保存 `operation_id`，恢复继续使用它。`run()` 调用源码中的 `publish(path, c)`；后者先读 `effects.json`，按操作 ID 查找记录：命中且参数相同就返回旧回执，参数不同则报错，未命中才追加效果。这模拟的是执行端支持的[[idempotency|幂等约定]]，不是客户端单方面加一个字段。
-
-真实服务还需让去重记录与业务变更共同成立，并保留足够长的去重窗口。[[aws-idempotent-retries-summary|AWS 的幂等 API 设计]]说明了操作身份、参数核对与结果复用的分工。示例的查重和追加只适用于单写入者，不提供并发保证。
+这需要执行端支持去重，客户端单方面增加一个 ID 字段并不够。执行端还需保证去重记录与业务变更共同成立，并让去重记录的保留时间覆盖可能的重试周期。[[aws-idempotent-retries-summary|AWS 的幂等 API 设计]]说明了操作身份、参数核对与结果复用的分工。
 
 若远端不能去重，也不能查询结果，就应进入「结果未知、等待核对」，不能把未知当成失败后自动重试。回退检查点也不能撤销已发生的外部效果；需要撤销时，应单独设计补偿操作。

@@ -6,12 +6,11 @@ aliases: ["Human-in-the-Loop", "HITL"]
 category: "Agent"
 tags: ["Agent", "人工介入"]
 created_at: "2026-10-09"
-updated_at: "2026-10-13T11:10:51+08:00"
+updated_at: "2026-10-14T15:06:31+08:00"
 reading_suggestions:
   - tool-permissions
   - agent-checkpoint-recovery
   - agent-approval-protocol
-  - agent-resume-practice
 ---
 
 **人工介入（Human-in-the-Loop，HITL）是在自动执行过程中，把特定决策、审核或操作交给人完成，再由程序处理其结果的机制。** 自动权限校验属于[[agent-guardrails|行为约束]]；需要人判断或提供信息时，才进入人工介入。
@@ -36,6 +35,6 @@ reading_suggestions:
 
 ## 怎样确保执行的正是人批准的内容？
 
-审核草稿 v1 时，系统应冻结正文和发布目标。若回复针对旧稿，或草稿已改成 v2，就不能把一个「同意」直接交给工具执行。[[agent-approval-protocol|审批记录与回复校验]]从这个问题展开版本、身份、重复回复和过期处理；[[agent-resume-practice|Go 示例]]展示批准落盘后如何由新进程执行。
+审核草稿 v1 时，系统应冻结正文和发布目标。若回复针对旧稿，或草稿已改成 v2，就不能把一个「同意」直接交给工具执行。[[agent-approval-protocol|审批记录与回复校验]]从这个问题展开版本、身份、重复回复和过期处理。
 
 拒绝、超时或未回复均不等于批准；编辑后要校验新内容，批准后也要重查当前权限。恢复可以走向继续、修改或终止，已经发生的外部效果则需要另行核对与补偿。
