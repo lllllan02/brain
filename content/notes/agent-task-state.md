@@ -1,12 +1,12 @@
 ---
-learning_status: understood
+learning_status: pending
 parent: agent-context
 title: "Agent 任务状态管理"
 aliases: ["Agent Task State", "Task State Management"]
 category: "Agent"
 tags: ["Agent", "状态管理"]
 created_at: "2026-10-09"
-updated_at: "2026-10-11T23:07:41+08:00"
+updated_at: "2026-10-16T20:42:35+08:00"
 reading_suggestions:
   - agent-context
   - agent-task-state-update
@@ -39,3 +39,11 @@ reading_suggestions:
 ![[assets/agent-task-state.png|完整上下文按区块组装：系统提示词、工具定义、最新任务状态、历史消息与当前请求]]
 
 [Claude Code 的任务列表](https://code.claude.com/docs/en/interactive-mode#task-list)支持跨上下文压缩保留。**「独立维护」不等于「原始消息都可以删除」**：状态记录当前判断，必要的工具结果仍需原文或可读取的引用。
+
+## 任务状态应该是一份摘要，还是业务事实的副本？
+
+退款 Agent 的摘要写着「订单符合条件」，几分钟后订单已经发货；如果执行器仍把摘要当成当前事实，就会依据过期条件操作。状态需要区分用户要求、待办、观测事实和模型判断，并记录事实的对象、来源及查询时间。
+
+用户约束应保留到被明确修改，业务事实则按有效期或关键动作重新查询。任务状态可以保存「上次查询符合条件」及证据位置，但当前是否允许退款，应由业务系统在执行时判断。这样既保留调查过程，也避免维护一个永远追不上真实系统的影子数据库。
+
+状态还应表达未完成和未知：请求已受理、正在处理、确认成功各自决定不同的下一步。只有一个 `done` 标志，无法支持异步任务、人工等待和部分完成。

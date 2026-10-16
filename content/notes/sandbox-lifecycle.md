@@ -5,7 +5,7 @@ title: "沙箱的隔离单位与生命周期"
 category: "Agent"
 tags: ["Agent", "沙箱", "工具调用"]
 created_at: "2026-10-09"
-updated_at: "2026-10-10"
+updated_at: "2026-10-16T20:50:59+08:00"
 reading_suggestions:
   - sandbox-processes
   - sandbox-concurrency
@@ -27,3 +27,11 @@ reading_suggestions:
 [[codex-exec-session|Codex 持续命令]]可跨多次工具调用存活；E2B 支持环境暂停恢复。[E2B 架构](https://github.com/e2b-dev/runtime/blob/main/docs/ARCHITECTURE.md)
 
 隔离环境仍可能共享宿主可写目录；[[worktree-sandbox-usage|Worktree]]也只分开工作副本。删除容器不会撤销已修改的宿主文件或已发送的 API 请求。结束时先保存结果，完成[[sandbox-processes|子进程清理]]，再释放[[sandbox-concurrency|执行名额]]。
+
+## 复用沙箱能减少启动耗时，怎样防止串任务？
+
+上一个任务留下后台服务、依赖缓存和临时凭据，下一个任务即使使用新目录，也可能受旧环境影响。清空工作目录不是完整重置；暂停后的环境更不能直接交给另一个用户。
+
+先区分可共享的基础镜像与依赖缓存，以及必须按任务隔离的工作文件、进程、凭据和配置。预热环境在分配前完成身份绑定，回收时检查残留；无法确认清洁的实例退出复用池。需要复现的任务同时固定镜像和依赖版本，避免缓存悄悄改变行为。
+
+选择复用策略时比较启动时间与清理复杂度。相同用户的连续任务也未必允许共享全部状态，应按任务范围判断；对高隔离需求，接受更高启动成本往往比维护复杂清理协议更可控。

@@ -1,11 +1,11 @@
 ---
-learning_status: understood
+learning_status: pending
 title: "工具执行调度"
 parent: tool-calling
 category: "Agent"
 tags: ["Agent", "工具调用"]
 created_at: "2026-10-10"
-updated_at: "2026-10-12T13:00:57+08:00"
+updated_at: "2026-10-16T20:55:28+08:00"
 reading_suggestions:
   - sandbox-concurrency
   - tool-scheduler-example
@@ -46,3 +46,11 @@ reading_suggestions:
 [[tool-scheduler-example|最小实现]]用同一组调用对比分批与按就绪条件调度的伪代码，[[langgraph-tool-execution-summary|LangGraph]]展示同轮执行与结果回传。也可用代码表达调度策略：[[cloudflare-code-mode-summary|Code Mode]]组织多步调用，[[openai-programmatic-tools-summary|托管程序]]支持执行暂停、工具回传与恢复；具体等待范围取决于代码中的依赖和同步方式。
 
 前置失败或结果未知时，阻断依赖分支，按需[[agent-retry|重试]]或重规划。超时、取消不代表底层操作已经停止，不能立即释放仍在使用的资源。
+
+## 并发提高吞吐，为什么有时反而让任务更慢？
+
+同时查询十个来源，只要最后必须等待最慢一个，整体延迟仍被它决定；并发过高还可能触发下游限流，增加重试。调度前先区分必需依赖、可选补充和会修改同一资源的操作。
+
+必需分支失败时应停止依赖它的步骤；可选分支到期后可以带着缺口继续，不能把未返回当作“没有结果”。对同一订单的修改按资源约束协调，互不冲突的调用才适合并行。每个调用同时受下游容量、任务总期限和剩余预算约束。
+
+观察排队、执行和等待依赖各用了多久，再决定增加并发还是缩小扇出。取消后仍在运行的操作占用真实资源，确认结束前不能提前释放名额；对于已发出的写操作，还需保留结果核对路径。

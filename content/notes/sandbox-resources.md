@@ -5,7 +5,7 @@ title: "沙箱资源限制"
 category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
-updated_at: "2026-10-10"
+updated_at: "2026-10-16T20:50:59+08:00"
 reading_suggestions:
   - docker-sandbox-practice
   - sandbox-concurrency
@@ -29,3 +29,11 @@ reading_suggestions:
 本机 Linux 可用 systemd／cgroup 包装任务：`CPUQuota`、`MemoryMax`、`TasksMax`、`RuntimeMaxSec` 分别控制 CPU、内存、任务数和时限。需具备相应控制器授权，不能把管理接口交给任务；macOS 不直接适用。[资源设置](https://github.com/systemd/systemd/blob/main/man/systemd.resource-control.xml)
 
 单个任务有额度后，还需用[[sandbox-concurrency|并发控制]]约束总量，超时后完成[[sandbox-processes|整组进程清理]]再释放资源。
+
+## 内存够用，为什么宿主机仍会被一个任务拖垮？
+
+编译产物、依赖下载和持续日志可能先耗尽磁盘；大量小文件也可能触及文件系统限制。只设置内存与 CPU，无法覆盖这些消耗，单个任务限额也不能替代全机余量。
+
+按任务实际行为分别限制工作目录、缓存、输出缓冲及日志，防止结果采集阶段再次把大文件读进内存。超限后保留可识别的原因与有限诊断信息，停止继续扩张，并清理残留；不要把资源终止伪装成普通测试失败，让 Agent 不断重试。
+
+额度可以依据历史任务分布调整，但不能只看平均值。应关注峰值、多个任务同时启动时的总量，以及清理尚未完成的占用。资源不足时缩小任务或排队，优于无上限增加配额。

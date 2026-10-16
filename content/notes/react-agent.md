@@ -1,12 +1,12 @@
 ---
-learning_status: understood
+learning_status: pending
 parent: agent-planning
 title: "ReAct（推理与行动交替）"
 aliases: ["ReAct", "Reasoning and Acting"]
 category: "Agent"
 tags: ["Agent", "ReAct", "执行模式"]
 created_at: "2026-10-09"
-updated_at: "2026-10-12T00:40:27+08:00"
+updated_at: "2026-10-16T20:42:35+08:00"
 reading_suggestions:
   - agent-loop
   - react-paper-summary
@@ -32,3 +32,11 @@ reading_suggestions:
 [[agent-loop|Agent Loop]] 描述执行与反馈循环，ReAct 进一步强调循环中推理与行动的结合，不能把所有工具调用循环都直接称为 ReAct。它也可作为 [[plan-and-execute|Plan-and-Execute]] 的子任务执行方式，两种模式并不互斥。
 
 这种方式能及时利用新信息，但反复调用模型会增加耗时和上下文；外部结果无关、模型判断错误时，仍可能重复行动。因此要保留明确目标、有效反馈与停止条件，不能将「有观察结果」等同于「能正确调整」。
+
+## 不断观察，为什么仍可能越查越偏？
+
+排查超时时，第一条日志提到数据库，Agent 可能连续搜索数据库参数，忽略实际等待发生在外部接口。每轮都有新观察，但新材料只是围绕最初猜测增加细节，没有检验猜测。
+
+可以让每次重要查询对应一个待判定问题：要区分哪两种原因，什么结果会支持或否定它，查询后下一步有什么变化。若连续调用无法缩小原因范围，就回看问题定义和缺失证据，必要时切换数据来源。这个约束不要求暴露模型内部推理，只需保存可核验的假设、观察和决策依据。
+
+行动还要按影响区分：读取日志可以较自由地探索，重启服务、删除数据等操作必须经过独立校验。能根据反馈选择动作，不代表所有试探都有同样的成本。

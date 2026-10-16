@@ -1,11 +1,11 @@
 ---
-learning_status: understood
+learning_status: pending
 parent: agent-context
 title: "对话历史的存储"
 category: "Agent"
 tags: ["Agent", "上下文管理", "持久化"]
 created_at: "2026-10-09"
-updated_at: "2026-10-11T21:55:05+08:00"
+updated_at: "2026-10-16T20:47:46+08:00"
 reading_suggestions:
   - pi-session-storage-summary
   - openai-conversation-storage-summary
@@ -66,3 +66,11 @@ reading_suggestions:
 [[anthropic-managed-agents-summary|Managed Agents 将会话日志与模型窗口分开]]，说明原始记录可以持续保存，而每轮只使用其中一部分。省略的内容可[[context-loading|按需回查]]，读取已有工具结果不代表重新执行工具。
 
 历史回答「发生过什么」；[[agent-task-state|任务状态]]与[[agent-checkpoint-recovery|中断恢复]]还要处理当前进度和执行位置，不由保存消息自动解决。
+
+## 前端已经显示一条消息，后端重启后为什么找不到？
+
+流式片段可能先发给前端，完整响应尚未持久化；工具也可能已执行，结果还没写入历史。若界面把“已经显示”当作“已经可靠保存”，断线恢复时就会出现重复回复或缺失结果。
+
+明确接收、持久化和展示的顺序，用稳定消息身份区分重传与新消息，记录生成中、完整、失败等状态。恢复时从已提交记录继续，未完成片段不能当作完整工具调用执行。若产品允许先展示再保存，应有明确的未完成状态与失败提示。
+
+历史存储还要和业务状态分工：消息里说“退款成功”不构成账本证据，历史缺一条成功回复也不意味着需要重新退款。排障时同时核对消息记录、运行状态和外部回执，不能只修补聊天文本。

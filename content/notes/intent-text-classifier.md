@@ -4,9 +4,9 @@ aliases: ["监督学习意图分类", "Intent Classification"]
 parent: agent-intent
 category: "Agent"
 tags: ["Agent", "意图识别"]
-learning_status: understood
+learning_status: pending
 created_at: "2026-10-13T17:38:22+08:00"
-updated_at: "2026-10-14T13:50:02+08:00"
+updated_at: "2026-10-16T20:55:28+08:00"
 reading_suggestions:
   - rasa-nlu-data-practice
   - rasa-intent-classification
@@ -60,3 +60,11 @@ reading_suggestions:
 最高分太低、前两名接近或表达含混时，可以[[intent-clarification|澄清或回退]]。最低接受分数称为阈值，应通过验证数据选择；也可像[[azure-clu-intent-design|Azure CLU 的 None 类别]]一样，用样本学习识别不支持的表达，效果仍需检验。
 
 训练数据用于学习，验证数据用于选择配置，独立测试数据用于检查最终效果。不要用训练例句或同一模板只换订单号的句子证明模型可靠；阈值选择、错误分析与发布检查由[[intent-evaluation|意图识别的评测与上线]]展开。
+
+## 离线准确率很高，为什么新业务上线后频繁分错？
+
+训练集里只有退款和查询，若分类器只能在这两个类别中选择，新上线的「换货」请求也会被放进已有类别。最高分很高可能只是旧类别之间的相对优势，不能说明请求确实属于支持范围。
+
+新增业务前要检查类别边界和路由，补充域外、相近类别及真实混淆表达；必要时设置回退。阈值应按误操作代价和验证集表现选择：读错帮助页与误进入提交流程不能使用同一风险判断。对易混类别，先收集错例核对标签定义，再决定补数据还是拆类别。
+
+上线监测不仅看标签分布，还要看后续纠正、转交和任务结果。特征转换、模型、标签顺序与路由表须成套版本化，否则预测数字正确，也可能被映射成另一项业务。

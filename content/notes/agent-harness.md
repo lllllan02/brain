@@ -1,12 +1,12 @@
 ---
-learning_status: understood
+learning_status: pending
 parent: agent
 title: "Agent Harness"
 aliases: ["Harness", "Agent Harness"]
 category: "Agent"
 tags: ["Agent", "Harness"]
 created_at: "2026-10-09"
-updated_at: "2026-10-11T12:14:02+08:00"
+updated_at: "2026-10-16T20:42:35+08:00"
 reading_suggestions:
   - langchain-harness-anatomy-summary
   - openai-agents-architecture-summary
@@ -28,3 +28,11 @@ Agent Harness 负责运行任务；[[agent-evaluation-harness|Evaluation Harness
 [[anthropic-long-running-harness-summary|长任务交接]]说明循环与压缩为什么还不够，[[anthropic-harness-design-summary|生成与评估分工]]进一步讨论如何改善质量，以及何时应精简 Harness。
 
 [[langchain-harness-middleware-summary|中间件扩展]]展示机制如何接入循环；[[openai-harness-engineering-summary|工程环境设计]]则说明文档、工具与可执行规则如何支持 Agent 工作。
+
+## 一个能运行的循环，为什么接入业务后仍不可靠？
+
+订单查询在演示中只有一个请求；上线后会同时遇到用户改口、客户端断线、工具超时和重复投递。如果各工具分别保存状态、处理重试，主循环就可能不知道哪一步已经发生，恢复时再次执行。
+
+Harness 应明确几个共同约定：一次用户任务由谁持有，需求更新怎样通知正在运行的步骤，工具结果怎样绑定操作对象，哪些失败允许重试，以及什么证据才能把任务标为完成。这些约定应贯穿入口、工具执行和恢复流程；框架提供了相应组件，也仍需应用确定业务语义。
+
+排查时先沿一次失败找责任边界：模型没获得正确资料，改输入组织；工具已完成却丢了回执，改恢复协议；规则检查被绕过，改执行入口。不要把所有失败都归因于提示词，也不必一次引入全部基础设施。

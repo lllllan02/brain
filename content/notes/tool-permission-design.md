@@ -1,11 +1,11 @@
 ---
-learning_status: understood
+learning_status: pending
 title: "工具调用的权限规则设计"
 parent: tool-permissions
 category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10T20:33:24+08:00"
-updated_at: "2026-10-12T13:23:44+08:00"
+updated_at: "2026-10-16T20:44:29+08:00"
 reading_suggestions:
   - openfga-agent-authorization-summary
   - claude-permissions-summary
@@ -40,3 +40,11 @@ reading_suggestions:
 Shell 的脚本、变量与子进程使工具名或命令前缀不足以代表实际行为。[[claude-code-shell-permissions-summary|Claude Code]]和[[codex-exec-policy-summary|Codex]]展示了命令检查、审批与[[sandbox-execution|受限环境]]的配合；无法可靠识别的行为须按策略审批、拒绝或限制执行，人工批准不证明脚本安全。
 
 规则可先用共享代码与配置实现，需要独立管理复杂策略时再引入策略引擎。
+
+## 审批时允许，执行时还应该再检查吗？
+
+用户批准退款后，账号权限可能被撤销、订单状态可能改变，审批也可能已经过期。只缓存审批时的允许结果，会把历史许可误当成当前执行依据。
+
+执行前重新核对身份、资源归属、有效权限和业务前置条件；审批则证明有权者同意过哪一个具体版本。权限撤销应明确何时生效，若决策有缓存，需要决定哪些操作必须获得更新的结果。对同一数据库中的条件和修改，可以在事务边界共同校验；跨服务仍需下游在实际生效处保证约束。
+
+权限规则的测试不能只有“允许用户做允许的事”，还要覆盖租户错配、对象替换、撤权后继续执行和多个授权来源并存。删除一条授权不一定等于最终不可访问，要检查实际决策。

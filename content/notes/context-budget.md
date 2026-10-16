@@ -1,12 +1,12 @@
 ---
-learning_status: understood
+learning_status: pending
 parent: agent-context
 title: "上下文预算"
 aliases: ["Token Budgeting", "Context Budget", "Token 预算"]
 category: "Agent"
 tags: ["上下文管理"]
 created_at: "2026-10-09"
-updated_at: "2026-10-11T18:53:08+08:00"
+updated_at: "2026-10-16T20:47:46+08:00"
 reading_suggestions:
   - context-layering
   - context-trimming
@@ -46,3 +46,11 @@ reading_suggestions:
 1. **「先确定可用容量，再设触发线」**。读取实际模型和接口上限，为回复、工具结果增长及计数误差留空间。可参考[[opencode-context-budget-summary|OpenCode V2 的比例预留与最低预留量]]；采用[[codex-context-budget-summary|Codex 这类有效窗口]]时，明确已扣掉哪些余量，避免重复扣除。更换模型或输出设置后重新计算，[[claude-code-context-budget-summary|Claude Code 的触发点]]也有相应的适用条件。
 2. **「单独配置压缩后的保留预算」**。像[[pi-compaction-summary|Pi]]一样，将触发阈值与近期保留量分开。压缩后的完整输入应低于触发线，并留出继续交互的空间；摘要多长、保留多少，需结合任务验证，不承诺固定压缩比例。
 3. **「每轮复查，用实际结果调参」**。记录压缩前后完整输入、压缩频率，以及是否因信息丢失而重复调用工具。经常超限就提前触发或限制单次加载；经常丢失关键内容，就调整保留策略。工具返回后仍要重新计数，不能只在用户发消息时检查。
+
+## 请求发出前没超限，为什么下一轮突然装不下？
+
+模型提出多个工具调用，各自返回长日志，合并后可能超过窗口；另外，工具定义和输出预留也占预算。只在用户消息进入时计数，覆盖不了这类增长。
+
+每次真正调用模型前重新检查装配后的输入，提前限制工具输出，长内容保留外部引用与必要预览。给预计的工具结果和下一轮生成留余量，达到阈值时先裁剪可重取内容或压缩旧历史。摘要生成本身也需要输入与输出空间，不能等完全耗尽窗口才开始。
+
+估算误差较大时采用保守余量，并用实际用量修正；无法容纳的单个结果需要分段读取。上线观察超限失败、压缩频率和信息遗漏，而不只观察平均 Token。预留比例应由任务输出分布决定，没有固定比例适用于所有 Agent。

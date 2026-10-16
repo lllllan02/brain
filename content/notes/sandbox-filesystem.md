@@ -5,7 +5,7 @@ title: "沙箱文件访问控制"
 category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
-updated_at: "2026-10-10"
+updated_at: "2026-10-16T20:50:59+08:00"
 reading_suggestions:
   - sandbox-lifecycle
   - docker-sandbox-practice
@@ -26,3 +26,11 @@ reading_suggestions:
 规则应由沙箱外的执行器设置，还需考虑符号链接、允许目录中的受保护子路径；可写挂载会影响其背后的文件，删除沙箱不会自动撤销。共享与回收见[[sandbox-lifecycle|生命周期]]。
 
 [[docker-sandbox-practice|Docker]]展示挂载用法，[[srt-sandbox-practice|srt]]展示路径规则；[[codex-sandbox-filesystem|Codex 源码]]说明可写父目录如何保护子路径。[挂载说明](https://docs.docker.com/engine/storage/bind-mounts/)
+
+## 只开放项目目录，是否就能放心运行项目里的脚本？
+
+项目中可能包含真实配置、下载的依赖和指向外部路径的链接；测试脚本也可能删除整个可写工作区。路径获准访问只限定影响范围，不保证该范围内的所有文件都适合读取或修改。
+
+准备环境时先明确任务需要的输入，排除密钥和无关数据，输出放在专用位置；需要修改源码时使用可审查、可恢复的工作副本。对共享挂载要理解写入会直接影响宿主，不能寄希望于销毁容器来撤销。
+
+还应检查缓存是否跨用户共享、是否可被任务写入并影响后来执行。可共享内容尽量只读，任务专有缓存按范围隔离。最终收集产物时核对路径、类型与大小，避免把任意任务输出当成可信宿主文件操作指令。

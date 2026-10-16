@@ -5,7 +5,7 @@ title: "沙箱网络访问控制"
 category: "Agent"
 tags: ["Agent", "沙箱"]
 created_at: "2026-10-10"
-updated_at: "2026-10-10"
+updated_at: "2026-10-16T20:50:59+08:00"
 reading_suggestions:
   - sandbox-credentials
   - srt-sandbox-practice
@@ -28,3 +28,11 @@ reading_suggestions:
 地址与端口控制连接哪台服务；域名控制哪个网站；精确到 URL 路径、GET／POST 等方法，需要能检查 HTTP 内容的代理或网关。批准域名不等于只批准一条链接，也不自动限制上传内容或[[sandbox-credentials|API 操作权限]]。
 
 [[docker-sandbox-practice|Docker]]、[[srt-sandbox-practice|srt]]和[[e2b-sandbox-practice|E2B]]提供不同配置入口。仅设置代理变量不是强制隔离，已有 socket 等通道也需检查；[[claude-sandbox-network|Claude 运行时源码]]展示限制直连与代理转发的配合。
+
+## 放行依赖下载域名，为什么仍然可能扩大风险？
+
+依赖安装可能访问重定向地址、额外镜像或构建脚本指定的站点；简单放开整个互联网最容易跑通，也会让可读代码有任意外发路径。另一方面，允许访问某个网站，也不代表允许向该站点提交所有内容。
+
+先根据实际依赖链选择受控镜像或必要目标，拒绝记录用于定位缺失项，再按任务需要增加范围。涉及重定向、地址变化与直连时，要确认规则在实际出口生效；仅检查最初 URL 或设置代理变量不足以证明边界成立。
+
+对需要读取网页但不需要上传数据的任务，可通过能力更窄的可信读取工具提供内容。网络授权应与凭据和操作权限共同设计，访问目标被允许不等于业务动作被允许。

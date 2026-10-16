@@ -78,7 +78,7 @@
       "title": "A2A（Agent 间通信协议）",
       "collection": "notes",
       "state": "pending",
-      "digest": "7c4836ee6743ff195b191844d6112d259ccb26f352bb027c8ca441ad2977e1a6"
+      "digest": "1381b27a8c67e7b7729f175d3a5a65b6c246dd0ec993d76b7edd33758c8b0723"
     },
     "agent-approval-protocol": {
       "title": "人工审批协议",
@@ -90,7 +90,7 @@
       "title": "Agent 的中断恢复机制",
       "collection": "notes",
       "state": "pending",
-      "digest": "bb9b029c34c09896ae11413b3916249c1fccb5f3a94ae9edaa1b12b0326d390b"
+      "digest": "1911d8fc7f971adcc75d903693f21aadd8a4228eff639dcdb1341ad29a7b015f"
     },
     "agent-checkpoint-runtime": {
       "title": "检查点",
@@ -101,14 +101,14 @@
     "agent-context-input": {
       "title": "Agent 上下文组成",
       "collection": "notes",
-      "state": "understood",
-      "digest": "8df367cbbef9f07a2488f507bdf34fbca9b943a3b5684db3c65c80bf63145734"
+      "state": "pending",
+      "digest": "b9572a70fad130df2eec60b111a5a00d8f474533d33a329244cb1636e17934d8"
     },
     "agent-context": {
       "title": "Agent 上下文管理",
       "collection": "notes",
-      "state": "understood",
-      "digest": "70ddff26d6b40d49263ee46c2d7ca38b81418900dc64948c04bb14d44829dfbf"
+      "state": "pending",
+      "digest": "8cdadc32616a266155a3fad3a12026f61a74b1f57429c3a3d130f6b345b736b6"
     },
     "agent-evaluation-benchmarks": {
       "title": "Agent 基准测试",
@@ -120,25 +120,25 @@
       "title": "Agent 评测设计",
       "collection": "notes",
       "state": "pending",
-      "digest": "5606bac853ee835b0f27a3c5dae3a50aa66fd6061474db2b9e08fe31c99a2047"
+      "digest": "86d8637151391bcb2d90689ace34fed6c7b5e9549c52a8d8ad2ca31231ca6e38"
     },
     "agent-evaluation-graders": {
       "title": "Agent 评分器",
       "collection": "notes",
       "state": "pending",
-      "digest": "e4bd91f1644e8cd7a236e5ba5d247f16b2b5e2f3fb1409da9c15c79c70f7c59c"
+      "digest": "efecc4c92fe86a2038183a40b77e3fbddb8ae960fb0984d5866db871bdb58e9f"
     },
     "agent-evaluation-harness": {
       "title": "Agent 评测运行系统",
       "collection": "notes",
       "state": "pending",
-      "digest": "927e63408aca7ab5f93c024255978564d6a0281207339b03c1913c9d4da75fa2"
+      "digest": "f965cda76a0d00994aebae8553aeafafb8bc0b362c375788908af161d9b3e972"
     },
     "agent-evaluation-online": {
       "title": "Agent 线上评测与发布",
       "collection": "notes",
       "state": "pending",
-      "digest": "7de43e2e7b55ddd7231674b44f5977a13bc1a8e556b3116a334fa77b6911a91b"
+      "digest": "f7de425a516e581d7c1986931daa969155b69ac110b41ff2bdbad8bd1ff781cc"
     },
     "agent-evaluation-practice": {
       "title": "Agent 评测示例",
@@ -168,7 +168,7 @@
       "title": "Agent 结果与轨迹评测",
       "collection": "notes",
       "state": "pending",
-      "digest": "1a4ca09eaa125be2f8622da4785355879194a23eb0bab2a0929f5da988594b85"
+      "digest": "218f52c7f88d4d639aff2f7a0b38b385da047c6c14fa0f5e8d67db934727c943"
     },
     "agent-evaluation": {
       "title": "Agent 评测",
@@ -179,74 +179,74 @@
     "agent-feedback-mechanisms": {
       "title": "Agent 的反馈与调整机制",
       "collection": "notes",
-      "state": "understood",
-      "digest": "c71d359c6fb2cff93113bedf62f0beeea70b7cab5947d83b46219dec39c7207d"
+      "state": "pending",
+      "digest": "02620d2aa8bba11705012d2f5a80cc701882a6780d40c878f34c7d3129e5dc93"
     },
     "agent-guardrails": {
       "title": "Agent 行为约束",
       "collection": "notes",
       "state": "pending",
-      "digest": "a11a0c7cfee70e3cdfd5310fb578253b49df51a7fb3e8736b68acafdc4687226"
+      "digest": "faa653dd8c7f7df694c6b89a87aa6ad89c2a28768e93b87976c72b8971348e42"
     },
     "agent-harness": {
       "title": "Agent Harness",
       "collection": "notes",
-      "state": "understood",
-      "digest": "0cb1ada8fde13c4df8f7cba620a899621f910f467694476166c7a18ac8f30a80"
+      "state": "pending",
+      "digest": "12bbd4d81e8a5c810b7b465378657a62bef2e59e008a535f2b205219e2f2e569"
     },
     "agent-human-in-the-loop": {
       "title": "Agent 人工介入",
       "collection": "notes",
       "state": "pending",
-      "digest": "ae48450e02a832aae78cc16735eea49d4b6aa8426b15d9b7b738dc7ad6d24f95"
+      "digest": "25938216c8f2f875d437af2fe765c71267a0873c0adfc8e9e46fc67c38f4affc"
     },
     "agent-intent": {
       "title": "Agent 意图识别",
       "collection": "notes",
-      "state": "understood",
-      "digest": "c5c521d2c09114a55bb950ccc1a868f726fa4fe9e259821676b3d7f4cce6b6c9"
+      "state": "pending",
+      "digest": "2628cba1e5ba97665cbb3e7e08a0a9721d0cd4fb663993e7c07b43785517a1a1"
     },
     "agent-loading": {
       "title": "Agent 按需加载",
       "collection": "notes",
       "state": "pending",
-      "digest": "83211abee389c9c706a053ddcd6731eb876bfba56990a6e5490a826119173788"
+      "digest": "86e67bd9e950a6a4794397cf67345de23acd31ba41e958f08664968cbeb28f76"
     },
     "agent-loop": {
       "title": "最小 Agent Loop",
       "collection": "notes",
-      "state": "understood",
-      "digest": "ff8f4037b426eb4fc361f3c800e51893ccc7e872317517278da70b90b20603c0"
+      "state": "pending",
+      "digest": "e683a71ebf6d0915d5d7f19596d9afd33aa188b95f61ab9b12762d6c96d1a5c0"
     },
     "agent-memory-consolidation": {
       "title": "Agent 记忆整合",
       "collection": "notes",
       "state": "pending",
-      "digest": "5829a5b8592caf7f24d7535a7bccc47b57a481b43ef113570d2388e6402b4e48"
+      "digest": "1d926d24feec09a803b3e6fad13b7d1ab4e075719e4bc6f10218a3d0cb77f692"
     },
     "agent-memory-evaluation": {
       "title": "Agent 记忆评估",
       "collection": "notes",
       "state": "pending",
-      "digest": "75f139091ba240c9e1710a899f3aa1ae0d703425e8e7dcd7641309f104640fbf"
+      "digest": "70d019c51dba35d45210848867fbab6ebf628094f25d37ff8dc533a024b7316c"
     },
     "agent-memory-experience": {
       "title": "Agent 经验记忆与技能复用",
       "collection": "notes",
       "state": "pending",
-      "digest": "a76729340c1009412fb598df8128ff2bfad89514c74169a0a455c3a3a7266b46"
+      "digest": "bde5a7e683cbb64733f4522a0ab2383b6f7b722beffa2e6bd48f659bc342d6ab"
     },
     "agent-memory-hierarchy": {
       "title": "Agent 分层记忆",
       "collection": "notes",
       "state": "pending",
-      "digest": "602238ee75a40fdacca268e3f308b43fa67b19ed8a97ca34d9b7d74dfa702b14"
+      "digest": "fe2d828a37db2bc5701ff7a0631e600eb257763e7b7062fb78f47cc3e3d5fc54"
     },
     "agent-memory-maintenance": {
       "title": "Agent 记忆维护",
       "collection": "notes",
       "state": "pending",
-      "digest": "ceb10da095be27736256e66b708470d5c3417244dafd28fc60e03609eaf715de"
+      "digest": "832b32918f8c0cb7c6e7ed18880bf854d6acd164b347377613a7e6077224aaf5"
     },
     "agent-memory-practice": {
       "title": "Agent 记忆实现",
@@ -258,25 +258,25 @@
       "title": "Agent 记忆检索与注入",
       "collection": "notes",
       "state": "pending",
-      "digest": "71ca14c7112489df8277f9bf1a9179ec6994a1266dd17c5a0c96f8010e62aa2e"
+      "digest": "937797f5bc76c6349465666e8b9d15882cf45445d40f07c224de980f6b525d61"
     },
     "agent-memory-selection": {
       "title": "Agent 记忆工程选型",
       "collection": "notes",
       "state": "pending",
-      "digest": "3504e3f412f80ac2f4c2597f83363ccfe9cbcb8a040610af322ff1cdcc55fd8e"
+      "digest": "ed869c4fac89a813e88016909babe01196d5c331a4c0d198d01a30569bba4ee2"
     },
     "agent-memory-storage": {
       "title": "Agent 记忆表示与存储",
       "collection": "notes",
       "state": "pending",
-      "digest": "0f3824ee51e99f0033def31b324006952ad278a95c6d973ecd43e0fc5155d444"
+      "digest": "37357969962a2f6c5342d914dd721b09e2fc19493e145a26bc7c9343d28fcfad"
     },
     "agent-memory-writing": {
       "title": "Agent 记忆写入与纠正",
       "collection": "notes",
       "state": "pending",
-      "digest": "a4d0265360dc58f085abb3d1d6ad66759cf981dccdb2be42c92d237fc3e355c6"
+      "digest": "4329e4e8d418817ce6a1f86d8b1008ae55ec00beb8137f24fd022d295a96b854"
     },
     "agent-memory": {
       "title": "Agent 记忆",
@@ -287,8 +287,8 @@
     "agent-planning": {
       "title": "Agent 的规划与执行模式",
       "collection": "notes",
-      "state": "understood",
-      "digest": "63deae60c90bc5aee5411e1a9a1dc4fb53244f9c0fe3b6c2923ce2ed6518382c"
+      "state": "pending",
+      "digest": "c379422e79a22de490f34f815aaf2ec5e87057776baf9452f0255b0167e3f7af"
     },
     "agent-reflection-implementation": {
       "title": "Agent 反思实现",
@@ -300,25 +300,25 @@
       "title": "Agent 反思",
       "collection": "notes",
       "state": "pending",
-      "digest": "06625f81e984c9c4c8d29b22b6c59dda2c569c42690bb75adcad515d6fe3c438"
+      "digest": "f6ee743dfc2fffe56bf051277fbd598ab8d57b1f960c1530c281dc49e108524a"
     },
     "agent-replanning": {
       "title": "重新规划",
       "collection": "notes",
-      "state": "understood",
-      "digest": "d38691ad98a1cba3f8eec3cbde57217ebe98f4bfa5980de3469d6720d16d8e95"
+      "state": "pending",
+      "digest": "65f6a690466444a9a030d7d195246bcdcb97eb79dbd154dceed153027a665505"
     },
     "agent-resume-failure": {
       "title": "中断恢复中的重复执行",
       "collection": "notes",
-      "state": "understood",
-      "digest": "1f5090ec7ca2fd34125aca9a833f06c7fc584cd6e6f1073d0cd93f68024cc71b"
+      "state": "pending",
+      "digest": "f06954fcfd51f3bbc8751b6fb5593433b94565786aba00b2a7e9a3b0f504e2d0"
     },
     "agent-retry": {
       "title": "Agent 重试",
       "collection": "notes",
-      "state": "understood",
-      "digest": "930b7c74a23b53ddb7fdb47f983116e11cf7244a6e8cdb0aa4f9f234ec8c590d"
+      "state": "pending",
+      "digest": "990aa4c649ef35df94079f640cef2e1d8f353f9bd98871cf33ba8bd319f8c46c"
     },
     "agent-sandbox": {
       "title": "Agent 沙箱",
@@ -329,26 +329,26 @@
     "agent-self-correction": {
       "title": "Agent 自我纠正",
       "collection": "notes",
-      "state": "understood",
-      "digest": "c8da3e4168287abbd24a2f19247efbd46d17659b1fc58f719c7c8cd9ed7c88f7"
+      "state": "pending",
+      "digest": "766aeaceb842b4011e505d0333434d874680b27ca3b86a199d218db262f287ed"
     },
     "agent-subagents": {
       "title": "子 Agent",
       "collection": "notes",
       "state": "pending",
-      "digest": "bdc641ea4f96b5b5dc08d92f2653559d5fd28dabbc59d0580974d670ffbb9b7e"
+      "digest": "6591d882268b362020e9694891991ee5278223604592b4e8a28944cb438a822d"
     },
     "agent-task-state-update": {
       "title": "任务状态更新与冲突",
       "collection": "notes",
-      "state": "understood",
-      "digest": "2c8f591aece7a4a0f2c8949bea9bd594b6b1b5fef3136a84ed0a8b1329b740a7"
+      "state": "pending",
+      "digest": "84c9b022f1c7b21a7699ee139fab6d257579a715723b8fc53446e3c867c8bccb"
     },
     "agent-task-state": {
       "title": "Agent 任务状态管理",
       "collection": "notes",
-      "state": "understood",
-      "digest": "9b39c84d63e226237c5229c3281dca6333e831270e4269e4f8431e3eef0d18c2"
+      "state": "pending",
+      "digest": "6d381ab428e1793f30ecca0c04d54ffa1e4d992277761f58652e30cb61ad2474"
     },
     "agent-temporal-approval": {
       "title": "Temporal 审批接入",
@@ -401,14 +401,14 @@
     "agent-vs-workflow": {
       "title": "Agent 与工作流",
       "collection": "notes",
-      "state": "understood",
-      "digest": "872609bb973cdb4c295de1965301373643d07a2e79755e715154afe3608badf9"
+      "state": "pending",
+      "digest": "c1c06fa04b85ee6db3d5db7a5b4860c54bbf3ab89a7a1832fa3827af9c7631e0"
     },
     "agent": {
       "title": "Agent",
       "collection": "notes",
       "state": "pending",
-      "digest": "d5457ccdc8b5f65ef116c00bbe7fe14862e93fa2fdc14029935690ca414e416e"
+      "digest": "348b374988c20b70b6d09557faed89a577c3a4b67ea44acbffc93c5db3f36f87"
     },
     "api-gateway": {
       "title": "API 网关",
@@ -581,50 +581,50 @@
     "context-budget": {
       "title": "上下文预算",
       "collection": "notes",
-      "state": "understood",
-      "digest": "206d3c3a2761a7486df861ad4b73fea04358df1d3f35a1e01e2b3e09a4734aaa"
+      "state": "pending",
+      "digest": "c94dd8b16ea4a74e71991b771e9cfc91f0c0f3ca1dc530d22a39365710ff741c"
     },
     "context-compaction-evaluation": {
       "title": "上下文压缩的效果评估",
       "collection": "notes",
-      "state": "understood",
-      "digest": "0d32b9ee517ccef2c85d8353fbb49993e48c37ae218a9c61831320940f068c1e"
+      "state": "pending",
+      "digest": "223b99bfdd62aace8d50d095efdb45a3e37a755a00ce58ccead6165dcfc9f0d7"
     },
     "context-compaction-prompt": {
       "title": "压缩摘要的提示词设计",
       "collection": "notes",
-      "state": "understood",
-      "digest": "65d4dad3afc1d79ef6451afecf0f22c51412c732fbde193188e99f5193ce4c30"
+      "state": "pending",
+      "digest": "e2c435e64c42b9ed42595603588fa45b7925ee79333a106fab5f23a42e474294"
     },
     "context-compaction-storage": {
       "title": "压缩摘要的存储与读取",
       "collection": "notes",
-      "state": "understood",
-      "digest": "b887f90019beb41f9442af8dc878dbf92cd2a7e9d120be8d683a61b923498615"
+      "state": "pending",
+      "digest": "814162bae6bd365146170e76ba44384cf56db2f6946e11face4ddd0ee4893bb6"
     },
     "context-compaction": {
       "title": "上下文压缩",
       "collection": "notes",
-      "state": "understood",
-      "digest": "ed0862eb8695a2ddbcac136e4fc132e3f378c0dca7930b2f367e1da4c0dc0140"
+      "state": "pending",
+      "digest": "d35c34edabc6adad99072b4aa021993aa96ef0f744e52d7856eb8e2d23349917"
     },
     "context-layering": {
       "title": "上下文分层",
       "collection": "notes",
-      "state": "understood",
-      "digest": "e72bf99928f3aa2c42de5bfddc80f46384fc262540b5bdb611d52d541b8cdace"
+      "state": "pending",
+      "digest": "e02678d792176e007769b7db3382cd7d16805ff69b78801a4a32ed114c3fc934"
     },
     "context-loading": {
       "title": "上下文按需加载",
       "collection": "notes",
-      "state": "understood",
-      "digest": "ae002f361f8ff69cbba1ea99a012077c46c2289243c0b2ff6ed101a03ad9204c"
+      "state": "pending",
+      "digest": "e0c9bdc3942c69fa5fd2e8bb909f10049ce9c65f799d4638101ba1e310621cec"
     },
     "context-trimming": {
       "title": "上下文裁剪与筛选",
       "collection": "notes",
-      "state": "understood",
-      "digest": "ca283115d23b56657859a4770b07149936215bf2d46a095a33a15d6279cde85d"
+      "state": "pending",
+      "digest": "7c68eb24a5ac67472ddaf82298d44dbb99d89af2e5c387777993af7e3bab21db"
     },
     "cookie": {
       "title": "Cookie",
@@ -1019,8 +1019,8 @@
     "history-storage": {
       "title": "对话历史的存储",
       "collection": "notes",
-      "state": "understood",
-      "digest": "5ac79b829cdf11cf252fffcb3677be3cc416e003de6f3da995c228a613bd9b19"
+      "state": "pending",
+      "digest": "112dc491537eaa18546ae9b57c7a73f1d25ba4b40e31a2a45927440d12e8bd3a"
     },
     "idempotency": {
       "title": "幂等",
@@ -1043,38 +1043,38 @@
     "intent-clarification": {
       "title": "意图澄清与回退",
       "collection": "notes",
-      "state": "understood",
-      "digest": "0a2cfb3b624987458d46b72174b7d1f23f97bf22d483f204539a1e335552644e"
+      "state": "pending",
+      "digest": "c34ce37010b2f4825f6ed1ddc7d4f8373797e8c3e5f1d555f3771fd0012e0bd2"
     },
     "intent-dialogue-state": {
       "title": "意图参数与多轮状态",
       "collection": "notes",
-      "state": "understood",
-      "digest": "9bdbcd2d405c792b8f5448ebaafdd12cc1f862551ca97fa2b30558fb2554fc02"
+      "state": "pending",
+      "digest": "175d0c32c228df7983a10c609e993fe52bf729352cae973471cdde2a9666433c"
     },
     "intent-evaluation": {
       "title": "意图识别的评测与上线",
       "collection": "notes",
       "state": "pending",
-      "digest": "02616018eb1c8cd7ef8cc641cec16a2782cdf006bc8910073b31c2331d70804f"
+      "digest": "1c5249d1b0974520ee10e5a1f1cee7de548c350378f3e97c42f3ca46d4c5e650"
     },
     "intent-llm": {
       "title": "LLM 意图识别",
       "collection": "notes",
-      "state": "understood",
-      "digest": "7fa9cf34c00acd53bbb2e26f6b2379e1bec43af4e851c5ae42ea757595d51353"
+      "state": "pending",
+      "digest": "9b8f6bfe68efc3c660cdc74bbe474eecd5ff28217ea1d75e0574b8aba446140e"
     },
     "intent-rules": {
       "title": "基于规则的意图识别",
       "collection": "notes",
-      "state": "understood",
-      "digest": "c48cc9b30632e42400eb136b6230bcedb142c0fc180767daa26a6c4278913e83"
+      "state": "pending",
+      "digest": "8c130b9f7ca89da99979ba4d6031ed160775f96e0cdfa5c795d19de033549bf3"
     },
     "intent-text-classifier": {
       "title": "意图分类器",
       "collection": "notes",
-      "state": "understood",
-      "digest": "285a27d0a362c7c645a2bcbd028e8140747267682b5d279bba95f80e3e924e9b"
+      "state": "pending",
+      "digest": "1f234314f2d0ddd8d4a9d03d3b9de8ceffce5ad5ed3759d707eeb27aa6cc10d1"
     },
     "kafka-event-model": {
       "title": "Kafka 事件与记录",
@@ -1151,20 +1151,20 @@
     "mcp-flow": {
       "title": "MCP 接入流程",
       "collection": "notes",
-      "state": "understood",
-      "digest": "a87d2e9ba8e42eb2f9aa48b2ef6dcb905170358cd29579290baeeb7b7a65e3b1"
+      "state": "pending",
+      "digest": "fc8632b181a339ffbfd2712e8d7deb7befd78551df0d19fa1b63b8c9bcf6579e"
     },
     "mcp-http-client": {
       "title": "MCP Streamable HTTP 客户端",
       "collection": "notes",
-      "state": "understood",
-      "digest": "1f9965176bae196d8e1fb75549dde8527fa9d18367cbf389045e7b3a94544f41"
+      "state": "pending",
+      "digest": "34d68ab1f17f22dcbfb0faab03bdda007603e4525efecb6a7c4ee6d844f7fe4f"
     },
     "mcp-http-server": {
       "title": "MCP Streamable HTTP 服务端",
       "collection": "notes",
-      "state": "understood",
-      "digest": "2bec2dfdc6d9dc283fb19ea1e6f66325a6c79ad59c202cb7ee5de221a7274bf1"
+      "state": "pending",
+      "digest": "fe6173308fcd9d85342b74cdb8334963fa5a80d7e0f6ec8ae4bc5ec60f7f784c"
     },
     "mcp-oauth-client": {
       "title": "MCP OAuth 接入",
@@ -1175,8 +1175,8 @@
     "mcp-permissions": {
       "title": "MCP 授权与权限",
       "collection": "notes",
-      "state": "understood",
-      "digest": "5be4d6082376195e8c1f232d8123e638786230c6a192fb4b0680002a0063db24"
+      "state": "pending",
+      "digest": "f0d1e271838daafd9e1a025134ed1a054064e6bd8c94a4b8cdfb6c11c7a840fb"
     },
     "mcp-server": {
       "title": "MCP stdio 服务端",
@@ -1193,8 +1193,8 @@
     "mcp": {
       "title": "MCP（模型上下文协议）",
       "collection": "notes",
-      "state": "understood",
-      "digest": "fe2407dd013b58a988488db072dbcd2a7b01205971b28a5e4e79915f4dacea7c"
+      "state": "pending",
+      "digest": "8006e74eb1b06a65d3b71015fd72f32e55d190f32f76b13cdaa16d993f5c2259"
     },
     "mongodb-replication": {
       "title": "MongoDB 副本集",
@@ -1218,7 +1218,7 @@
       "title": "多 Agent 协作",
       "collection": "notes",
       "state": "pending",
-      "digest": "54e0382c914b4d753595ccc8d26e12e0ae7aafbf9d804b5dbade723caf62b7b8"
+      "digest": "b041611f6f083f01218cb0bf9a793956431678896c7164a366d8580280b87568"
     },
     "multi-channel-payment": {
       "title": "多渠道重复扣款",
@@ -1643,8 +1643,8 @@
     "plan-and-execute": {
       "title": "Plan-and-Execute（先规划再执行）",
       "collection": "notes",
-      "state": "understood",
-      "digest": "4ff024152b057db21dcfc31df177295f8287e6bc3bc4e886a629febd06789719"
+      "state": "pending",
+      "digest": "8b6c7c712c908a7f9ed8dd0c24dbc00ec3f9520e64449dfa541e8944abd72afd"
     },
     "postgresql": {
       "title": "PostgreSQL",
@@ -1847,8 +1847,8 @@
     "react-agent": {
       "title": "ReAct（推理与行动交替）",
       "collection": "notes",
-      "state": "understood",
-      "digest": "938ca0741a75eb1d4161284c7b8c385c34584a964abbcdf83b31048fbe815414"
+      "state": "pending",
+      "digest": "cd09b2292582d7917db9b28975c3223c0c873637abeb41420dee6da25e0ff1d9"
     },
     "redis-atomic-operations": {
       "title": "Redis 流水线、事务与脚本",
@@ -1956,43 +1956,43 @@
       "title": "沙箱并发与容量控制",
       "collection": "notes",
       "state": "pending",
-      "digest": "44a5e70c5a97017b70049f1f9d6117d0089ab8bc9e0c39d6a61b27ca5df679fe"
+      "digest": "f0e5e828d837dad51ce4c3c6a7af337dcc873caca0320eace0fbfcf98981fec2"
     },
     "sandbox-credentials": {
       "title": "沙箱凭据保护",
       "collection": "notes",
       "state": "pending",
-      "digest": "1fcb338395a517943381f3b222e58952dd7e2cadd5e1c96dc85cd78ed0504fcd"
+      "digest": "a314491c6f79f939cb04af7e98b7e3e32d62347fd177ee904e9f2c240cd616d2"
     },
     "sandbox-execution": {
       "title": "沙箱执行流程",
       "collection": "notes",
       "state": "pending",
-      "digest": "a1a72497e4c1f511af3d36debb149b3c65054c06e310e542a3c0476ef79b0764"
+      "digest": "003af8f375d851bcba8e7c4a58318b2ae292f8c5d1d46ffe956295794552c364"
     },
     "sandbox-filesystem": {
       "title": "沙箱文件访问控制",
       "collection": "notes",
       "state": "pending",
-      "digest": "4c1d67550965fdcb39cfca3985184a48d6064fae2b969c25eb76710f054a98fe"
+      "digest": "dab61d7d79405ff310affc5fdd7c743630662faa68e44bcc53630d20e1fade54"
     },
     "sandbox-implementations": {
       "title": "Agent 沙箱选型",
       "collection": "notes",
       "state": "pending",
-      "digest": "12efa9c50da961c1d899785efb9849aaee2d3311907d894edfc7f0e153aacaf1"
+      "digest": "92cd70429e7194e51d17089485777f83380b10ac2b90c2a41885f51bba109dca"
     },
     "sandbox-lifecycle": {
       "title": "沙箱的隔离单位与生命周期",
       "collection": "notes",
       "state": "pending",
-      "digest": "50a838e038c69055f609909ffddfcae7d41041f68b59a61d9dc1dface1fe9acb"
+      "digest": "e8f7615cb8dde67aa43b4eda6452ef3cc3336c7ce75b9dcac7b14cf19f4b1aac"
     },
     "sandbox-network": {
       "title": "沙箱网络访问控制",
       "collection": "notes",
       "state": "pending",
-      "digest": "da12ff0dfaef2afb79426f90a40cf0e41d988116b803f6260bc56dd4ac3b78e7"
+      "digest": "331c5097bdadf3993461b53c891fdec065c1ca317221b210a34480c54f9f1a5f"
     },
     "sandbox-processes": {
       "title": "沙箱子进程管理",
@@ -2010,7 +2010,7 @@
       "title": "沙箱资源限制",
       "collection": "notes",
       "state": "pending",
-      "digest": "55ede186a6b5eb06d6a6cb7340b63e421db9c3da438680095bd48ff283c6e1ee"
+      "digest": "9f6faf7ae5caddf82b2b9e26786263628969fe513b4b1565175e3bd9db7bb27c"
     },
     "sandbox-verification": {
       "title": "沙箱边界验证",
@@ -2135,38 +2135,38 @@
     "tool-calling": {
       "title": "工具调用",
       "collection": "notes",
-      "state": "understood",
-      "digest": "4ab521238822b06b8f958f58d95918081d02583cb85ae55c6a5716f6da519b60"
+      "state": "pending",
+      "digest": "393122a9ec79ab9896dea7ebd8edfd6d35066e9d88e0f3f14f2d8f3e39556a5c"
     },
     "tool-interface-design": {
       "title": "工具接口设计",
       "collection": "notes",
-      "state": "understood",
-      "digest": "1070965ae733b7aaca73770ac504bfd84114e65ad9852a13bcc0dfcb0962842c"
+      "state": "pending",
+      "digest": "bf9b64d6f416523107831427b519e8a851666c457babe774452725d03486f5e3"
     },
     "tool-loading": {
       "title": "工具按需加载",
       "collection": "notes",
-      "state": "understood",
-      "digest": "1995d08f9f24929daa1ad95404e1e11415588433a54eac689b755a674a88354e"
+      "state": "pending",
+      "digest": "8911a694bb8244dc0c6f030de479103fb0f94f6fe5062fe8bcf8861fc3e84c50"
     },
     "tool-permission-design": {
       "title": "工具调用的权限规则设计",
       "collection": "notes",
-      "state": "understood",
-      "digest": "d09e2e9ad9514c148a9a7826b5d3dabb8d351f1fdec0673fd23874723bbc185d"
+      "state": "pending",
+      "digest": "f4996fd418fef8a43e77050857c6362bda4c5934e51ed6519a928c7608984b69"
     },
     "tool-permissions": {
       "title": "工具调用的权限与审批",
       "collection": "notes",
-      "state": "understood",
-      "digest": "832645e5f8478756f2af9e532f0b9e229a0f8e4ec6b17933bb8d39914df671fc"
+      "state": "pending",
+      "digest": "41c97be6ba22a5280dd2defffeb174c427dd9f8fb7c52d488684a4220ad67ecb"
     },
     "tool-registry": {
       "title": "工具注册与调用分发",
       "collection": "notes",
-      "state": "understood",
-      "digest": "fd442f6d04d96a11cda9360555e70405f329200619762172e8b8d609bae40bb6"
+      "state": "pending",
+      "digest": "481aa62473f6fdbbff924dc2d3d63fc61478ef5c91754dc423494586c5e2be00"
     },
     "tool-scheduler-example": {
       "title": "工具调度的最小实现",
@@ -2177,8 +2177,8 @@
     "tool-scheduling": {
       "title": "工具执行调度",
       "collection": "notes",
-      "state": "understood",
-      "digest": "722a88a826be1beb74eef10464702ca5e7ca373ae22b125066ac0b0a194e5552"
+      "state": "pending",
+      "digest": "9e859b6109a63f4b42b4fc0ae1b5fe83da517b6e7c4f5755a48ce81bdf03e307"
     },
     "total-order": {
       "title": "全序性",
@@ -2214,7 +2214,7 @@
       "title": "Worktree 与执行沙箱",
       "collection": "notes",
       "state": "pending",
-      "digest": "f2a9bc08afb89a532437ccbbc0d84048b97a37349fc88959b704b2f5afd45c05"
+      "digest": "3a3369c93a3e01f185472c928cf03f8316a8c58ffcd83cc678107bacd5f1fbe7"
     },
     "zab": {
       "title": "ZAB（ZooKeeper 原子广播协议）",
@@ -26131,6 +26131,1602 @@
       ],
       "source": "observed",
       "docId": "agent-reflection-implementation"
+    },
+    {
+      "id": "06ab547b-0cf8-4e81-b332-21d41bbcc6d0",
+      "kind": "state-changed",
+      "entity": "doc:agent-feedback-mechanisms",
+      "title": "Agent 的反馈与调整机制",
+      "time": "2026-10-16T12:18:32.230Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-feedback-mechanisms",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "4960df93-8d4c-4d37-b27a-5713c98fbb45",
+      "kind": "state-changed",
+      "entity": "doc:agent-retry",
+      "title": "Agent 重试",
+      "time": "2026-10-16T12:18:32.230Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-retry",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "5853af69-3d0c-46db-96ec-c9cdf2789f96",
+      "kind": "state-changed",
+      "entity": "doc:agent-self-correction",
+      "title": "Agent 自我纠正",
+      "time": "2026-10-16T12:18:32.230Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-self-correction",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "d21a5202-d2ec-47eb-848c-3eb81ced3cbd",
+      "kind": "updated",
+      "entity": "doc:a2a",
+      "title": "A2A（Agent 间通信协议）",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "a2a"
+    },
+    {
+      "id": "bcd74cbb-7d1e-49cc-a971-e8789f5eaa60",
+      "kind": "updated",
+      "entity": "doc:agent-checkpoint-recovery",
+      "title": "Agent 的中断恢复机制",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-checkpoint-recovery"
+    },
+    {
+      "id": "107f54a9-9c98-4cc1-b075-69670b2e3a83",
+      "kind": "state-changed",
+      "entity": "doc:agent-context-input",
+      "title": "Agent 上下文组成",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-context-input",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "d3edc7af-1aef-400d-9293-af6c5e4b0830",
+      "kind": "updated",
+      "entity": "doc:agent-context-input",
+      "title": "Agent 上下文组成",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-context-input"
+    },
+    {
+      "id": "faca7ee4-d459-401b-ba1c-97ff60d8d0f1",
+      "kind": "state-changed",
+      "entity": "doc:agent-context",
+      "title": "Agent 上下文管理",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-context",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "67ec3b15-8ad1-4910-8b62-106287e483e7",
+      "kind": "updated",
+      "entity": "doc:agent-context",
+      "title": "Agent 上下文管理",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-context"
+    },
+    {
+      "id": "8689177f-f93f-4cc1-8512-6b1a86f91cbf",
+      "kind": "updated",
+      "entity": "doc:agent-feedback-mechanisms",
+      "title": "Agent 的反馈与调整机制",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-feedback-mechanisms"
+    },
+    {
+      "id": "6b043cc6-3f59-4858-bdd9-2394b537784d",
+      "kind": "updated",
+      "entity": "doc:agent-guardrails",
+      "title": "Agent 行为约束",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-guardrails"
+    },
+    {
+      "id": "0781d2a0-6636-47a4-9ff5-c67083ff8f9c",
+      "kind": "state-changed",
+      "entity": "doc:agent-harness",
+      "title": "Agent Harness",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-harness",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "4a9167e4-7407-4f91-a87b-64a64cf2dff6",
+      "kind": "updated",
+      "entity": "doc:agent-harness",
+      "title": "Agent Harness",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-harness"
+    },
+    {
+      "id": "8933c1d2-f4a9-4141-8c23-4c6f67e79505",
+      "kind": "updated",
+      "entity": "doc:agent-human-in-the-loop",
+      "title": "Agent 人工介入",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-human-in-the-loop"
+    },
+    {
+      "id": "f1e8b56c-66a8-4041-94a2-aa10ca47af35",
+      "kind": "state-changed",
+      "entity": "doc:agent-intent",
+      "title": "Agent 意图识别",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-intent",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "01c46525-9006-4cf8-bef8-7b04c97e6bf5",
+      "kind": "updated",
+      "entity": "doc:agent-intent",
+      "title": "Agent 意图识别",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-intent"
+    },
+    {
+      "id": "dfb70c76-04ed-40b8-8268-c0c42b1ea555",
+      "kind": "state-changed",
+      "entity": "doc:agent-loop",
+      "title": "最小 Agent Loop",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-loop",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "721f0206-0cf3-46c9-b159-ac9a8185843d",
+      "kind": "updated",
+      "entity": "doc:agent-loop",
+      "title": "最小 Agent Loop",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-loop"
+    },
+    {
+      "id": "9f0359a8-ae89-43a8-a15b-913e6e31eb78",
+      "kind": "state-changed",
+      "entity": "doc:agent-planning",
+      "title": "Agent 的规划与执行模式",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-planning",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "acdde710-a194-425f-8cdc-da6d82eebbd0",
+      "kind": "updated",
+      "entity": "doc:agent-planning",
+      "title": "Agent 的规划与执行模式",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-planning"
+    },
+    {
+      "id": "0a3606d9-79da-4171-b95d-9f022bc4293d",
+      "kind": "updated",
+      "entity": "doc:agent-reflection",
+      "title": "Agent 反思",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-reflection"
+    },
+    {
+      "id": "13df7644-a851-4ef6-852c-c9575f1b11e1",
+      "kind": "state-changed",
+      "entity": "doc:agent-replanning",
+      "title": "重新规划",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-replanning",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "d460f615-4972-47b2-af76-06bba935de2b",
+      "kind": "updated",
+      "entity": "doc:agent-replanning",
+      "title": "重新规划",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-replanning"
+    },
+    {
+      "id": "ade41e52-eba3-4714-9418-ca4f8b50de6b",
+      "kind": "state-changed",
+      "entity": "doc:agent-resume-failure",
+      "title": "中断恢复中的重复执行",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-resume-failure",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "058e47d8-9c84-4173-beeb-ce83135e633b",
+      "kind": "updated",
+      "entity": "doc:agent-resume-failure",
+      "title": "中断恢复中的重复执行",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-resume-failure"
+    },
+    {
+      "id": "3311513e-cadb-44a4-b813-5dc4373903e7",
+      "kind": "updated",
+      "entity": "doc:agent-retry",
+      "title": "Agent 重试",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-retry"
+    },
+    {
+      "id": "07c439e7-2020-4fd1-b10a-ab09d5820ef1",
+      "kind": "updated",
+      "entity": "doc:agent-self-correction",
+      "title": "Agent 自我纠正",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-self-correction"
+    },
+    {
+      "id": "6d30f7da-1726-490a-9a84-11ea1c12cb0f",
+      "kind": "updated",
+      "entity": "doc:agent-subagents",
+      "title": "子 Agent",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-subagents"
+    },
+    {
+      "id": "3a57ab3f-a264-485f-9f6f-7012b2df4f84",
+      "kind": "state-changed",
+      "entity": "doc:agent-task-state-update",
+      "title": "任务状态更新与冲突",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-task-state-update",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "df1e209c-83f5-4214-b78f-7040084fab9b",
+      "kind": "updated",
+      "entity": "doc:agent-task-state-update",
+      "title": "任务状态更新与冲突",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-task-state-update"
+    },
+    {
+      "id": "6b24120b-bb90-428a-822d-3efde75ed3b0",
+      "kind": "state-changed",
+      "entity": "doc:agent-task-state",
+      "title": "Agent 任务状态管理",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-task-state",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "718aa4b1-19d5-4e4d-8f1b-72cd1a5bf695",
+      "kind": "updated",
+      "entity": "doc:agent-task-state",
+      "title": "Agent 任务状态管理",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-task-state"
+    },
+    {
+      "id": "4e77e318-fb45-4d54-8d5d-95bbb214c423",
+      "kind": "state-changed",
+      "entity": "doc:agent-vs-workflow",
+      "title": "Agent 与工作流",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-vs-workflow",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "e049951d-4640-48ac-8596-5830acc2e2ac",
+      "kind": "updated",
+      "entity": "doc:agent-vs-workflow",
+      "title": "Agent 与工作流",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-vs-workflow"
+    },
+    {
+      "id": "f6cfc9f6-8b1e-4bdb-844b-6eba68a3225d",
+      "kind": "state-changed",
+      "entity": "doc:context-budget",
+      "title": "上下文预算",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-budget",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "214c1280-9d5f-4711-9a2f-d3e17fb512df",
+      "kind": "updated",
+      "entity": "doc:context-budget",
+      "title": "上下文预算",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-budget"
+    },
+    {
+      "id": "a099dbe2-e5b0-42a1-a420-37c8e58dbf37",
+      "kind": "state-changed",
+      "entity": "doc:context-compaction-prompt",
+      "title": "压缩摘要的提示词设计",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-compaction-prompt",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "b4025c0b-adc8-4cb1-88fb-817b136f559c",
+      "kind": "updated",
+      "entity": "doc:context-compaction-prompt",
+      "title": "压缩摘要的提示词设计",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-compaction-prompt"
+    },
+    {
+      "id": "f687ba82-104a-474f-8c16-7c545d9e60ac",
+      "kind": "state-changed",
+      "entity": "doc:context-compaction-storage",
+      "title": "压缩摘要的存储与读取",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-compaction-storage",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "37478962-6c85-4f45-ba87-2be38669715c",
+      "kind": "updated",
+      "entity": "doc:context-compaction-storage",
+      "title": "压缩摘要的存储与读取",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-compaction-storage"
+    },
+    {
+      "id": "dd194b9c-2c90-47a5-bddf-790931258953",
+      "kind": "state-changed",
+      "entity": "doc:context-compaction",
+      "title": "上下文压缩",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-compaction",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "3c3078e6-8351-408c-8e1d-8575785dc01d",
+      "kind": "updated",
+      "entity": "doc:context-compaction",
+      "title": "上下文压缩",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-compaction"
+    },
+    {
+      "id": "a1085276-5071-4d3f-a000-7524f4593208",
+      "kind": "state-changed",
+      "entity": "doc:context-layering",
+      "title": "上下文分层",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-layering",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "ca5d28f8-0473-4f84-b494-b03825be8481",
+      "kind": "updated",
+      "entity": "doc:context-layering",
+      "title": "上下文分层",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-layering"
+    },
+    {
+      "id": "080ed52c-b4f0-4a7f-9238-14756b415dd0",
+      "kind": "state-changed",
+      "entity": "doc:context-loading",
+      "title": "上下文按需加载",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-loading",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "9a453a17-eac0-4101-9c42-e8574242da95",
+      "kind": "updated",
+      "entity": "doc:context-loading",
+      "title": "上下文按需加载",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-loading"
+    },
+    {
+      "id": "3541d313-d81d-41dd-bfa1-c80714ffc495",
+      "kind": "state-changed",
+      "entity": "doc:context-trimming",
+      "title": "上下文裁剪与筛选",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-trimming",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "12134dd4-bdee-4f60-a361-0030aed78296",
+      "kind": "updated",
+      "entity": "doc:context-trimming",
+      "title": "上下文裁剪与筛选",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-trimming"
+    },
+    {
+      "id": "3a2ca18d-d696-4cbb-be6a-cd224b4854e6",
+      "kind": "state-changed",
+      "entity": "doc:history-storage",
+      "title": "对话历史的存储",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "history-storage",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "d017029b-bcb0-4ad7-8083-64c509828531",
+      "kind": "updated",
+      "entity": "doc:history-storage",
+      "title": "对话历史的存储",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "history-storage"
+    },
+    {
+      "id": "e30b5284-dfcb-4fe3-a10c-33eb13c112a7",
+      "kind": "state-changed",
+      "entity": "doc:intent-clarification",
+      "title": "意图澄清与回退",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-clarification",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "1dfb4e68-c013-4334-a642-23b4949a94ee",
+      "kind": "updated",
+      "entity": "doc:intent-clarification",
+      "title": "意图澄清与回退",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-clarification"
+    },
+    {
+      "id": "5af836d3-fd6c-4d73-8299-1557ab6e2a19",
+      "kind": "state-changed",
+      "entity": "doc:intent-dialogue-state",
+      "title": "意图参数与多轮状态",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-dialogue-state",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "0604bf60-f786-4d37-90f9-860bef36076f",
+      "kind": "updated",
+      "entity": "doc:intent-dialogue-state",
+      "title": "意图参数与多轮状态",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-dialogue-state"
+    },
+    {
+      "id": "68eb96e1-e11d-41d2-ad88-87efd0a4512d",
+      "kind": "state-changed",
+      "entity": "doc:intent-llm",
+      "title": "LLM 意图识别",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-llm",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "6a019950-a9d1-4a24-a2c3-47bf8b538969",
+      "kind": "updated",
+      "entity": "doc:intent-llm",
+      "title": "LLM 意图识别",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-llm"
+    },
+    {
+      "id": "08eb04e1-dddd-4430-b527-5f7550f74a8e",
+      "kind": "state-changed",
+      "entity": "doc:intent-rules",
+      "title": "基于规则的意图识别",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-rules",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "ce2303f5-25e4-4852-b8f0-f9ef00339234",
+      "kind": "updated",
+      "entity": "doc:intent-rules",
+      "title": "基于规则的意图识别",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-rules"
+    },
+    {
+      "id": "0d294a41-e259-4c87-827f-0b0cebc9edef",
+      "kind": "state-changed",
+      "entity": "doc:intent-text-classifier",
+      "title": "意图分类器",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-text-classifier",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "d8bb9181-436a-4c38-b904-94846347c6af",
+      "kind": "updated",
+      "entity": "doc:intent-text-classifier",
+      "title": "意图分类器",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-text-classifier"
+    },
+    {
+      "id": "0b03ab78-4329-42f1-831c-5e5049a3fd74",
+      "kind": "state-changed",
+      "entity": "doc:mcp-flow",
+      "title": "MCP 接入流程",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp-flow",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "1b989c03-427a-4dff-8aaf-17dc73c92e12",
+      "kind": "updated",
+      "entity": "doc:mcp-flow",
+      "title": "MCP 接入流程",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp-flow"
+    },
+    {
+      "id": "ef4eb0b0-8cf4-4416-8395-4555c45e3780",
+      "kind": "state-changed",
+      "entity": "doc:mcp-http-client",
+      "title": "MCP Streamable HTTP 客户端",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp-http-client",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "8dfc227b-bf2b-4e85-be55-1d1e1fbd1e1d",
+      "kind": "updated",
+      "entity": "doc:mcp-http-client",
+      "title": "MCP Streamable HTTP 客户端",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp-http-client"
+    },
+    {
+      "id": "5ba20877-bab7-4a37-925f-cf8373d8948d",
+      "kind": "state-changed",
+      "entity": "doc:mcp-http-server",
+      "title": "MCP Streamable HTTP 服务端",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp-http-server",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "8f9a46b7-2092-4745-826a-42b5cd98e592",
+      "kind": "updated",
+      "entity": "doc:mcp-http-server",
+      "title": "MCP Streamable HTTP 服务端",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp-http-server"
+    },
+    {
+      "id": "a77ab6c8-fb3f-4056-9c0a-44c10a6b9048",
+      "kind": "state-changed",
+      "entity": "doc:mcp-permissions",
+      "title": "MCP 授权与权限",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp-permissions",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "c71d6c83-4dc1-4318-831f-19b7c385d441",
+      "kind": "updated",
+      "entity": "doc:mcp-permissions",
+      "title": "MCP 授权与权限",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp-permissions"
+    },
+    {
+      "id": "3940d24e-21fa-41eb-b1cc-ee23167593c6",
+      "kind": "state-changed",
+      "entity": "doc:mcp",
+      "title": "MCP（模型上下文协议）",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "d814865a-27d8-4df2-bbbd-088b32122ee7",
+      "kind": "updated",
+      "entity": "doc:mcp",
+      "title": "MCP（模型上下文协议）",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp"
+    },
+    {
+      "id": "6890a8bc-6bc7-4b0c-b6ac-93d982784ee6",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "7d215fc4-51f2-422b-9d4d-98c052afec0b",
+      "kind": "state-changed",
+      "entity": "doc:plan-and-execute",
+      "title": "Plan-and-Execute（先规划再执行）",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "plan-and-execute",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "369d5090-22bb-4c2d-b0ba-8009e53964e4",
+      "kind": "updated",
+      "entity": "doc:plan-and-execute",
+      "title": "Plan-and-Execute（先规划再执行）",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "plan-and-execute"
+    },
+    {
+      "id": "5f01bc12-84e9-4fc3-96d7-61e4cf584dd1",
+      "kind": "state-changed",
+      "entity": "doc:react-agent",
+      "title": "ReAct（推理与行动交替）",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "react-agent",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "c6c60a97-ffe0-4344-9f14-d99ec3d244c8",
+      "kind": "updated",
+      "entity": "doc:react-agent",
+      "title": "ReAct（推理与行动交替）",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "react-agent"
+    },
+    {
+      "id": "e2a0a244-8453-4231-a973-01be3887dafc",
+      "kind": "state-changed",
+      "entity": "doc:tool-interface-design",
+      "title": "工具接口设计",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-interface-design",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "601d4560-6b77-4c9a-a691-01bbbf74e7c4",
+      "kind": "updated",
+      "entity": "doc:tool-interface-design",
+      "title": "工具接口设计",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-interface-design"
+    },
+    {
+      "id": "f42ff7a5-b6ca-4b46-bc48-0b82ef22ad02",
+      "kind": "state-changed",
+      "entity": "doc:tool-loading",
+      "title": "工具按需加载",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-loading",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "0cf51113-e8a8-4c12-8ead-f9cbe7d050e0",
+      "kind": "updated",
+      "entity": "doc:tool-loading",
+      "title": "工具按需加载",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-loading"
+    },
+    {
+      "id": "7d713eff-c6ea-47b2-8ab7-8b40e13d31b0",
+      "kind": "state-changed",
+      "entity": "doc:tool-permission-design",
+      "title": "工具调用的权限规则设计",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-permission-design",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "eb7345c7-46e3-46ea-8f21-0383253e1fb7",
+      "kind": "updated",
+      "entity": "doc:tool-permission-design",
+      "title": "工具调用的权限规则设计",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-permission-design"
+    },
+    {
+      "id": "dd95c8e5-4026-417b-aaba-5a2d74d395a7",
+      "kind": "state-changed",
+      "entity": "doc:tool-permissions",
+      "title": "工具调用的权限与审批",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-permissions",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "43c5252b-c780-4529-a030-ed8823e87581",
+      "kind": "updated",
+      "entity": "doc:tool-permissions",
+      "title": "工具调用的权限与审批",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-permissions"
+    },
+    {
+      "id": "fc678b9f-16b5-4dfa-b422-97b9cc288e6d",
+      "kind": "state-changed",
+      "entity": "doc:tool-registry",
+      "title": "工具注册与调用分发",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-registry",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "974ae430-6281-483c-bfbd-2b9ed838b21c",
+      "kind": "updated",
+      "entity": "doc:tool-registry",
+      "title": "工具注册与调用分发",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-registry"
+    },
+    {
+      "id": "07463e73-acd0-4e8d-8a90-cfcbf4265db0",
+      "kind": "state-changed",
+      "entity": "doc:tool-scheduling",
+      "title": "工具执行调度",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduling",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "8a69c42d-9145-4919-91ae-a59bab94ed42",
+      "kind": "updated",
+      "entity": "doc:tool-scheduling",
+      "title": "工具执行调度",
+      "time": "2026-10-16T12:49:03.579Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduling"
+    },
+    {
+      "id": "8a8f1052-7540-4469-8c39-63cf8c50b5b4",
+      "kind": "updated",
+      "entity": "doc:agent-loading",
+      "title": "Agent 按需加载",
+      "time": "2026-10-16T12:49:35.260Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-loading"
+    },
+    {
+      "id": "bcbff743-d9a3-47e2-b9e9-adfa1b610617",
+      "kind": "updated",
+      "entity": "doc:agent-memory-consolidation",
+      "title": "Agent 记忆整合",
+      "time": "2026-10-16T12:49:35.260Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-consolidation"
+    },
+    {
+      "id": "54f36216-2b56-4175-9eb7-7d68415249a5",
+      "kind": "updated",
+      "entity": "doc:agent-memory-experience",
+      "title": "Agent 经验记忆与技能复用",
+      "time": "2026-10-16T12:49:35.260Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-experience"
+    },
+    {
+      "id": "ed91321c-3aee-46b4-addd-1369054d7ea9",
+      "kind": "updated",
+      "entity": "doc:agent-memory-hierarchy",
+      "title": "Agent 分层记忆",
+      "time": "2026-10-16T12:49:35.260Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-hierarchy"
+    },
+    {
+      "id": "048b1342-134c-4ab1-ad1d-4c9841c55d8c",
+      "kind": "updated",
+      "entity": "doc:agent-memory-maintenance",
+      "title": "Agent 记忆维护",
+      "time": "2026-10-16T12:49:35.260Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-maintenance"
+    },
+    {
+      "id": "918871ed-6a26-4260-9ebb-4021c3e4fcb2",
+      "kind": "updated",
+      "entity": "doc:agent-memory-retrieval",
+      "title": "Agent 记忆检索与注入",
+      "time": "2026-10-16T12:49:35.260Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-retrieval"
+    },
+    {
+      "id": "ae95d5e0-fd9a-4017-a00a-01b5b578a3f4",
+      "kind": "updated",
+      "entity": "doc:agent-memory-selection",
+      "title": "Agent 记忆工程选型",
+      "time": "2026-10-16T12:49:35.260Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-selection"
+    },
+    {
+      "id": "0f53d779-8236-4232-a69e-fdf3be031cd9",
+      "kind": "updated",
+      "entity": "doc:agent-memory-storage",
+      "title": "Agent 记忆表示与存储",
+      "time": "2026-10-16T12:49:35.260Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-storage"
+    },
+    {
+      "id": "ffd7714c-e2ae-4efb-8afe-0a78a5718a85",
+      "kind": "updated",
+      "entity": "doc:agent-memory-writing",
+      "title": "Agent 记忆写入与纠正",
+      "time": "2026-10-16T12:49:35.260Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-writing"
+    },
+    {
+      "id": "77775863-d234-44ad-b795-71c3f62b32d0",
+      "kind": "updated",
+      "entity": "doc:sandbox-concurrency",
+      "title": "沙箱并发与容量控制",
+      "time": "2026-10-16T12:52:06.186Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "sandbox-concurrency"
+    },
+    {
+      "id": "38f57d89-8dde-4686-be6a-2016c2055df8",
+      "kind": "updated",
+      "entity": "doc:sandbox-credentials",
+      "title": "沙箱凭据保护",
+      "time": "2026-10-16T12:52:06.186Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "sandbox-credentials"
+    },
+    {
+      "id": "33f8556f-56dd-4bb5-8eee-4fd46dc9355a",
+      "kind": "updated",
+      "entity": "doc:sandbox-execution",
+      "title": "沙箱执行流程",
+      "time": "2026-10-16T12:52:06.186Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "sandbox-execution"
+    },
+    {
+      "id": "f939f74a-92dd-45cf-912d-cf1fc07e673b",
+      "kind": "updated",
+      "entity": "doc:sandbox-filesystem",
+      "title": "沙箱文件访问控制",
+      "time": "2026-10-16T12:52:06.186Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "sandbox-filesystem"
+    },
+    {
+      "id": "0da8652e-f08b-490f-9250-34be9cc49f51",
+      "kind": "updated",
+      "entity": "doc:sandbox-implementations",
+      "title": "Agent 沙箱选型",
+      "time": "2026-10-16T12:52:06.186Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "sandbox-implementations"
+    },
+    {
+      "id": "daf273d3-7253-441f-a368-b9b5a6e103fe",
+      "kind": "updated",
+      "entity": "doc:sandbox-lifecycle",
+      "title": "沙箱的隔离单位与生命周期",
+      "time": "2026-10-16T12:52:06.186Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "sandbox-lifecycle"
+    },
+    {
+      "id": "f2430b18-40a5-410d-bbc0-54912b2ffeaf",
+      "kind": "updated",
+      "entity": "doc:sandbox-network",
+      "title": "沙箱网络访问控制",
+      "time": "2026-10-16T12:52:06.186Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "sandbox-network"
+    },
+    {
+      "id": "d453d218-ed23-4624-a9d0-dc6eaa5bbe2c",
+      "kind": "updated",
+      "entity": "doc:sandbox-resources",
+      "title": "沙箱资源限制",
+      "time": "2026-10-16T12:52:06.186Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "sandbox-resources"
+    },
+    {
+      "id": "6148ce9a-8bd1-486b-b134-2b93ad52ea57",
+      "kind": "updated",
+      "entity": "doc:worktree-sandbox-usage",
+      "title": "Worktree 与执行沙箱",
+      "time": "2026-10-16T12:52:06.186Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "worktree-sandbox-usage"
+    },
+    {
+      "id": "e52a0b2f-0999-47f4-a437-5fc5df4b7a9e",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation-design",
+      "title": "Agent 评测设计",
+      "time": "2026-10-16T12:53:21.089Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation-design"
+    },
+    {
+      "id": "d0d557d0-da14-4108-a700-796a3d7f3887",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation-graders",
+      "title": "Agent 评分器",
+      "time": "2026-10-16T12:53:21.089Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation-graders"
+    },
+    {
+      "id": "6ffb58b1-c02b-4438-904a-d8195049078a",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation-harness",
+      "title": "Agent 评测运行系统",
+      "time": "2026-10-16T12:53:21.089Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation-harness"
+    },
+    {
+      "id": "0ce5a73d-1fd5-40bd-8cd5-affd59b31200",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation-online",
+      "title": "Agent 线上评测与发布",
+      "time": "2026-10-16T12:53:21.089Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation-online"
+    },
+    {
+      "id": "a904a20a-7ea2-4b72-b665-306deb6ff0c1",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation-trajectory",
+      "title": "Agent 结果与轨迹评测",
+      "time": "2026-10-16T12:53:21.089Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation-trajectory"
+    },
+    {
+      "id": "cc2523ac-ec76-46c6-8097-a3830dc56276",
+      "kind": "updated",
+      "entity": "doc:agent-memory-evaluation",
+      "title": "Agent 记忆评估",
+      "time": "2026-10-16T12:53:21.089Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-evaluation"
+    },
+    {
+      "id": "b80f439e-70c8-4f7d-aa09-f2c5ff16cac4",
+      "kind": "state-changed",
+      "entity": "doc:context-compaction-evaluation",
+      "title": "上下文压缩的效果评估",
+      "time": "2026-10-16T12:53:21.089Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-compaction-evaluation",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "9eeaf693-53d8-487e-86a3-1504e9c82895",
+      "kind": "updated",
+      "entity": "doc:context-compaction-evaluation",
+      "title": "上下文压缩的效果评估",
+      "time": "2026-10-16T12:53:21.089Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-compaction-evaluation"
+    },
+    {
+      "id": "262f304d-4fb0-4192-8271-70ec3bdc8366",
+      "kind": "updated",
+      "entity": "doc:intent-evaluation",
+      "title": "意图识别的评测与上线",
+      "time": "2026-10-16T12:53:21.089Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-evaluation"
+    },
+    {
+      "id": "dc52943f-7342-4918-97e3-930cb52232eb",
+      "kind": "state-changed",
+      "entity": "doc:tool-calling",
+      "title": "工具调用",
+      "time": "2026-10-16T12:53:21.089Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-calling",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "131e3d94-b90e-426b-a13e-a6ff33dbef31",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用",
+      "time": "2026-10-16T12:53:21.089Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
+    },
+    {
+      "id": "521f88b8-6508-4908-b0ea-3f4685f3efa5",
+      "kind": "updated",
+      "entity": "doc:agent-intent",
+      "title": "Agent 意图识别",
+      "time": "2026-10-16T12:56:25.762Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-intent"
+    },
+    {
+      "id": "df180173-c056-404d-bb39-f45d27480abc",
+      "kind": "updated",
+      "entity": "doc:agent-memory-maintenance",
+      "title": "Agent 记忆维护",
+      "time": "2026-10-16T12:56:25.762Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-maintenance"
+    },
+    {
+      "id": "7b48baa8-ebfd-4bef-8799-d1baa3d4516a",
+      "kind": "updated",
+      "entity": "doc:agent-memory-storage",
+      "title": "Agent 记忆表示与存储",
+      "time": "2026-10-16T12:56:25.762Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-memory-storage"
+    },
+    {
+      "id": "9030b01d-9392-412e-8d89-e5261fa2b67c",
+      "kind": "updated",
+      "entity": "doc:agent-reflection",
+      "title": "Agent 反思",
+      "time": "2026-10-16T12:56:25.762Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-reflection"
+    },
+    {
+      "id": "6c58f9b3-3f6d-4f62-aa37-20f012e53a15",
+      "kind": "updated",
+      "entity": "doc:agent",
+      "title": "Agent",
+      "time": "2026-10-16T12:56:25.762Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent"
+    },
+    {
+      "id": "ac840a6a-86ef-4ef0-856c-eb673b666116",
+      "kind": "updated",
+      "entity": "doc:context-compaction-evaluation",
+      "title": "上下文压缩的效果评估",
+      "time": "2026-10-16T12:56:25.762Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "context-compaction-evaluation"
+    },
+    {
+      "id": "2ac69062-dadd-4987-824f-0eb0240194d7",
+      "kind": "updated",
+      "entity": "doc:intent-llm",
+      "title": "LLM 意图识别",
+      "time": "2026-10-16T12:56:25.762Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-llm"
+    },
+    {
+      "id": "c6e4b646-5d68-4e67-8d25-5deee7ea2f02",
+      "kind": "updated",
+      "entity": "doc:intent-text-classifier",
+      "title": "意图分类器",
+      "time": "2026-10-16T12:56:25.762Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "intent-text-classifier"
+    },
+    {
+      "id": "45979789-edb9-4f67-98d8-c276b02468a9",
+      "kind": "updated",
+      "entity": "doc:sandbox-concurrency",
+      "title": "沙箱并发与容量控制",
+      "time": "2026-10-16T12:56:25.762Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "sandbox-concurrency"
+    },
+    {
+      "id": "dff7fcd9-2834-4f62-8789-bd200aa39a29",
+      "kind": "updated",
+      "entity": "doc:tool-scheduling",
+      "title": "工具执行调度",
+      "time": "2026-10-16T12:56:25.762Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-scheduling"
     }
   ]
 }

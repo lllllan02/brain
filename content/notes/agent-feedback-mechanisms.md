@@ -5,7 +5,7 @@ parent: agent
 category: "Agent"
 tags: ["Agent", "自我纠正", "重试", "任务规划"]
 created_at: "2026-10-12T11:27:16+08:00"
-updated_at: "2026-10-16T20:16:52+08:00"
+updated_at: "2026-10-16T20:42:35+08:00"
 reading_suggestions:
   - agent-retry
   - agent-reflection
@@ -39,3 +39,11 @@ reading_suggestions:
 框架名称可能覆盖多个职责：[[pydantic-retries-summary|Pydantic AI 的 Retry]]也包含模型修正，[[langgraph-replanning-summary|LangGraph 的 replan 示例]]同时检查进度与更新计划。应看实际行为；[[self-refine-summary|Self-Refine]]修改当前输出，[[reflexion-summary|Reflexion]]将反馈写成后续尝试可用的经验，后者是具体方法名。
 
 所有路径都应保留有效成果、核查外部副作用与[[idempotency|幂等性]]，统一限制次数、耗时和费用。修改后验证；持续无进展或预算耗尽时停止，必要时[[agent-human-in-the-loop|转人工]]，不能靠反复尝试绕过权限。
+
+## 同一个错误，为什么会同时触发多种恢复？
+
+工具超时后，SDK 自动重发；模型收到错误又改参数；外层任务判断失败后重新规划。各层单看都有理由，但组合起来可能重复写入，并让排障人员不知道最终成功来自哪次尝试。
+
+可以按失败交给不同责任方：连接故障由调用层判断能否安全重发，参数不合法由模型修正，证据不足先补查，关键前提失效才重新规划。写操作结果未知时先进入核对流程，不能同时启动「重试」和「换方案执行」。每条恢复路径应返回明确结果，再由上层决定下一步。
+
+各机制还需要共享任务期限与预算。一次反思批准了新尝试，也不能绕过已经耗尽的资源限制；失败原因与停止原因应分别保存，便于区分服务故障和恢复策略失控。

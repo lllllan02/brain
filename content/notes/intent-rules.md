@@ -3,9 +3,9 @@ title: "基于规则的意图识别"
 parent: agent-intent
 category: "Agent"
 tags: ["Agent", "意图识别"]
-learning_status: understood
+learning_status: pending
 created_at: "2026-10-13T21:58:19+08:00"
-updated_at: "2026-10-14T13:55:53+08:00"
+updated_at: "2026-10-16T20:44:29+08:00"
 reading_suggestions:
   - dialogflow-intent-design
   - intent-evaluation
@@ -46,3 +46,11 @@ reading_suggestions:
 用明确请求、否定、相似说法和多目标请求做[[intent-evaluation|回归评测]]，记录规则版本、命中编号、未匹配率及错误样本。命中率上升不一定更准确；正常请求大量回退或否定补丁持续增加时，可考虑分类模型，让规则继续负责固定命令。
 
 [[assets/intent-rules-demo.go|完整 Go 示例]]保留规则定义、命中合并与七条输入；在仓库根目录执行 `go run content/assets/intent-rules-demo.go`，仅依赖标准库。示例只识别标签，未实现状态约束、参数提取和业务调用。
+
+## 新增一条规则，为什么会破坏原本正常的表达？
+
+为了覆盖「帮我退款」增加“包含退款就进入申请”的规则，会同时误伤「不要退款」「退款规则是什么」。规则优先级越多，局部补丁越容易截走后续更合适的路径。
+
+每条规则都应有适用场景、排除条件和冲突处理。只在明确命令或固定界面上下文中直接路由；命中多个互斥动作时返回歧义，不靠代码顺序偷偷决定。对自由表达保留模型或人工回退，不强求关键词规则覆盖所有说法。
+
+新增规则时同时检查正例、否定表达和原来由其他规则处理的近邻用例。保留命中规则及版本，发生误路由时先判断是规则过宽、优先级冲突还是上下文缺失，避免继续叠加特例。
