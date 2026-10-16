@@ -9,7 +9,8 @@
 .galaxy-page .document-reader .markdown :is(table, pre) { font-size: calc(11px * var(--reader-font-scale, 1)); }
 .galaxy-page .document-reader .an-title-row h2 { font-size: calc(23px * var(--reader-font-scale, 1)); }
 @media (max-width: 900px) {
-  .galaxy-page.galaxy-reading .document-reader .markdown { font-size: calc(15px * var(--reader-font-scale, 1)); }
+  .galaxy-page.galaxy-reading .document-reader .markdown { font-size: calc(16px * var(--reader-font-scale, 1)); }
+  .galaxy-page.galaxy-reading .document-reader .markdown :is(table, pre) { font-size: calc(13px * var(--reader-font-scale, 1)); }
   .galaxy-page .reader-font-select { min-height: 40px; }
 }
 @media (max-width: 760px) {

@@ -199,7 +199,13 @@ export function DocumentReader({
             <Icon name={mobileListOpen ? 'close' : 'list'} size={18} />
           </button>
           {stateControl}
-          {queue && <ReadingQueueButton queue={queue} node={node} className="icon-btn" />}
+          {queue && (
+            <ReadingQueueButton
+              queue={queue}
+              node={node}
+              className="icon-btn reader-queue-toggle"
+            />
+          )}
           <button
             className="icon-btn"
             aria-label="切换专注阅读"
@@ -210,7 +216,7 @@ export function DocumentReader({
             <Icon name={full ? 'collapse' : 'expand'} size={16} />
           </button>
           <button
-            className="icon-btn"
+            className="icon-btn reader-close"
             aria-label="关闭文档"
             title="关闭文档（Esc）"
             onClick={onClose}
