@@ -11,39 +11,39 @@ source:
   - "https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html"
 read: false
 created_at: "2026-10-13T17:38:22+08:00"
-updated_at: "2026-10-13T21:59:35+08:00"
+updated_at: "2026-10-14T13:59:35+08:00"
 ---
 
-**意图分类需要把「输入文字」转换成「类别判断」：开发者定义标签和样本，特征组件把文本变成数字，分类器据此输出候选。** 本篇节选 Rasa Open Source 3.x 旧版文档的 NLU 部分，并用 scikit-learn 官方文档解释数字表示与线性分类；不覆盖 Rasa 的完整对话策略，也不是当前产品安装教程。
+**文本分类把用户的一句话转换成预设类别：先把文字变成可计算的表示，再由模型计算各类分数。** 训练时用正确标签调整模型，预测时复用训练结果。
 
-## 样本先说明要学会什么
+本篇依据已核对的 Rasa Open Source 3.x 旧版 NLU 文档与 scikit-learn 官方资料，说明样本、文字表示和分类的分工；不作为当前 Rasa 安装指南。
 
-[NLU Training Data](https://legacy-docs-oss.rasa.com/docs/rasa/nlu-training-data/#training-examples) 将用户表达按 intent 分组。标签描述用户要完成的目标；实体则是句子内部的结构化信息。要学习实体，需要相应标注，或采用适合其字符格式的规则提取。
+## 三部分怎样配合？
 
-两者的数据职责不同：整句属于哪个意图，与句中哪一段是账号、时间等字段，是不同的监督信息。同义词映射发生在实体提取之后，不能代替识别实体。正则也有两种用法：`RegexFeaturizer` 给模型增加命中特征；`RegexEntityExtractor` 按字符模式提取实体。**「正则作为特征」不等于正则一命中就决定意图。**
+带标签的表达 → 提取文字特征 → 训练分类模型；新表达则沿用相同特征转换，由已训练的模型预测。
 
-## 文本怎样变成数字
+[NLU Training Data](https://legacy-docs-oss.rasa.com/docs/rasa/nlu-training-data/#training-examples) 按意图组织例句。意图回答整句话要做什么，实体标注指出订单号等信息位于哪里；两种任务需要不同的标注。实体抽取后的同义词映射只负责统一写法，不能代替抽取。
 
-scikit-learn 的 [Text feature extraction](https://scikit-learn.org/stable/modules/feature_extraction.html#text-feature-extraction) 先说明：一般分类器接收固定维度的数字，原始文本需先向量化。词袋（Bag of Words）给词表中的每个词一列，每条文本一行，填入出现次数；多数值为零，可以稀疏存储。
+## 文字怎样变成可计算的表示？
 
-训练时 `fit_transform` 建立词表并转换数据，预测时 `transform` 复用词表。新文本里不在词表中的词会被忽略。官方例子中，词相同但语序不同的陈述句与疑问句得到相同向量；加入连续两个词的组合（bigram）可以保留部分局部顺序。字符组合能缓解拼写差异，但这些表示仍不保留完整句法。
+[文本特征提取](https://scikit-learn.org/stable/modules/feature_extraction.html#text-feature-extraction) 用词袋说明：词表中的每个词占固定一列，每句话填入各词的次数。这样得到的一行数字称为向量，多数位置为零时可采用稀疏存储。
 
-TF-IDF 在计数之上调整权重，降低许多文档都含有的常见词的影响；它负责表示文本，并不会独自决定类别。
+训练建立词表，预测复用它，未收录的词会被忽略。词袋不保留词序，词相同但顺序不同的句子可能得到相同表示；加入相邻词或字符片段能保留局部顺序，仍不表示完整句法。
 
-## 分类器怎样利用这些数字
+TF-IDF 在计数基础上降低大量文本中都出现的词的影响。它改变的是输入表示，还没有决定类别。
 
-[逻辑回归文档](https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression) 将其定义为分类用的线性模型。训练根据已有标签优化权重，让正确类别得到更高的预测概率，同时以正则项约束权重。多分类形式给各类别计算线性分数，再通过 softmax 转成总和为 1 的概率。预测复用学到的参数，不重新学习每条新消息。
+## 分类模型怎样使用这些数字？
 
-Rasa 的 [Components](https://legacy-docs-oss.rasa.com/docs/rasa/components/#intent-classifiers) 展示了不同实现：
+[逻辑回归](https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression) 为各类学习一组权重，将输入数值加权求和并加上偏置，得到类别分数。多分类形式再将分数转成总和为 1 的概率。训练根据正确标签调整权重，并约束权重避免过度拟合；预测复用参数，不重新学习。
 
-- `KeywordIntentClassifier` 以训练例句作为完整关键词做精确字符串匹配，文档限定其适合小项目或起步用途。
-- `LogisticRegressionClassifier` 使用稀疏特征，也可使用提供的稠密特征，返回 `intent` 与 `intent_ranking`。
-- `DIETClassifier` 共享 Transformer 做意图分类和实体识别，将句子和意图标签放到同一向量空间，通过训练拉近正确标签、拉远负样本；实体由另一标注层预测。它可使用外部预训练表示，但自身不提供预训练语言模型。
+[Rasa Components](https://legacy-docs-oss.rasa.com/docs/rasa/components/#intent-classifiers) 展示了不同选择：关键词分类器做精确字符串匹配；逻辑回归分类器接收文本特征，返回首选意图和候选排名；DIET 则共享 Transformer 网络处理意图与实体，学习让文本表示接近正确标签，实体由另一路输出预测。DIET 自身不提供预训练语言模型，但可使用外部预训练表示。
 
-这些组件说明「固定标签分类」可以采用不同算法，并不限于关键词匹配。文档的接口与架构解释不能证明某个模型在中文退款业务上的效果；标签设计、样本覆盖和测试仍需面向实际业务完成。
+正则表达式也有不同职责：`RegexFeaturizer` 只提供命中线索，`RegexEntityExtractor` 抽取实体；**「正则提供特征」不等于直接决定意图。**
 
 ## 怎样对应到可调用的接口？
 
-2026-10-13 核对的 scikit-learn API 文档中，`TfidfVectorizer(analyzer="char", ngram_range=(2, 4))` 把连续 2～4 个字符作为特征；`fit` 学习词表与 IDF，`transform` 复用训练所得状态。中文示例因此可以先用字符片段，无需依赖按空格切词。
+2026-10-13 核对的 scikit-learn 接口中，`TfidfVectorizer(analyzer="char", ngram_range=(2, 4))` 使用连续 2～4 个字符作为特征，适合演示不依赖空格分词的中文转换。`fit` 学习词表与特征权重，`transform` 复用这些状态。
 
-`LogisticRegression.fit(X, y)` 学习分类参数，`predict_proba(X)` 返回各类概率，列顺序由 `classes_` 给出。应用应将标签与对应列配对后排序，不能假定第一列就是自己定义的第一类。此处补充的是接口对应关系，不代表这些参数已在订单数据上调优。
+`LogisticRegression.fit(X, y)` 用数字表示与标签训练模型；`predict_proba(X)` 返回各类概率，列顺序由 `classes_` 给出。文本转换状态、模型与标签顺序需要对应保存。
+
+这些资料解释实现机制，不证明它在订单业务上的效果；中文样本、类别边界与上线表现仍需实际评测。
