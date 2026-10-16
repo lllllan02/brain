@@ -96,7 +96,7 @@
       "title": "检查点",
       "collection": "notes",
       "state": "pending",
-      "digest": "078065cd7e75c44992816b02c64134cb6c69b22636c5698971d6a2adc93fb3db"
+      "digest": "8d5b70593748490e96038baf394479aa068b5f550370a73f1e94d5a4dc6e881f"
     },
     "agent-context-input": {
       "title": "Agent 上下文组成",
@@ -25546,6 +25546,18 @@
       "entity": "doc:agent-checkpoint-runtime",
       "title": "检查点",
       "time": "2026-10-14T08:29:10.752Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-checkpoint-runtime"
+    },
+    {
+      "id": "4975756f-d4a9-40d4-90db-1b8d380279d2",
+      "kind": "updated",
+      "entity": "doc:agent-checkpoint-runtime",
+      "title": "检查点",
+      "time": "2026-10-16T10:48:18.345Z",
       "collections": [
         "notes"
       ],
