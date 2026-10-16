@@ -18,9 +18,7 @@ license: MIT
 
 ## 大专题整理的推进
 
-持续整理专题时，按[专题整理的工作方法](../../../docs/knowledge-management.md#专题整理的工作方法)串联资料核对、形成认识、分支写作与入口收束；每轮只执行当前需要的阶段，判断细则以所链接文档为准。
-
-收到宽泛专题请求时，先按[分层推进细则](../../../docs/knowledge-management.md#大专题的分层推进)形成当前层的问题和范围约定；已有约定直接复用。确认后先整理入口或选定分支，在本轮停止点交付，再依据用户反馈进入下一层。每轮保存由 knowledge-save 承接，已有文档结构调整由 knowledge-maintain 承接；不把所有候选问题一次性扩写入库。用[场景检查](references/evaluation-cases.md)中的大专题用例核对是否既完成当前范围，又没有越级展开。
+按[专题工作方法](../../../docs/knowledge-management.md#专题整理的工作方法)与[分层推进](../../../docs/knowledge-management.md#大专题的分层推进)执行当前阶段。每轮保存交给 knowledge-save，结构调整交给 knowledge-maintain；用[场景检查](references/evaluation-cases.md)核对范围与停止点，不另维护一套推进规则。
 
 ## 获取需要的依据
 

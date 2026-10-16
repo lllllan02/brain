@@ -6,72 +6,24 @@ license: Complete terms in LICENSE.txt
 
 # Frontend Design
 
-Use this skill to make visual choices that serve the actual reader and task. Apply the project's [AGENTS.md](../../../AGENTS.md); preserve the established visual language during routine maintenance. The suggestions below are design options, not a style blacklist or a requirement to invent a new look.
+为当前读者与任务作出视觉选择。遵守项目 [AGENTS](../../../AGENTS.md)，先查看已有界面、组件与样式。视界是个人知识阅读工具，视觉效果应帮助查找与阅读；明确要求重新设计时可以改变现有方向。
 
-## Scope and scale
+## 确定改动尺度
 
-For a local visual change, inspect the affected component and nearby styles, make the smallest coherent adjustment, and review the affected states. Use the broader planning process below when creating a new interface or substantially changing its visual direction. A task does not require a hero section, new fonts, a new palette, or additional animation merely because this skill mentions them.
+局部调整沿用附近组件与设计变量，只改必要部分；新界面或显著改版才整体考虑布局、字体、配色和交互。根据已有要求解决常规选择，仅在关键歧义会改变结果时澄清，不为已授权的实现增加设计审批。
 
-## Ground your designs in the subject matter
+## 形成并实现方案
 
-Use the brief, current interface, and known user preferences to identify the audience and purpose. Ask for clarification only when a missing choice materially affects the result and cannot be inferred. Here, 星云 is a personal knowledge reader: visual effects should support finding and reading notes. An explicit redesign can change the existing style; continuity is a maintenance default, not a ban on new directions.
+1. 明确用户在界面上要完成的动作与需要读到的信息，选择主次层级。标题、分组、边界和间距表达真实结构；编号用于有顺序的内容，不作为装饰。
+2. 复用合适的设计变量，明确必要的新布局、色彩语义和字体层级。中文覆盖、字号、行宽、行高和对比度以实际阅读为准，不套英语字符数上限。字体数量与风格取决于内容，不强制新增字体或 hero。
+3. 动效用来说明状态变化或引导必要注意力；非用户触发的动画保持克制。主题、圆角、渐变、卡片或特定配色都不是禁用项，也不是默认模板；选择要能说明其用途。
+4. 实现时检查附近 CSS 的选择器和覆盖关系、布局约束、已有状态与事件流。避免为表现局部效果引入另一套组件约定。
+5. 在实际页面查看改动，按用户任务检查信息层级、可读性和反馈；移除不服务内容的装饰。显著交互或布局变化按 [web-design-guidelines](../web-design-guidelines/SKILL.md) 审查受影响路径，不自动扩为全站审计。
 
-## Design principles
+## 界面文案
 
-When the brief calls for a hero, it is the first thing viewers will see. Open with the most characteristic thing in the subject's world, in the form that is most appropriate: a headline, an image, an animation, a live demo, an interactive moment, or other treatments. Be deliberate with your choice: a big number with a small label, supporting stats, and a gradient accent is the default treatment, so only use it if that's truly the best option.
+从使用者的动作命名，按钮直接说明结果，同一操作在按钮、反馈和错误中保持一致。空态说明如何开始，失败态说明问题与下一步。少用内部实现术语、宣传语、含糊标签和装饰性文字；语言与语气沿用项目及用户要求。
 
-Typography carries the personality of the page. You don't need a different typeface for display or headline text and body content: use one family or two, and if two, make them clearly distinct.
+## 来源
 
-Choose typefaces for readability, language coverage, and the intended character, reusing the existing families where suitable, and set a clear type scale following the default guidance of The Elements of Typographic Style with intentional weights, widths, and spacing. When type is used as a headline or visual element, use the type treatment itself as an active part of the design, not a neutral delivery vehicle for the content.
-
-Default to line lengths of less than 80 characters. Serif typefaces can have slightly longer line lengths; give serif body text slightly more line-height than a sans-serif.
-
-Review these treatments for a clear purpose; keep them when they support the brief or existing interface:
-- Accenting just a single word or phrase in a headline, like putting one word in italic/bold or a different color.
-- Using all caps for labels.
-- Adding unnecessary typographic labels above content.
-
-Visual structure is information. Structural devices like outlines, borders, numbering, eyebrows, dividers, labels, etc., encode useful information about the content rather than decorate it. Many generic designs use numbered markers (01 / 02 / 03), but that's only appropriate if the content actually is a sequence — like a stepped process or a timeline. Before adding numbered markers, check the content really is a sequence.
-
-Use non-user-triggered motion sparingly and deliberately, only to draw attention. A single orchestrated moment — one page-load sequence or one reveal — lands better than scattered effects; fade-and-slide-up entrances on each section and hover transitions on every card are the generic default and read as AI-generated. Motion that answers a person's action (opening, expanding, confirming) is welcome when it shows what changed.
-
-Consider written content carefully. Often a design brief may not contain real content, and it's up to you to come up with copy and placeholder content. Copy can make a design feel as templated as the design itself. See the below section on writing for more guidance.
-
-## Process: plan, review against the brief, build, critique
-
-For calibration, AI-generated design right now clusters around some traits:
-1. a warm cream background (near #F4F1EA) with a high-contrast serif display and a terracotta or warm-clay accent (often near #D97757 — Anthropic's own Claude-interaction accent, so on a user's brief it reads as a tell);
-2. a near-black background with a single bright acid-green or vermilion accent;
-3. a broadsheet-style layout with hairline rules, zero border-radius, and dense newspaper-like columns;
-4. the SaaS-card kit: content chopped into identical rounded cards, one border-radius on everything regardless of hierarchy, the same soft grey shadow (rgba(0,0,0,.1)) under each, and gradient washes as decoration;
-5. template chrome that appears whatever the subject: a tracked-out ALL-CAPS eyebrow label above every heading; meta strings joined with middle dots ('A · B · C'); labels built as 'WORD — fragment' with a spaced em dash; tinted near-black (#0B0B0B, #111) standing in for black; a monospace face for small data labels; a '→' appended to link and button text.
-
-All traits are legitimate for some briefs, but they are defaults rather than choices, and they appear regardless of subject. Where the brief pins down a visual direction, follow it exactly — the brief's own words always win, including when it asks for one of these looks. Where it leaves an axis free, choose based on usability and context; familiarity can be useful and uniqueness is not an acceptance criterion. As with a hired human designer, there's often a careful balance between doing what you're good at and taking each project as a chance to experiment and learn.
-
-For a new interface or substantial redesign, outline the decisions the brief actually leaves open. Reuse existing tokens where appropriate; include only the following aspects that need to change:
-- Color: choose the needed palette and semantic roles.
-- Type: the typefaces and their roles.
-- Layout: describe the hierarchy and alignment; use a sketch only when it helps compare meaningful alternatives.
-- Principles: the high-level guidance for what makes this page unique.
-
-Review the proposed choices against the brief, readability, and existing interactions before building. Adjust choices that do not serve the task; do not require a separate approval or a uniqueness exercise when the work is already authorized.
-
-When writing the code, be careful of structuring your CSS selector specificities. It's easy to generate CSS classes that cancel each other out (especially with a type-based selector like .section and an element-based selector like .cta). This can happen often with padding/margin between sections.
-
-## Restraint and self-critique
-
-Spend your boldness in one place. Let one element be the memorable thing, keep everything around it quiet and disciplined, and cut any decoration that does not serve the brief. Build to a quality floor without announcing it: responsive down to mobile, visible keyboard focus, reduced motion respected, visually accessible, harmonious color palettes. Critique your own work as you build, taking screenshots to review if your environment supports it — a picture is worth 1000 tokens. Consider Chanel's advice: before leaving the house, take a look in the mirror and remove one accessory. Human creatives have memory and always try to do something new, so if you have a space to quickly jot down notes about what you've tried, it can help you in future passes.
-
-## More on writing in design
-
-Words appear in a design for one reason: to make it easier to understand and use. They are design content, not decoration. Bring the same intentionality and minimalism to copywriting that you would bring to spacing and color. Before writing anything, ask what the design needs to say, and how it can best be said to help the person navigate the experience.
-
-Write from the end user's perspective. Name things by what users will understand in simple language, not by how the system is built. A user manages notifications, not webhook config. Describe what something is or does in plain terms rather than selling it. Being specific and legible to new users is always better than being clever.
-
-Use active voice as default. A CTA says exactly what happens when it is used: "Save changes," not "Submit." An action keeps the same name through the whole flow, so the button that says "Publish" produces a toast that says "Published." The vocabulary of an interface is the signposting for someone navigating the product. Cohesion and consistency are how people learn their way around.
-
-Treat failure and emptiness as moments for direction, not mood. Explain what went wrong and how to fix it, in the interface's voice rather than a person's. Errors don't apologize, and they are never vague about what happened. An empty screen is an invitation to act.
-
-Keep the tone conversational: plain verbs, sentence case, no filler, with tone matched to the brand and the audience. Let each written element do exactly one job.
-
-Source: adapted from [Anthropic frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design). Local scope adjustments retain the accompanying LICENSE.txt.
+改编自 [Anthropic frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design)，保留 [LICENSE.txt](LICENSE.txt)。本地将视觉方案与界面质量审查分开，未采用固定风格黑名单或强制创新要求。

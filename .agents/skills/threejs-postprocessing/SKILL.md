@@ -21,6 +21,6 @@ Choose effects for the requested visual result and available frame budget. Check
 
 ## Example compatibility
 
-Check `apps/web/package.json` and the installed Three.js API before adapting a snippet. Examples are options, not required implementation choices; they do not authorize dependency upgrades or renderer migrations. Validate the changed behavior at the level needed for the task. The reference collection is not a guarantee of browser rendering or performance.
+Apply [dependency and example checks](../../../docs/agent-rules.md#依赖与示例兼容) before adapting reference code.
 
 Source: [CloudAI-X/threejs-postprocessing](https://github.com/CloudAI-X/threejs-skills/tree/main/skills/threejs-postprocessing), with local scope and reference organization adjustments.
