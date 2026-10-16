@@ -1,13 +1,12 @@
 ---
-learning_status: understood
+learning_status: pending
 title: "Go MCP 工具调用"
 parent: mcp-flow
 category: "Agent"
 tags: ["MCP", "工具调用", "Go"]
 created_at: "2026-10-11T10:12:32+08:00"
-updated_at: "2026-10-11T10:27:06+08:00"
+updated_at: "2026-10-17T00:04:15+08:00"
 reading_suggestions:
-  - tool-calling-go
   - mcp-server
   - mcp-http-client
   - tool-registry
@@ -17,7 +16,7 @@ reading_suggestions:
 
 ## 在普通实现上替换两处
 
-复制[[tool-calling-go|普通工具调用的 Go 最小实现]]的 `main.go`。MCP 使用官方 Go SDK `v1.7.0`，要求 Go 1.25.0 或更新版本；先按[[mcp-server|stdio 订单 Server]]编译出 `order-mcp`。
+将[[assets/tool-calling-go.go|普通工具调用的 Go 源文件]]保存为 `main.go`，按文件开头的注释配置依赖与环境变量。MCP 使用官方 Go SDK `v1.7.0`，要求 Go 1.25.0 或更新版本；先按[[mcp-server|stdio 订单 Server]]编译出 `order-mcp`。
 
 在 Client 目录安装依赖：
 

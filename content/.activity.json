@@ -1187,8 +1187,8 @@
     "mcp-tool-calling-go": {
       "title": "Go MCP 工具调用",
       "collection": "notes",
-      "state": "understood",
-      "digest": "0c7cd2f397436b7cec0cd7379b0ba8ecdd702feefc889478af24fc97ad57879b"
+      "state": "pending",
+      "digest": "3cebcf4e1f2ebe1e33eb84072e868f9df02541bb3f06fb52695ed0d960046093"
     },
     "mcp": {
       "title": "MCP（模型上下文协议）",
@@ -2114,29 +2114,11 @@
       "state": "pending",
       "digest": "c6039dd3d22e1f50fc2d3c21a60a10748b56649d2f4525f1469b4a36ab66d5ba"
     },
-    "tool-calling-chat-completions": {
-      "title": "Chat Completions 工具调用消息",
-      "collection": "notes",
-      "state": "understood",
-      "digest": "59a124fb75aca5d81f3f75cd0ab5f777c87a2b4f0d999b2a5726dcb4323af170"
-    },
-    "tool-calling-flow": {
-      "title": "工具调用流程",
-      "collection": "notes",
-      "state": "understood",
-      "digest": "4481acba819fd4e8ec8cbd27e13e929933bef50507f7f4ecbb785223f20def9e"
-    },
-    "tool-calling-go": {
-      "title": "Go 工具调用示例",
-      "collection": "notes",
-      "state": "understood",
-      "digest": "144c35f6be79d9158e95a38f6125ba8baf7c39ab4785fee2c1bc503e05c0bea0"
-    },
     "tool-calling": {
       "title": "工具调用",
       "collection": "notes",
       "state": "pending",
-      "digest": "393122a9ec79ab9896dea7ebd8edfd6d35066e9d88e0f3f14f2d8f3e39556a5c"
+      "digest": "af710598b08a90dbef6329e3bc209728907cb0a7fa71295a19cd193eee1d1064"
     },
     "tool-interface-design": {
       "title": "工具接口设计",
@@ -3945,23 +3927,23 @@
         "notes"
       ]
     },
-    "assets/tool-calling-flow": {
-      "title": "tool-calling-flow",
+    "assets/tool-calling-partial-results": {
+      "title": "tool-calling-partial-results",
       "files": {
-        "assets/tool-calling-flow.excalidraw": "0b874451e871a9de5940233cba0aa8c40dbc2f2cc4c6dbaa2c8d62207dd52bea",
-        "assets/tool-calling-flow.png": "105fa86095778768509fc66703bdadc9a366d7d6a6bf3b0d9234a3d8b4acf2bd",
-        "assets/tool-calling-flow.svg": "c19d7290934809877843f2b83c5888ced7cc957f6164709609ee2bd1e98a5183"
+        "assets/tool-calling-partial-results.excalidraw": "bc60eb9a76c412d37271eecb11c8b23abceb6e9eb8ce627865bca3e5ce6730cf",
+        "assets/tool-calling-partial-results.png": "71d7d11760b58f7d64f77897d7eb258d186c1003b2d2253aca2fd42e6b6be62f",
+        "assets/tool-calling-partial-results.svg": "05d4d34076a19d6ca809b051d313a815a3ee027daf54928b487e4bb3dbe35b8b"
       },
       "collections": [
         "notes"
       ]
     },
-    "assets/tool-calling-overview": {
-      "title": "tool-calling-overview",
+    "assets/tool-calling-simple-flow": {
+      "title": "tool-calling-simple-flow",
       "files": {
-        "assets/tool-calling-overview.excalidraw": "585758dbd2a407fa51fdf649956e532b8f80b21c68d08997f385f95b391ee97f",
-        "assets/tool-calling-overview.png": "3cd30bf220facb88a2d894a712eff5cc1d860923a1b512591616e1a409069d73",
-        "assets/tool-calling-overview.svg": "c893d680b802dc8c11ab3741ca9a7f7e1463845d15959a94be6c3be285359d80"
+        "assets/tool-calling-simple-flow.excalidraw": "84851bd9d1526f68996bdba2657151cd5d14f401d47eb5070be9a116ef347158",
+        "assets/tool-calling-simple-flow.png": "f052364b417c536fdfa4f20f4172e3d1338aae24de6620ce7bed948c32dc6181",
+        "assets/tool-calling-simple-flow.svg": "9eb6d60c8eaef46ec4cfae9eff831d55ab5143fbe367a61e44c09fe861fed1a6"
       },
       "collections": [
         "notes"
@@ -27727,6 +27709,185 @@
       ],
       "source": "observed",
       "docId": "tool-scheduling"
+    },
+    {
+      "id": "257f621a-990b-414e-a5e5-77c30b2a0e47",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用",
+      "time": "2026-10-16T15:53:45.119Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
+    },
+    {
+      "id": "fe609e80-d933-4abf-bd31-36008dbeb4b8",
+      "kind": "image-created",
+      "entity": "image:assets/tool-calling-partial-results",
+      "title": "tool-calling-partial-results",
+      "time": "2026-10-16T15:57:36.504Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-calling-partial-results.excalidraw"
+      ]
+    },
+    {
+      "id": "18dfb6e4-3b9a-40dd-a682-c53d8e8fcab7",
+      "kind": "image-created",
+      "entity": "image:assets/tool-calling-simple-flow",
+      "title": "tool-calling-simple-flow",
+      "time": "2026-10-16T15:57:36.504Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-calling-simple-flow.excalidraw",
+        "assets/tool-calling-simple-flow.png",
+        "assets/tool-calling-simple-flow.svg"
+      ]
+    },
+    {
+      "id": "c972735b-a6bd-4fa2-bb22-3453d9875dbf",
+      "kind": "image-format",
+      "entity": "image:assets/tool-calling-partial-results",
+      "title": "tool-calling-partial-results",
+      "time": "2026-10-16T15:57:52.488Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/tool-calling-partial-results.png",
+        "assets/tool-calling-partial-results.svg"
+      ]
+    },
+    {
+      "id": "f30f11f9-9c94-49fd-962e-f240e4fb5947",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用",
+      "time": "2026-10-16T15:59:09.007Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
+    },
+    {
+      "id": "ed168988-8955-4f2b-8205-0fffbc7fe254",
+      "kind": "image-updated",
+      "entity": "image:assets/tool-calling-simple-flow",
+      "title": "tool-calling-simple-flow",
+      "time": "2026-10-16T15:59:09.007Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/tool-calling-simple-flow.excalidraw",
+        "assets/tool-calling-simple-flow.png",
+        "assets/tool-calling-simple-flow.svg"
+      ]
+    },
+    {
+      "id": "0f4a3abb-ae3f-48db-8437-572b2e587415",
+      "kind": "state-changed",
+      "entity": "doc:tool-calling-go",
+      "title": "Go 工具调用示例",
+      "time": "2026-10-16T16:03:20.137Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-calling-go",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "c069777d-323c-421e-837a-4b3b3cae82dd",
+      "kind": "updated",
+      "entity": "doc:tool-calling-go",
+      "title": "Go 工具调用示例",
+      "time": "2026-10-16T16:03:20.137Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-calling-go"
+    },
+    {
+      "id": "797649eb-abd0-4af9-9f37-4e27be6bb69f",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用",
+      "time": "2026-10-16T16:03:20.137Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
+    },
+    {
+      "id": "fc6795e9-91d7-4c21-b05a-01874f0f0d67",
+      "kind": "state-changed",
+      "entity": "doc:mcp-tool-calling-go",
+      "title": "Go MCP 工具调用",
+      "time": "2026-10-16T16:04:18.215Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp-tool-calling-go",
+      "from": "understood",
+      "to": "pending"
+    },
+    {
+      "id": "d72a355f-68a4-4a12-9c85-c3bd15abadf1",
+      "kind": "updated",
+      "entity": "doc:mcp-tool-calling-go",
+      "title": "Go MCP 工具调用",
+      "time": "2026-10-16T16:04:18.215Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "mcp-tool-calling-go"
+    },
+    {
+      "id": "77c54271-083a-4bba-8229-2806e4bf430e",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用",
+      "time": "2026-10-16T16:04:18.215Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
+    },
+    {
+      "id": "87f65863-b89c-4752-8e5b-d030a49cf635",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用",
+      "time": "2026-10-16T16:15:58.235Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
+    },
+    {
+      "id": "3fdd7e82-2449-43dd-b669-868749493f65",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用",
+      "time": "2026-10-16T16:17:26.200Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
     }
   ]
 }
