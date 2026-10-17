@@ -1,6 +1,6 @@
 interface:
   display_name: "知识配图"
-  short_description: "一句话将讨论或笔记画清楚，自动设计布局、渲染检查并保留可编辑源文件"
-  default_prompt: "用 $excalidraw-diagram 把这段内容画成帮助理解的图。"
+  short_description: "按项目默认的克制二维插画风格画清讨论或笔记，设计对象与布局并检查成图"
+  default_prompt: "用 $excalidraw-diagram 按项目默认风格把这段内容画成帮助理解的图。"
 policy:
   allow_implicit_invocation: true

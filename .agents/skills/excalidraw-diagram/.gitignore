@@ -1,4 +1,5 @@
 .venv/
 *.png
+!assets/diagram-style-reference.png
 uv.lock
 __pycache__/

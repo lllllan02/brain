@@ -1,67 +1,26 @@
-# Color Palette & Brand Style
+# 知识配图色板
 
-**This is the single source of truth for all colors and brand-specific styles.** To customize diagrams for your own brand, edit this file — everything else in the skill is universal.
+本文件只维护默认色值与使用方式；画风、对象造型和文字分量以项目[图文分工](../../../../docs/writing-style.md#图文分工)为准。用户指定的主题配色优先，同一图中的颜色含义须明确且一致。
 
----
+## 基础颜色
 
-## Shape Colors (Semantic)
+| 用途 | 色值 | 使用方式 |
+| --- | --- | --- |
+| 画布 | `#ffffff` | 以白底和留白为主 |
+| 正文与主要轮廓 | `#374151` | 主要对象与清楚易读的标签 |
+| 次要文字 | `#64748b` | 辅助说明与未选中的对象 |
+| 边界与细分隔 | `#a8b3c2` | 较轻的归属边界和内部结构 |
+| 中性浅填充 | `#f8fafc` | 必要的小面积区域 |
 
-Colors encode meaning, not decoration. Each semantic purpose has a fill/stroke pair.
+## 强调与局部填充
 
-| Semantic Purpose | Fill | Stroke |
-|------------------|------|--------|
-| Primary/Neutral | `#3b82f6` | `#1e3a5f` |
-| Secondary | `#60a5fa` | `#1e3a5f` |
-| Tertiary | `#93c5fd` | `#1e3a5f` |
-| Start/Trigger | `#fed7aa` | `#c2410c` |
-| End/Success | `#a7f3d0` | `#047857` |
-| Warning/Reset | `#fee2e2` | `#dc2626` |
-| Decision | `#fef3c7` | `#b45309` |
-| AI/LLM | `#ddd6fe` | `#6d28d9` |
-| Inactive/Disabled | `#dbeafe` | `#1e40af` (use dashed stroke) |
-| Error | `#fecaca` | `#b91c1c` |
+通常从下表选一至两种强调色；不按对象数量逐个分配新颜色，也不将同一组颜色机械绑定到所有专题的同一职责。
 
-**Rule**: Always pair a darker stroke with a lighter fill for contrast.
+| 色系 | 轮廓／连线 | 局部浅填充 | 适用示例 |
+| --- | --- | --- | --- |
+| 灰蓝 | `#416788` | `#eaf0f7` | 主关系、选中记录、当前对象 |
+| 暖橙 | `#b66a43` | `#fbf0e6` | 另一条关键关系、变化或执行入口 |
+| 灰绿 | `#6f8c82` | `#eef4f0` | 辅助对象、结果或来源的轻微区分 |
+| 暖米色 | `#9b8d73` | `#faf5e9` | 目录页签、文档边缘等小面积细节 |
 
----
-
-## Text Colors (Hierarchy)
-
-Use color on free-floating text to create visual hierarchy without containers.
-
-| Level | Color | Use For |
-|-------|-------|---------|
-| Title | `#1e40af` | Section headings, major labels |
-| Subtitle | `#3b82f6` | Subheadings, secondary labels |
-| Body/Detail | `#64748b` | Descriptions, annotations, metadata |
-| On light fills | `#374151` | Text inside light-colored shapes |
-| On dark fills | `#ffffff` | Text inside dark-colored shapes |
-
----
-
-## Evidence Artifact Colors
-
-Used for code snippets, data examples, and other concrete evidence inside technical diagrams.
-
-| Artifact | Background | Text Color |
-|----------|-----------|------------|
-| Code snippet | `#1e293b` | Syntax-colored (language-appropriate) |
-| JSON/data example | `#1e293b` | `#22c55e` (green) |
-
----
-
-## Default Stroke & Line Colors
-
-| Element | Color |
-|---------|-------|
-| Arrows | Use the stroke color of the source element's semantic purpose |
-| Structural lines (dividers, trees, timelines) | Primary stroke (`#1e3a5f`) or Slate (`#64748b`) |
-| Marker dots (fill + stroke) | Primary fill (`#3b82f6`) |
-
----
-
-## Background
-
-| Property | Value |
-|----------|-------|
-| Canvas background | `#ffffff` |
+颜色可随主题微调，但保持低饱和、浅填充与足够的文字对比。连线沿用其关系的强调色；代码、字段与数据记录默认用浅底和清楚的等宽文字，不自动增加深色代码面板。模型节点也不必使用紫色、发光或独立的大色块。

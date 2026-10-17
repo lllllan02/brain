@@ -1,7 +1,7 @@
 ---
 title: "Agent 规则与 Skill 维护"
 created_at: "2026-10-16T20:03:35+08:00"
-updated_at: "2026-10-16T20:09:34+08:00"
+updated_at: "2026-10-17T11:42:08+08:00"
 category: "知识库管理"
 tags: ["Agent", "操作约束"]
 ---
@@ -44,7 +44,7 @@ tags: ["Agent", "操作约束"]
 - tech-study-map 组织学习目标与问题，summarize 读取和总结材料；两者只有在保存授权下才交给 knowledge-save。
 - obsidian-markdown 提供语法，tag-taxonomy 处理标签语义；字段含义只在格式文档维护。
 - frontend-design 负责视觉方案与实现，web-design-guidelines 负责界面质量审查；Three.js 三个 Skill 分别负责场景生命周期、后处理和着色器，按实际改动选用。
-- excalidraw-diagram 交付可编辑机制图；图文分工由写作规则决定。
+- excalidraw-diagram 编排知识配图，按需用 Excalidraw 交付可编辑图，或配合 imagegen 生成插画式解释图；默认画风与图文分工由写作规则决定。
 
 本项目已适配的 Obsidian、Summarize、Excalidraw 和 Three.js 能力继续保留上游来源。经正文比较，Anthropic 的 [doc-coauthoring](https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring) 侧重多阶段共同写作，不替换日常入库流程；Vercel 的 [web-design-guidelines](https://github.com/vercel-labs/agent-skills/tree/main/skills/web-design-guidelines) 用于补足界面审查，采用本地适配入口，不照搬英语文案惯例、框架假设或固定性能阈值。
 
