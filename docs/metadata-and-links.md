@@ -8,9 +8,9 @@ tags: ["知识库", "元数据", "命名", "链接维护"]
 
 ## 文件名与属性
 
-目录只区分内容用途：notes 保存自己的知识笔记，readings 保存外部资料的摘要与导读，glossary 保存随查术语解释，sources 保存必要的原始资料，archive 保存当前归档的文档（不参与看板）。各内容目录平铺，不用物理子目录表达专题层次或学习状态。文档类型通过 type（兼容已有 classes）区分，主题归属通过单值 category 表达，tags 用于多标签检索。
+目录只区分内容用途：notes 保存自己的知识笔记，interviews 保存面试题与口述回答，readings 保存外部资料的摘要与导读，glossary 保存随查术语解释，sources 保存必要的原始资料，archive 保存当前归档的文档（不参与看板）。各内容目录平铺，不用物理子目录表达专题层次或学习状态。文档类型通过 type（兼容已有 classes）区分，主题归属通过单值 category 表达，tags 用于多标签检索。面试题的正文格式见 [[docs/writing-style#面试题|面试题写法]]。
 
-所有启用目录的文档（包括 notes、readings 与 glossary）统一使用 `learning_status`：`pending`（待学习）→ `reading`（阅读中）→ `organized`（已整理）。新建填 pending，缺省也按 pending 显示。状态由用户主动确认，打开、预览、滚动或 Agent 完成整理均不自动推进；“已整理”不代表掌握全部知识或读过全部外部原文。阅读中列表直接筛选 `learning_status: reading`，不额外添加“待阅读”标签或维护浏览器队列。仅修改状态时不移动文件、不刷新 created_at 或 updated_at。
+所有启用目录的文档（包括 notes、interviews、readings 与 glossary）统一使用 `learning_status`：`pending`（待学习）→ `reading`（阅读中）→ `organized`（已整理）。新建填 pending，缺省也按 pending 显示。状态由用户主动确认，打开、预览、滚动或 Agent 完成整理均不自动推进；“已整理”不代表掌握全部知识或读过全部外部原文。阅读中列表直接筛选 `learning_status: reading`，不额外添加“待阅读”标签或维护浏览器队列。仅修改状态时不移动文件、不刷新 created_at 或 updated_at。
 
 实际切换学习状态时，同次写入 `learning_status_changed_at`，使用带时区的 ISO 8601 时间，保留毫秒以区分快速操作。重复设置相同状态不刷新此时间；仅编辑仍为阅读中的正文，也不改变其排序时间。阅读中列表按最近一次切换状态的时间倒序显示，最近切入的排最前；缺少该属性的旧文优先使用已有“切换到阅读中”的活动记录，均缺失时稳定排在有时间记录的文档之后，不以正文更新时间或文件修改时间推测。
 
@@ -18,11 +18,17 @@ tags: ["知识库", "元数据", "命名", "链接维护"]
 
 兼容旧文：`learning_status: understood` 与 readings 的 `read: true` 显示为已整理，`read: false` 或缺省为待学习；显式的三态属性优先。后续状态写回统一使用 `learning_status`，不新增独立的“已整理”布尔字段，也不将该字段写成布尔值。
 
-网站与检索收录范围由 `apps/web/collections.config.json` 的启用项决定，默认 notes、readings、glossary；目录来自路径，学习状态来自元数据。状态外观配置在 `apps/web/document-states.config.json`，交互见 [[apps/web/README|视界说明]]。常规补充保持路径稳定，重构改变主题范围时按命名规则同步改名并维护引用。
+网站与检索收录范围由 `apps/web/collections.config.json` 的启用项决定，默认 notes、interviews、readings、glossary；目录来自路径，学习状态来自元数据。状态外观配置在 `apps/web/document-states.config.json`，交互见 [[apps/web/README|视界说明]]。常规补充保持路径稳定，重构改变主题范围时按命名规则同步改名并维护引用。
 
-文件名使用简短英文与短横线，如 `agent-definition.md`、`mysql-explain-type.md`。在 content 内的笔记中保持唯一，包括 notes、readings 与 glossary；只在实际冲突时加必要的限定词，不把完整分类层级拼进名称。文件名按内容适当收敛：主题能被更短、更上位的词涵盖时就用它，避免「主题 + 动作/限定」的冗余（如 OAuth 授权 → `oauth`）。README.md、AGENTS.md 等项目约定名称保留。
+文件名使用简短英文与短横线，如 `agent-definition.md`、`mysql-explain-type.md`。在 content 内的笔记中保持唯一，包括 notes、interviews、readings 与 glossary；只在实际冲突时加必要的限定词，不把完整分类层级拼进名称。文件名按内容适当收敛：主题能被更短、更上位的词涵盖时就用它，避免「主题 + 动作/限定」的冗余（如 OAuth 授权 → `oauth`）。README.md、AGENTS.md 等项目约定名称保留。
 
 内容收敛、拆分或重构后，文件名应跟随最终主题调整，不能只改 title 而沿用已不匹配的旧文件名。例如，`trace-and-span.md` 收敛为只解释 Trace、Span 已独立成篇时，应改为 `trace.md`。先核对新文件名在 content 中唯一，再按重命名流程维护全部引用；仅因措辞偏好或普通补充不反复改名，重命名也不改变元数据中的学习状态。
+
+## 专题入口文件
+
+专题入口（index／目录）仍是普通 Markdown 文档，按所属用途平铺保存：知识专题放在 `content/notes/`，面试题专题放在 `content/interviews/`。新建纯目录可使用 `<topic>-index.md`，如 `go-interview-index.md`；标题使用「主题名」或「主题名目录」，`type: overview`。沿用统一时间与学习状态规则。
+
+已有总览承担入口时保留原路径，不再创建同主题目录副本。文件名在整个 `content/` 内保持唯一，不在各专题重复使用裸名 `index.md`。单题或单问题文档有明确专题归属时，以该入口为 `parent`；跨专题通用概念仍用正文引用关联。入口覆盖与维护按 [[docs/knowledge-management#专题入口与阅读组织|专题入口规则]] 执行。
 
 ## 术语库
 
@@ -72,7 +78,7 @@ Obsidian 内置的常规属性是 tags、aliases、cssclasses，其他字段是�
 
 ## 链接与合并
 
-内部用 Obsidian 双链，不加 `.md`，笔记直接引用唯一文件名，如 `[[agent|Agent]]`、`[[mysql-explain|EXPLAIN 总览]]`。不将 notes、readings 或 glossary 目录写进常规笔记链接，不使用 `/Users/...` 等本机绝对路径。中文用于显示名，外部 URL 使用 Markdown 链接。
+内部用 Obsidian 双链，不加 `.md`，笔记直接引用唯一文件名，如 `[[agent|Agent]]`、`[[mysql-explain|EXPLAIN 总览]]`。不将 notes、interviews、readings 或 glossary 目录写进常规笔记链接，不使用 `/Users/...` 等本机绝对路径。中文用于显示名，外部 URL 使用 Markdown 链接。
 
 解析先匹配 Vault 内的准确路径，再检查路径后缀是否唯一，无法唯一确定则报告歧义，不能随意挑选同名文件。章节用 `[[目标#标题|显示名]]`，块引用用 `[[目标#^block-id]]`，附件用 `![[assets/image.png]]`；目标和锚点必须存在。 Markdown 表格中的双链显示名分隔符须转义为 `\|`，如 `[[intent-clarification\|澄清与回退]]`，避免被解析成新列；验收时检查渲染后的单元格内有完整链接，不能仅凭目标存在或链接检查无报错判断通过。管理文档位于 Vault 外，跨目录链接使用项目根路径。
 
