@@ -4,7 +4,7 @@ parent: agent-task-decomposition
 category: "Agent"
 tags: ["Agent", "任务规划", "状态管理"]
 created_at: "2026-10-17T17:20:29+08:00"
-updated_at: "2026-10-17T17:20:29+08:00"
+updated_at: "2026-10-17T19:18:15+08:00"
 read: false
 source:
   - "[Using PLANS.md for multi-hour problem solving](https://developers.openai.com/cookbook/articles/codex_exec_plans)"
@@ -20,6 +20,8 @@ source:
 计划面向只有当前工作树、没有聊天历史的执行者，因此必须包含目标、相关代码、操作和验证依据。每个里程碑描述范围、完成后新增的结果、要运行的命令及预期现象；要求各阶段能够分别验证，并逐步实现整体目标。只增加类型或通过编译，未必证明用户行为可用。
 
 重要未知可以先设为原型阶段，明确如何验证可行性，以及采用或放弃原型的条件。计划随发现和决定更新，进度分别记录完成项与剩余项；中途失败的操作需说明重试或恢复方法，便于下一次接续。
+
+原文还区分里程碑与进度记录：里程碑描述范围、成果和证明，进度部分记录更细的工作，允许把暂停中的一项写成「已完成什么、还剩什么」。因此可以细记操作和局部进展，而不必把每条记录都当作一个里程碑。原文没有进一步给出通用的「过粗／合适／过细」分类算法。
 
 [原文](https://developers.openai.com/cookbook/articles/codex_exec_plans)的 `Milestones`、`Living plans and design decisions`、`Prototyping milestones and parallel implementations` 给出具体要求。页面现已标为归档，模板中的完整章节、格式和提交要求是该方案的约定，不能当作所有任务的必选项；它也没有给出统一的阶段大小阈值。
 

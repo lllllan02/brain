@@ -1,14 +1,15 @@
 ---
-learning_status: reading
+learning_status: organized
 parent: agent
 title: "Agent 反思"
 aliases: ["Reflection", "Agent Reflection"]
 category: "Agent"
 tags: ["Agent", "反思"]
 created_at: "2026-10-12T10:15:48+08:00"
-updated_at: "2026-10-17T18:54:21+08:00"
+updated_at: "2026-10-17T19:01:47+08:00"
 reading_suggestions:
   - agent-self-correction
+learning_status_changed_at: "2026-10-17T19:04:22.984+08:00"
 ---
 
 **反思（Reflection）是对照目标与证据，检查产物或执行过程、分析偏差并提出调整建议的过程。**
@@ -28,6 +29,8 @@ Agent 连续执行时可能遗漏要求、沿用错误假设或重复失败，�
 这些判断可以写入[[agent-loop|Agent 主循环]]，也可通过[[langchain-harness-middleware-summary|中间件钩子]]接入。**「程序决定何时评审，提示词规定怎样评审。」** 即使业务步骤由模型动态选择，模型调用前后、工具执行前后仍是程序可控制的位置；业务阶段则需要显式维护，不能仅凭一段消息自动确定。
 
 ## 怎样组织一次反思？
+
+![检查标准、当前产物与执行证据共同进入模型评审，程序核对引用与版本后，分流为补证、自我纠正或继续任务](../assets/agent-reflection-review.png)
 
 1. **准备检查标准**
 

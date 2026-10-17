@@ -1,33 +1,28 @@
 ---
-learning_status: pending
+learning_status: organized
 parent: agent-context
 title: "上下文裁剪与筛选"
 aliases: ["Context Truncation", "Context Trimming", "Context Filtering", "上下文裁剪", "上下文筛选"]
 category: "Agent"
 tags: ["上下文管理"]
 created_at: "2026-10-09"
-updated_at: "2026-10-16T20:47:46+08:00"
+updated_at: "2026-10-17T20:23:32+08:00"
 reading_suggestions:
   - context-budget
   - langchain-message-trimming-summary
   - anthropic-context-editing-summary
   - context-compaction
+learning_status_changed_at: "2026-10-17T20:25:55.430+08:00"
 ---
 
-**上下文裁剪与筛选通过选择保留哪些原文来缩减输入。** 裁剪通常按时间、数量取舍，如滑动窗口只保留近期交互；筛选侧重任务相关性，两者可以组合。
+历史消息和工具结果不断增长时，可以通过选择保留哪些原文，缩减本轮输入。
 
-![[assets/context-selection.png|同一段历史经过裁剪与筛选后的对照]]
+**上下文裁剪（Context Trimming）是按长度或时间范围删减输入的操作。** 常见做法是先保留固定指令，再从最新交互向前取，达到[[context-budget|Token 预算]]或轮数上限就停止，较早的交互不再放入。
 
-裁剪要保护目标、约束和关键证据，并保持工具请求与结果配对。[[langchain-message-trimming-summary|LangChain 的消息裁剪]]还提醒我们区分：只过滤本轮输入，还是删除保存的状态。
+**上下文筛选（Context Filtering）是按当前任务的相关性选择输入的操作。** 可以用资料类型、关键词等规则匹配，也可以让模型判断哪些内容仍有用，再由程序选入原文。相关的旧证据可以留下，近期的无关内容也可以排除。
 
-若主要占用来自工具结果，可以像 [[anthropic-context-editing-summary|Claude Context editing]] 一样：保留调用，用占位文本替换旧结果，保留近期结果和指定的重要结果。
+![[assets/context-selection.png|同一组历史：裁剪保留最近三轮，筛选保留学习相关内容]]
 
-[[complexity-trap-summary|The Complexity Trap 的实验]]表明，旧结果屏蔽值得作为简单基线，但仍需检查任务成功率与总成本，不能只看 Token 降幅。触发与保留量交给[[context-budget|预算]]控制；有用的旧信息放不下时，再引入[[context-compaction|摘要压缩]]。
+两者可以组合，但都可能误删信息：有效目标、约束与关键证据应优先保留，工具请求与结果须成对处理。[[langchain-message-trimming-summary|消息裁剪与状态删除]]还需区分：本轮不选入，不等于删除[[history-storage|保存的历史]]。有用的旧信息仍放不下时，可用[[context-compaction|摘要压缩]]保留要点。
 
-## 按长度删除最旧消息，会丢掉什么？
-
-用户开头说“只能修改测试目录”，中间积累了大量日志。简单保留最近若干轮，会删掉这个仍有效的限制；删除工具调用而保留对应结果，还可能破坏消息配对。
-
-裁剪前先区分当前约束、关键证据、可重取大结果和已失效尝试。稳定约束进入明确维护的任务状态，证据保留定位信息，重复结果优先去重；工具交互按完整单元处理。被裁内容若未来可能需要，应仍可按引用找回。
-
-验证裁剪策略时，设置必须依赖早期约束才能正确完成的任务，并检查后续动作是否仍遵守。只测请求能否成功发送，会把信息损失隐藏起来。
+工具结果占用较大时，可用[[anthropic-context-editing-summary|占位文本替换旧结果]]，保留调用线索、近期结果和重要结果。[[complexity-trap-summary|旧结果屏蔽的实验]]提示，评估还要检查早期约束是否仍被遵守、任务成功率与总成本，不能只看 Token 降幅。

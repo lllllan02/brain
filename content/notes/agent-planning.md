@@ -1,5 +1,5 @@
 ---
-learning_status: reading
+learning_status: organized
 parent: agent
 title: "Agent 的规划与执行模式"
 aliases: ["Planning", "任务规划", "Agent 的 Planning 与 Replanning"]
@@ -12,7 +12,7 @@ reading_suggestions:
   - plan-and-execute
   - agent-replanning
   - tool-scheduling
-learning_status_changed_at: "2026-10-17T18:54:24.844+08:00"
+learning_status_changed_at: "2026-10-17T18:59:57.185+08:00"
 ---
 
 **任务规划（Planning）是根据目标拆解任务、安排步骤的能力。** 它帮助 Agent 在多步工作中跟踪整体目标，再根据执行反馈调整安排。
