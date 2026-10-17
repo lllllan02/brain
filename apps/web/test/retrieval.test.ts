@@ -72,6 +72,45 @@ test('四个检索命令保持输出契约、排序、片段和退出码', async
   assert.equal((await run(root, 'lint', '--json')).code, 0);
 });
 
+test('表格双链漏转义使巡检失败，修复后完整链接和三列内容均保留', async (t) => {
+  const { root, put } = await fixture(t);
+  const source = (link: string) =>
+    [
+      '---',
+      'title: 起点',
+      '---',
+      '普通正文 [[beta|正文别名]]',
+      '```md',
+      '| 名称 | 说明 |',
+      '| --- | --- |',
+      '| [[beta|代码示例]] | 不执行 |',
+      '```',
+      '',
+      '| 方式 | 适用场景 | 选择理由 |',
+      '| --- | --- | --- |',
+      `| **${link}** | 适用场景 | 选择理由 |`,
+    ].join('\n');
+  await put('alpha.md', source('[[beta|完整链接]]'));
+  const broken = await run(root, 'lint', '--json');
+  assert.equal(broken.code, 1);
+  const report = JSON.parse(broken.stdout);
+  assert.equal(report.errors, 1);
+  assert.equal(report.findings.table.length, 1);
+  assert.match(report.findings.table[0], /alpha: 表格内 \[\[beta\|完整链接\]\]/);
+
+  await put('alpha.md', source('[[beta\\|完整链接]]'));
+  const fixed = await run(root, 'lint', '--json');
+  assert.equal(fixed.code, 0);
+  assert.deepEqual(JSON.parse(fixed.stdout).findings.table, []);
+  const lib = await buildLibrary(root, ['content/notes']);
+  const html = lib.documents.find((doc) => doc.id === 'alpha')!.html;
+  const table = html.match(/<tbody>([\s\S]*?)<\/tbody>/)![1];
+  assert.equal((table.match(/<td>/g) || []).length, 3);
+  assert.match(table, /<strong><a [^>]*class="wiki-link"[^>]*>[\s\S]*?完整链接<\/a><\/strong>/);
+  assert.match(table, /<td>适用场景<\/td>/);
+  assert.match(table, /<td>选择理由<\/td>/);
+});
+
 test('无效参数在扫描前失败，双横线后允许检索选项形状的文字', async () => {
   for (const args of [
     [],

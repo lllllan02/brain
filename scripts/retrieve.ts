@@ -6,6 +6,7 @@ import { documentTime } from '../apps/web/src/document-dates.ts';
 import { CONTENT_COLLECTIONS, collectionRegistry } from '../apps/web/src/collections.ts';
 import type { LibraryDocument, ParsedDocument } from '../apps/web/src/types/library.ts';
 import { record } from '../apps/web/src/data/validation.ts';
+import { unescapedTableLinks } from '../apps/web/src/markdown-table-links.ts';
 
 interface Options {
   dirs: string[];
@@ -306,6 +307,7 @@ function doLint(lib: Library, options: Options, io: Output) {
     | 'date'
     | 'name'
     | 'format'
+    | 'table'
     | 'orphan',
     string[]
   > = {
@@ -317,6 +319,7 @@ function doLint(lib: Library, options: Options, io: Output) {
     date: [],
     name: [],
     format: [],
+    table: [],
     orphan: [],
   };
 
@@ -342,6 +345,8 @@ function doLint(lib: Library, options: Options, io: Output) {
     }
     if (!NAME_RE.test(doc.id)) findings.name.push(`${doc.id}.md 不符合小写英文短横线命名`);
     if (doc.backlinks.length === 0) findings.orphan.push(doc.id);
+    for (const link of unescapedTableLinks(doc.body))
+      findings.table.push(`${doc.id}: 表格内 ${link} 的 | 须转义为 \\|，否则会拆成新列`);
     for (const match of raw.matchAll(/\[\[([^\]\n]+)\]\]/g)) {
       const target = match[1].replaceAll('\\|', '|').split('|')[0].split('#')[0];
       if (/\.md$/i.test(target)) findings.format.push(`${doc.id}: [[${target}]] 不应带 .md`);
@@ -360,7 +365,8 @@ function doLint(lib: Library, options: Options, io: Output) {
     findings.broken.length +
     findings.parse.length +
     findings.frontmatter.length +
-    findings.date.length;
+    findings.date.length +
+    findings.table.length;
   const warnings =
     findings.title.length + findings.name.length + findings.format.length + findings.orphan.length;
 
@@ -382,6 +388,7 @@ function doLint(lib: Library, options: Options, io: Output) {
     section('缺少 title', findings.title);
     section('命名', findings.name);
     section('链接写法', findings.format);
+    section('表格双链', findings.table);
     section('孤立（无入站双链）', findings.orphan);
   }
   return errors ? 1 : 0;

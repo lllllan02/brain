@@ -309,9 +309,11 @@ export function renderDocument(
           if (code) return preserve(code);
           if (/\.(png|jpe?g|gif|webp|svg|pdf|mp3|mp4)$/i.test(target)) {
             const url = `/api/asset?path=${encodeURIComponent(target)}&from=${encodeURIComponent(doc.path)}`;
+            const candidate = label && /^[1-9]\d*$/.test(label) ? Number(label) : 0;
+            const width = Number.isSafeInteger(candidate) && candidate > 0 ? candidate : null;
             return preserve(
               token.embed && /\.(png|jpe?g|gif|webp)$/i.test(target)
-                ? `<img loading="lazy" src="${url}" alt="${escape(label || target)}">`
+                ? `<img loading="lazy" src="${url}" alt="${escape(width ? target : label || target)}"${width ? ` width="${width}"` : ''}>`
                 : `<a href="${url}" target="_blank" rel="noopener">${escape(label || target)} ↗</a>`,
             );
           }
