@@ -4,7 +4,7 @@ title: "Agent"
 category: "Agent"
 tags: ["Agent", "工程选型"]
 created_at: "2026-10-09"
-updated_at: "2026-10-17T17:15:10+08:00"
+updated_at: "2026-10-17T22:23:30+08:00"
 reading_suggestions:
   - agent-vs-workflow
   - agent-loop
@@ -74,6 +74,6 @@ Agent 通过「模型决策 → 程序执行工具 → 结果回传 → 模型�
 
 以“查 A 和 B 的退款费用，免费的就退，收费的先告诉我”为例。[[agent-intent|意图识别]]需要保留对象、多个目标与执行条件；[[agent-task-state-update|状态更新]]要处理用户中途改口和旧查询晚到；[[tool-interface-design|工具接口]]则须区分资格、报价、受理和最终成功，避免模型跳过尚未成立的条件。
 
-执行期间，[[agent-retry|重试]]控制故障恢复的范围与总消耗，[[agent-resume-failure|中断恢复]]核对回执丢失时的真实效果，[[agent-human-in-the-loop|人工介入]]处理必须由人决定的部分。长任务还要防止[[context-compaction-storage|后台压缩]]丢失新要求，或让[[agent-memory-maintenance|旧记忆]]重新带回已经更正的信息。每个机制都应对应具体问题，不因架构图上有一个模块就默认需要引入。
+执行期间，[[agent-retry|重试]]控制故障恢复的范围与总消耗，[[agent-checkpoint-recovery|中断恢复]]核对回执丢失时的真实效果，[[agent-human-in-the-loop|人工介入]]处理必须由人决定的部分。长任务还要防止[[history-storage#压缩摘要|后台压缩]]丢失新要求，或让[[agent-memory#存储与更新|旧记忆]]重新带回已经更正的信息。每个机制都应对应具体问题，不因架构图上有一个模块就默认需要引入。
 
 工程验收沿同一任务检查结果与过程：各对象分别完成了什么，条件是否满足，有没有重复操作，部分失败后能否准确继续。[[agent-evaluation-design|评测用例]]保存这些初态、事件顺序和预期，[[agent-trace|轨迹]]提供定位证据。此类场景用于分析设计取舍；具体框架能力与实测结果仍以对应资料及实验边界为准。

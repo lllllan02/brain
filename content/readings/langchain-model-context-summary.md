@@ -1,5 +1,5 @@
 ---
-parent: agent-context-input
+parent: agent-context
 title: "LangChain：分别管理指令、消息与工具"
 category: "Agent"
 tags: ["上下文管理"]

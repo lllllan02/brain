@@ -6,10 +6,10 @@ aliases: ["Reflection", "Agent Reflection"]
 category: "Agent"
 tags: ["Agent", "反思"]
 created_at: "2026-10-12T10:15:48+08:00"
-updated_at: "2026-10-17T19:01:47+08:00"
+updated_at: "2026-10-17T22:23:30+08:00"
 reading_suggestions:
   - agent-self-correction
-learning_status_changed_at: "2026-10-17T19:04:22.984+08:00"
+learning_status_changed_at: "2026-10-17T22:24:12.655+08:00"
 ---
 
 **反思（Reflection）是对照目标与证据，检查产物或执行过程、分析偏差并提出调整建议的过程。**
@@ -46,4 +46,4 @@ Agent 连续执行时可能遗漏要求、沿用错误假设或重复失败，�
 
 程序限制评审次数、时间和 token 消耗，持续无进展时停止并保留未解决项；**「评审结束不等于任务完成。」** 后续修改与验证按[[agent-feedback-mechanisms|反馈与调整机制]]衔接，并用[[anthropic-agent-evals-summary|任务评测]]比较修复率、误改率与新增成本。
 
-跨任务复用时，[[reflexion-summary|Reflexion]]将反馈保存为文字经验；[[agent-memory-experience|经验记忆]]保留行动、验证结果与适用条件，未经核实的归因仍作为假设。
+跨任务复用时，[[reflexion-summary|Reflexion]]将反馈保存为文字经验；[[agent-memory#写入|经验记忆]]保留行动、验证结果与适用条件，未经核实的归因仍作为假设。

@@ -3,9 +3,10 @@ title: "Eino 的检查点与中断恢复"
 parent: agent-checkpoint-recovery
 category: "Agent"
 tags: ["Agent", "Checkpoint", "持久化", "Go"]
-read: true
+learning_status: pending
+learning_status_changed_at: "2026-10-17T21:42:39.524+08:00"
 created_at: "2026-10-14T14:43:35+08:00"
-updated_at: "2026-10-14T14:43:35+08:00"
+updated_at: "2026-10-17T21:37:05+08:00"
 source:
   - "https://www.cloudwego.io/zh/docs/eino/core_modules/eino_adk/agent_hitl/"
   - "https://www.cloudwego.io/zh/docs/eino/core_modules/chain_and_graph_orchestration/checkpoint_interrupt/"
@@ -59,4 +60,4 @@ func resumeApproval(ctx context.Context, runner *adk.Runner,
 
 存储写入失败必须作为错误处理；收到中断信息本身不足以证明落盘成功。新进程还要重建兼容的 Agent、工具和类型注册，检查点不会恢复进程的连接、锁或任意业务对象。自定义状态须可序列化，升级时也要核对旧记录兼容性。
 
-应用仍负责审批权限、恢复请求的触发与并发控制，以及[[agent-resume-failure|外部操作的幂等]]。远端发布成功而检查点尚未更新时，恢复依旧可能重复调用；框架保存执行位置并不提供业务操作「恰好一次」的保证。
+应用仍负责审批权限、恢复请求的触发与并发控制，以及[[idempotency|外部操作的幂等]]。远端发布成功而检查点尚未更新时，恢复依旧可能重复调用；框架保存执行位置并不提供业务操作「恰好一次」的保证。

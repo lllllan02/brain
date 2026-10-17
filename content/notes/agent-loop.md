@@ -1,69 +1,44 @@
 ---
-learning_status: pending
+learning_status: organized
 parent: agent
 title: "最小 Agent Loop"
 aliases: ["Agent Loop", "Agent 循环"]
 category: "Agent"
 tags: ["Agent", "反馈循环", "工具调用"]
 created_at: "2026-10-09"
-updated_at: "2026-10-16T20:42:35+08:00"
+updated_at: "2026-10-17T20:58:21+08:00"
 reading_suggestions:
   - tool-calling
-  - agent-context
+learning_status_changed_at: "2026-10-17T21:00:22.131+08:00"
 ---
 
-**最小 Agent Loop 是让模型决策、程序执行工具、结果回传模型的反馈循环。** 实现只需模型调用、工具执行、上下文保存和循环控制，可以放在同一段程序中。
+**Agent Loop 是让模型反复决策、程序执行工具，并将结果交回模型的反馈循环。** 它让 Agent 能根据执行结果决定下一步，逐步推进需要多次操作的任务。
 
-1. 调用模型：传入用户问题、当前上下文和可用工具说明。
-2. 判断输出：返回最终答案时结束；返回[[tool-calling|工具调用请求（Tool Call）]]时，由程序执行工具。
-3. 更新上下文：将工具调用请求与执行结果加入消息历史（Messages），由[[agent-context|上下文管理]]组织下一轮输入，再调用模型。
+最小流程是：把用户问题和工具说明传给模型；模型返回[[tool-calling|工具调用请求]]时，程序执行工具，把调用与结果加入消息历史，再请求模型；模型返回最终回答时，结束循环。消息历史保留了此前做过什么、得到什么，供下一轮决策使用。
 
-再次调用模型时，不能只传最初的问题；必须带上之前的调用和结果，模型才能知道执行进展。还需设置最大迭代次数等终止条件，避免无限循环；触发限制不代表任务完成。
+![[assets/agent-loop.png|最小 Agent Loop：工具结果进入消息历史，再交给模型决策]]
 
-## 循环如何落到代码
-
-![[assets/agent-loop.png|最小 Agent Loop：模型决策、工具执行与结果反馈]]
-
-下面是 Go 风格伪代码，用抽象接口表达控制流程，不依赖具体 SDK，也不能直接运行。假设模型每轮正常返回「工具调用请求」或「最终答案」；`maxTurns` 限制模型调用轮数。
+下面用 Go 风格伪代码表达这个流程，不依赖具体 SDK，不能直接运行。假设模型正常响应时只返回工具调用或最终回答；`tools` 同时提供工具说明和执行入口。
 
 ```go
 func AgentLoop(question string, maxTurns int) (string, error) {
     messages := []Message{UserMessage(question)}
-    tools := AvailableTools() // 工具说明与对应的执行函数
-
-    for turn := 0; turn < maxTurns; turn++ {        // ① 检查轮数
-        reply, err := Model.Call(messages, tools.Specs()) // ② 调用模型
+    for turn := 0; turn < maxTurns; turn++ {
+        reply, err := CallModel(messages, tools.Specs())
         if err != nil {
             return "", err
         }
-        messages = append(messages, reply)        // ③ 保存完整模型回复
-
+        messages = append(messages, reply)
         if len(reply.ToolCalls) == 0 {
-            return reply.Text, nil                // 无工具调用：返回答案
+            return reply.Text, nil
         }
-
         for _, call := range reply.ToolCalls {
-            result, err := tools.Execute(call.Name, call.Args) // ④ 执行
-            messages = append(messages,           // ⑤ 回传结果或错误
-                ToolResult(call.ID, result, err))
+            result, err := tools.Execute(call.Name, call.Args)
+            messages = append(messages, ToolResult(call.ID, result, err))
         }
-        // 带着全部历史进入下一轮，让模型根据工具结果继续决策
     }
-    SaveProgress(messages)
     return "", Error("达到轮数上限，任务可能尚未完成")
 }
 ```
 
-模型只提出工具名称和参数，实际执行由程序完成。每条工具结果通过 `call.ID` 对应原请求；先保存模型回复，再追加工具结果，下一轮才能读到完整的调用与反馈。工具执行失败也可以作为反馈，让模型决定修正参数、换用工具或说明限制。
-
-这段示例只展示循环，省略了参数与权限检查、超时和重试等工程细节；达到轮数上限时保留进度并报告中断，不把中断当作成功。
-
-循环之外的机制按实际问题选择，见 [[agent|Agent]]。
-
-## 模型停止调用工具，就能结束任务吗？
-
-用户要求「查资格，符合条件就提交，最后告诉我结果」。工具返回「已受理」后，模型可能直接说退款成功；也可能因为输出被截断而没有返回任何工具调用。两种情况都不能仅凭 `ToolCalls` 为空判定完成。上面的最小循环假设正常响应，真实运行要先区分完整回答、拒绝、截断、等待外部结果与请求失败，再检查任务验收条件。
-
-循环还可能一直运行却没有进展：相同查询反复返回同一错误，模型只是改写解释。运行时可以记录操作对象、参数、结果类别和任务状态变化，识别连续无进展；然后补充缺失信息、切换允许的路径或报告阻塞。不能只比较回复文字，因为措辞变化不代表状态改变。
-
-停止时向用户说明已完成、未完成和结果未知的部分，并保存继续所需的状态。轮数上限解决资源消耗，业务验收解决是否完成，两者要分别记录。
+模型提出工具名称和参数，程序负责执行；`call.ID` 将结果或错误对应到原请求。`maxTurns` 限制模型调用次数，达到上限表示中止；返回回答也不保证任务成功，仍需核对实际结果。

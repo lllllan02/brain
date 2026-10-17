@@ -4,13 +4,12 @@ parent: agent-checkpoint-recovery
 category: "Agent"
 tags: ["Agent", "持久化", "重放", "Go"]
 created_at: "2026-10-13T10:59:51+08:00"
-updated_at: "2026-10-13T12:48:15+08:00"
+updated_at: "2026-10-17T20:58:54+08:00"
 source:
   - "https://docs.temporal.io/workflow-execution"
   - "https://docs.temporal.io/develop/go/workflows/basics"
   - "https://docs.temporal.io/develop/go/workflows/message-passing"
 reading_suggestions:
-  - agent-temporal-approval
   - temporal-retry-policy-summary
 ---
 
@@ -37,5 +36,3 @@ reading_suggestions:
 Go 工作流通过 `workflow.GetSignalChannel` 接收 Signal；客户端通过 `SignalWorkflow` 指定 Workflow ID、可选 Run ID 和载荷。Signal 会进入事件历史，因此与进程内临时 channel 的生命周期不同。
 
 需要及时告知「审批版本过期」时，可使用带 Validator 的 Update；Validator 不应修改状态。无论选哪一种，都仍要由业务认证入口确认操作者，避免把消息载荷中的名字当作身份证明。
-
-[[agent-temporal-approval|Temporal Go 审批接入]]把这些原语接成等待、决定与 Activity 执行，说明哪些持久化工作可交给框架，哪些审批与副作用规则仍由业务承担。

@@ -10,7 +10,7 @@ source:
   - "https://langchain-ai.github.io/langmem/guides/summarization/"
   - "https://langchain-ai.github.io/langmem/reference/short_term/"
 reading_suggestions:
-  - context-compaction-storage
+  - history-storage
 ---
 
 **「LangMem 在模型调用前检查消息长度，用持续更新的摘要替代较早历史，并将完整消息与模型实际输入分开保存。」** 本文整理官方教程及短期记忆 API，依据 2026-10-11 页面，未运行示例。
@@ -38,7 +38,7 @@ history.append(reply)
 
 ## 为什么要保存消息边界？
 
-`RunningSummary` 同时记录摘要文本、已摘要消息 ID 集合和最后一个已摘要消息 ID。后续调用据此识别新增历史：不生成新摘要时继续带入旧摘要；需要更新时，将旧摘要与新增待压缩消息一起处理。它解决的是[[context-compaction-storage|摘要覆盖范围]]问题，避免每轮重复摘要同一段原文。
+`RunningSummary` 同时记录摘要文本、已摘要消息 ID 集合和最后一个已摘要消息 ID。后续调用据此识别新增历史：不生成新摘要时继续带入旧摘要；需要更新时，将旧摘要与新增待压缩消息一起处理。它解决的是[[history-storage#压缩摘要|摘要覆盖范围]]问题，避免每轮重复摘要同一段原文。
 
 摘要从较早消息开始处理，系统消息不进入摘要；如果边界落在带工具调用的消息上，对应工具结果也一起纳入，**「避免把调用与结果拆开」**。
 

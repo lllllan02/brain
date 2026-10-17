@@ -1,6 +1,6 @@
 ---
 title: "LongMemEval：跨会话记忆与经验复用评测"
-parent: agent-memory-evaluation
+parent: agent-memory
 category: "Agent"
 tags: ["Agent", "记忆", "评测"]
 created_at: "2026-10-12T23:24:47+08:00"

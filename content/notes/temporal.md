@@ -3,7 +3,7 @@ title: "Temporal"
 category: "分布式系统"
 tags: ["工作流", "持久化", "重放"]
 created_at: "2026-10-14T16:14:09+08:00"
-updated_at: "2026-10-14T16:14:09+08:00"
+updated_at: "2026-10-17T20:58:54+08:00"
 learning_status: pending
 type: overview
 ---
@@ -22,7 +22,7 @@ type: overview
 
 基本接入过程是：用 SDK 编写 Workflow 和 Activity → 在 Worker 注册并监听队列 → 客户端启动流程 → Worker 持续领取任务。服务端可以自建，也可以使用 Temporal Cloud；业务执行仍需要 Worker。
 
-人的决定可通过 Signal（异步信号）传入等待中的 Workflow。[[agent-temporal-approval|现有 Go 审批示例]]展示了批准后调用 Activity 的连接方式。
+人的决定可通过 Signal（异步信号）传入等待中的 Workflow，由 Workflow 判断是否批准，再决定是否调用发布 Activity。
 
 ## 进程重启后，为什么能继续？
 

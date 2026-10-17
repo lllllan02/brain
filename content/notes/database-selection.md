@@ -11,8 +11,8 @@ aliases: ["数据库选型", "按访问模式选数据库"]
 
 | 主要需求 | 适合评估的模型 | 代表与边界 |
 | --- | --- | --- |
-| 多实体约束、事务、关联查询 | [[relational-database\|关系模型]] | [[mysql-overview\|MySQL]] 等；需要索引与事务设计 |
-| 按 key 低延迟访问 | 键值模型 | [[redis\|Redis]]；关注内存、持久化与热点 |
+| 多实体约束、事务、关联查询 | [[relational-database\|关系模型]] | MySQL 等；需要索引与事务设计 |
+| 按 key 低延迟访问 | 键值模型 | Redis；关注内存、持久化与热点 |
 | 以完整对象读写嵌套结构 | 文档模型 | [[mongodb\|MongoDB]]；结构灵活仍需建模 |
 | 文本相关性、多条件检索 | 倒排索引 | [[elasticsearch\|Elasticsearch]]；关注分析器与可见延迟 |
 | 大量明细上的过滤与聚合 | 列式分析 | [[clickhouse\|ClickHouse]]；排序与扫描范围关键 |

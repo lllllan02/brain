@@ -17,6 +17,6 @@ aliases: ["Relational Database", "关系数据库"]
 - [[transaction|事务]]：主流关系型数据库支持 ACID 事务，将多步修改作为一个整体处理。
 - 查询与统计：通过 SQL 过滤、关联、分组和聚合数据，并可用[[database-index|索引]]加速适合的查询。
 
-例如，用户表保存用户信息，订单表通过 `user_id` 关联用户，查询时可组合出「用户及其订单」。[[mysql-overview|MySQL]]、[[postgresql|PostgreSQL]]、[[oracle-database|Oracle Database]]、[[sql-server|SQL Server]] 都是常见实现。
+例如，用户表保存用户信息，订单表通过 `user_id` 关联用户，查询时可组合出「用户及其订单」。MySQL、[[postgresql|PostgreSQL]]、[[oracle-database|Oracle Database]]、[[sql-server|SQL Server]] 都是常见实现。
 
 参考：[PostgreSQL 关系数据库概念](https://www.postgresql.org/docs/current/tutorial-concepts.html)。

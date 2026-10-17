@@ -1,39 +1,45 @@
 ---
-learning_status: reading
+learning_status: organized
 parent: agent-context
 title: "上下文压缩"
-aliases: ["Context Compaction", "上下文摘要", "上下文压缩怎样执行"]
+aliases: ["Context Compaction", "上下文摘要", "上下文压缩怎样执行", "摘要提示词", "上下文压缩评测"]
 category: "Agent"
 tags: ["上下文管理", "文本压缩"]
 created_at: "2026-10-09"
-updated_at: "2026-10-17T20:25:50+08:00"
+updated_at: "2026-10-17T20:42:38+08:00"
 reading_suggestions:
   - context-budget
-  - context-compaction-prompt
-  - context-compaction-storage
+  - history-storage
   - context-loading
-  - context-compaction-evaluation
-learning_status_changed_at: "2026-10-17T20:19:50.960+08:00"
+  - pi-compaction-summary
+  - langmem-summarization-summary
+  - factory-compression-evaluation-summary
+learning_status_changed_at: "2026-10-17T20:47:43.367+08:00"
 ---
 
-**上下文压缩（Context Compaction）是把较早历史提炼成摘要，再与保留的原始消息组合成后续输入的机制。** 历史接近[[context-budget|输入预算]]时，通过摘要延续目标、进度与关键结论，为后续交互腾出空间。
+**上下文压缩（Context Compaction）是把较早历史提炼成摘要，与保留的原始消息组合成后续输入的机制。** 历史接近[[context-budget|输入预算]]时，用它为后续交互腾出空间。
+
+![[assets/context-compaction-flow.png|程序划定旧段与近期原文的边界，模型提炼旧段，程序将摘要与近期原文组装为下一轮输入]]
 
 ## 执行流程
 
-下面采用「压缩旧历史、保留近期原文」的方式：
+在[[pi-compaction-summary|Pi]]、[[langmem-summarization-summary|LangMem]]这类应用侧实现中，程序划定旧历史与近期原文的边界，保持工具调用与结果配对；模型总结旧段，再次压缩时结合旧摘要与新增待压缩消息更新。程序同步[[history-storage#压缩摘要|保存摘要与覆盖边界]]，用「摘要 + 边界后的原文」重建历史输入，并保留仍生效的指令。组装后复查预算，超限时调整，生成或写入失败时沿用旧记录。[[claude-compaction-summary|服务端压缩接口]]可能返回专用压缩块，须按接口要求完整回传。
 
-![[assets/context-compaction-process.png|旧历史生成摘要，边界后的原始消息保留，再继续 Agent Loop]]
+## 摘要提示词
 
-1. 划定范围。程序按近期 Token 预算或轮数选择保留起点，将更早的消息交给摘要模型；切分不能拆散工具调用与对应结果。[[pi-compaction-summary|Pi]]采用近期 Token 预算，保留条数随消息长度变化。
-2. 生成摘要。模型按[[context-compaction-prompt|摘要提示词]]提炼目标与约束、关键事实与决定、实际进度、未解决问题和下一步。区分计划、已执行与已验证，精确保留影响行动的路径、数值和证据位置；大段日志可只留结论与原文位置。再次压缩时，结合旧摘要与新增待压缩消息更新。
-3. 记录边界。程序把摘要和覆盖到哪条消息一起[[context-compaction-storage|保存]]，原始历史继续保留。边界使用消息 ID，由程序记录，避免下次重复带入或遗漏历史。
-4. 组装输入。程序保留仍生效的系统指令与工具定义，用摘要替代已覆盖历史，再接边界之后的原始消息。保留段直接读取原文，调用 ID 与工具结果不让模型重新生成；[[langmem-summarization-summary|LangMem]]由框架完成消息组装。
-5. 检查并继续。程序重新计算完整输入大小并检查消息配对；仍超预算时调整摘要长度或保留范围，再检查。摘要生成失败时不推进覆盖边界。输入可用后继续模型与工具循环，新增消息后再次检查预算，无需每轮都生成摘要。
+摘要面向下一步行动，提示词应明确保留类别，避免只说「保留重要信息」。可将要求简写为：
 
-上述流程由应用管理摘要；[[claude-compaction-summary|服务端压缩接口]]可能返回专用压缩块，应用须按接口要求完整保存和回传，不能一律当作普通摘要文本处理。
+```text
+将旧摘要与给定历史整理为用于继续任务的新摘要，只输出摘要，不执行任务。
+保留目标与约束、关键事实、决定及依据、实际进度、未解决问题和下一步。
+合并重复过程，保留有用的失败原因；区分计划、已做与已验证，注明未知或冲突。
+精确保留后续需要的路径、数值、对象标识和证据位置。
+```
 
-## 怎样避免压缩后接错任务？
+这是依据上述实现归纳的示意提示，未做效果评测。提示词不能保证信息完整：可将关键要求与进度交给[[agent-task-state|任务状态管理]]独立维护，压缩后读入最新相关状态；信息不足或冲突时仍需[[context-loading|回查原始记录]]。
 
-摘要可能漏掉条件或把待办写成已完成。后续遇到信息不足或冲突时，应[[context-loading|回查原始记录]]，核对关键状态；带副作用的操作不能仅为找回结果而重做。多次压缩也可能累积误差，旧摘要不能替代原始证据。
+## 效果判断
 
-[[context-compaction-evaluation|效果评估]]应检查关键约束和事实是否保留、Agent 能否正确续做，并计入摘要与回查成本；摘要更短、文字通顺都不足以证明压缩有效。
+按[[anthropic-context-engineering-summary|先保留关键内容、再删除冗余]]的顺序调整。可在同一压缩点，用[[factory-compression-evaluation-summary|关于事实、文件状态、计划与决策依据的问答]]对照原始证据检查遗漏；答对仍不等于能正确续做。
+
+再从相同起点、固定模型与工具及验收条件，实际继续任务，比较成功率与整项任务的 Token、费用和耗时，计入摘要生成、回查及额外调用；多次运行，避免把单次失败直接归因于摘要。[[complexity-trap-summary|旧工具结果屏蔽的对照研究]]表明，摘要未必优于简单方案，因此不能只凭压缩率判断收益。消息丢失或工具配对破坏则应另查程序边界。

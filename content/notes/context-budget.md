@@ -1,18 +1,18 @@
 ---
-learning_status: reading
+learning_status: organized
 parent: agent-context
 title: "上下文预算"
 aliases: ["Token Budgeting", "Context Budget", "Token 预算"]
 category: "Agent"
 tags: ["上下文管理"]
 created_at: "2026-10-09"
-updated_at: "2026-10-17T20:29:13+08:00"
+updated_at: "2026-10-17T20:39:09+08:00"
 reading_suggestions:
   - agent-context-input
   - context-trimming
   - context-compaction
   - pi-compaction-summary
-learning_status_changed_at: "2026-10-17T20:18:29.469+08:00"
+learning_status_changed_at: "2026-10-17T20:41:16.143+08:00"
 ---
 
 **上下文预算（Token Budgeting）是为模型输入设定可用额度，并根据实际占用决定何时缩减内容的工程做法。** 窗口需要同时容纳输入与输出，因此要在耗尽前触发裁剪或压缩。
@@ -37,10 +37,10 @@ learning_status_changed_at: "2026-10-17T20:18:29.469+08:00"
 
 [[pi-compaction-summary|触发阈值与近期保留量]]应分开设置：前者决定何时处理，后者决定保留多少原文。经常超限就提前触发或限制工具输出，经常丢失关键信息就调整保留策略。
 
-![[assets/context-budget-check.png|假设示例：工具结果使完整输入从70k增长至86k，调用前检查发现达到80k触发线，裁剪或压缩后复查为64k，再调用模型]]
+![[assets/context-budget-check.png|假设示例：同一比例尺下，窗口100k、触发线80k；指令与状态20k、历史40k和工具结果50k合计110k，超出窗口，裁剪或压缩后为60k，复查通过再调用模型]]
 
 ## 延伸：分层预算
 
-**分层预算是在总输入额度内，按上下文组成分别设定预算占比或上限的做法。** 可结合[[agent-context-input#组成与维护|上下文分层]]与内容重要程度，优先保障有效指令和任务状态，再限制工具定义、历史与资料的占用。
+**分层预算是在总输入额度内，按[[agent-context-input|上下文组成]]分别设定预算占比或上限的做法。** 可结合内容重要程度，优先保障有效指令和任务状态，再限制工具定义、历史与资料的占用。
 
 例如总输入额度为窗口的80%，可假设指令与状态占10%、工具定义占20%、历史与资料占50%，合计80%。这些比例均以完整窗口为分母，只用于说明分配方式，实际可按任务调整。

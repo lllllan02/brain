@@ -1,7 +1,7 @@
 ---
 title: "Factory：怎样评测压缩后的任务状态保留"
 aliases: ["Evaluating Context Compression for AI Agents"]
-parent: context-compaction-evaluation
+parent: context-compaction#效果判断
 category: "Agent"
 tags: ["上下文管理", "文本压缩", "评测"]
 created_at: "2026-10-11T15:37:35+08:00"

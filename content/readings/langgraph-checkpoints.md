@@ -1,15 +1,16 @@
 ---
+learning_status: pending
 title: "LangGraph：检查点怎样保存执行进度"
 parent: agent-checkpoint-recovery
 category: "Agent"
 tags: ["Agent", "Checkpoint", "持久化"]
 created_at: "2026-10-13T10:59:51+08:00"
-updated_at: "2026-10-13T12:48:15+08:00"
+updated_at: "2026-10-17T21:37:05+08:00"
 source:
   - "https://docs.langchain.com/oss/python/langgraph/persistence"
   - "https://docs.langchain.com/oss/python/langgraph/checkpointers"
 reading_suggestions:
-  - agent-resume-failure
+  - idempotency
   - langgraph-time-travel
 ---
 
@@ -33,6 +34,6 @@ reading_suggestions:
 | `async` | 保存与下一步并行 | 崩溃可能丢失尚未写完的进度 |
 | `exit` | 成功、错误或人工中断退出时保存 | 中途进程崩溃时没有相应中间进度 |
 
-因此，配置了存储后端后，还要核对提交时机。检查点也不与外部业务操作自动组成事务；[[agent-resume-failure|恢复时的重复执行]]用故障窗口解释这部分边界。
+因此，配置了存储后端后，还要核对提交时机。检查点也不与外部业务操作自动组成事务；远端已成功、本地却未保存结果时，恢复可能重复调用，需要查询原结果或依赖远端的[[idempotency|幂等保证]]。
 
 **「指定旧检查点继续会再次执行后续节点」**；主动回看历史与从最新失败处恢复的目的不同，[[langgraph-time-travel|重放与分叉导读]]保留前者的示例和边界。

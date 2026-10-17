@@ -5,7 +5,7 @@ parent: agent
 category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T11:03:11+08:00"
-updated_at: "2026-10-13T11:06:45+08:00"
+updated_at: "2026-10-17T21:06:24+08:00"
 reading_suggestions:
   - agent-evaluation-design
   - agent-evaluation-graders
@@ -35,7 +35,7 @@ reading_suggestions:
 
 [[agent-evaluation-trajectory|结果、轨迹与归因]]把终态验收和过程约束分开：退款账本正确，不保证执行前已经确认；工具顺序不同，也不一定错误。分层实验用于定位问题，最终仍要回到整项任务验证。
 
-专项能力复用已有范围：[[rag-quality-evaluation|RAG 评测]]区分召回、重排、上下文与回答；[[agent-memory-evaluation|记忆评测]]检查跨会话写入、读取与纠正；[[context-compaction-evaluation|压缩评测]]检查信息保留和任务延续。局部指标帮助定位瓶颈，不能单独替代端到端成功率。
+专项能力复用已有范围：[[rag-quality-evaluation|RAG 评测]]区分召回、重排、上下文与回答；[[agent-memory#效果检查|记忆评测]]检查跨会话写入、读取与纠正；[[context-compaction#效果判断|压缩评测]]检查信息保留和任务延续。局部指标帮助定位瓶颈，不能单独替代端到端成功率。
 
 ## 让不同运行可以比较
 

@@ -49,4 +49,4 @@ source:
 
 [InnoDB Redo 开发文档](https://dev.mysql.com/doc/dev/mysql-server/8.4.11/PAGE_INNODB_REDO_LOG.html)区分内存日志缓冲、写入日志文件与刷新到持久存储。脏页写回前，要保证覆盖该页修改的 Redo 已经刷新；崩溃后，Redo 用来补回尚未写入数据页的修改。
 
-日志位置用 LSN（Log Sequence Number，日志序列号）描述，页所需日志的进度与日志已持久化进度配合，落实先后约束。数据页写回、检查点推进和旧日志空间复用相互关联；恢复还需处理未提交事务，相关职责已整理在[[mysql-manual-recovery#Redo 怎样参与本机恢复|MySQL 恢复导读]]。本篇只核对文档，未执行崩溃恢复实验。
+日志位置用 LSN（Log Sequence Number，日志序列号）描述，页所需日志的进度与日志已持久化进度配合，落实先后约束。数据页写回、检查点推进和旧日志空间复用相互关联；恢复还需处理未提交事务，相关职责已整理在《MySQL 恢复导读》中。本篇只核对文档，未执行崩溃恢复实验。

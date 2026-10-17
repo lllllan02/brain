@@ -1,6 +1,6 @@
 ---
 title: "Anthropic Memory Tool：模型提出操作，应用保存文件"
-parent: agent-memory-practice
+parent: agent-memory
 category: "Agent"
 tags: ["Agent", "记忆", "工具调用"]
 created_at: "2026-10-12T23:24:47+08:00"

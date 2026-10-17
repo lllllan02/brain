@@ -1,7 +1,6 @@
 ---
 title: "Go 官方文档导读：数据库连接池与资源归还"
 category: "Go"
-parent: db-connection-pool
 type: "article"
 tags: ["Go", "连接池", "性能排查"]
 created_at: "2026-10-12T22:06:03+08:00"
@@ -12,8 +11,6 @@ source:
   - "https://pkg.go.dev/database/sql#DB.Conn"
   - "https://go.dev/doc/database/querying"
   - "https://pkg.go.dev/os/signal"
-reading_suggestions:
-  - db-connection-pool
 ---
 
 本导读选取 Go `database/sql` 的连接管理、状态统计和结果释放规则，用于解释「应用等待很久，但数据库 SQL 记录不慢」的情况。MySQL 连接行为还取决于驱动与服务端配置，文中的接口规则不保证某个驱动的超时或取消效果。
@@ -45,4 +42,4 @@ reading_suggestions:
 
 [多行查询示例](https://go.dev/doc/database/querying)在查询成功后立即安排 `defer rows.Close()`，随后遍历、Scan 并检查 `rows.Err()`。完整遍历通常会隐式关闭 Rows，提前返回时仍需释放资源；只计量 Query 返回前的时间，会漏掉后续读取和处理结果的耗时。
 
-这些规则能解释[[db-connection-pool|连接池排查]]中的长期占用：**「SQL 已结束，不代表结果、事务或显式连接的生命周期已经结束」**。观察 goroutine 时还需核对采样方式；[os/signal](https://pkg.go.dev/os/signal)规定 Go 默认收到 SIGQUIT 会打印栈并退出，不能当作无害的在线采样命令。本导读未执行驱动或连接池实验。
+这些规则能解释连接池排查中的长期占用：**「SQL 已结束，不代表结果、事务或显式连接的生命周期已经结束」**。观察 goroutine 时还需核对采样方式；[os/signal](https://pkg.go.dev/os/signal)规定 Go 默认收到 SIGQUIT 会打印栈并退出，不能当作无害的在线采样命令。本导读未执行驱动或连接池实验。

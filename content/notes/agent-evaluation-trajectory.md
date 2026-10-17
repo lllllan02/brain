@@ -5,13 +5,13 @@ parent: agent-evaluation
 category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T10:57:59+08:00"
-updated_at: "2026-10-16T20:52:39+08:00"
+updated_at: "2026-10-17T21:06:24+08:00"
 reading_suggestions:
   - agent-trace-structure
   - agentevals-trajectory
   - bfcl-evaluation
-  - agent-memory-evaluation
-  - context-compaction-evaluation
+  - agent-memory
+  - context-compaction
 ---
 
 **结果评测判断任务是否完成，轨迹评测检查关键行为与执行约束；两者结合才能区分「做成了」和「按要求做成了」。** 轨迹是可观察事件，不要求取得模型隐藏的思维过程。
@@ -44,7 +44,7 @@ reading_suggestions:
 
 ## 长任务与多 Agent 怎么测？
 
-长任务应设置少量可验收的中间状态，并检查跨中断恢复、状态保留和最终一致性；不能把「完成计划中的步骤数」直接当作任务质量。记忆和压缩分别复用[[agent-memory-evaluation|记忆评测]]与[[context-compaction-evaluation|上下文压缩评测]]。
+长任务应设置少量可验收的中间状态，并检查跨中断恢复、状态保留和最终一致性；不能把「完成计划中的步骤数」直接当作任务质量。记忆和压缩分别复用[[agent-memory#效果检查|记忆评测]]与[[context-compaction#效果判断|上下文压缩评测]]。
 
 多 Agent 的团队结果仍按同一用户目标验收，再记录任务交接是否丢约束、共享状态是否冲突、是否重复执行副作用。比较单 Agent 与多 Agent 时计入所有成员的模型费用、并发资源和总墙钟时间。每个成员局部正确不保证整合后的结果正确；这些是从状态与交接边界推导出的评测设计，尚未在本专题运行多 Agent 实验。
 
