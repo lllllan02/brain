@@ -13,7 +13,7 @@ tags: ["知识库", "Obsidian", "项目使用", "服务启动"]
 
 - Obsidian：打开本项目的 `content/`，通过搜索、标签和正文链接阅读。
 - Agent：在视界（Horizon）项目中工作，遵守 [[AGENTS|AGENTS.md]]。该文件提供通用约束和任务入口，按任务链接到判断细则与操作 Skill。检索与巡检可用只读检索层 `npm --silent --prefix apps/web run retrieve --`（`query`/`links`/`lint`/`index`，需先 `make install`）。直接提出「把刚刚讨论的内容整理进知识库」，即可按「批量检索候选 → 阅读相关正文 → 判断更新或新建 → 写回并验收」处理，已完整覆盖的内容不重复保存；细则见 [[docs/knowledge-management|知识库管理细则]]。
-- 文档阅读页面：`apps/web/` 已提供本地「视界」，基于 Galaxy View 三维星空，以文档星点、真实引用和完整正文作为阅读入口。首次运行 `make install` 安装依赖，再运行 `make` 启动稳定阅读模式（首次构建，后续复用未变化的前端缓存），打开 `http://127.0.0.1:4173`；使用说明见 [[apps/web/README|看板说明]]。`content/notes/`、`content/readings/` 与 `content/glossary/` 均参与网页构建。Notes 待学习偏雾蓝、已理解偏香槟白；Readings 偏灰青且横向星芒稍长，未读星芒较弱，已读星芒完整；Glossary 近核偏淡紫且星芒呈斜向。内部链接高亮、预览图标、列表与节点标签同步显示状态；部署后的阅读入口为 [视界](https://lllllan02.github.io/brain/)，由 GitHub Pages 自动构建。
+- 文档阅读页面：`apps/web/` 已提供本地「视界」，基于 Galaxy View 三维星空，以文档星点、真实引用和完整正文作为阅读入口。首次运行 `make install` 安装依赖，再运行 `make` 启动稳定阅读模式（首次构建，后续复用未变化的前端缓存），打开 `http://127.0.0.1:4173`；使用说明见 [[apps/web/README|看板说明]]。`content/notes/`、`content/readings/` 与 `content/glossary/` 均参与网页构建。各目录共用待学习、阅读中与已整理三种状态，分别偏雾蓝、灰青与香槟白；目录图标与星芒形态继续区分内容用途。内部链接高亮、预览图标、列表与节点标签同步显示状态；部署后的阅读入口为 [视界](https://lllllan02.github.io/brain/)，由 GitHub Pages 自动构建。
 
 本地根目录可重命名为 `horizon`；先停止开发服务，改名后从新目录重新打开工作区并运行 `make`。启动、内容读取与构建均使用相对项目路径。只改本地目录不会改变 Git remote 或线上地址；当前远程仓库及 Pages 路径仍使用 `brain`。
 

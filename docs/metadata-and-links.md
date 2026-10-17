@@ -10,11 +10,15 @@ tags: ["知识库", "元数据", "命名", "链接维护"]
 
 目录只区分内容用途：notes 保存自己的知识笔记，readings 保存外部资料的摘要与导读，glossary 保存随查术语解释，sources 保存必要的原始资料，archive 保存当前归档的文档（不参与看板）。各内容目录平铺，不用物理子目录表达专题层次或学习状态。文档类型通过 type（兼容已有 classes）区分，主题归属通过单值 category 表达，tags 用于多标签检索。
 
-自己的知识笔记统一放 `content/notes/<filename>.md`，新建时设置 `learning_status: pending`；用户明确确认本篇所需概念已理解后才改为 `understood`。字段缺省时按待学习显示，不根据文件所在目录、阅读历史或整理完成推断已理解。外部导读平铺在 `content/readings/`，用 `read: true` 表示用户确认读过本篇导读，缺省或 `false` 为未读；不推断读过全部原文或已经掌握。术语不设置这两种状态。仅修改状态时不移动文件、不刷新 created_at 或 updated_at。
+所有启用目录的文档（包括 notes、readings 与 glossary）统一使用 `learning_status`：`pending`（待学习）→ `reading`（阅读中）→ `organized`（已整理）。新建填 pending，缺省也按 pending 显示。状态由用户主动确认，打开、预览、滚动或 Agent 完成整理均不自动推进；“已整理”不代表掌握全部知识或读过全部外部原文。阅读中列表直接筛选 `learning_status: reading`，不额外添加“待阅读”标签或维护浏览器队列。仅修改状态时不移动文件、不刷新 created_at 或 updated_at。
 
-修改某篇文档的正文后，必须在同次写回中重置该篇状态，供用户重新阅读确认：readings 写为 `read: false`，notes 写为 `learning_status: pending`。正文增删、改写、纠错及正文中的链接或格式调整均适用，不因改动较小而保留完成状态；仅改元数据或仅移动、重命名文件且正文未变时不触发。项目没有独立的“已整理”布尔字段，不新增该字段，也不将 `learning_status` 写成 `false`。glossary 和管理文档不因此新增阅读或学习状态。验收时逐篇核对正文差异与对应状态；重新标为已读或已理解仍须用户确认修改后的内容。
+实际切换学习状态时，同次写入 `learning_status_changed_at`，使用带时区的 ISO 8601 时间，保留毫秒以区分快速操作。重复设置相同状态不刷新此时间；仅编辑仍为阅读中的正文，也不改变其排序时间。阅读中列表按最近一次切换状态的时间倒序显示，最近切入的排最前；缺少该属性的旧文优先使用已有“切换到阅读中”的活动记录，均缺失时稳定排在有时间记录的文档之后，不以正文更新时间或文件修改时间推测。
 
-网站与检索收录范围由 `apps/web/collections.config.json` 的启用项决定，默认 notes、readings、glossary；目录来自路径，学习与阅读状态来自元数据。状态外观配置在 `apps/web/document-states.config.json`，交互见 [[apps/web/README|视界说明]]。常规补充保持路径稳定，重构改变主题范围时按命名规则同步改名并维护引用。
+正文修改后，在同次写回中核对状态：已整理降为阅读中，阅读中保持阅读中，待学习保持待学习。正文增删、改写、纠错及正文中的链接或格式调整均适用；仅改元数据或仅移动、重命名文件且正文未变时不触发。重新标为已整理仍由用户确认。本地服务也会依据已有正文快照检测并写回降级；首次没有快照时只建立基线。管理文档不新增学习状态。
+
+兼容旧文：`learning_status: understood` 与 readings 的 `read: true` 显示为已整理，`read: false` 或缺省为待学习；显式的三态属性优先。后续状态写回统一使用 `learning_status`，不新增独立的“已整理”布尔字段，也不将该字段写成布尔值。
+
+网站与检索收录范围由 `apps/web/collections.config.json` 的启用项决定，默认 notes、readings、glossary；目录来自路径，学习状态来自元数据。状态外观配置在 `apps/web/document-states.config.json`，交互见 [[apps/web/README|视界说明]]。常规补充保持路径稳定，重构改变主题范围时按命名规则同步改名并维护引用。
 
 文件名使用简短英文与短横线，如 `agent-definition.md`、`mysql-explain-type.md`。在 content 内的笔记中保持唯一，包括 notes、readings 与 glossary；只在实际冲突时加必要的限定词，不把完整分类层级拼进名称。文件名按内容适当收敛：主题能被更短、更上位的词涵盖时就用它，避免「主题 + 动作/限定」的冗余（如 OAuth 授权 → `oauth`）。README.md、AGENTS.md 等项目约定名称保留。
 
@@ -26,7 +30,7 @@ tags: ["知识库", "元数据", "命名", "链接维护"]
 
 正文独立于遇到该术语的话题：具体协议或项目怎样使用它，写在对应话题或实践卡片中，由使用处引用术语卡；不为返回原话题而添加应用章节或链接。术语卡只在解释自身确有需要时引用其他概念。具体话题首次使用术语时可保留使原句可读的简短释义，完整定义和通用例子集中在术语卡，场景约定留在使用处。例如 Stdio 卡解释标准流；MCP 如何通过标准流传输消息、日志如何处理，归 MCP 或其实现卡片。
 
-术语卡不设置学习或阅读状态；内容稳定程度不是分类依据，涉及版本仍需注明。
+术语卡沿用统一的学习状态；内容稳定程度不是分类依据，涉及版本仍需注明。
 
 以具体外部资料为对象的摘要放 readings；需要理解机制、作出判断或完成实践的问题放 notes。已有同主题内容先判断归属并复用，不在不同目录复制定义。术语可被多个专题引用，不因被 MCP 使用就强设 MCP 为 parent；有清晰概念上级时沿用 parent 规则。Glossary 与其他收录目录共享文件名唯一、来源、链接及发布约束。
 
@@ -46,8 +50,9 @@ tags: ["知识库", "元数据", "命名", "链接维护"]
 | `type` / `classes` | 文档类型；新文优先单值 type，如 `concept`、`practice`、`article`、`overview`；已有 classes 是类型列表 | 有分类需求时使用，同一文档不重复维护两者 |
 | `description` | 一句话摘要，文本 | 正文开头不足以支持预览或展示时使用，避免重复维护同一摘要 |
 | `source` / `url` | 外部出处；推荐 `source: "https://…"`，可写 `source: "[原文标题](https://…)"`，多个来源使用字符串列表；兼容出处文本及 `url` / `URL` | 仅 readings 外部导读填写；notes 不填 `source` 或用 `url` / `URL` 替代。来源在标题下展示，必要的正文引用仍可保留 |
-| `learning_status` | `pending`（待学习）或 `understood`（已理解） | 仅 notes 使用，新建填 pending；用户确认理解后切换，缺省按 pending 显示 |
-| `read` | YAML 布尔值 `true` / `false`，不加引号 | 仅 readings 使用；用户确认读过导读后设置 true，缺省为未读 |
+| `learning_status` | `pending`（待学习）、`reading`（阅读中）、`organized`（已整理） | 所有启用目录共用，新建填 pending；用户主动推进状态，正文修改按上文降级 |
+| `learning_status_changed_at` | 最近一次实际状态变更时间，带时区的 ISO 8601 文本，保留毫秒 | 切换状态时写入，供阅读中列表排序；不改 created_at 或 updated_at |
+| `read` | 旧版 readings 的 YAML 布尔值 | 只为兼容旧文保留，新文和状态操作使用 learning_status |
 | `status` | 工作状态，文本，如 `draft`、`review`、`done` | 有实际草稿、核查或处理流程时使用，不作为事实可信度或掌握程度 |
 | `cssclasses` | 样式名称列表，用于 Obsidian CSS 片段 | 需要单篇特殊显示样式时使用 |
 
