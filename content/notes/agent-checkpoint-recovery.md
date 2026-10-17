@@ -6,18 +6,18 @@ aliases: ["Agent Checkpoint", "Agent 中断恢复"]
 category: "Agent"
 tags: ["Agent", "Checkpoint", "持久化"]
 created_at: "2026-10-09"
-updated_at: "2026-10-17T21:53:38+08:00"
+updated_at: "2026-10-17T22:43:15+08:00"
 reading_suggestions:
   - eino-checkpoints
   - agent-checkpoint-runtime
   - idempotency
   - langgraph-checkpoints
-learning_status_changed_at: "2026-10-17T21:55:00.656+08:00"
+learning_status_changed_at: "2026-10-17T22:46:36.224+08:00"
 ---
 
 **中断恢复（Interruption Recovery）是利用持久保存的数据与执行进度，在中断后接续未完成任务的机制。**
 
-Agent 意外退出，或暂停等待用户[[agent-human-in-the-loop|审批]]、补充信息与外部结果后，可以由原进程或新进程接手，复用已完成的工作。
+Agent 意外退出，或暂停等待用户[[tool-approvals|审批]]、补充信息与外部结果后，可以由原进程或新进程接手，复用已完成的工作。
 
 在[[agent-loop|Agent Loop]]中，程序可以在模型完整返回、工具结果返回后，把已有结果和下一步一起写入数据库或文件。
 

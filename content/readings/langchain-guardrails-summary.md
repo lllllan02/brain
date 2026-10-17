@@ -1,16 +1,16 @@
 ---
 title: "LangChain：行为检查如何接入 Agent"
-parent: guardrail-execution
+parent: agent-guardrails
 category: "Agent"
 tags: ["Agent", "行为约束"]
 created_at: "2026-10-13T10:52:05+08:00"
-updated_at: "2026-10-13T12:48:15+08:00"
+updated_at: "2026-10-17T23:06:59+08:00"
 source:
   - "[Guardrails](https://docs.langchain.com/oss/python/langchain/guardrails)"
   - "[Custom middleware](https://docs.langchain.com/oss/python/langchain/middleware/custom)"
 ---
 
-**「LangChain 通过中间件在运行中的指定位置检查内容，并改变后续执行。」** 本文聚焦官方文档中的检测方法、敏感信息处理与接入位置，不复述完整 API。
+**「LangChain 通过中间件在运行中的指定位置检查内容，并改变后续执行。」** 官方列举的用途包括防范提示注入、阻止敏感信息泄露与不当内容、执行业务规则和校验输出质量。本文聚焦检测方法、敏感信息处理与接入位置，不复述完整 API。
 
 ## 检测方法与取舍
 
@@ -32,4 +32,4 @@ source:
 
 多个中间件组合时，`before_*` 按声明顺序执行，`after_*` 反向执行，`wrap_*` 逐层嵌套，**「最先声明的包装最外层」**。因此需核对短路和重试发生在哪一层，不能把所有钩子理解为一条固定的顺序列表。官方建议优先使用内置中间件，并在集成前独立测试自定义逻辑。
 
-以上节选接入机制，未覆盖状态合并等完整 API；文档没有给出攻击检出率或无泄漏保证。按 2026-10-13 页面核对，未运行 SDK 示例，使用时需核对安装版本。
+以上节选接入机制，未覆盖状态合并等完整 API；文档没有给出攻击检出率或无泄漏保证。用途与检测方法按 2026-10-17 页面核对，其余接入细节沿用 2026-10-13 的核对；未运行 SDK 示例，使用时需核对安装版本。

@@ -1,0 +1,132 @@
+# A2A 1.0.0 / HTTP+JSON：报告任务交互示例
+# 教学假设，未进行真实服务联调；不是可直接执行的脚本。
+# report.example.com 与 files.example.com 均为占位域名。
+# 前提：服务已运行、Card 声明 HTTP+JSON、客户端已取得 Bearer Token，
+#       sales.csv 已上传且报告服务有权读取。
+# 后续请求沿用认证与 A2A-Version: 1.0；Content-Type: application/json。
+
+### 1. 发现：读取 Agent Card
+GET /.well-known/agent-card.json HTTP/1.1
+Host: report.example.com
+
+# 从 skills 确认业务能力；从 supportedInterfaces 选择地址、绑定和版本；
+# 从 securitySchemes / security 确认认证要求。本文其余请求假定接口基址为域名根路径。
+
+### 2. 提交需求：Message 中的 ROLE_USER 表示客户端发出，调用方可以是 Agent
+POST /message:send HTTP/1.1
+Host: report.example.com
+Authorization: Bearer <token>
+Content-Type: application/json
+A2A-Version: 1.0
+
+{
+  "message": {
+    "messageId": "m1",
+    "role": "ROLE_USER",
+    "parts": [
+      {"text": "分析这份销售数据，生成趋势报告。"},
+      {"url": "https://files.example.com/sales.csv", "mediaType": "text/csv"}
+    ]
+  },
+  "configuration": {"returnImmediately": true}
+}
+
+# messageId 标识消息，不保证重发幂等。
+# returnImmediately: true 先返回任务；false 或省略则等待终态或暂停状态。
+
+### 3. 提交响应：发送消息的响应以 task（或直接答复时以 message）包装
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "task": {
+    "id": "t1",
+    "contextId": "c1",
+    "status": {"state": "TASK_STATE_SUBMITTED"}
+  }
+}
+
+# 主应用保存本地业务请求与 t1 的对应关系。
+# 服务端执行器启动报告 Agent，状态从 SUBMITTED 变为 WORKING，完成时写入成果。
+
+### 4. 查询：GET 返回 Task 本身，没有发送消息响应中的外层 task
+GET /tasks/t1 HTTP/1.1
+Host: report.example.com
+Authorization: Bearer <token>
+A2A-Version: 1.0
+
+# 若仍为 TASK_STATE_SUBMITTED 或 TASK_STATE_WORKING，间隔查询；
+# 若为终态则停止；若为 INPUT_REQUIRED / AUTH_REQUIRED，先处理缺失条件。
+# 以下展示已完成时的响应：
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "id": "t1",
+  "contextId": "c1",
+  "status": {"state": "TASK_STATE_COMPLETED"},
+  "artifacts": [{
+    "artifactId": "a1",
+    "name": "销售趋势报告",
+    "parts": [{"text": "本期销售额呈上升趋势……"}]
+  }]
+}
+
+### 5. 补输入的替代分支：同一 t1 尚未终结时
+# 服务端发现缺月份后，保存任务及继续所需的信息，设为等待输入。
+# 在本例轮询模式中，客户端下一次查询得到以下响应；无需 Webhook。
+GET /tasks/t1 HTTP/1.1
+Host: report.example.com
+Authorization: Bearer <token>
+A2A-Version: 1.0
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "id": "t1",
+  "contextId": "c1",
+  "status": {
+    "state": "TASK_STATE_INPUT_REQUIRED",
+    "message": {
+      "messageId": "s1",
+      "contextId": "c1",
+      "taskId": "t1",
+      "role": "ROLE_AGENT",
+      "parts": [{"text": "统计哪个月？"}]
+    }
+  }
+}
+
+# 若原 SendMessage 是默认阻塞调用，也可直接返回包含上述 Task 的 {"task": ...}。
+# SSE 模式可通过 statusUpdate.status 交付同一状态和询问消息；
+# Webhook 模式才需要配置回调 URL，由服务端 POST 更新。
+# 客户端读取问题，向用户询问或由主 Agent 补齐后，再发下面的请求：
+POST /message:send HTTP/1.1
+Host: report.example.com
+Authorization: Bearer <token>
+Content-Type: application/json
+A2A-Version: 1.0
+
+{
+  "message": {
+    "messageId": "m2",
+    "taskId": "t1",
+    "role": "ROLE_USER",
+    "parts": [{"text": "统计 2026 年 9 月。"}]
+  },
+  "configuration": {"returnImmediately": true}
+}
+
+# taskId 定位未终结的原任务；contextId 关联相关任务与消息，不传递完整内部上下文。
+# 补输入时可以省略 contextId，由服务端从任务推知。
+# 终态任务不能重开；要求重做时发送不带旧 taskId 的新需求，可保留 contextId: "c1"。
+
+### 6. 取消请求
+POST /tasks/t1:cancel HTTP/1.1
+Host: report.example.com
+Authorization: Bearer <token>
+A2A-Version: 1.0
+
+# 取消可能失败，成功也不证明已有外部效果已回滚。
+# 流式方式可使用 POST /message:stream，以 SSE 接收状态与产物更新，须先确认服务支持。

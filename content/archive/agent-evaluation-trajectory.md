@@ -5,9 +5,9 @@ parent: agent-evaluation
 category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T10:57:59+08:00"
-updated_at: "2026-10-17T21:06:24+08:00"
+updated_at: "2026-10-17T23:25:57+08:00"
 reading_suggestions:
-  - agent-trace-structure
+  - agent-trace
   - agentevals-trajectory
   - bfcl-evaluation
   - agent-memory
@@ -34,7 +34,7 @@ reading_suggestions:
 
 [[agentevals-trajectory|AgentEvals]]提供严格、无序和部分匹配。协议要求完全固定时才严格比较；独立读取可忽略顺序；只需关键调用时用包含关系。安全约束往往需要更具体的事件判断，例如同一订单与操作版本的确认必须先于写入。
 
-不能只查工具名集合。`refund(A)` 与 `refund(B)` 是不同效果，确认 A 也不能授权 B；模型提出调用、程序接受调用、工具实际完成又是三个状态。证据应来自真实执行边界，沿用[[agent-trace-structure|Trace 的结构]]记录关联标识。
+不能只查工具名集合。`refund(A)` 与 `refund(B)` 是不同效果，确认 A 也不能授权 B；模型提出调用、程序接受调用、工具实际完成又是三个状态。证据应来自真实执行边界，沿用[[agent-trace#关联并行、重试与恢复|Trace 的结构]]记录关联标识。
 
 ## 怎样从现象走到原因？
 

@@ -1,13 +1,13 @@
 ---
-learning_status: reading
+learning_status: organized
 parent: agent
 title: "Agent 记忆"
 aliases: ["Agent Memory", "Long-term Memory", "长期记忆"]
 category: "Agent"
 tags: ["Agent", "记忆"]
 created_at: "2026-10-09"
-updated_at: "2026-10-17T22:31:10+08:00"
-learning_status_changed_at: "2026-10-17T20:49:16.290+08:00"
+updated_at: "2026-10-17T22:38:59+08:00"
+learning_status_changed_at: "2026-10-17T22:40:22.180+08:00"
 reading_suggestions:
   - langgraph-memory
   - codex-memory-pipeline
@@ -45,13 +45,14 @@ reading_suggestions:
 
 ## 容量与保留期限
 
-**「长期保留不等于永久保留」**：
+**「长期保留不等于永久保留」**，按有效期、历史价值和容量预算选择过期、归档或淘汰：
 
-- 过期：临时信息设置[[langgraph-memory#记忆能否自动过期|到期日或 TTL]]，到期退出有效检索；业务截止日不随读取自动延长。
-- 归档：历史资料移出常规检索，按需回查；归档不减少总存储量。
-- 淘汰：按用户／项目设容量预算，优先清理重复、失效和低价值条目；使用时间与频率仅作参考，重要约束不能仅因低频删除。
+![[assets/agent-memory-retention.png|过期停止有效取用，归档保留回查，删除式淘汰同步清理相关副本；重要约束受保护]]
 
-过期、归档与彻底删除应分清。期限、容量和保护规则按业务确定，并检查派生副本是否同步清理。
+- 期限规则：临时信息可设[[langgraph-memory#记忆能否自动过期|到期日或 TTL]]；业务截止日不随读取自动延长。
+- 容量规则：按用户／项目设预算，使用时间与频率仅作参考；重要约束不能仅因低频删除。
+
+具体期限、预算和清理范围按业务确定，验证时同时检查主记录与派生副本。
 
 ## 检索与使用
 

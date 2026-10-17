@@ -5,13 +5,13 @@ parent: agent-guardrails
 category: "Agent"
 tags: ["Agent", "行为约束", "工具调用"]
 created_at: "2026-10-13T11:04:15+08:00"
-updated_at: "2026-10-13T11:08:17+08:00"
+updated_at: "2026-10-17T23:30:09+08:00"
 reading_suggestions:
   - tool-permissions
-  - agent-human-in-the-loop
+  - tool-approvals
   - openai-guardrails-summary
   - agent-trace
-  - agent-evaluation-safety
+  - agent-evaluation
 ---
 
 **行为约束通过执行前后的检查点落实：检查器返回判定，运行程序决定是否调用工具、怎样处理结果以及能否继续。** 只记录违规或提醒模型，不能保证动作被阻止。
@@ -85,7 +85,7 @@ func DispatchRefund(rt Runtime, call Call) Outcome {
 }
 ```
 
-`CheckApproval` 核对服务端保存的审批者权限、动作及参数、有效期和使用状态；等待与恢复协议复用[[agent-human-in-the-loop|人工介入]]。批准后仍从检查入口继续，不能直接跳到最后一行。
+`CheckApproval` 按[[tool-approvals|工具审批流程]]核对服务端保存的审批者权限、动作及参数、有效期和使用状态。批准后仍从检查入口继续，不能直接跳到最后一行。
 
 `ExecuteChecked` 是退款服务的业务边界：重新核对申请与订单的关联、当前授权和可退金额，并防止并发超退与重复退款。执行器的预检查无法替代这些服务端保证，因为检查后记录仍可能变化。返回值应区分成功、失败与结果待确认；网络响应丢失时，不能把整段代码直接重跑当作安全重试。
 
@@ -101,4 +101,4 @@ func DispatchRefund(rt Runtime, call Call) Outcome {
 
 次数、期限与费用由运行程序计数并限制；并发调用还需避免同时占用同一份剩余预算。停止继续调度不等于取消正在运行的工具，工具自身仍需超时或取消机制。
 
-用[[agent-trace|Trace]]关联调用、检查判定、审批与实际结果，敏感字段按需脱敏。最小验收既要确认合法调用成功，也要核对拒绝和检查故障时退款服务未被调用，并覆盖审批后条件变化、重复提交与结果未知。更完整的样本和指标复用[[agent-evaluation-safety|安全与鲁棒性评测]]，不能只凭最终回复含有「拒绝」就认定约束生效。
+用[[agent-trace|Trace]]关联调用、检查判定、审批与实际结果，敏感字段按需脱敏。最小验收既要确认合法调用成功，也要核对拒绝和检查故障时退款服务未被调用，并覆盖审批后条件变化、重复提交与结果未知。安全与鲁棒性的验收沿用[[agent-evaluation#任务与验收|评测设计]]，不能只凭最终回复含有「拒绝」就认定约束生效。

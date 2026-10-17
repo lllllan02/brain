@@ -65,6 +65,13 @@
       "digest": "32096f380824d94b50fec9813e1358f8d615f8229afdeb8f5771ceddd8aeff36",
       "bodyDigest": "7aaa49255785a26855c70b94f10945c0fdded227389b69bff171a78bb7a96d21"
     },
+    "prompt-injection": {
+      "title": "提示注入",
+      "collection": "glossary",
+      "state": "pending",
+      "digest": "ca90a46256a5fd10bd6e3717e77ef18b2f5db410d22aaf7b514276275edcaf94",
+      "bodyDigest": "82d3cae43838cdf65df0d55fff8d0fedf3a648dd6258bb67e6bcd052b66b3778"
+    },
     "publish-subscribe": {
       "title": "发布订阅（Publish–Subscribe）",
       "collection": "glossary",
@@ -103,16 +110,16 @@
     "a2a": {
       "title": "A2A（Agent 间通信协议）",
       "collection": "notes",
-      "state": "pending",
-      "digest": "1381b27a8c67e7b7729f175d3a5a65b6c246dd0ec993d76b7edd33758c8b0723",
-      "bodyDigest": "119951b79de28c2d639d24cb7e3dd2b8ed0a20145b94b171b77acdc9855e6957"
+      "state": "organized",
+      "digest": "9d1c32df05a57c482abc7bb1bf75f94d8fcc491a534505fbdf910cf610368221",
+      "bodyDigest": "e1a8133e2549602ca537b2f9b5d6cbf29284683f8915053c8bd79d1fcd6f55bc"
     },
     "agent-checkpoint-recovery": {
       "title": "Agent 的中断恢复机制",
       "collection": "notes",
       "state": "organized",
-      "digest": "f20ba077da4ee00c214c8fd5adbbcd8de6e2c401713d44431bb8f7759cf3a5ec",
-      "bodyDigest": "61df3f3ac53b36d81485d0d9b4cf539363c73661f6828ba57653795be005c1ca"
+      "digest": "82ee930c6e5199d206a6fc61a4fe525fd369285c393ae69021f0dd0ded28e376",
+      "bodyDigest": "91efe301e33620770e244f56cb069267d3826cb8808e6e5db17be82c71d98a26"
     },
     "agent-checkpoint-runtime": {
       "title": "中断恢复的实现",
@@ -135,82 +142,19 @@
       "digest": "1d819dcf0c9443fcad41fa8880d457f58bbd1da9ef45b4c34e2047f4fa2b1902",
       "bodyDigest": "a4f41d80a9fa1b688fff5380d317ced75fb2e308e9f2a6c8524a2992eaca9a8e"
     },
-    "agent-evaluation-benchmarks": {
-      "title": "Agent 基准测试",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "69378ead75768e347a1cfe9c2995ba0739588afc5786d0acc98737288ea4da62",
-      "bodyDigest": "4fc88623f1ad267265bf5fddc501d6dcd85f69439eabf096d5b1e5b357fb8a41"
-    },
-    "agent-evaluation-design": {
-      "title": "Agent 评测设计",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "86d8637151391bcb2d90689ace34fed6c7b5e9549c52a8d8ad2ca31231ca6e38",
-      "bodyDigest": "bc3d4136b57a7ec7b0d2bdefd36571b761c843b8e9f9b4e1979ad0618ae7d599"
-    },
-    "agent-evaluation-graders": {
-      "title": "Agent 评分器",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "efecc4c92fe86a2038183a40b77e3fbddb8ae960fb0984d5866db871bdb58e9f",
-      "bodyDigest": "13ec8c658e38632454578e1f2a041fd78ca993fef4c29d29cb705217d216c497"
-    },
-    "agent-evaluation-harness": {
-      "title": "Agent 评测运行系统",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "f965cda76a0d00994aebae8553aeafafb8bc0b362c375788908af161d9b3e972",
-      "bodyDigest": "f5615177d8f5f92487cfce9c464668f00f3d75b83f1fbbee2de4d73c5a456edd"
-    },
-    "agent-evaluation-online": {
-      "title": "Agent 线上评测与发布",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "f7de425a516e581d7c1986931daa969155b69ac110b41ff2bdbad8bd1ff781cc",
-      "bodyDigest": "0d51e080e9008e77705ee8c24a4b380b9a9391518e9243a158e3f029fd01c5b7"
-    },
     "agent-evaluation-practice": {
       "title": "Agent 评测示例",
       "collection": "notes",
       "state": "pending",
-      "digest": "73ba4431e3207d54fa38d15b900577e671d258584c0480c58d544e1ba480ac99",
-      "bodyDigest": "16aa2f10a5004fa5330adb33c592f442913db3702e51838aa38d13ca66ccc88c"
-    },
-    "agent-evaluation-safety": {
-      "title": "Agent 安全与鲁棒性评测",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "5338ced19abd86da330439f2f3c00aec6507102e48e1f6588611469ebd013844",
-      "bodyDigest": "c3dfd094fc91636ced94c76df5fdd5145e1ce9ae2d4b8fe6ce1ae184796e1034"
-    },
-    "agent-evaluation-statistics": {
-      "title": "Agent 评测统计",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "8494159c343c1dfb867f0e117f11b02bcf2dbb80ae8b7dce73bf4b99949310cb",
-      "bodyDigest": "870628284fa5a9de1dbff69b041121c10440d2f7020f8e7d5e6e2a9bded0cc63"
-    },
-    "agent-evaluation-tools": {
-      "title": "Agent 评测工具选型",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "8892d5bae33c01aa6cc90a7205f038eded666ecff4beaea51c2b98cad6bf94a5",
-      "bodyDigest": "606a994f5e43db896cd7afbb2de3f8d6e8a04137792c15fcca2e1fb45b24d7c0"
-    },
-    "agent-evaluation-trajectory": {
-      "title": "Agent 结果与轨迹评测",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "33045e6783ca61d7f8ca1866a2b9f31542e2a93af6bfba04310a890846e5879c",
-      "bodyDigest": "edb522611ff9b2c582a3529fb28c2c14352a11a7a7e99b1f9442dcb9682c9347"
+      "digest": "59edf2993ad8d676cc452555f661a3636b45c84ab1de409175bcf20bda06cc05",
+      "bodyDigest": "982441694f88f67180cb7398588f9f996cbbfe7a1f35b4c9ab5f1ac3ab1c3d77"
     },
     "agent-evaluation": {
       "title": "Agent 评测",
       "collection": "notes",
-      "state": "pending",
-      "digest": "5f324072c7f24c4aeb6502a0351ad2cf3a888a86062b99bce4b7e644d8c279ec",
-      "bodyDigest": "ff974df51d173bb621e96cb361d61560ad75494ed58e8b4e56e2ff3757cbd6f2"
+      "state": "reading",
+      "digest": "2365aa5e7f3f03b90eca9a8141f398c5c6bc37810ec206b7c65bf564cd177855",
+      "bodyDigest": "882b1ad6c9c36b6f7ae164233910d20ebe69587e4d15bd6282869a807d1b8893"
     },
     "agent-feedback-mechanisms": {
       "title": "Agent 的反馈与调整机制",
@@ -222,23 +166,23 @@
     "agent-guardrails": {
       "title": "Agent 行为约束",
       "collection": "notes",
-      "state": "pending",
-      "digest": "e62d01b6caaa49d502256b1d010d70aea21addf4768c6398877a9a0cae73c837",
-      "bodyDigest": "ea45646224588b65e4327f17acb49378189e1ee3c010933906f7565a4bb56637"
+      "state": "organized",
+      "digest": "4f72631bf9ed37be73fe37b62a375969d1f4a93e2ee8e37405c5d026877af83a",
+      "bodyDigest": "988b5525e2adf5af55b5f07c2e42424673756bbca5145851cb16c4d06c970cd2"
     },
     "agent-harness": {
       "title": "Agent Harness",
       "collection": "notes",
       "state": "pending",
-      "digest": "12bbd4d81e8a5c810b7b465378657a62bef2e59e008a535f2b205219e2f2e569",
-      "bodyDigest": "5081ec1611094a538a509b18eb047d9f6dd54d56c8e732c0554119f0d914c2b3"
+      "digest": "6347056fee403970d7f08c97bfe700054400de4962aec841be709e7272682070",
+      "bodyDigest": "a82d17f9d10a44dd4406d39eb14dbf6c0344d4a0db7172d0e3215a35d11f7ac8"
     },
     "agent-human-in-the-loop": {
       "title": "Agent 人工介入",
       "collection": "notes",
-      "state": "pending",
-      "digest": "7dccbbe2b4b6da4d14b44e957ec7a7c1e9f3e6c42843e49cb8d3bfd6f46482be",
-      "bodyDigest": "ffd08df108e376a69a491fe0c20a4bf54baf7c1d72094b54a7be4dfcaebd664e"
+      "state": "organized",
+      "digest": "26e94b0508e5397d8450b055b444c6ebc057f26ce95c8028bfe3579f4040a33f",
+      "bodyDigest": "87074eba22f6f7b2e9649c3c8f2298e6bfde503749aa1697e65327a92f2008a7"
     },
     "agent-intent": {
       "title": "Agent 意图识别",
@@ -264,9 +208,9 @@
     "agent-memory": {
       "title": "Agent 记忆",
       "collection": "notes",
-      "state": "reading",
-      "digest": "00057e4729a8c642ddc39c1f88eb2815c834f5ff86f75b5883ac5d498b223343",
-      "bodyDigest": "30fbf90d372b06b10d4095f4fd4a97b7fb3fe7a94792f7d297481ab9d2b00bf8"
+      "state": "organized",
+      "digest": "e908009175e630cf07a5714b24345f2fbd68068f142f47291485a30d5595afb3",
+      "bodyDigest": "b48ddbdd5da22fa4a5e1bb9d9b7d05af7cf07504d5b4764a766161433cdc1536"
     },
     "agent-planning": {
       "title": "Agent 的规划与执行模式",
@@ -310,13 +254,6 @@
       "digest": "408a2676a67cb322b366a660d3c43a74cb78a668e886bd67af6427a54dd3c72d",
       "bodyDigest": "7d05a0d97dd0190118efbf999b7d3085a526ccaca5db3a32f44a7da44efafefa"
     },
-    "agent-subagents": {
-      "title": "子 Agent",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "6591d882268b362020e9694891991ee5278223604592b4e8a28944cb438a822d",
-      "bodyDigest": "cb909ba3bcae4d93bf63d6f9bf5d0e37d6e80af19ab7408c0697b484586a710a"
-    },
     "agent-task-decomposition": {
       "title": "复杂任务的拆分",
       "collection": "notes",
@@ -338,54 +275,12 @@
       "digest": "7ae739bd729d83118a018bfee2742e790bc5b43f8f7fe1782c234d1d40ac37f6",
       "bodyDigest": "8e7dbb5fb2db48b30b6b5043bbf13ed8bd75756b31d3a45ea2cd1fa1bafe5815"
     },
-    "agent-trace-capture": {
-      "title": "Agent Trace 内容采集",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "0cc85a34e5ccf85dae1e106ce48a8af3d28157ac363355d55e9b382633635b84",
-      "bodyDigest": "463aadcb73aa777f2e18c7c003888759c9335a9cb7c41457d9013a0e1cfcdba8"
-    },
-    "agent-trace-evaluation": {
-      "title": "Agent 错例回归",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "37439a3046b9e01553ff334188b330d8a42744591ec0137f08c008de790109f5",
-      "bodyDigest": "ee72cc3469092831c1bd735a694a96eda16d25eafd7c045b6d1ce5d090f51fba"
-    },
-    "agent-trace-spans": {
-      "title": "Agent Span 生命周期",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "358a3856658fd1e589030c9906b840ff90231d136149b559e140e6b4cb5bfbbf",
-      "bodyDigest": "904e0afe88870f5b7e687fdd8f0d288b0b8332e01d62ae91473b1e7fe46c79e3"
-    },
-    "agent-trace-structure": {
-      "title": "Agent Trace 调用关联",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "4641d32c60386ab5f9b279f9cf7dd76bf849f6e8dafe44b2f192cf74fb38fce3",
-      "bodyDigest": "bde4a8ff741f73faf45f37eef6d710b6b09b31745ddb0c0a2f5390b3bc9d0207"
-    },
-    "agent-trace-verification": {
-      "title": "Agent Trace 的采集可靠性",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "efeb29a321f665b3d73d5f82927091df22da89a5625bcc86444e60a7981cc0ec",
-      "bodyDigest": "cc4980108b679977e906383cd24329e8a229ece2b0443b6dfdf1a13119ce3b88"
-    },
-    "agent-trace-viewing": {
-      "title": "Langfuse Trace 查看",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "bc8f8cf33fd98cb829891acc744148f8d0ce4dfbbca3bc7a09629e05599181b7",
-      "bodyDigest": "4dc7ec62dede4162bfbfbcfb29e40f077d12308faa78cadf2b8f73b60a7e74a5"
-    },
     "agent-trace": {
       "title": "Agent Trace（执行追踪）",
       "collection": "notes",
-      "state": "pending",
-      "digest": "d3010b8226a71380115bd248356a5183a9b3e964ea8894a4243f59c867458533",
-      "bodyDigest": "fcf205fafc2e9ccc11f13a09062472a5f41be212da54cf30bb2cf62d57a15544"
+      "state": "reading",
+      "digest": "00aebcf547100f336af59c3a6f6ea9b26af41f0ec5dc46a572eac34ca1dcc191",
+      "bodyDigest": "d8541a3683ebda1cedfcb383a7690029e770bfd1ccf1f49498f338918cdf4c6e"
     },
     "agent-vs-workflow": {
       "title": "Agent 与工作流",
@@ -397,9 +292,9 @@
     "agent": {
       "title": "Agent",
       "collection": "notes",
-      "state": "pending",
-      "digest": "8d256460e1041179fc301f51302c58bab278280b8602a562ead8b3d76094a9a2",
-      "bodyDigest": "b0a083152d1e41f2409f792fb65ef646c0e63cf36d95fe319e9f84e551c08b03"
+      "state": "organized",
+      "digest": "b7c3312e39e3e95268a73db179d72e40aa2971930f0172b0b358036a552ae9ee",
+      "bodyDigest": "0604f62b2065ce3fb2d2f7c4c1e1b48c72f61839aeb4c9252ab4bfe3c2a4169c"
     },
     "api-gateway": {
       "title": "API 网关",
@@ -636,8 +531,8 @@
       "title": "数据标注",
       "collection": "notes",
       "state": "pending",
-      "digest": "5e4803ae0819162989087f8a8944dfd0b3453d3b4f6518e5e762979d2549bf59",
-      "bodyDigest": "965983a2b7fc01f23d0f063d2ce7af8db9825ef240edb81af48629c0a755c05d"
+      "digest": "551aea02bd2be2be2caa1689e618d27fee431c92b7af93fc02e58f86cc0de7ef",
+      "bodyDigest": "5c0c9ef98cadc1d269b034a2def2f53a75d47109b40db2b86931c881e0da9c5f"
     },
     "database-index": {
       "title": "索引（Index）",
@@ -1059,13 +954,6 @@
       "digest": "2e57822d08854f756dea34cc877e63ffdbcff46f0dedd426cfdc2a4759442be9",
       "bodyDigest": "fe19119df2b6f6f61088002e6e46d642e714b045f4fdd58804f3c43a31e12108"
     },
-    "guardrail-execution": {
-      "title": "行为约束的执行机制",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "7ddf0eeb0ef90bfac5b00044881b511f1e22355166a3cb7024b9aed2b160bb89",
-      "bodyDigest": "cb73141b92f3f8cd9ae1848e5a8aa3c20665bf5f8aeb3a2bc0a484d925cc74f0"
-    },
     "gvisor-sandbox-practice": {
       "title": "gVisor 沙箱用法",
       "collection": "notes",
@@ -1286,9 +1174,9 @@
     "multi-agent": {
       "title": "多 Agent 协作",
       "collection": "notes",
-      "state": "pending",
-      "digest": "b041611f6f083f01218cb0bf9a793956431678896c7164a366d8580280b87568",
-      "bodyDigest": "c3dc422df72c70dcad662d769d6496ca420ea0be3624e1475cc859428269563b"
+      "state": "organized",
+      "digest": "a110c7f01ccbccd3586caa262dc6d4035ce58d5057953a116188e37ce6f1b8ec",
+      "bodyDigest": "c7823c93c7e1ae78961e8a22233bd8a7dca922c9d28c400160ee2168ef4336bc"
     },
     "multi-channel-payment": {
       "title": "多渠道重复扣款",
@@ -1623,8 +1511,8 @@
       "title": "RAG 权限与文档信任边界",
       "collection": "notes",
       "state": "pending",
-      "digest": "211361b7d258aec8b0d111019daa5694399697fb1ddb59d7781a1c822facc577",
-      "bodyDigest": "9fb36784b43f4213a01b3ec2ab4f57121b3c7b1d9fe1d1717b97f4dc19afd259"
+      "digest": "a3e8002426aea23b4d4a15bccb36b6d3a14cf17917b2e233348e9e8ad8e88fb6",
+      "bodyDigest": "9cf93d73dba4892805ac1316104c795f2e0fcb7531cd6870064f3223a3ea227d"
     },
     "rag": {
       "title": "RAG（检索增强生成）",
@@ -1868,8 +1756,8 @@
       "title": "工具调用的审批",
       "collection": "notes",
       "state": "organized",
-      "digest": "48bb203bf42f375283e5e74b27b6c28633ca8a53ae9fdc89ad9b5cd8929c88de",
-      "bodyDigest": "8060b04bb0fc82f66f1168e12a56a001ea8d1e7ebf4b7aabfe37676205f45e7a"
+      "digest": "f597172c0523664ca86d4e8d2934f0dd4d23a7aa6db3f38b977055934b639f6e",
+      "bodyDigest": "973ea9c8c0763c5df021e56334faaa36137a0ce959aa8d099977c0835871fff2"
     },
     "tool-calling": {
       "title": "工具调用",
@@ -2001,8 +1889,8 @@
       "title": "A2A：发现、任务生命周期与协议边界",
       "collection": "readings",
       "state": "pending",
-      "digest": "bc0bf5fa982055f65cf32bdeea434155379c8c56dcdcb895c5470852c37e713a",
-      "bodyDigest": "3c897c579c9a551c252c0a965c52ac34f99d7f3d165d2961135c0a7584cc76e1"
+      "digest": "f901814f3e9d5055720f8c74a332ee6ac6a82fdb6f0ff016ce4f83319afa8c3a",
+      "bodyDigest": "c5ce2a5a471d10f6471774d9254fc59677f0b31d76c2ac8406a1d03d98e4dd86"
     },
     "agent-evaluation-infrastructure": {
       "title": "Anthropic：资源限制如何改变 Agent 评测结果",
@@ -2113,8 +2001,8 @@
       "title": "Anthropic：多 Agent 研究系统的收益与代价",
       "collection": "readings",
       "state": "pending",
-      "digest": "e6236e294666c7625c9fb0dd75a1e7c88d223ae1e592639cbfd240e11f9d4774",
-      "bodyDigest": "cc512b3e466e0e6c0a84d9ca8cee74a3da5dbe7b61befbc4adbdc94aef2c4ec4"
+      "digest": "7c09612857bcd784b1f9a81410f5bbd832300bcbb8541e1da3850e4a3c1b7bac",
+      "bodyDigest": "057e0012bcd33b1dc60f498f4ca0188be5c9a05886e894de80750db010f9af4a"
     },
     "anthropic-tool-design-summary": {
       "title": "Anthropic：如何设计有效的 Agent 工具",
@@ -2127,8 +2015,8 @@
       "title": "AutoGen：群聊如何选择下一位 Agent",
       "collection": "readings",
       "state": "pending",
-      "digest": "a1557db956cff0e667211062c8f3c88f2739ea2410d34c804d2225efeb7f372a",
-      "bodyDigest": "3eb81a8f90f92144a45bace3ab848b2e6d8faf48dd5db48b478a5c6db563e383"
+      "digest": "9c6b7cd26707eb0836a320f6cb6cc070b874a86304bffc491a2f08130335ea25",
+      "bodyDigest": "2d19e86a2cfedcce0bcdbafb232c678f780c6a5b506e98a81883b820e18ec111"
     },
     "aws-agentcore-authorization-summary": {
       "title": "AWS AgentCore：把身份与工具参数交给授权策略",
@@ -2204,8 +2092,8 @@
       "title": "Claude Code：子 Agent 与 Agent Teams",
       "collection": "readings",
       "state": "pending",
-      "digest": "60e072603a3d444d423644c692952a7ec86607c3c3665a8478bacab683296fe0",
-      "bodyDigest": "08d07c0dbd5ff7b067c59b47b07d4ee78c790d1e0048f629b686e20904b43912"
+      "digest": "474f814a8f7f9544e49cd0fd7abbe1a5d069e6314d2b618e88ba749c285db81b",
+      "bodyDigest": "a4a299f7924505053b5fe7a2a9031d0472986b192606ff3ba1728ac6ddf52dcf"
     },
     "claude-code-context-budget-summary": {
       "title": "Claude Code：上下文预算与压缩阈值",
@@ -2381,6 +2269,13 @@
       "state": "pending",
       "digest": "19ed01e312c9fcd460d0f9141af6fd99f056dfcb3b48bc4e499d9c04d1d6bfdb",
       "bodyDigest": "e8d0c54fd4d7a8de9a25479ed4ddcca27f5524720ef7485d756d06ebee3bc0e0"
+    },
+    "codex-subagents": {
+      "title": "Codex：何时委派子 Agent",
+      "collection": "readings",
+      "state": "pending",
+      "digest": "5ea4ccf0e8e3a4e99d862cea58ecf61019e6c6538214846bb440ee4f7f90ad01",
+      "bodyDigest": "fe0ee2dcce3f3778c7f073c35409a8c700a043a10d48002588e4120d52f37884"
     },
     "complexity-trap-summary": {
       "title": "The Complexity Trap：旧工具结果屏蔽能否替代摘要",
@@ -2561,8 +2456,8 @@
       "title": "LangChain：行为检查如何接入 Agent",
       "collection": "readings",
       "state": "pending",
-      "digest": "91995b4673ae77925ffa849e40b043ad61f82da68f25cdc671f1085bc31a9380",
-      "bodyDigest": "5227e7f451c3a518af1c0e9da217300c862a1c80e942d226771ebe2455e56666"
+      "digest": "59e56d924e231b840341ba6a6b8b4974d6ee8c4dc178c06f93c65f5f5514fedb",
+      "bodyDigest": "b62d5bc33666c142d4c7e19132d1790701476563f5a4319231d2f1d36b633542"
     },
     "langchain-harness-anatomy-summary": {
       "title": "LangChain：从模型的限制推导 Harness 的组成",
@@ -2596,8 +2491,8 @@
       "title": "LangChain：子 Agent、交接与路由的分工",
       "collection": "readings",
       "state": "pending",
-      "digest": "a2ec5a2b8b195c508eb7ad47aee0dcafdf17bb5428231272cd90a323dad0a6f1",
-      "bodyDigest": "682648ad1ef777133da5544e85fbfc604a922f17b1226d7693941431f4ba8e23"
+      "digest": "b9adae124cd5e2023ffd6784ac932f9df76e438a1247340f31fb4878e4e16c43",
+      "bodyDigest": "62536bec9a5a2dd7d56a1d248b04b261c1f30b80e05902e98c094d0165b2bf1a"
     },
     "langchain-planning-summary": {
       "title": "LangChain：从先规划再执行到重新规划",
@@ -2750,8 +2645,8 @@
       "title": "MAST：多 Agent 系统为什么失败",
       "collection": "readings",
       "state": "pending",
-      "digest": "60e193c902246e5dd4f0d75c07a734bd6b7d14dcaf2fd2b1112488fb41c6e8bb",
-      "bodyDigest": "f1ef9c8dc94e9637df34637a234067206305f1a256d71866b5a0aba91225059f"
+      "digest": "92d4885f4955dbe8ebda9d7aa9e79af66eb625aa1ef76f5b14b2b6573f307ebb",
+      "bodyDigest": "28aacba2166faa286480ce1ecb7d73736f170bb8cba046b8944a1a3499454346"
     },
     "mcp-architecture-summary": {
       "title": "MCP 官方架构：发现、调用与通知",
@@ -3175,6 +3070,15 @@
     }
   },
   "images": {
+    "assets/a2a-exchange": {
+      "title": "a2a-exchange",
+      "files": {
+        "assets/a2a-exchange.png": "aaf0580b9f194578781d0ea3179e3644d3d81ca5db0310c433dbe5aa0ccc884d"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
     "assets/agent-checkpoint-boundary": {
       "title": "agent-checkpoint-boundary",
       "files": {
@@ -3237,9 +3141,7 @@
         "assets/agent-cycle.png": "253f71cc18b2f9e1783944596e89ca381ba32daf027fca593f76638b7caab331",
         "assets/agent-cycle.svg": "f5b1538b95c192cd59c872fa5d86db6790a53038f420351f1806cb9e4c06b380"
       },
-      "collections": [
-        "notes"
-      ]
+      "collections": []
     },
     "assets/agent-feedback-cooperation": {
       "title": "agent-feedback-cooperation",
@@ -3258,6 +3160,24 @@
         "assets/agent-feedback-mechanisms.svg": "81148ba1a31e2641c2346eb2c5be1215c2a68e5882d09fd6b6ed6a9088c79351"
       },
       "collections": []
+    },
+    "assets/agent-guardrails": {
+      "title": "agent-guardrails",
+      "files": {
+        "assets/agent-guardrails.png": "b1b6a96fba9505bca2ba312541f7cc6ed9287117fe3e65d88830416e6deee154"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/agent-human-in-the-loop": {
+      "title": "agent-human-in-the-loop",
+      "files": {
+        "assets/agent-human-in-the-loop.png": "4c9291aa4f4306f58fba3d4bea03f6a2c454eb89aa3f1bb400005fd00ec12aed"
+      },
+      "collections": [
+        "notes"
+      ]
     },
     "assets/agent-intent-funnel": {
       "title": "agent-intent-funnel",
@@ -3332,12 +3252,30 @@
       },
       "collections": []
     },
+    "assets/agent-memory-retention": {
+      "title": "agent-memory-retention",
+      "files": {
+        "assets/agent-memory-retention.png": "cc389accbe05ef7e7d12d737b2dee66f3a2a2b85f36259bc0470289f17ece74f"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
     "assets/agent-memory-update": {
       "title": "agent-memory-update",
       "files": {
         "assets/agent-memory-update.png": "b1b90dc88e34e38fc7f66e6eb32c8aca4dfd45230830bcbb1f5fb8313f2e00c7"
       },
       "collections": []
+    },
+    "assets/agent-overview": {
+      "title": "agent-overview",
+      "files": {
+        "assets/agent-overview.png": "9380853d8acb6cc59ed299a6d0dfb626822f3b099699116a2525abd2713cc8e5"
+      },
+      "collections": [
+        "notes"
+      ]
     },
     "assets/agent-planning-overview": {
       "title": "agent-planning-overview",
@@ -3537,45 +3475,35 @@
       "files": {
         "assets/agent-trace-langfuse-context.jpg": "8b6115b28aa6ec0f4a5e8971909232717401b62b12b6290745d0caed5f790cab"
       },
-      "collections": [
-        "notes"
-      ]
+      "collections": []
     },
     "assets/agent-trace-langfuse-list": {
       "title": "agent-trace-langfuse-list",
       "files": {
         "assets/agent-trace-langfuse-list.jpg": "e44da0da86214d9ee979a6e8b60d0a94e596ae5a7e49e9cdeea8986660214b3e"
       },
-      "collections": [
-        "notes"
-      ]
+      "collections": []
     },
     "assets/agent-trace-langfuse-overview": {
       "title": "agent-trace-langfuse-overview",
       "files": {
         "assets/agent-trace-langfuse-overview.jpg": "e173bc72455e04a1ce48e1d449a5200832a086a1e909c3b69a842325ebf96c13"
       },
-      "collections": [
-        "notes"
-      ]
+      "collections": []
     },
     "assets/agent-trace-langfuse-score": {
       "title": "agent-trace-langfuse-score",
       "files": {
         "assets/agent-trace-langfuse-score.jpg": "8030995dd283a2c86ce560af3c4f513cfb12b4420e4e1e252b63c412d3d642ab"
       },
-      "collections": [
-        "notes"
-      ]
+      "collections": []
     },
     "assets/agent-trace-langfuse-timeline": {
       "title": "agent-trace-langfuse-timeline",
       "files": {
         "assets/agent-trace-langfuse-timeline.jpg": "09ca1cf434f4b0d2c42b7daa19c441ec986a95c846b8b59c8fb50e5dfe751640"
       },
-      "collections": [
-        "notes"
-      ]
+      "collections": []
     },
     "assets/context-budget-check": {
       "title": "context-budget-check",
@@ -3739,6 +3667,24 @@
         "assets/mcp-overview.excalidraw": "c9b8d5e9ee3af00ac6a4f966e38bb292334be5bdc63d8f6ec776fe3518f25d29",
         "assets/mcp-overview.png": "aa4ac49c6dcdd7192b20b917ce3978139bd820467267e6b60c2eaaa0a90aa58b",
         "assets/mcp-overview.svg": "18fe5fadc5e23e4bff8841ee039af642f6337c2b885b1b9e1d27e76ce0f47370"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/multi-agent-delegation": {
+      "title": "multi-agent-delegation",
+      "files": {
+        "assets/multi-agent-delegation.png": "0c910529a7a9da31c491251e7908e47b7d309f2c8c3638cd0e91f30e74512d51"
+      },
+      "collections": [
+        "notes"
+      ]
+    },
+    "assets/multi-agent-organization": {
+      "title": "multi-agent-organization",
+      "files": {
+        "assets/multi-agent-organization.png": "92e4405c3011504e0abe773e2713a65d98e29e1a274164637ce50b4917193775"
       },
       "collections": [
         "notes"
@@ -30743,6 +30689,1396 @@
       ],
       "source": "observed",
       "docId": "agent-memory"
+    },
+    {
+      "id": "1b97713e-0278-43b0-ae34-9d0aa37ebc3d",
+      "kind": "updated",
+      "entity": "doc:agent-memory",
+      "title": "Agent 记忆",
+      "time": "2026-10-17T14:39:03.710Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-memory"
+    },
+    {
+      "id": "3b8a74bc-e745-469f-8473-a89fef4be32c",
+      "kind": "image-created",
+      "entity": "image:assets/agent-memory-retention",
+      "title": "agent-memory-retention",
+      "time": "2026-10-17T14:39:03.710Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/agent-memory-retention.png"
+      ]
+    },
+    {
+      "id": "0ea99ca2-4d31-4cc2-a827-062f5245c8fe",
+      "kind": "state-changed",
+      "entity": "doc:agent-memory",
+      "title": "Agent 记忆",
+      "time": "2026-10-17T14:40:22.220Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-memory",
+      "from": "reading",
+      "to": "organized"
+    },
+    {
+      "id": "4ff8f0d0-282b-4e9f-9b2c-1e079b3f4e84",
+      "kind": "state-changed",
+      "entity": "doc:agent-guardrails",
+      "title": "Agent 行为约束",
+      "time": "2026-10-17T14:40:48.225Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-guardrails",
+      "from": "pending",
+      "to": "reading"
+    },
+    {
+      "id": "b468cb32-0596-46f5-bd93-e98446be37f3",
+      "kind": "state-changed",
+      "entity": "doc:agent-human-in-the-loop",
+      "title": "Agent 人工介入",
+      "time": "2026-10-17T14:41:01.325Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-human-in-the-loop",
+      "from": "pending",
+      "to": "reading"
+    },
+    {
+      "id": "e6bd0b79-3684-460e-ae29-32bde17b725d",
+      "kind": "updated",
+      "entity": "doc:agent-guardrails",
+      "title": "Agent 行为约束",
+      "time": "2026-10-17T14:43:07.768Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-guardrails"
+    },
+    {
+      "id": "6e3658e8-1e7f-4320-b27c-564321751e5a",
+      "kind": "state-changed",
+      "entity": "doc:agent-checkpoint-recovery",
+      "title": "Agent 的中断恢复机制",
+      "time": "2026-10-17T14:44:26.251Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-checkpoint-recovery",
+      "from": "organized",
+      "to": "reading"
+    },
+    {
+      "id": "c97e3e18-8c44-4335-92ea-db873cbb2a55",
+      "kind": "updated",
+      "entity": "doc:agent-checkpoint-recovery",
+      "title": "Agent 的中断恢复机制",
+      "time": "2026-10-17T14:44:26.251Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-checkpoint-recovery"
+    },
+    {
+      "id": "4eaf13f6-6daa-4bd1-be15-8fb56ce165ef",
+      "kind": "updated",
+      "entity": "doc:agent-human-in-the-loop",
+      "title": "Agent 人工介入",
+      "time": "2026-10-17T14:44:26.251Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-human-in-the-loop"
+    },
+    {
+      "id": "eaef2a30-2770-424a-a8de-83aaedc91687",
+      "kind": "updated",
+      "entity": "doc:guardrail-execution",
+      "title": "行为约束的执行机制",
+      "time": "2026-10-17T14:44:26.251Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "guardrail-execution"
+    },
+    {
+      "id": "6b975666-2c6c-483d-a729-f51aaa366008",
+      "kind": "state-changed",
+      "entity": "doc:tool-approvals",
+      "title": "工具调用的审批",
+      "time": "2026-10-17T14:44:26.251Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-approvals",
+      "from": "organized",
+      "to": "reading"
+    },
+    {
+      "id": "dd152f66-c2ba-487f-a63e-47b3e32de129",
+      "kind": "updated",
+      "entity": "doc:tool-approvals",
+      "title": "工具调用的审批",
+      "time": "2026-10-17T14:44:26.251Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-approvals"
+    },
+    {
+      "id": "ad4f8728-b749-4bcf-bad4-32be59188311",
+      "kind": "updated",
+      "entity": "doc:agent-human-in-the-loop",
+      "title": "Agent 人工介入",
+      "time": "2026-10-17T14:45:07.730Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-human-in-the-loop"
+    },
+    {
+      "id": "b30c8beb-ff8a-4e0e-b1e2-27d023a0a169",
+      "kind": "state-changed",
+      "entity": "doc:tool-approvals",
+      "title": "工具调用的审批",
+      "time": "2026-10-17T14:46:29.912Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-approvals",
+      "from": "reading",
+      "to": "organized"
+    },
+    {
+      "id": "e104ab13-cc6a-4d3e-92bb-4de110405286",
+      "kind": "state-changed",
+      "entity": "doc:agent-checkpoint-recovery",
+      "title": "Agent 的中断恢复机制",
+      "time": "2026-10-17T14:46:36.264Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-checkpoint-recovery",
+      "from": "reading",
+      "to": "organized"
+    },
+    {
+      "id": "5a04929c-edd9-4ca7-bb3f-80a8efd5a0fd",
+      "kind": "updated",
+      "entity": "doc:agent-guardrails",
+      "title": "Agent 行为约束",
+      "time": "2026-10-17T14:46:44.123Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-guardrails"
+    },
+    {
+      "id": "0efe50fb-aa53-4cab-adc3-ba9080764e7f",
+      "kind": "image-created",
+      "entity": "image:assets/agent-guardrails",
+      "title": "agent-guardrails",
+      "time": "2026-10-17T14:50:23.906Z",
+      "collections": [],
+      "source": "observed",
+      "files": [
+        "assets/agent-guardrails.png"
+      ]
+    },
+    {
+      "id": "f08346a7-0af5-4d1c-b5f8-13d07cdd0923",
+      "kind": "updated",
+      "entity": "doc:agent-guardrails",
+      "title": "Agent 行为约束",
+      "time": "2026-10-17T14:51:04.106Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-guardrails"
+    },
+    {
+      "id": "b7133f70-0b8b-462a-94f5-e76512005657",
+      "kind": "updated",
+      "entity": "doc:agent-human-in-the-loop",
+      "title": "Agent 人工介入",
+      "time": "2026-10-17T14:51:20.113Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-human-in-the-loop"
+    },
+    {
+      "id": "396694db-5e1c-412c-82cc-aea14beb074d",
+      "kind": "image-created",
+      "entity": "image:assets/agent-human-in-the-loop",
+      "title": "agent-human-in-the-loop",
+      "time": "2026-10-17T14:51:20.113Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/agent-human-in-the-loop.png"
+      ]
+    },
+    {
+      "id": "d156e8fa-8fc4-4687-8414-64ddde903ff9",
+      "kind": "updated",
+      "entity": "doc:agent-human-in-the-loop",
+      "title": "Agent 人工介入",
+      "time": "2026-10-17T14:51:40.082Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-human-in-the-loop"
+    },
+    {
+      "id": "8cf10744-785f-41d9-a052-1c0fdf57dbc4",
+      "kind": "state-changed",
+      "entity": "doc:agent-human-in-the-loop",
+      "title": "Agent 人工介入",
+      "time": "2026-10-17T14:52:59.991Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-human-in-the-loop",
+      "from": "reading",
+      "to": "organized"
+    },
+    {
+      "id": "175e0a44-d639-425a-b00f-85e08da6734b",
+      "kind": "updated",
+      "entity": "doc:agent-guardrails",
+      "title": "Agent 行为约束",
+      "time": "2026-10-17T14:57:50.023Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-guardrails"
+    },
+    {
+      "id": "6269dac2-901e-460e-9fc6-666ab04c3362",
+      "kind": "image-updated",
+      "entity": "image:assets/agent-guardrails",
+      "title": "agent-guardrails",
+      "time": "2026-10-17T14:57:50.023Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/agent-guardrails.png"
+      ]
+    },
+    {
+      "id": "9e81038a-38ab-457c-8220-a3048e5713ca",
+      "kind": "updated",
+      "entity": "doc:a2a",
+      "title": "A2A（Agent 间通信协议）",
+      "time": "2026-10-17T15:07:11.836Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "a2a"
+    },
+    {
+      "id": "bff0ea2f-23a4-4355-9cdb-ab8309799826",
+      "kind": "updated",
+      "entity": "doc:agent-guardrails",
+      "title": "Agent 行为约束",
+      "time": "2026-10-17T15:07:11.836Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-guardrails"
+    },
+    {
+      "id": "5a14567f-dc41-485c-950e-eeb953c8f377",
+      "kind": "updated",
+      "entity": "doc:agent",
+      "title": "Agent",
+      "time": "2026-10-17T15:07:11.836Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent"
+    },
+    {
+      "id": "738fda84-8412-4966-89cf-b3e5f89c26b3",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T15:07:11.836Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "44ae0d4a-4314-468f-954f-68dc2da21798",
+      "kind": "updated",
+      "entity": "doc:a2a-protocol-specification",
+      "title": "A2A：发现、任务生命周期与协议边界",
+      "time": "2026-10-17T15:07:11.836Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "a2a-protocol-specification"
+    },
+    {
+      "id": "edf72225-3b33-4ba0-9f94-7ab2616741f8",
+      "kind": "updated",
+      "entity": "doc:anthropic-multi-agent-research",
+      "title": "Anthropic：多 Agent 研究系统的收益与代价",
+      "time": "2026-10-17T15:07:11.836Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-multi-agent-research"
+    },
+    {
+      "id": "cf5104fa-7468-420b-9c82-0cbcc45231e3",
+      "kind": "updated",
+      "entity": "doc:autogen-group-chat",
+      "title": "AutoGen：群聊如何选择下一位 Agent",
+      "time": "2026-10-17T15:07:11.836Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "autogen-group-chat"
+    },
+    {
+      "id": "9df01f66-3548-4a1f-ae4a-10809e117b0f",
+      "kind": "updated",
+      "entity": "doc:claude-code-agent-collaboration",
+      "title": "Claude Code：子 Agent 与 Agent Teams",
+      "time": "2026-10-17T15:07:11.836Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-code-agent-collaboration"
+    },
+    {
+      "id": "d564d3eb-e38f-4808-832a-620c0c9556ea",
+      "kind": "updated",
+      "entity": "doc:langchain-guardrails-summary",
+      "title": "LangChain：行为检查如何接入 Agent",
+      "time": "2026-10-17T15:07:11.836Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langchain-guardrails-summary"
+    },
+    {
+      "id": "c6e28ed8-5bca-4c23-bc29-31aeb63d6950",
+      "kind": "updated",
+      "entity": "doc:langchain-multi-agent",
+      "title": "LangChain：子 Agent、交接与路由的分工",
+      "time": "2026-10-17T15:07:11.836Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langchain-multi-agent"
+    },
+    {
+      "id": "15ac6d85-e3aa-4349-b543-2de696dc105b",
+      "kind": "updated",
+      "entity": "doc:mast-multi-agent-failures",
+      "title": "MAST：多 Agent 系统为什么失败",
+      "time": "2026-10-17T15:07:11.836Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "mast-multi-agent-failures"
+    },
+    {
+      "id": "16531c07-03e3-4685-8464-2048573fe390",
+      "kind": "state-changed",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T15:07:19.968Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent",
+      "from": "pending",
+      "to": "reading"
+    },
+    {
+      "id": "9c0cc70d-0b41-45e0-8513-15959701f2b4",
+      "kind": "updated",
+      "entity": "doc:agent-guardrails",
+      "title": "Agent 行为约束",
+      "time": "2026-10-17T15:09:17.614Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-guardrails"
+    },
+    {
+      "id": "6fe78946-be90-4418-b08e-6982a6bc7fe4",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T15:09:17.614Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "3c0994bf-4340-4f3d-98a0-c822304f52ca",
+      "kind": "updated",
+      "entity": "doc:langchain-guardrails-summary",
+      "title": "LangChain：行为检查如何接入 Agent",
+      "time": "2026-10-17T15:09:17.614Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langchain-guardrails-summary"
+    },
+    {
+      "id": "fbb0d5e5-ec07-4999-8edd-b6cc8f2ddc91",
+      "kind": "image-updated",
+      "entity": "image:assets/agent-guardrails",
+      "title": "agent-guardrails",
+      "time": "2026-10-17T15:09:17.614Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/agent-guardrails.png"
+      ]
+    },
+    {
+      "id": "cca2ef05-fdbe-40ed-84d0-c634c345b41c",
+      "kind": "created",
+      "entity": "doc:prompt-injection",
+      "title": "提示注入",
+      "time": "2026-10-17T15:11:24.404Z",
+      "collections": [
+        "glossary"
+      ],
+      "source": "observed",
+      "docId": "prompt-injection"
+    },
+    {
+      "id": "42b071a0-c7df-4424-8563-5836e5a89d47",
+      "kind": "updated",
+      "entity": "doc:agent-guardrails",
+      "title": "Agent 行为约束",
+      "time": "2026-10-17T15:11:24.404Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-guardrails"
+    },
+    {
+      "id": "cdfba6bf-5f1f-4264-a648-2bd842e717d8",
+      "kind": "updated",
+      "entity": "doc:rag-security",
+      "title": "RAG 权限与文档信任边界",
+      "time": "2026-10-17T15:11:24.404Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "rag-security"
+    },
+    {
+      "id": "6fa8fd76-f7a7-4e33-9dd9-d2be4b6988b6",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T15:11:40.405Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "77436174-924c-4c09-a37b-b0788d2f472b",
+      "kind": "updated",
+      "entity": "doc:prompt-injection",
+      "title": "提示注入",
+      "time": "2026-10-17T15:11:48.480Z",
+      "collections": [
+        "glossary"
+      ],
+      "source": "observed",
+      "docId": "prompt-injection"
+    },
+    {
+      "id": "6a97fc76-dd75-4333-82d9-d388f6d6a7c9",
+      "kind": "updated",
+      "entity": "doc:rag-security",
+      "title": "RAG 权限与文档信任边界",
+      "time": "2026-10-17T15:11:48.480Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "rag-security"
+    },
+    {
+      "id": "6c75599d-77d1-4067-9ca8-07cf7c7eb269",
+      "kind": "updated",
+      "entity": "doc:a2a",
+      "title": "A2A（Agent 间通信协议）",
+      "time": "2026-10-17T15:13:40.416Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "a2a"
+    },
+    {
+      "id": "ddb4a03c-bb3a-4d25-90f5-bee7df108bc5",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T15:13:40.416Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "6ce2bdca-f09c-47ab-928f-5727c50ba7ee",
+      "kind": "updated",
+      "entity": "doc:agent-guardrails",
+      "title": "Agent 行为约束",
+      "time": "2026-10-17T15:16:08.439Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-guardrails"
+    },
+    {
+      "id": "5116115d-ce3b-4cba-b8e8-ee118e50020f",
+      "kind": "image-updated",
+      "entity": "image:assets/agent-guardrails",
+      "title": "agent-guardrails",
+      "time": "2026-10-17T15:16:08.439Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/agent-guardrails.png"
+      ]
+    },
+    {
+      "id": "ec588008-9031-4166-ba8e-9e9128f9504b",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T15:17:00.419Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "fcba83ac-4618-42be-a53b-22eb60800e48",
+      "kind": "updated",
+      "entity": "doc:a2a",
+      "title": "A2A（Agent 间通信协议）",
+      "time": "2026-10-17T15:18:24.674Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "a2a"
+    },
+    {
+      "id": "d05ca6cc-7015-4f42-8946-c046e8d69cf2",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T15:18:24.674Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "28b25d3a-70b3-4b98-b949-d6cceef8525a",
+      "kind": "state-changed",
+      "entity": "doc:agent-guardrails",
+      "title": "Agent 行为约束",
+      "time": "2026-10-17T15:21:05.342Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-guardrails",
+      "from": "reading",
+      "to": "organized"
+    },
+    {
+      "id": "fbcd6774-bba0-4b12-bbe9-887835d08fd1",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation-design",
+      "title": "Agent 评测设计",
+      "time": "2026-10-17T15:25:58.733Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation-design"
+    },
+    {
+      "id": "9ef8e91b-4543-4dc9-90fd-aeaa31566ace",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation-online",
+      "title": "Agent 线上评测与发布",
+      "time": "2026-10-17T15:25:58.733Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation-online"
+    },
+    {
+      "id": "8f7a0084-7c39-4f4d-a8ee-8ef87452a32c",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation-practice",
+      "title": "Agent 评测示例",
+      "time": "2026-10-17T15:25:58.733Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation-practice"
+    },
+    {
+      "id": "c0610ae5-20f0-442c-99eb-3b468af1d9d0",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation-trajectory",
+      "title": "Agent 结果与轨迹评测",
+      "time": "2026-10-17T15:25:58.733Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation-trajectory"
+    },
+    {
+      "id": "865adef6-6b83-4830-a1eb-a09b63abb842",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation",
+      "title": "Agent 评测",
+      "time": "2026-10-17T15:25:58.733Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation"
+    },
+    {
+      "id": "03c9790c-4fa3-4812-8502-cc66189d56a9",
+      "kind": "updated",
+      "entity": "doc:agent-trace",
+      "title": "Agent Trace（执行追踪）",
+      "time": "2026-10-17T15:25:58.733Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-trace"
+    },
+    {
+      "id": "126ca5f2-5b50-47c2-a278-65e7eda66310",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T15:25:58.733Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "a0d46351-1e59-40ba-9315-617a2c3271e6",
+      "kind": "updated",
+      "entity": "doc:claude-code-agent-collaboration",
+      "title": "Claude Code：子 Agent 与 Agent Teams",
+      "time": "2026-10-17T15:25:58.733Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-code-agent-collaboration"
+    },
+    {
+      "id": "99380b60-bdba-47b5-9965-540d8572466b",
+      "kind": "created",
+      "entity": "doc:codex-subagents",
+      "title": "Codex：何时委派子 Agent",
+      "time": "2026-10-17T15:25:58.733Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "codex-subagents"
+    },
+    {
+      "id": "28ff77b6-998f-4a57-8260-07313446bf11",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation-practice",
+      "title": "Agent 评测示例",
+      "time": "2026-10-17T15:28:36.584Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation-practice"
+    },
+    {
+      "id": "43c1d812-ba77-423f-97ab-bb18bc261766",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation",
+      "title": "Agent 评测",
+      "time": "2026-10-17T15:28:36.584Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation"
+    },
+    {
+      "id": "42268be3-5a81-45ec-b7f4-9e14fe02ea98",
+      "kind": "state-changed",
+      "entity": "doc:agent-trace",
+      "title": "Agent Trace（执行追踪）",
+      "time": "2026-10-17T15:28:50.351Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-trace",
+      "from": "pending",
+      "to": "reading"
+    },
+    {
+      "id": "3923edbd-7039-4c26-bfb2-53012cda64c6",
+      "kind": "state-changed",
+      "entity": "doc:agent-evaluation",
+      "title": "Agent 评测",
+      "time": "2026-10-17T15:28:53.453Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation",
+      "from": "pending",
+      "to": "reading"
+    },
+    {
+      "id": "c0d071e1-fe52-41cf-93a2-d5495b9b3ce8",
+      "kind": "state-changed",
+      "entity": "doc:agent-guardrails",
+      "title": "Agent 行为约束",
+      "time": "2026-10-17T15:29:16.597Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-guardrails",
+      "from": "organized",
+      "to": "reading"
+    },
+    {
+      "id": "9ff150e7-c712-4d30-b22e-b9b05c1fd1a3",
+      "kind": "updated",
+      "entity": "doc:agent-guardrails",
+      "title": "Agent 行为约束",
+      "time": "2026-10-17T15:29:16.597Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-guardrails"
+    },
+    {
+      "id": "9506b655-3e89-415e-8097-b47d1e36d0d8",
+      "kind": "updated",
+      "entity": "doc:agent-harness",
+      "title": "Agent Harness",
+      "time": "2026-10-17T15:29:16.597Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-harness"
+    },
+    {
+      "id": "14529f13-c70f-4ca6-9314-2193245d848a",
+      "kind": "updated",
+      "entity": "doc:agent-trace",
+      "title": "Agent Trace（执行追踪）",
+      "time": "2026-10-17T15:29:16.597Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-trace"
+    },
+    {
+      "id": "86f82ead-1586-4130-b37e-beef1e2c189a",
+      "kind": "updated",
+      "entity": "doc:agent",
+      "title": "Agent",
+      "time": "2026-10-17T15:29:16.597Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent"
+    },
+    {
+      "id": "6e9cf720-c115-41ba-9aac-f5ace23fc9dc",
+      "kind": "updated",
+      "entity": "doc:data-annotation",
+      "title": "数据标注",
+      "time": "2026-10-17T15:29:16.597Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "data-annotation"
+    },
+    {
+      "id": "f31a3d67-ac48-44f1-b368-be43f9ec455f",
+      "kind": "state-changed",
+      "entity": "doc:agent-guardrails",
+      "title": "Agent 行为约束",
+      "time": "2026-10-17T15:29:47.505Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-guardrails",
+      "from": "reading",
+      "to": "organized"
+    },
+    {
+      "id": "7aa703ff-6410-4b2d-89b1-799dcb16ad0e",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation-practice",
+      "title": "Agent 评测示例",
+      "time": "2026-10-17T15:30:12.591Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation-practice"
+    },
+    {
+      "id": "aa01157e-897e-473d-bb7d-4685e7e4741e",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation",
+      "title": "Agent 评测",
+      "time": "2026-10-17T15:30:12.591Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation"
+    },
+    {
+      "id": "5da87b20-357e-4246-a43e-d95d0c52bc06",
+      "kind": "updated",
+      "entity": "doc:agent-evaluation",
+      "title": "Agent 评测",
+      "time": "2026-10-17T15:33:25.922Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-evaluation"
+    },
+    {
+      "id": "f7e0c6e2-a7bd-423b-8e9f-676cb84905b4",
+      "kind": "updated",
+      "entity": "doc:agent",
+      "title": "Agent",
+      "time": "2026-10-17T15:33:25.922Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent"
+    },
+    {
+      "id": "f5ae9f7f-8771-4cef-aadb-1decbfbf1637",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T15:33:25.922Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "273aafd3-ebdc-417c-bcf3-210bafcba845",
+      "kind": "image-created",
+      "entity": "image:assets/multi-agent-delegation",
+      "title": "multi-agent-delegation",
+      "time": "2026-10-17T15:33:25.922Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/multi-agent-delegation.png"
+      ]
+    },
+    {
+      "id": "7c551fa1-51f3-4744-921c-64d48c06bc98",
+      "kind": "image-created",
+      "entity": "image:assets/multi-agent-organization",
+      "title": "multi-agent-organization",
+      "time": "2026-10-17T15:33:25.922Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/multi-agent-organization.png"
+      ]
+    },
+    {
+      "id": "7129cad7-ee02-4813-8443-b4353c3e0078",
+      "kind": "state-changed",
+      "entity": "doc:agent",
+      "title": "Agent",
+      "time": "2026-10-17T15:38:51.784Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent",
+      "from": "pending",
+      "to": "reading"
+    },
+    {
+      "id": "29f95534-d391-448c-94ad-56879b65ef31",
+      "kind": "image-updated",
+      "entity": "image:assets/multi-agent-delegation",
+      "title": "multi-agent-delegation",
+      "time": "2026-10-17T15:47:45.249Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/multi-agent-delegation.png"
+      ]
+    },
+    {
+      "id": "d24f94d2-23d6-427f-aec2-31d5a06d85b1",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T15:53:33.258Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "337acaf6-3876-4c20-bf09-650d56aecf07",
+      "kind": "updated",
+      "entity": "doc:claude-code-agent-collaboration",
+      "title": "Claude Code：子 Agent 与 Agent Teams",
+      "time": "2026-10-17T15:53:33.258Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "claude-code-agent-collaboration"
+    },
+    {
+      "id": "b7b29e21-cf8a-4651-b4cc-af629b054fc2",
+      "kind": "updated",
+      "entity": "doc:langchain-multi-agent",
+      "title": "LangChain：子 Agent、交接与路由的分工",
+      "time": "2026-10-17T15:53:33.258Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "langchain-multi-agent"
+    },
+    {
+      "id": "4806ab5d-f1c6-4ebc-b245-d41ec3a02ef6",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T15:56:41.251Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "3d1d5fd1-871e-4312-81ec-99afadd92e38",
+      "kind": "updated",
+      "entity": "doc:agent",
+      "title": "Agent",
+      "time": "2026-10-17T16:02:53.274Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent"
+    },
+    {
+      "id": "e925cb7a-47b5-4ea2-9452-9dc9ed3390c7",
+      "kind": "image-created",
+      "entity": "image:assets/agent-overview",
+      "title": "agent-overview",
+      "time": "2026-10-17T16:02:53.274Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/agent-overview.png"
+      ]
+    },
+    {
+      "id": "c8828345-44dd-4917-9300-09f6a8dc9cd0",
+      "kind": "state-changed",
+      "entity": "doc:a2a",
+      "title": "A2A（Agent 间通信协议）",
+      "time": "2026-10-17T16:03:14.760Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "a2a",
+      "from": "pending",
+      "to": "reading"
+    },
+    {
+      "id": "0d82cbab-abb4-4f09-a3b5-9014419dc724",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T16:04:59.185Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "add31d81-b512-47fd-9b83-0738ad2b8542",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T16:05:39.206Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "4b90a087-44ef-4d1c-8d9b-51c3fe123e5a",
+      "kind": "updated",
+      "entity": "doc:a2a",
+      "title": "A2A（Agent 间通信协议）",
+      "time": "2026-10-17T16:07:43.571Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "a2a"
+    },
+    {
+      "id": "ea40b827-d18a-4d08-aa2b-812e1b915d5c",
+      "kind": "updated",
+      "entity": "doc:a2a",
+      "title": "A2A（Agent 间通信协议）",
+      "time": "2026-10-17T16:08:33.319Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "a2a"
+    },
+    {
+      "id": "76e244bb-43ae-4483-8276-aa1b0f75dbd0",
+      "kind": "updated",
+      "entity": "doc:a2a-protocol-specification",
+      "title": "A2A：发现、任务生命周期与协议边界",
+      "time": "2026-10-17T16:08:33.319Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "a2a-protocol-specification"
+    },
+    {
+      "id": "4092bef4-8a1b-431c-92de-008368c051db",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T16:08:45.694Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "25189dbf-2aa7-4a8b-aa69-54c49cdcdce9",
+      "kind": "updated",
+      "entity": "doc:a2a",
+      "title": "A2A（Agent 间通信协议）",
+      "time": "2026-10-17T16:09:09.297Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "a2a"
+    },
+    {
+      "id": "e9db4527-ed8b-4417-b6bd-8fa317bc2427",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T16:10:37.286Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "f4288c20-e86d-48a6-8478-766b688925f1",
+      "kind": "updated",
+      "entity": "doc:agent",
+      "title": "Agent",
+      "time": "2026-10-17T16:11:37.268Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent"
+    },
+    {
+      "id": "5a3c3fc1-c98b-40d2-90b7-81486084b15a",
+      "kind": "updated",
+      "entity": "doc:agent",
+      "title": "Agent",
+      "time": "2026-10-17T16:12:29.288Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent"
+    },
+    {
+      "id": "2fdd4efe-0297-424b-90a4-8a5030aba1df",
+      "kind": "updated",
+      "entity": "doc:a2a",
+      "title": "A2A（Agent 间通信协议）",
+      "time": "2026-10-17T16:12:49.268Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "a2a"
+    },
+    {
+      "id": "83aee58e-c23a-44db-b07a-f8524f4167cf",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T16:13:17.260Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "41214864-3f88-4eaa-a98d-b5ee49d9e266",
+      "kind": "image-created",
+      "entity": "image:assets/a2a-exchange",
+      "title": "a2a-exchange",
+      "time": "2026-10-17T16:13:21.099Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "files": [
+        "assets/a2a-exchange.png"
+      ]
+    },
+    {
+      "id": "8b017111-921d-4d6d-a8a4-f6e720c79e13",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T16:15:29.261Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "062f0d30-9cb9-4383-9962-6681dfd9f22a",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T16:15:49.246Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "8196e013-9339-4b19-8ea9-af27953d5c18",
+      "kind": "state-changed",
+      "entity": "doc:agent",
+      "title": "Agent",
+      "time": "2026-10-17T16:15:58.231Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent",
+      "from": "reading",
+      "to": "organized"
+    },
+    {
+      "id": "da08d020-4961-41b3-8b6f-e365ec121126",
+      "kind": "updated",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T16:17:53.277Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent"
+    },
+    {
+      "id": "c976133d-8e91-4714-a9fb-37c98b6b2f53",
+      "kind": "state-changed",
+      "entity": "doc:multi-agent",
+      "title": "多 Agent 协作",
+      "time": "2026-10-17T16:18:56.244Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "multi-agent",
+      "from": "reading",
+      "to": "organized"
+    },
+    {
+      "id": "3c76e7a6-e803-49a4-b0b5-fc2a8e9d600c",
+      "kind": "updated",
+      "entity": "doc:a2a",
+      "title": "A2A（Agent 间通信协议）",
+      "time": "2026-10-17T16:22:53.248Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "a2a"
+    },
+    {
+      "id": "8840d73d-0781-4ba7-90fb-bebf6067a711",
+      "kind": "updated",
+      "entity": "doc:a2a-protocol-specification",
+      "title": "A2A：发现、任务生命周期与协议边界",
+      "time": "2026-10-17T16:22:53.248Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "a2a-protocol-specification"
+    },
+    {
+      "id": "42ec0a53-a163-4f17-903d-2c2626693e76",
+      "kind": "state-changed",
+      "entity": "doc:a2a",
+      "title": "A2A（Agent 间通信协议）",
+      "time": "2026-10-17T16:23:55.155Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "a2a",
+      "from": "reading",
+      "to": "organized"
     }
   ]
 }

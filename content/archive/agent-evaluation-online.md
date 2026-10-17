@@ -5,9 +5,9 @@ parent: agent-evaluation
 category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T11:00:15+08:00"
-updated_at: "2026-10-16T20:52:39+08:00"
+updated_at: "2026-10-17T23:25:57+08:00"
 reading_suggestions:
-  - agent-trace-evaluation
+  - agent-trace
   - langfuse-dataset-experiments
   - langsmith-evaluation
 ---
@@ -43,7 +43,7 @@ reading_suggestions:
 
 ## 线上问题怎样变成下一次回归？
 
-保留版本、输入、必要状态和来源 Trace，审核错误类型，补上可信预期与初始化数据，再加入回归集。[[langfuse-dataset-experiments|Langfuse 数据集与实验]]提供来源关联与运行组织，具体转换沿用[[agent-trace-evaluation|错例回流]]。
+保留版本、输入、必要状态和来源 Trace，审核错误类型，补上可信预期与初始化数据，再加入回归集。[[langfuse-dataset-experiments|Langfuse 数据集与实验]]提供来源关联与运行组织，具体转换沿用[[agent-trace#在 Langfuse 排障并回归|错例回流]]。
 
 同时保留不偏向错例的代表性样本，避免修复集越来越难却被解释为产品整体变差。更新数据集或评分器时，在相同新口径下重评对照版本。发现线上分布变化后应调整切片与任务覆盖，旧通过率不能永久代表当前业务。
 

@@ -5,9 +5,9 @@ parent: agent-evaluation
 category: "Agent"
 tags: ["Agent", "评测"]
 created_at: "2026-10-13T10:57:59+08:00"
-updated_at: "2026-10-16T20:52:39+08:00"
+updated_at: "2026-10-17T23:25:57+08:00"
 reading_suggestions:
-  - agent-trace-evaluation
+  - agent-trace
   - tau-bench-evaluation
   - langsmith-evaluation
 ---
@@ -56,7 +56,7 @@ reading_suggestions:
 
 ## 从哪里收集，怎样防止只会做熟题？
 
-从真实任务、人工检查与已确认错例起步；合成样本补充稀缺边界，经审核后才能进入可信集合。[[agent-trace-evaluation|Trace 错例回流]]保留来源，但还要恢复环境和补齐独立验收。
+从真实任务、人工检查与已确认错例起步；合成样本补充稀缺边界，经审核后才能进入可信集合。[[agent-trace#在 Langfuse 排障并回归|Trace 错例回流]]保留来源，但还要恢复环境和补齐独立验收。
 
 切片（Slice）是按共同条件划分的任务子集，例如正常退款、缺确认或工具超时。数据同时包含常见任务、困难任务、缺信息、越界请求、工具故障和合理拒绝。故障与攻击集用于暴露问题；若被刻意超采样，其平均分不能直接代表日常流量。
 

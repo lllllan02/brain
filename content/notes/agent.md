@@ -1,79 +1,75 @@
 ---
-learning_status: pending
+learning_status: organized
 title: "Agent"
 category: "Agent"
 tags: ["Agent", "工程选型"]
 created_at: "2026-10-09"
-updated_at: "2026-10-17T22:23:30+08:00"
+updated_at: "2026-10-18T00:11:35+08:00"
 reading_suggestions:
-  - agent-vs-workflow
   - agent-loop
-  - agent-harness
-  - agent-intent
   - tool-calling
+  - agent-harness
+  - agent-context-input
   - agent-context
+  - agent-loading
   - agent-planning
+  - agent-intent
   - agent-memory
   - agent-feedback-mechanisms
   - agent-checkpoint-recovery
   - agent-guardrails
-  - agent-human-in-the-loop
   - agent-sandbox
+  - agent-human-in-the-loop
   - multi-agent
   - agent-trace
   - agent-evaluation
+  - agent-vs-workflow
+  - enterprise-agent-build
+learning_status_changed_at: "2026-10-18T00:15:58.155+08:00"
 ---
 
-**LLM Agent（智能体）是以大模型为决策核心，在给定目标与约束下自主选择动作，并根据执行结果持续调整行动的系统。**
+**LLM Agent（智能体）是以大模型为决策核心，在给定目标与约束下选择动作，并根据执行结果调整行动的系统。**
 
-例如，排查程序故障时，需要根据日志决定读哪段代码，再根据测试结果决定是否修改方案。执行路径难以提前写全，Agent 就让模型依据新信息选择下一步。这里采用 [[anthropic-effective-agents-summary|Anthropic 对 Agent 与工作流的区分]]：关键在于执行路径由谁决定。
+例如修改程序时，模型可以先读代码，再根据测试结果决定下一步，而不必预先写全每条执行路径。
 
-## 从循环到完整运行
+## 最小循环
 
-Agent 通过「模型决策 → 程序执行工具 → 结果回传 → 模型再次决策」推进任务。模型提出动作，程序负责执行并组织下一轮输入；这个基本过程就是[[agent-loop|最小 Agent Loop]]。
+模型本身只生成输出。通过[[tool-calling|工具调用（Tool Calling）]]，它可以提出工具名称与参数，由程序读取文件、查询服务或执行命令，再把实际结果交回模型。
 
-![[assets/agent-cycle.png|Agent：模型决策、工具执行与结果反馈]]
+把这个过程重复起来，就得到[[agent-loop|Agent Loop（运行循环）]]：程序提供用户要求和工具说明，模型选择动作，程序执行并回传结果，模型据此继续行动或给出最终回答。程序还需设置停止条件，避免循环无限运行。
 
-围绕模型组织输入、工具执行、状态与循环控制的运行系统称为 [[agent-harness|Agent Harness]]。它可以从一个简单循环起步，按任务需要补充能力，不要求一开始具备全部模块。
+**[[agent-harness|Agent Harness（运行系统）]]是组织这些模型输入、工具执行与循环控制的程序和配置。**
 
-步骤固定、分支明确时，[[agent-vs-workflow|工作流（Workflow）]]通常更易控制；需要根据中间结果动态选择行动时，再考虑 Agent。两者可以组合。多轮决策会增加耗时、费用与错误累积的机会，因此还要比较它相对简单流程带来的实际收益。
+一个简单循环已经具备最基本的 Harness；后续能力围绕任务中出现的困难逐步补充。
 
-[[enterprise-agent-build|企业何时需要自建 Agent]]取决于通用 Agent 加 MCP 是否满足业务要求，以及专用实现是否带来足够收益；补业务服务、建设企业应用与定制运行系统，需要承担的范围不同。
+![[assets/agent-overview.png|900]]
 
-## 模型怎样获得信息并采取行动？
+## 任务变长后，怎样保持目标与进度？
 
-执行前，[[agent-intent|意图识别]]结合用户表达与已有任务判断目标、对象和约束，区分查询、操作与任务修正；信息不足时再决定补查或澄清，避免选对工具却做错任务。
+循环继续运行，模型就需要知道此前做过什么、哪些结果仍有效。它在本轮实际收到的指令、记录与资料，合起来称为[[agent-context-input|上下文（Context）]]。
 
-模型每轮依据[[agent-context-input|上下文（Context）]]判断，包括指令、任务状态、工具定义与对话记录。窗口有限，[[agent-context|上下文管理]]负责选择、裁剪或压缩输入，并保留当前目标、约束与进度；[[agent-memory|记忆（Memory）]]负责保存和复用过去的信息，外部知识则可通过 [[rag|检索增强生成（RAG）]]补充。
+历史和工具结果会不断增长，有限窗口装不下全部内容，因此需要[[agent-context|上下文管理]]保留关键要求、进度与证据，并通过[[agent-loading|按需加载]]取回当前需要的资料、工具定义或 Skill 操作指令。
 
-资料、工具定义和 Skill 指令可以[[agent-loading|按需加载]]：先提供必要内容与发现入口，再取回当前任务需要的细节。资料提供证据，工具定义描述可调用能力，Skill 提供操作方法，三者用途不同。
+信息足够，也不代表模型会始终顾及全部目标。[[agent-planning|任务规划（Planning）]]把多阶段工作拆成步骤，跟踪还剩什么；要求含糊或用户中途改口时，还要通过[[agent-intent|意图识别]]重新确认目标、对象与条件，再调整安排。
 
-执行动作时，[[tool-calling|工具调用（Tool Calling）]]把模型生成的名称与参数交给程序，连接文件、服务或执行环境。[[agent-planning|规划与执行模式]]决定怎样组织任务：ReAct 让推理与行动交替，Plan-and-Execute 先制定步骤再执行；Replanning 则根据反馈调整计划，可以与前两者结合。
+当类似任务再次出现，已经确认的事实、偏好和经验可以通过[[agent-memory|记忆（Memory）]]保存和复用，减少重复交代与探索。
 
-## 失败、中断与执行边界怎样处理？
+## 出错或中断后，怎样继续？
 
-暂时故障可以在确认安全后有限[[agent-retry|重试]]；参数、策略或结果有误时，可通过[[agent-reflection|反思]]结合目标与证据判断问题，再由[[agent-self-correction|自我纠正]]落实修改并验证。这些调整都应限制次数、耗时与费用，反复尝试不保证成功。 [[agent-feedback-mechanisms|反馈与调整机制]]统一比较重试、反思、纠正和重新规划，说明它们何时独立使用、何时组合。
+循环能继续行动，却不保证每一步都正确。[[agent-feedback-mechanisms|反馈与调整机制]]根据实际结果决定怎样处理：暂时故障可在确认安全后有限[[agent-retry|重试（Retry）]]；结果不符要求时，可通过[[agent-reflection|反思（Reflection）]]分析偏差，再由[[agent-self-correction|自我纠正（Self-Correction）]]落实修改并验证效果。改法明确时可以直接纠正，持续无进展或预算耗尽时停止。
 
-跨越多次运行的任务需要[[history-storage|保存对话历史]]，并通过[[agent-checkpoint-recovery|检查点（Checkpoint）与中断恢复]]记录从哪里继续、哪些动作已完成。恢复任务时仍需核对外部操作的结果，避免重复执行。
+如果整个运行已经中断，仅靠当前进程里的消息就无法接续。[[agent-checkpoint-recovery|检查点与中断恢复]]把必要状态与执行位置持久保存，恢复后继续未完成部分；外部操作可能已生效，重做之前仍须核对。
 
-「自主」受执行边界约束：[[agent-guardrails|行为约束（Guardrails）]]检查权限、参数与业务规则，[[agent-sandbox|沙箱（Sandbox）]]限制执行环境的访问范围和资源，[[agent-human-in-the-loop|人工介入（HITL）]]承担必要的审批、补充信息或结果审核。跨进程等待人的决定时，中断恢复负责保存和接续任务，人工介入协议负责校验谁对哪个版本作出了什么决定；提示词中的要求还需程序机制落实。
+## 怎样控制真实操作？
 
-## 多个 Agent 怎样共同完成任务？
+Agent 能执行命令、修改文件之后，错误就可能影响真实环境。[[agent-guardrails|行为约束（Guardrails）]]规定并检查输入、数据与操作边界，[[agent-sandbox|沙箱（Sandbox）]]进一步限制执行环境的访问与资源。缺少必要信息、需要批准或审核时，通过[[agent-human-in-the-loop|人工介入（HITL）]]取得人的回复，再决定继续、修改或终止任务。
 
-[[multi-agent|多 Agent 协作]]通过委派、交接、并行或消息交换组织多个执行者，适合可独立探索、需要专门上下文或复用独立能力的任务。子 Agent 重点解决有界分工与结果回收，A2A 协议重点解决独立服务之间的任务通信；两者可以组合。
+## 何时需要多个 Agent？
 
-拆分也会增加通信、重复工作与状态协调成本。应先判断任务能否形成明确的输入和交付物，再通过评测比较相对单 Agent 的收益。
+单个 Agent 的上下文或串行探索成为瓶颈，而任务又能形成独立交付物时，可以引入[[multi-agent|多 Agent 协作]]，让不同执行者各自判断、使用工具，再返回成果或交接任务。它增加了通信与协调成本，是否拆分取决于独立运行的实际收益。
 
-## 怎样判断任务完成？
+## 怎样判断这些能力是否值得？
 
-**「停止运行」不等于「任务成功」。** 模型宣布完成或循环触及限制后，仍要核对实际产物是否满足要求。[[agent-trace|执行轨迹（Trace）]]记录输入、工具调用、结果与任务状态，帮助定位失败；[[agent-evaluation|Agent 评测]]把任务、环境、结果与过程证据组织成可重复实验，比较成功率、稳定性、耗时和费用。
+每补一种能力，都要核对它解决了什么问题。[[agent-trace|执行追踪（Trace）]]记录模型输入、工具与业务步骤，帮助定位偏差；[[agent-evaluation|Agent 评测]]则依据实际产物和过程约束，比较任务质量、可靠性、耗时与费用。模型宣布完成、循环正常退出，都不能代替验收。
 
-评测从真实任务和失败案例建立用例，再检查评分器、环境与版本差异；局部测试用于定位模型、工具或上下文问题，完整任务用于验证改动的实际收益。
-
-## 一次真实任务怎样贯穿这些机制？
-
-以“查 A 和 B 的退款费用，免费的就退，收费的先告诉我”为例。[[agent-intent|意图识别]]需要保留对象、多个目标与执行条件；[[agent-task-state-update|状态更新]]要处理用户中途改口和旧查询晚到；[[tool-interface-design|工具接口]]则须区分资格、报价、受理和最终成功，避免模型跳过尚未成立的条件。
-
-执行期间，[[agent-retry|重试]]控制故障恢复的范围与总消耗，[[agent-checkpoint-recovery|中断恢复]]核对回执丢失时的真实效果，[[agent-human-in-the-loop|人工介入]]处理必须由人决定的部分。长任务还要防止[[history-storage#压缩摘要|后台压缩]]丢失新要求，或让[[agent-memory#存储与更新|旧记忆]]重新带回已经更正的信息。每个机制都应对应具体问题，不因架构图上有一个模块就默认需要引入。
-
-工程验收沿同一任务检查结果与过程：各对象分别完成了什么，条件是否满足，有没有重复操作，部分失败后能否准确继续。[[agent-evaluation-design|评测用例]]保存这些初态、事件顺序和预期，[[agent-trace|轨迹]]提供定位证据。此类场景用于分析设计取舍；具体框架能力与实测结果仍以对应资料及实验边界为准。
+按 [[anthropic-effective-agents-summary|Anthropic 的选型原则]]，步骤与分支明确时可采用[[agent-vs-workflow|工作流（Workflow）]]，需要动态判断的部分再交给 Agent。[[enterprise-agent-build|企业是否自建 Agent]]也应从现成系统的具体缺口出发，验证定制收益是否足以覆盖维护投入。
