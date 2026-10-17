@@ -16,6 +16,18 @@
     }
   },
   {
+    "id": "interviews",
+    "label": "Interviews",
+    "description": "面试题",
+    "enabled": true,
+    "icon": "M5 3h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-7l-5 3v-3H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z M9 8a3 3 0 0 1 6 0c0 2-3 2-3 4 M12 15h0",
+    "color": "#e8bd9a",
+    "marker": {
+      "shape": "square",
+      "hollow": true
+    }
+  },
+  {
     "id": "readings",
     "label": "Readings",
     "description": "外部资料导读",
