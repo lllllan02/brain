@@ -1,6 +1,6 @@
 ---
 title: "OpenFGA：Agent 授权关系、条件与变更管理"
-parent: tool-permission-design
+parent: tool-permissions
 category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10T20:24:03+08:00"

@@ -1,0 +1,27 @@
+Use case: infographic-diagram.
+Asset type: 中文知识笔记中的辅助解释图。
+Primary request: 画清 Chat Completions 中一次工具调用的请求和结果如何通过调用 ID 对应，并在下一轮 messages 中保留原问题、完整调用消息和追加工具结果。图替代长篇字段描述，只画这些关系。
+Reference image: /Users/lllllan/lllllan02/horizon/.agents/skills/excalidraw-diagram/assets/diagram-style-reference.png，仅风格参考。迁移克制的二维技术编辑插画、文档折角造型、细轮廓、局部淡彩、规整中文文字。不要复制工具注册表内容或布局。
+Style: 白底、留白，中等偏细灰蓝轮廓；对象用有折角的消息文档、小型代码执行模块和叠放消息页，不全部画成同样的方框。无机器人、无脑球、无厚重阴影、无渐变、无装饰图标。标题适中，文字清晰。整体约 16:9，确保手机放大后字段仍能读清。
+Palette: 正文 #374151，次要文字 #64748b，边界 #a8b3c2。蓝 #416788 与淡蓝 #eaf0f7 只用于相同调用 ID 及其对应连线；橙 #b66a43 与淡橙 #fbf0e6 少量用于程序执行。其他对象以白底为主。
+
+Composition and semantic content:
+上部是图标题「请求与结果怎样对应？」与小字「Chat Completions · 假设示例」。
+主体从左到右是三种实际对象：调用请求文档 → 小型程序执行模块 → 工具结果文档。中间模块比两份文档小，留足空间给字段。
+左文档上方标签「模型提出调用」，文档包含以下几行清晰字段：
+role: assistant
+tool_calls[0]
+id: call_123
+function.name: get_weather
+function.arguments: JSON 字符串
+右文档上方标签「程序回传结果」，文档包含：
+role: tool
+tool_call_id: call_123
+content: 结果字符串
+25°C · 晴
+在左文档 id: call_123 和右文档 tool_call_id: call_123 所在行使用同样的局部淡蓝底。用一条独立、易读的蓝色对应连线明确连接这两行，标签仅为「同一个调用 ID」，不要把 ID 连到工具名或 content。可以将对应连线安排在两文档上方，用最短路径，保持标签不遮盖字段。
+程序模块在两文档之间较低的位置，橙色小型代码执行对象，文字「程序执行」「解析参数」「查询天气」。从左文档的 function.arguments 所在区域连向程序，再从程序连向右文档的 content 所在区域，用短直箭头，表示数据处理与结果产生，不要与上方 ID 对应线混成一条流程。
+下部是一个浅色的消息容器，标签「下一轮 messages」，内部从左到右三个有少量叠放细节的消息页，分别写「user」「原问题」；「assistant」「完整调用消息」；「tool」「追加结果」。小字标记前两页「保留」，第三页「追加」。这是消息集合，不能画成 user 调用 assistant 或 assistant 调用 tool 的执行流程，不要在三页间画执行箭头。
+图中 role、tool_calls[0]、function.name、function.arguments、id、tool_call_id、content 的拼写必须完全准确。两处 call_123 必须一致。正文内容不是完整 JSON，不要加错误的 JSON 括号，不要把 arguments 的 JSON 字符串直接画成一个已解析的对象。
+No other panels, no footer summary, no paragraphs of extra explanation. 不增加「工具定义」、批量调用、失败重试或权限等内容。
+Validation priorities: ID 对应的连线落点准确；参数由程序解析并执行；工具结果由程序产生；下一轮 messages 同时包含原问题、完整调用消息和追加结果；中文字无重叠裁切。

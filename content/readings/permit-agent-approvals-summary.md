@@ -1,6 +1,6 @@
 ---
 title: "Permit：Agent 授权与审批如何组合"
-parent: tool-permissions
+parent: tool-approvals
 category: "Agent"
 tags: ["Agent", "工具调用", "权限"]
 created_at: "2026-10-10T20:24:03+08:00"
@@ -8,6 +8,7 @@ updated_at: "2026-10-13T12:48:15+08:00"
 source:
   - "[Human-in-the-Loop Approvals](https://docs.permit.io/permit-mcp-gateway/human-in-the-loop/)"
   - "[Access Request MCP overview](https://docs.permit.io/ai-security/access-request-mcp/overview/)"
+read: true
 ---
 
 **「Permit 将调用授权与审批组织为两个关口，并区分申请访问权限和确认一次操作。」** 两篇文档分别展示网关统一拦截与应用接入审批工具的方式。

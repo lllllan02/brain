@@ -9,7 +9,7 @@ created_at: "2026-10-09"
 updated_at: "2026-10-16T20:46:14+08:00"
 reading_suggestions:
   - guardrail-execution
-  - tool-permission-design
+  - tool-permissions
   - agent-human-in-the-loop
   - agent-sandbox
   - agent-evaluation-safety
@@ -31,7 +31,7 @@ reading_suggestions:
 
 输入检查不知道模型稍后会调用哪个工具，最终回答检查又无法撤销已发生的动作。因此需要在输入、工具执行前后和回答交付前分别安排检查。[[guardrail-execution|行为约束的执行机制]]用退款例子展开检查依据、拦截位置、异常分支和最小伪代码。
 
-不同约束各有职责：[[tool-permission-design|权限规则]]决定谁能操作什么；[[agent-human-in-the-loop|人工介入]]接收和核验人的决定；[[agent-sandbox|沙箱]]限制代码能访问的环境；[[agent-loop|运行循环]]控制继续调度和预算。它们可以配合，不能互相代替。
+不同约束各有职责：[[tool-permissions|权限规则]]决定谁能操作什么；[[agent-human-in-the-loop|人工介入]]接收和核验人的决定；[[agent-sandbox|沙箱]]限制代码能访问的环境；[[agent-loop|运行循环]]控制继续调度和预算。它们可以配合，不能互相代替。
 
 ## 哪些边界尤其容易误解？
 

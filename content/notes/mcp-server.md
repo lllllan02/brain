@@ -1,5 +1,5 @@
 ---
-learning_status: understood
+learning_status: pending
 title: "MCP stdio 服务端"
 parent: mcp
 category: "Agent"
@@ -8,7 +8,7 @@ created_at: "2026-10-11T01:07:45+08:00"
 updated_at: "2026-10-11T01:16:08+08:00"
 reading_suggestions:
   - mcp-client
-  - tool-permission-design
+  - tool-permissions
 ---
 
 **stdio Server 将业务函数注册成工具，通过标准输入输出接收调用并返回结果。** 以下用内存订单查询展示实现，Server 本身不调用模型。
@@ -85,4 +85,4 @@ go build -o order-mcp .
 
 宿主启动该进程，无需另开终端运行它。预期查询 `A001` 返回「已发货」，不存在的编号返回错误。
 
-标准输出用于协议消息，日志应写标准错误。接真实数据库时，按[[tool-permission-design|权限规则]]从可信身份检查订单归属，不能只凭模型提供的订单号放行。
+标准输出用于协议消息，日志应写标准错误。接真实数据库时，按[[tool-permissions|权限规则]]从可信身份检查订单归属，不能只凭模型提供的订单号放行。

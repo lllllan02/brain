@@ -9,7 +9,7 @@ updated_at: "2026-10-16T20:46:14+08:00"
 reading_suggestions:
   - mcp-server
   - mcp-http-client
-  - tool-permission-design
+  - tool-permissions
 ---
 
 **Streamable HTTP Server 独立监听 HTTP 地址，将 MCP 请求交给注册的工具处理。** 与[[mcp-server|stdio Server]]使用相同的订单查询逻辑，差别在于通信入口。
@@ -77,7 +77,7 @@ go run .
 
 保持进程运行，由[[mcp-http-client|HTTP Client]]连接 `http://127.0.0.1:8080/mcp`。预期查询 `A001` 返回「已发货」，不存在的编号返回错误。
 
-本例仅监听本机，未实现接入认证。提供远程访问时需配置 HTTPS 与授权；接真实数据还需按[[tool-permission-design|业务权限]]检查订单归属。
+本例仅监听本机，未实现接入认证。提供远程访问时需配置 HTTPS 与授权；接真实数据还需按[[tool-permissions|业务权限]]检查订单归属。
 
 ## 同一个服务处理多个用户时，哪些状态不能混用？
 

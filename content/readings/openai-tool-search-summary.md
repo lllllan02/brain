@@ -8,6 +8,7 @@ updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Tool search](https://developers.openai.com/api/docs/guides/tools-tool-search)"
 reading_suggestions:
   - tool-loading
+read: true
 ---
 
 **「工具搜索把完整定义的加载推迟到模型需要时，以减少上下文占用。」** 以下是 Responses API 的实现，不是所有 Chat Completions 兼容接口的通用能力。

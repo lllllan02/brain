@@ -7,7 +7,7 @@ tags: ["MCP", "OAuth", "权限"]
 created_at: "2026-10-11T10:06:16+08:00"
 updated_at: "2026-10-16T20:46:14+08:00"
 reading_suggestions:
-  - tool-permission-design
+  - tool-permissions
   - mcp-oauth-client
   - sandbox-execution
 ---
@@ -22,7 +22,7 @@ Server 调用下游 API 是另一段授权关系，即使使用 stdio，也可�
 
 凭据由应用管理，不放进提示词、工具参数或返回结果。配置和环境变量不自动构成隔离：模型若能调用读文件、Shell 等广泛工具，仍需通过[[sandbox-execution|工具权限与沙箱]]限制其读取凭据；日志也应避免泄露。
 
-接入成功后，服务端及下游仍需按[[tool-permission-design|业务权限规则]]检查用户能操作哪些数据；宿主另行判断本次动作是否需要用户确认。工具可见不等于获准执行，[[fastmcp-visibility-summary|FastMCP 的可见性控制]]只是其中一层，协议版本适用范围仍待核对。
+接入成功后，服务端及下游仍需按[[tool-permissions|业务权限规则]]检查用户能操作哪些数据；宿主另行判断本次动作是否需要用户确认。工具可见不等于获准执行，[[fastmcp-visibility-summary|FastMCP 的可见性控制]]只是其中一层，协议版本适用范围仍待核对。
 
 ## 给 Server 发了一个令牌，是否就完成了权限设计？
 

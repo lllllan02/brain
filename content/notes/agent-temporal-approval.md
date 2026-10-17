@@ -5,11 +5,11 @@ parent: agent-checkpoint-recovery
 category: "Agent"
 tags: ["Agent", "人工介入", "持久化", "Go"]
 created_at: "2026-10-13T11:07:38+08:00"
-updated_at: "2026-10-14T15:06:31+08:00"
+updated_at: "2026-10-17T14:37:11+08:00"
 type: practice
 reading_suggestions:
   - temporal-durable-execution
-  - agent-approval-protocol
+  - tool-approvals
 ---
 
 自建状态机需要维护存储、调度和唤醒。使用 Temporal 时，可把这部分交给工作流服务：**工作流等待人的消息，批准后调度发布操作，事件历史支持工作进程重启后的恢复。** 业务仍负责审批权限和发布接口幂等。
@@ -53,6 +53,6 @@ func Review(ctx workflow.Context, p Proposal) (string, error) {
 
 源码的 `Serve` 接收宿主注入的 Client 和发布函数，在 `review-queue` 注册 `Review`，并以名称 `Publish` 注册 Activity。宿主用 `ExecuteWorkflow` 与相同任务队列（Task Queue）启动流程；审核入口先完成认证和资格校验，再调用源码中的 `Submit`，通过 `SignalWorkflow` 传入 Workflow ID、Run ID 与决定。
 
-这段代码只呈现持久等待与 Activity 的连接。审批超时、编辑、取消、完整版本校验和重复回复处理仍需按[[agent-approval-protocol|审批协议]]补齐；示例中的一分钟和五分钟是 Activity 执行限时，不是等待审批的期限。
+这段代码实现了[[tool-approvals|工具审批]]中的等待、接收决定与继续执行；完整应用仍需补齐审批超时、编辑、取消、版本校验和重复回复处理。示例中的一分钟和五分钟是 Activity 执行限时，不是等待审批的期限。
 
 接口按 2026-10-13 官方 Go SDK 文档核对，依赖 `go.temporal.io/sdk`，实际版本须在宿主 `go.mod` 中固定；未编译或联调，也不包含服务部署。

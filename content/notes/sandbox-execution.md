@@ -5,9 +5,9 @@ title: "沙箱执行流程"
 category: "Agent"
 tags: ["Agent", "沙箱", "权限"]
 created_at: "2026-10-09"
-updated_at: "2026-10-16T20:50:59+08:00"
+updated_at: "2026-10-17T15:48:00+08:00"
 reading_suggestions:
-  - tool-permissions
+  - tool-approvals
   - sandbox-network
   - codex-sandbox-launch
   - codex-sandbox-retry
@@ -15,7 +15,7 @@ reading_suggestions:
 
 **执行流程要同时解决“这次操作是否获准”和“运行后最多能做什么”。** 允许执行 `python test.py`，不意味着脚本可以任意读文件、联网或启动无限子进程。
 
-**工具请求 → 校验参数与权限 → 准备受限环境 → 执行 → 返回结果并按任务规则清理。** [[authorization|授权检查]]也可发生在访问资源时，不限于启动前。是否需要人确认，由[[tool-permissions|工具权限与审批]]决定。
+**工具请求 → 校验参数与权限 → 准备受限环境 → 执行 → 返回结果并按任务规则清理。** [[authorization|授权检查]]也可发生在访问资源时，不限于启动前。需要人确认或申请额外权限时，进入[[tool-approvals|工具调用的审批]]。
 
 | 遇到什么情况 | 该怎么处理 |
 | --- | --- |
@@ -28,6 +28,8 @@ reading_suggestions:
 工具审批默认绑定一次调用；有些产品还允许显式保存会话或长期规则，这是额外的授权范围，不能由一次同意自动推导。开放某个目标与批准沙箱外运行的保护范围不同。获准访问域名也不等于只获准某条 URL，详见[[sandbox-network|网络粒度]]。
 
 本地命令、远程执行器、文件工具与 MCP 服务可能走不同入口，需逐一确认策略落点。[[codex-sandbox-launch|Codex 命令链路]]和[[codex-sandbox-retry|拒绝后的重试]]展示这些分支。[沙箱与审批](https://learn.chatgpt.com/docs/sandboxing)
+
+命令名称或前缀不足以代表脚本的实际行为：[[claude-code-shell-permissions-summary|Claude Code 的 Shell 规则]]与[[codex-exec-policy-summary|Codex 的命令策略]]仍需配合审批和沙箱；无法可靠识别的调用应按策略拒绝或限制，人工批准不证明脚本安全。
 
 ## 一条命令被沙箱拒绝后，应该自动申请更大权限吗？
 

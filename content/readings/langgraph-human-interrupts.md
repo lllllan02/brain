@@ -1,15 +1,16 @@
 ---
+read: false
 title: "LangGraph 与 LangChain：从中断原语到人工决策"
 parent: agent-human-in-the-loop
 category: "Agent"
 tags: ["Agent", "人工介入", "Checkpoint"]
 created_at: "2026-10-13T10:59:51+08:00"
-updated_at: "2026-10-13T12:48:15+08:00"
+updated_at: "2026-10-17T14:37:11+08:00"
 source:
   - "https://docs.langchain.com/oss/python/langgraph/interrupts"
   - "https://docs.langchain.com/oss/python/langchain/human-in-the-loop"
 reading_suggestions:
-  - agent-approval-protocol
+  - tool-approvals
 ---
 
 **「LangGraph 提供暂停与传回输入的原语，LangChain 中间件把它组织成工具审核流程。」** 本文节选这两层的衔接和恢复陷阱，按 2026-10-13 官方文档核对；未运行 Python 示例。
@@ -35,4 +36,4 @@ reading_suggestions:
 
 `respond` **「不能用来表达拒绝有副作用的动作」**，否则模型会把它当作成功结果。多个工具动作分别需要决定，列表顺序须对应待审动作。大幅编辑参数可能改变模型后续路径，需要特别核对。
 
-这些 API 提供执行语义；审批身份、权限、过期与重复提交如何进入业务校验，仍需由 [[agent-approval-protocol|人工审批协议]]明确，不能只靠一个布尔回复。
+这些 API 实现了[[tool-approvals|工具审批]]的中断、传回决定与恢复执行。审批身份、权限、过期与重复提交的校验仍由应用负责。

@@ -1,0 +1,65 @@
+Use case: infographic-diagram.
+Asset type: 《工具注册与调用分发》第二张解释图，最终版。所有数据均为假设。
+Primary request: 用一条从左到右的连续主线说明“定义 → 模型产生调用单 → 程序按 name 查到入口 → 程序校验 → 执行”。必须清楚显示 name 与目录中的同名记录匹配。仅画下述内容，不使用先前草图。
+Reference image: /Users/lllllan/lllllan02/horizon/.agents/skills/excalidraw-diagram/assets/diagram-style-reference.png，仅风格参考，迁移清楚细轮廓、文件折角、页签、白底、小面积淡彩，禁止复制其布局。
+Style: 克制二维技术编辑插画。白底、深灰/灰蓝文字和细轮廓，浅灰蓝局部填充，暖橙只强调校验后的执行。规整中文、适度标题，充分留白。无大色块、紫色模型、机器人、立体平台、发光、阴影、标题色带、总结、装饰徽章。
+Aspect: 横向约 2.4:1，高分辨率易读。
+Composition and exact objects:
+五个相邻列，自左向右，不分上下两排流程。五列顶部标签为“提供定义”“模型生成请求”“按名称匹配”“校验参数与权限”“调用匹配入口”。主体是不同形态的具体对象，不是相同步骤大框。标题“从工具定义到调用分发”，副标题“查询订单 A1024 · 假设示例”。
+
+第一列：一张从目录抽出的折角定义纸，顶部小标签“工具定义”，字段“query_order”“用途：查询订单”“参数：order_id”。不再画三条工具目录，避免与第三列重复。定义纸的蓝色箭头“提供给模型”必须进入第二列模型图标，不能进入调用单、不能进入注册表。
+
+第二列：简洁三节点图标“模型”，旁边小问题文字“查询订单 A1024”。模型下方竖直向下短箭头到其生成的折角调用单“调用请求”，单里两行“name: query_order”“arguments: {order_id: A1024}”。这两行清楚分开。调用单右边蓝色水平箭头“按 name 查表”进入第三列表格的选中 query_order 行；不能从模型图标直接连表格。可将调用单 name 行和表格选中行安排在同一高度以便直线连接。
+
+第三列：文件夹页签“工具注册表”，一个两列表格，列名“名称”“执行入口”。选中行浅蓝“query_order | queryOrder()”，另两行淡灰“cancel_order | cancelOrder()”“search_docs | MCP Client”。只突出 query_order 对应 queryOrder()。表格右侧一个水平灰蓝箭头“带入入口与参数”进入第四列校验纸。没有从表格直达第五列函数的箭头。
+
+第四列：带折角的小校验纸，上半部分标“参数”，两行“要求：order_id 为字符串”“实际：A1024”，旁边小灰蓝勾号；下半部分标“权限”，文字“允许本次查询”，旁边小灰蓝勾号。小纸底部“校验通过”。这一列是整个执行路径的必经环节。纸右侧仅一根暖橙水平箭头“通过后调用”指向第五列函数端口。
+
+第五列：暖橙代码端口“queryOrder(A1024)”，下方竖直暖橙箭头指向结果票据“A1024：已发货”。不画结果回传模型，本图到执行结果结束。
+
+Semantic invariants and arrow checklist:
+Only these arrows may appear: definition → model; model → call request; call request name → selected registry row; selected registry entry → validation; validation → function; function → result.
+绝对禁止 model → registry；绝对禁止 definition → call request；绝对禁止 registry → function。不画任何跨列跳过校验的旁路，不画字段专属的额外 arguments 绕行线。调用单整体包含参数，它随查表之后的请求进入校验。
+箭头以水平或竖直直线为主，调整对象高度让箭头直连。所有执行端口上的 A1024 必须与参数一致。示例中 queryOrder 是本地函数，MCP Client 只属于淡灰未选中行。
+Text, verbatim:
+“从工具定义到调用分发”
+“查询订单 A1024 · 假设示例”
+“提供定义”
+“模型生成请求”
+“按名称匹配”
+“校验参数与权限”
+“调用匹配入口”
+“工具定义”
+“query_order”
+“用途：查询订单”
+“参数：order_id”
+“提供给模型”
+“模型”
+“查询订单 A1024”
+“调用请求”
+“name: query_order”
+“arguments: {order_id: A1024}”
+“按 name 查表”
+“工具注册表”
+“名称”
+“执行入口”
+“queryOrder()”
+“cancel_order”
+“cancelOrder()”
+“search_docs”
+“MCP Client”
+“带入入口与参数”
+“参数”
+“要求：order_id 为字符串”
+“实际：A1024”
+“权限”
+“允许本次查询”
+“校验通过”
+“通过后调用”
+“queryOrder(A1024)”
+“A1024：已发货”
+Validation priorities: 核对箭头清单逐条成立，不能省略校验或绕过调用单。名称正确、入口匹配、参数一致，中文清楚。不要添加总结或额外图例。
+
+Final targeted edit. Second reference image: /Users/lllllan/.codex/generated_images/01a1481d-a432-7250-84b5-92ece489d2f2/exec-44f1d585-a211-4b9a-96a9-21a385b5c4df.png
+Edit the attached draft (second reference image). The first image is only a style reference. Preserve the content, the five left-to-right stages, all data fields and the overall composition. Fix one critical connection: the blue arrow labeled “按 name 查表” currently incorrectly lands on the search_docs row. Move the entire “调用请求” sheet UP so its “name: query_order” line is at the SAME vertical height as the highlighted query_order / queryOrder() table row. The arrow must start at the right edge of this name line and run straight horizontally to the LEFT EDGE OF THE HIGHLIGHTED query_order ROW, with its arrowhead touching that row. Do not point to search_docs or cancel_order. Adjust the model position upwards and shorten the vertical model-to-request arrow as needed to prevent overlap. Maintain separation and readable text. All other semantic connections must stay: definition feeds model; model produces call sheet; highlighted registry entry feeds validation; validation feeds function; function produces result. No other edge is needed.
+Small style cleanup only: remove the round step number badges 1–5, leaving plain stage titles. Change the green “校验通过” strip to a small pale gray-blue label, no green. Do not change other labels, add components, redraw other arrows, or create annotations. Output the full corrected image.
