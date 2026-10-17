@@ -6,6 +6,7 @@ tags: ["Agent", "工具调用"]
 created_at: "2026-10-12T11:59:43+08:00"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "https://developers.openai.com/api/docs/guides/function-calling#best-practices-for-defining-functions"
+read: true
 ---
 
 **「函数定义应让模型清楚地选择和填写输入，把程序已知或能够确定的工作留给代码。」** 本文节选 OpenAI Function calling 指南的函数定义建议与上下文开销说明，依据 2026-10-12 页面；不覆盖完整调用协议、流式处理与各语言示例。

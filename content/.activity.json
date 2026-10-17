@@ -408,7 +408,7 @@
       "title": "Agent",
       "collection": "notes",
       "state": "pending",
-      "digest": "348b374988c20b70b6d09557faed89a577c3a4b67ea44acbffc93c5db3f36f87"
+      "digest": "c9aa85fc62c755eab0285d6dce325c8bca7060ad39a11e50c11a8dcdf631ee24"
     },
     "api-gateway": {
       "title": "API 网关",
@@ -721,6 +721,12 @@
       "collection": "notes",
       "state": "pending",
       "digest": "444fb45ff39ef6a5964783a7d6ad85c06be0d865e3f7910d7009e9222521539c"
+    },
+    "enterprise-agent": {
+      "title": "企业 Agent 选型",
+      "collection": "notes",
+      "state": "pending",
+      "digest": "7c19cba73c0261b0da4f2ba40b3eb1018b029151ab5f699d8ea594006ea69911"
     },
     "etcd": {
       "title": "etcd",
@@ -2118,13 +2124,13 @@
       "title": "工具调用",
       "collection": "notes",
       "state": "pending",
-      "digest": "af710598b08a90dbef6329e3bc209728907cb0a7fa71295a19cd193eee1d1064"
+      "digest": "623cc3bf528f57c6f3f4d8343919286ccd0f5417f9aa74b86624a322e226f17b"
     },
     "tool-interface-design": {
       "title": "工具接口设计",
       "collection": "notes",
       "state": "pending",
-      "digest": "bf9b64d6f416523107831427b519e8a851666c457babe774452725d03486f5e3"
+      "digest": "0e585780bca41bc73a61f7b8d9c31722158efb7ee2fd43224f519aaeec410a42"
     },
     "tool-loading": {
       "title": "工具按需加载",
@@ -2339,7 +2345,7 @@
     "anthropic-tool-design-summary": {
       "title": "Anthropic：如何设计有效的 Agent 工具",
       "collection": "readings",
-      "state": "unread",
+      "state": "read",
       "digest": "28a5ba365777401b948165ed90544a6734a5afc317d136be8ff9019e6304e9be"
     },
     "autogen-group-chat": {
@@ -3068,10 +3074,16 @@
       "state": "unread",
       "digest": "ca9598b98300ee800ba8654e0b3eabe1010047bf0d6c5aed5a8b9ed4215b3994"
     },
+    "openai-function-calling-summary": {
+      "title": "OpenAI：函数调用流程",
+      "collection": "readings",
+      "state": "read",
+      "digest": "f419723af948999013bb3dd435c34e4bfda16f0bba700f0864cff29324422d45"
+    },
     "openai-function-design-summary": {
       "title": "OpenAI：怎样定义易于使用的函数工具",
       "collection": "readings",
-      "state": "unread",
+      "state": "read",
       "digest": "cbd9b16ece51f5ffe4825f5ea46c297fc1a39efcda7a895229ae00fdd6234580"
     },
     "openai-guardrails-summary": {
@@ -27888,6 +27900,108 @@
       ],
       "source": "observed",
       "docId": "tool-calling"
+    },
+    {
+      "id": "eb00f6b7-1d80-403c-8548-2936eaea876d",
+      "kind": "updated",
+      "entity": "doc:tool-calling",
+      "title": "工具调用",
+      "time": "2026-10-16T16:32:40.972Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-calling"
+    },
+    {
+      "id": "67da05b7-cb19-41b6-93a5-a3ca0dfeb4b4",
+      "kind": "created",
+      "entity": "doc:openai-function-calling-summary",
+      "title": "OpenAI：函数调用流程",
+      "time": "2026-10-16T16:32:40.972Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openai-function-calling-summary"
+    },
+    {
+      "id": "1cc9a275-03d7-4361-9380-bf2f64fff207",
+      "kind": "state-changed",
+      "entity": "doc:openai-function-design-summary",
+      "title": "OpenAI：怎样定义易于使用的函数工具",
+      "time": "2026-10-16T16:34:46.694Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openai-function-design-summary",
+      "from": "unread",
+      "to": "read"
+    },
+    {
+      "id": "75fba4b1-bdba-4af5-a264-1875ce56131e",
+      "kind": "state-changed",
+      "entity": "doc:openai-function-calling-summary",
+      "title": "OpenAI：函数调用流程",
+      "time": "2026-10-16T16:34:50.008Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "openai-function-calling-summary",
+      "from": "unread",
+      "to": "read"
+    },
+    {
+      "id": "300ff9d7-4b03-4f05-8e7a-c443925f6863",
+      "kind": "state-changed",
+      "entity": "doc:anthropic-tool-design-summary",
+      "title": "Anthropic：如何设计有效的 Agent 工具",
+      "time": "2026-10-17T02:31:36.673Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "anthropic-tool-design-summary",
+      "from": "unread",
+      "to": "read"
+    },
+    {
+      "id": "c908b45c-1c97-4d77-ab43-68c218c33a06",
+      "kind": "updated",
+      "entity": "doc:agent",
+      "title": "Agent",
+      "time": "2026-10-17T02:42:10.642Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent"
+    },
+    {
+      "id": "1920239f-b681-486f-b69f-cfd1e3c6b9b8",
+      "kind": "created",
+      "entity": "doc:enterprise-agent",
+      "title": "企业 Agent 选型",
+      "time": "2026-10-17T02:42:10.642Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "enterprise-agent"
+    },
+    {
+      "id": "2322d291-ff3d-4bca-ba81-1954f5c15c4c",
+      "kind": "updated",
+      "entity": "doc:tool-interface-design",
+      "title": "工具接口设计",
+      "time": "2026-10-17T02:47:22.842Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "tool-interface-design"
     }
   ]
 }

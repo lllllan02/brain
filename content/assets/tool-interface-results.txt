@@ -1,0 +1,17 @@
+场景：导出应用已确定的当前报表。以下为自拟伪代码，不可直接运行。
+
+结果：从笼统成功到明确后续动作
+
+// 反例：异步任务刚受理，模型可能误报文件已生成
+StartReportExport("csv") -> {success: true}
+
+// 正例：返回任务标识，并区分进度与完成
+StartReportExport("csv") -> {status: "accepted", job_id: "j1"}
+GetReportExport("j1")    -> {status: "running", job_id: "j1"}
+GetReportExport("j1")    -> {status: "completed", file_url: "..."}
+
+// 另一种结果：失败时说明原因与处理方式
+GetReportExport("j1") -> {status: "failed", error: "报表已删除，请重新选择报表"}
+
+正例增加了状态字段与查询步骤，但能让模型区分等待、完成和失败。
+只有收到 completed 和文件地址才能报告导出完成；accepted 只表示已受理。

@@ -38,7 +38,7 @@ reading_suggestions:
 
 如果任务不需要工具，模型也可以直接回答。工具定义中的 `parameters` 描述参数格式；调用请求中的 `name` 和 `arguments` 分别表示所选工具和本次实际参数。
 
-模型先提出调用、再根据结果回答，通常需要程序请求模型两次，中间执行一次工具。字段与交互参考 [OpenAI Function calling 文档](https://developers.openai.com/api/docs/guides/function-calling)。
+模型先提出调用、再根据结果回答，通常需要程序请求模型两次，中间执行一次工具。字段与交互依据 [[openai-function-calling-summary#Chat Completions 怎样对应请求与结果？|OpenAI 函数调用导读]]。
 
 [[agent-loop|Agent Loop]]负责组织反复决策与执行，并设置终止条件。围绕这条基本流程，程序还需要管理工具的接入、权限和执行。
 

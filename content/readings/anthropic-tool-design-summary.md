@@ -6,6 +6,7 @@ tags: ["Agent", "工具调用"]
 created_at: "2026-10-10"
 updated_at: "2026-10-13T12:48:15+08:00"
 source: "[Writing effective tools for agents — with agents](https://www.anthropic.com/engineering/writing-tools-for-agents)，Anthropic，2025-09-11"
+read: true
 ---
 
 **「工具设计要适应模型的选择方式与有限上下文，再通过真实任务检验效果。」** 本文整理 Anthropic 2025-09-11 工程文章的设计原则与评测方法，省略本地工具安装步骤。

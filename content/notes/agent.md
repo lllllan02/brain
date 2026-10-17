@@ -4,7 +4,7 @@ title: "Agent"
 category: "Agent"
 tags: ["Agent", "工程选型"]
 created_at: "2026-10-09"
-updated_at: "2026-10-16T20:53:26+08:00"
+updated_at: "2026-10-17T10:41:54+08:00"
 reading_suggestions:
   - agent-vs-workflow
   - agent-loop
@@ -37,6 +37,8 @@ Agent 通过「模型决策 → 程序执行工具 → 结果回传 → 模型�
 围绕模型组织输入、工具执行、状态与循环控制的运行系统称为 [[agent-harness|Agent Harness]]。它可以从一个简单循环起步，按任务需要补充能力，不要求一开始具备全部模块。
 
 步骤固定、分支明确时，[[agent-vs-workflow|工作流（Workflow）]]通常更易控制；需要根据中间结果动态选择行动时，再考虑 Agent。两者可以组合。多轮决策会增加耗时、费用与错误累积的机会，因此还要比较它相对简单流程带来的实际收益。
+
+[[enterprise-agent|企业 Agent 选型]]可先验证「通用 Agent + MCP」，再按实际缺口补业务服务、工作流或运行系统。
 
 ## 模型怎样获得信息并采取行动？
 
