@@ -25,13 +25,19 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: mode === 'pages' ? 'dist-pages' : 'dist',
     rollupOptions: {
+      onwarn(warning, warn) {
+        if (warning.code === 'CIRCULAR_CHUNK') throw new Error(warning.message);
+        warn(warning);
+      },
       output: {
         // Preserve lazy diagram imports; do not pull their dependencies into the entry chunk.
         onlyExplicitManualChunks: true,
         manualChunks(id) {
           if (id.includes('/three/build/three.core.js')) return 'three-core';
           if (id.includes('/three/build/three.module.js')) return 'three-webgl';
-          if (id.includes('/mermaid/dist/chunks/mermaid.core/chunk-'))
+          // Preserve diagram entry modules too: merging them with their shared
+          // dependencies creates cycles between otherwise lazy Mermaid chunks.
+          if (id.includes('/mermaid/dist/chunks/mermaid.core/'))
             return `mermaid-${path.basename(id, '.mjs')}`;
           if (id.includes('/@mermaid-js/parser/')) return 'mermaid-parser';
           if (id.includes('/elkjs/')) return 'mermaid-elk';

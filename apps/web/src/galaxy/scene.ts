@@ -60,6 +60,7 @@ import { MainThreadForceLayout } from './vendor/layout/MainThreadForceLayout.ts'
 import { seedPosition, seedRadius } from './vendor/data/seed.ts';
 import { STYLE_PRESETS } from './vendor/render/stylePresets.ts';
 import { TIERS } from './vendor/quality/tiers.ts';
+import { elapsedFrameSeconds } from './vendor/timing/frameClock.ts';
 import { galaxyData, galaxyTopologyKey, galaxyFocus, readingFilter } from './data.ts';
 import { categoryLayout, interpolateCategories, categoryEase } from './categoryLayout.ts';
 import { CategoryEffects } from './categoryEffects.ts';
@@ -804,7 +805,10 @@ export function createGalaxy(
     const interval = 1000 / (readingIdle ? 30 : 60);
     if (previous && now - previous < interval - 0.5) return;
     if (queuedGraph && ready && !transition && !renderer.revealing) updateGraph(queuedGraph);
-    const dt = previous ? Math.min((now - previous) / 1000, MOTION.maxFrame / 1000) : 0;
+    // Timelines follow wall time even when software WebGL misses frames. Only
+    // ambient motion is capped; capping entry time can leave the reader inert.
+    const animationDt = elapsedFrameSeconds(now, previous || null);
+    const dt = Math.min(animationDt, MOTION.maxFrame / 1000);
     previous = now;
     if (workerDeadline && now > workerDeadline && !layout?.isSettled()) fallback();
     layout?.step();
@@ -859,7 +863,7 @@ export function createGalaxy(
     // No invisible WebGL draws while the worker is settling the first layout.
     if (!ready && !presetFrom) return;
     if (framingTween && framing && ready) {
-      framingTween.elapsed += dt * 1000;
+      framingTween.elapsed += animationDt * 1000;
       const p = Math.min(1, framingTween.elapsed / (framingTween.duration || MOTION.layout)),
         k = smooth(p);
       for (const key of Object.keys(framing) as (keyof FrameRegion)[])
@@ -867,11 +871,11 @@ export function createGalaxy(
       renderer.setFramingRegion(framing.width, framing.height, framing.left, framing.top);
       if (p === 1) framingTween = null;
     }
-    stepCategories(reduced ? 0 : dt);
+    stepCategories(reduced ? 0 : animationDt);
     camera.cruiseEnabled =
       !paused && !reduced && ready && !transition && !renderer.revealing && !readingTrail;
     camera.cruiseSpeed = 0.5;
-    camera.update(now, dt, paused || reduced ? 0 : dt);
+    camera.update(now, animationDt, paused || reduced ? 0 : dt);
     backdrop.update(
       renderer.camera,
       preset.id,
@@ -881,7 +885,7 @@ export function createGalaxy(
       reduced,
       ready || presetFrom ? renderer.revealProgress : 0,
     );
-    renderer.render(paused || reduced ? 0 : dt, dt);
+    renderer.render(paused || reduced ? 0 : dt, animationDt);
     hooks.onEntryProgress?.(
       ready
         ? transition?.morph

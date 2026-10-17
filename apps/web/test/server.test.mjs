@@ -1,10 +1,50 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, readFile, writeFile, rm } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, writeFile, rm, utimes } from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 import { startServer } from '../server.ts';
 import { parseLibrary } from '../src/data/library-schema.ts';
+import { loadLibrary } from '../src/library.ts';
+import { activityForLibrary } from '../src/activity.ts';
+
+test('旧活动锁残留后恢复快照，修改过的已整理文档可以重新确认且不会弹回', async t => {
+  const root=await mkdtemp(path.join(os.tmpdir(),'horizon-stale-lock-'));
+  t.after(()=>rm(root,{recursive:true,force:true}));
+  await mkdir(path.join(root,'notes'));
+  const file=path.join(root,'notes/wal.md');
+  await writeFile(file,'---\ntitle: WAL\nlearning_status: understood\n---\n旧正文');
+  await activityForLibrary(root,await loadLibrary(root),{observe:true});
+  const activityFile=path.join(root,'.activity.json');
+  const old=JSON.parse(await readFile(activityFile,'utf8'));
+  delete old.documents.wal.bodyDigest;
+  await writeFile(activityFile,JSON.stringify(old));
+  await writeFile(file,'---\ntitle: WAL\nlearning_status: reading\n---\n新正文');
+  const lock=activityFile+'.lock';
+  await mkdir(lock);
+  const past=new Date(Date.now()-120_000);
+  await utimes(lock,past,past);
+  const app=await startServer({root,port:0,optimizeDependencies:false,development:true});
+  t.after(()=>app.close());
+  const url=`http://127.0.0.1:${app.server.address().port}`;
+  const initial=parseLibrary(await (await fetch(url+'/api/library')).json());
+  assert.equal(initial.activity.error,undefined);
+  assert.ok(old.events.every(event=>initial.activity.events.some(e=>e.id===event.id)));
+  const response=await fetch(url+'/api/documents/state',{
+    method:'POST',headers:{Origin:url,'Content-Type':'application/json'},
+    body:JSON.stringify({id:'wal',state:'organized',version:initial.version,incremental:true}),
+  });
+  assert.equal(response.status,200);
+  const updated=await response.json();
+  assert.equal(updated.documents.find(d=>d.id==='wal').state,'organized');
+  for(let i=0;i<2;i++) {
+    const current=parseLibrary(await (await fetch(url+'/api/library')).json());
+    assert.equal(current.documents.find(d=>d.id==='wal').state,'organized');
+    assert.equal(current.activity.error,undefined);
+  }
+  assert.match(await readFile(file,'utf8'),/learning_status: organized/);
+  assert.match(await readFile(file,'utf8'),/新正文$/);
+});
 
 test('本地接口条件请求、内容刷新、版本冲突和状态写回保持一致', async t => {
   const root=await mkdtemp(path.join(os.tmpdir(),'horizon-http-'));

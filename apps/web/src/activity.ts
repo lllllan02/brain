@@ -32,22 +32,13 @@ interface ActivityState {
   events: ActivityEvent[];
 }
 import path from 'node:path';
-import {
-  readFile,
-  writeFile,
-  rename,
-  unlink,
-  readdir,
-  lstat,
-  realpath,
-  mkdir,
-  rmdir,
-} from 'node:fs/promises';
+import { readFile, writeFile, rename, unlink, readdir, lstat, realpath } from 'node:fs/promises';
 import { createHash, randomUUID } from 'node:crypto';
 import { documentTime } from './document-dates.ts';
 import { safeAsset } from './library.ts';
 import { CONTENT_COLLECTIONS } from './collections.ts';
 import { updateDocumentState } from './update-document-state.ts';
+import { acquireActivityLock } from './activity-lock.ts';
 
 const hash = (value: string | Buffer) => createHash('sha256').update(value).digest('hex');
 const imageExt = /\.(png|jpe?g|webp|gif|svg|excalidraw)$/i;
@@ -211,11 +202,10 @@ export async function activityForLibrary(
 ) {
   root = await realpath(root);
   const file = path.join(root, '.activity.json');
-  let locked = false;
+  let release: (() => Promise<void>) | undefined;
   try {
     if (observe) {
-      await mkdir(`${file}.lock`);
-      locked = true;
+      release = await acquireActivityLock(file);
     }
     const previous = await readState(file);
     if (!observe) {
@@ -337,6 +327,6 @@ export async function activityForLibrary(
           : '活动记录暂不可用，当前仅展示文档日期；原记录已保留。',
     };
   } finally {
-    if (locked) await rmdir(`${file}.lock`);
+    await release?.();
   }
 }
