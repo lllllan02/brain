@@ -107,6 +107,13 @@
       "digest": "1d2a4dcb79731ed2aa74e9a10c86dc53c4be75f231d19ea5eb92df0f2d2c60ec",
       "bodyDigest": "d9a6b5e6ff4418211a3460a7d55da1f221758aa88b3363247b8d18284647911e"
     },
+    "trace-and-span": {
+      "title": "Trace 与 Span",
+      "collection": "glossary",
+      "state": "pending",
+      "digest": "56daf782628f7ffcd8674aa0fa9f01d83b78c7cf8baf1688089352fb21c1cf7d",
+      "bodyDigest": "e4ff630119a110f7de37f1e34ee34004f31afd74d14ff06eff0982efbb17992f"
+    },
     "a2a": {
       "title": "A2A（Agent 间通信协议）",
       "collection": "notes",
@@ -173,9 +180,9 @@
     "agent-harness": {
       "title": "Agent Harness",
       "collection": "notes",
-      "state": "pending",
-      "digest": "6347056fee403970d7f08c97bfe700054400de4962aec841be709e7272682070",
-      "bodyDigest": "a82d17f9d10a44dd4406d39eb14dbf6c0344d4a0db7172d0e3215a35d11f7ac8"
+      "state": "organized",
+      "digest": "acac5cce2e2bdafaa2e0228590f1f3f2fbd89adfeb3a27d726e7ceed3f23d8a6",
+      "bodyDigest": "e47ac1276951bfdabc9dc179483f75b5d35fdb13da05f00335fba48c825b6e2d"
     },
     "agent-human-in-the-loop": {
       "title": "Agent 人工介入",
@@ -278,9 +285,9 @@
     "agent-trace": {
       "title": "Agent Trace（执行追踪）",
       "collection": "notes",
-      "state": "reading",
-      "digest": "00aebcf547100f336af59c3a6f6ea9b26af41f0ec5dc46a572eac34ca1dcc191",
-      "bodyDigest": "d8541a3683ebda1cedfcb383a7690029e770bfd1ccf1f49498f338918cdf4c6e"
+      "state": "organized",
+      "digest": "b0b118962c31cfaeca84e84408240a4ec7c82a29b0ce21813cb0afef95fe92cc",
+      "bodyDigest": "fcb535a0d8346311e3c6a16a807aaa1fd5f67b95c64e616cf4eab4770e91e35f"
     },
     "agent-vs-workflow": {
       "title": "Agent 与工作流",
@@ -1245,8 +1252,8 @@
       "title": "OpenTelemetry",
       "collection": "notes",
       "state": "pending",
-      "digest": "d19cbd91fda1bc1f370a1998def0f4ddd04247ea272e91db92fb00a9df988ef8",
-      "bodyDigest": "317c86cc69c532db8d399932db93e02980b50fe55b1527a15fde5618357bf5ce"
+      "digest": "05e2b457e1b2a28ab66d098f62eaf2a73e1ce484bfb9bced69d10274d41eb2f1",
+      "bodyDigest": "5d1ee31fd98ca69c5bdeb84ed8431626b5215856fb5391e88d81441db01b67c7"
     },
     "oracle-database": {
       "title": "Oracle Database",
@@ -1689,13 +1696,6 @@
       "digest": "e5ca27cb57be27edadfe06ad732d94277cc7c8488e51cb07848fff301aeddfa7",
       "bodyDigest": "970d0ce52085c892fc307511785d28912497cca04fccc235d2289f1adf8ea280"
     },
-    "span": {
-      "title": "Span（操作记录）",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "9f4d513d25ca2c7c26fa64d93026b50b3762daebebec79ba5bef74f87824b61c",
-      "bodyDigest": "a655d3ad450b47c0ab107b9e6dc3bb4520d1e5677ee619b4d4aba10bc5ee963a"
-    },
     "sql-server": {
       "title": "SQL Server",
       "collection": "notes",
@@ -1807,13 +1807,6 @@
       "state": "pending",
       "digest": "df7271ad2649f3167d9b706a31b139e8810c5a92680ff83dbeefe5c7106309e9",
       "bodyDigest": "95419a76ea1dbd3aecefd2b18714c1ce087e7213d8e0ec9d4a78be943ea619b9"
-    },
-    "trace": {
-      "title": "Trace（追踪链路）",
-      "collection": "notes",
-      "state": "pending",
-      "digest": "7950886e675d959bacdb3d4c74db622ce81e5f76a6b8d2dfe0d7ffe9de937c8a",
-      "bodyDigest": "61b22a8a2dcb5e77b326b83537ee4256e8b17d40c7b32ea4fc68d17b0d8737e5"
     },
     "transaction": {
       "title": "事务",
@@ -2785,8 +2778,8 @@
       "title": "OpenTelemetry：上下文传播、错误记录与采样",
       "collection": "readings",
       "state": "pending",
-      "digest": "a26edabd14e7f61ecfe155b43c9772fced03f96e6f87f1f68fb1a55a26e42b57",
-      "bodyDigest": "ba73ca44a1b134f007615324c1019bb3b84c4d116df180e1cf5b0596ed5a036f"
+      "digest": "79b88cbb8be0f1564a26758292e6ae6095633d581fed8f831ff8e2c402fe5fe0",
+      "bodyDigest": "e55069af6c06a1ce470622e13fa67b94c2e0bc6ffd6ec49e83dd9ba424c67f77"
     },
     "owasp-agent-boundaries-summary": {
       "title": "OWASP：提示注入与 Agent 执行边界",
@@ -32077,6 +32070,160 @@
       ],
       "source": "observed",
       "docId": "a2a",
+      "from": "reading",
+      "to": "organized"
+    },
+    {
+      "id": "eee19765-d138-4b8d-b530-8f1ed42e29e5",
+      "kind": "state-changed",
+      "entity": "doc:agent-trace",
+      "title": "Agent Trace（执行追踪）",
+      "time": "2026-10-17T16:27:19.791Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-trace",
+      "from": "reading",
+      "to": "organized"
+    },
+    {
+      "id": "d5bc4dec-a490-409d-97a2-314ceae84f11",
+      "kind": "state-changed",
+      "entity": "doc:agent-harness",
+      "title": "Agent Harness",
+      "time": "2026-10-17T16:27:47.298Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-harness",
+      "from": "pending",
+      "to": "reading"
+    },
+    {
+      "id": "e7e38b6c-6f64-429f-84a9-e30d5948e726",
+      "kind": "created",
+      "entity": "doc:trace-and-span",
+      "title": "Trace 与 Span",
+      "time": "2026-10-17T16:28:45.256Z",
+      "collections": [
+        "glossary"
+      ],
+      "source": "observed",
+      "docId": "trace-and-span"
+    },
+    {
+      "id": "2d083c45-4548-4330-8795-6a74794a1f59",
+      "kind": "state-changed",
+      "entity": "doc:agent-trace",
+      "title": "Agent Trace（执行追踪）",
+      "time": "2026-10-17T16:28:45.256Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-trace",
+      "from": "organized",
+      "to": "reading"
+    },
+    {
+      "id": "96ebc343-f975-419f-b6ae-8f4fd61eb4cf",
+      "kind": "updated",
+      "entity": "doc:agent-trace",
+      "title": "Agent Trace（执行追踪）",
+      "time": "2026-10-17T16:28:45.256Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-trace"
+    },
+    {
+      "id": "d8eb7c0d-0241-4a8b-9ff3-c7201503746f",
+      "kind": "updated",
+      "entity": "doc:opentelemetry",
+      "title": "OpenTelemetry",
+      "time": "2026-10-17T16:28:45.256Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "opentelemetry"
+    },
+    {
+      "id": "13ee57fc-a3f5-4ea4-920a-23b94a6f3f87",
+      "kind": "updated",
+      "entity": "doc:otel-trace-collection",
+      "title": "OpenTelemetry：上下文传播、错误记录与采样",
+      "time": "2026-10-17T16:28:45.256Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "otel-trace-collection"
+    },
+    {
+      "id": "d5972987-6e70-4995-91fb-20ce9339c36a",
+      "kind": "updated",
+      "entity": "doc:agent-harness",
+      "title": "Agent Harness",
+      "time": "2026-10-17T16:31:01.250Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-harness"
+    },
+    {
+      "id": "69997f9d-7666-4b66-8e93-d13e027d1f54",
+      "kind": "state-changed",
+      "entity": "doc:agent-trace",
+      "title": "Agent Trace（执行追踪）",
+      "time": "2026-10-17T16:31:14.765Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-trace",
+      "from": "reading",
+      "to": "organized"
+    },
+    {
+      "id": "8c5f9c7d-7b42-45a1-b286-09e72fabbaa5",
+      "kind": "updated",
+      "entity": "doc:agent-harness",
+      "title": "Agent Harness",
+      "time": "2026-10-17T16:32:41.266Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-harness"
+    },
+    {
+      "id": "48ca3e73-71e3-44c7-8d11-2a1337dd2aca",
+      "kind": "updated",
+      "entity": "doc:agent-harness",
+      "title": "Agent Harness",
+      "time": "2026-10-17T16:32:53.250Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-harness"
+    },
+    {
+      "id": "7610483f-40d2-40c7-bdb1-390a7741bf54",
+      "kind": "state-changed",
+      "entity": "doc:agent-harness",
+      "title": "Agent Harness",
+      "time": "2026-10-17T16:33:10.308Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "agent-harness",
       "from": "reading",
       "to": "organized"
     }

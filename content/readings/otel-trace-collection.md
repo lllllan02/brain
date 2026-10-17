@@ -3,7 +3,7 @@ title: "OpenTelemetry：上下文传播、错误记录与采样"
 category: "可观测性"
 tags: ["OpenTelemetry", "Trace", "采样"]
 created_at: "2026-10-12T23:28:23+08:00"
-updated_at: "2026-10-13T12:48:15+08:00"
+updated_at: "2026-10-18T00:28:03+08:00"
 source:
   - "https://opentelemetry.io/docs/concepts/context-propagation/"
   - "https://opentelemetry.io/docs/languages/go/instrumentation/"
@@ -11,7 +11,13 @@ source:
   - "https://opentelemetry.io/docs/concepts/signals/traces/"
 ---
 
-**「正确的 Trace 依赖调用时传播上下文、在操作边界创建 Span，以及明确的采集策略。」** 本文节选官方文档中与应用埋点有关的机制，核对日期为 2026-10-12，未运行 SDK。
+**「正确的 Trace 依赖调用时传播上下文、在操作边界创建 Span，以及明确的采集策略。」** 本文节选官方文档中与应用埋点有关的机制：传播、错误与采样部分核对于 2026-10-12，数据模型部分核对于 2026-10-18，未运行 SDK。
+
+## Trace 与 Span 的数据模型
+
+[Traces 文档](https://opentelemetry.io/docs/concepts/signals/traces/#spans)将 Span 定义为一次操作的记录，用它们构成 Trace。Span 包含名称、起止时间、父 Span ID、上下文、属性、事件、关联与状态；上下文中的 Trace ID 标识所属链路，Span ID 标识当前操作，根 Span 的父 ID 为空。子 Span 表示子操作，属性用键值对补充操作细节。
+
+[状态说明](https://opentelemetry.io/docs/concepts/signals/traces/#span-status)区分 Unset、Error 与 Ok：Unset 是默认值，Error 表示操作出错，Ok 表示显式标记成功；正常结束的操作也可能保留 Unset。状态本身不包含应用的业务验收规则。
 
 ## 调用关系怎样传到另一个执行单元？
 

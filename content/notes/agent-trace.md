@@ -1,5 +1,5 @@
 ---
-learning_status: reading
+learning_status: organized
 parent: agent
 title: "Agent Trace（执行追踪）"
 aliases: ["Agent Trace 要记录什么", "Agent Tracing"]
@@ -7,14 +7,13 @@ category: "Agent"
 updated_at: "2026-10-17T23:29:15+08:00"
 tags: ["Agent", "Trace", "可观测性", "错例回流", "数据脱敏"]
 reading_suggestions:
-  - trace
-  - span
+  - trace-and-span
   - eino-langfuse-tracing
   - agent-evaluation
-learning_status_changed_at: "2026-10-17T23:28:50.309+08:00"
+learning_status_changed_at: "2026-10-18T00:31:14.730+08:00"
 ---
 
-Agent Trace 按一次任务记录模型、工具和业务步骤，供排障与回归使用；结构沿用 [[trace|Trace]] 与 [[span|Span]]。
+Agent Trace 按一次任务记录模型、工具和业务步骤，供排障与回归使用；结构沿用 [[trace-and-span|Trace 与 Span]]。
 
 下面以 Eino 接 Langfuse 为例，按「接入 → 关联 → 采集 → 验收 → 排障」组织。代码节选来自 `labs/agent-trace/` 的 `be79b00`，依赖 Eino v0.9.14、Langfuse 回调 v2.0.2；省略了部分逻辑，不能独立运行，本次未重跑实验。
 

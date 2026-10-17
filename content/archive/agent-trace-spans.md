@@ -7,8 +7,7 @@ tags: ["Agent", "Trace", "可观测性", "埋点"]
 created_at: "2026-10-13T01:06:26+08:00"
 updated_at: "2026-10-13T01:35:20+08:00"
 reading_suggestions:
-  - trace
-  - span
+  - trace-and-span
   - agent-trace-structure
   - eino-langfuse-tracing
   - agent-trace-verification
@@ -22,7 +21,7 @@ reading_suggestions:
 
 ## 根 Span 在哪里创建？
 
-一次用户任务进入 `Engine.Run` 时创建根节点。[[trace|Trace]] 是整条记录集合，根节点本身也是一个 [[span|Span]]，表示本次运行的范围。
+一次用户任务进入 `Engine.Run` 时创建根节点。[[trace-and-span|Trace]] 是整条记录集合，根节点本身也是一个 Span，表示本次运行的范围。
 
 ```go
 // internal/lab/run.go
