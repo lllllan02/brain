@@ -114,6 +114,41 @@
       "digest": "56daf782628f7ffcd8674aa0fa9f01d83b78c7cf8baf1688089352fb21c1cf7d",
       "bodyDigest": "e4ff630119a110f7de37f1e34ee34004f31afd74d14ff06eff0982efbb17992f"
     },
+    "agent-interview-index": {
+      "title": "AI 与 Agent 应用面试题目录",
+      "collection": "interviews",
+      "state": "pending",
+      "digest": "206f03556d0dd9ebab87d0ccc14eeef6329262f03c784148dae00da0780914d2",
+      "bodyDigest": "a711537b3259933b3deac593c43c18c0a7adcf65b1ddd0d2d56494f18d3681f5"
+    },
+    "backend-interview-index": {
+      "title": "后端工程面试题目录",
+      "collection": "interviews",
+      "state": "pending",
+      "digest": "2f70f6e8fc8f15c171eea5fb5270cc70e86b9e1f8fd40ae5766cad0bfe46c590",
+      "bodyDigest": "d2d048d08d0ca4f83b0fe47209efed3fa5d4dea37d1fdc38f1b11ed1b5311372"
+    },
+    "go-interview-index": {
+      "title": "Go 语言与运行时面试题目录",
+      "collection": "interviews",
+      "state": "pending",
+      "digest": "2abd3d6806bdea785fc2c85999b1aa1dbf987f98c4a0f9fe139000bba3c5c4ec",
+      "bodyDigest": "7a117923082f618fba58926b36fe6164e5cc8c5c83e8b62417571992c1b772dd"
+    },
+    "interview-index": {
+      "title": "Go 后端与 AI／Agent 社招面试题目录",
+      "collection": "interviews",
+      "state": "pending",
+      "digest": "7ee77e266329e2dfad03a4c7e6ad1fb6e2649ded7ae458d7c0fa7ab31c93f2c3",
+      "bodyDigest": "cec9fc89a99a17aebe4a488774bfe1d9dbaaf0bea9c2d97f82e12080d95f1d39"
+    },
+    "interview-resources": {
+      "title": "Go 与 Agent 面试资料",
+      "collection": "interviews",
+      "state": "reading",
+      "digest": "477902063a280dfcd9c49c08f71f386a7093a4499c469737e8cd66bdbc32e074",
+      "bodyDigest": "62466d1e45f5ac4cbbc414b9d1db42e9cc5984a024a2919aa9328e1c85a863f5"
+    },
     "a2a": {
       "title": "A2A（Agent 间通信协议）",
       "collection": "notes",
@@ -32226,6 +32261,200 @@
       "docId": "agent-harness",
       "from": "reading",
       "to": "organized"
+    },
+    {
+      "id": "5438175a-5dcc-4a63-8173-f214f617f34b",
+      "kind": "created",
+      "entity": "doc:interview",
+      "title": "Go 与 Agent 社招面经",
+      "time": "2026-10-17T16:48:21.268Z",
+      "collections": [
+        "notes"
+      ],
+      "source": "observed",
+      "docId": "interview"
+    },
+    {
+      "id": "a887189b-2973-40f0-9b0c-6428a4c87bab",
+      "kind": "created",
+      "entity": "doc:agent-interview-accounts",
+      "title": "Agent 应用面经：项目追问与失败复盘",
+      "time": "2026-10-17T16:48:21.268Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "agent-interview-accounts"
+    },
+    {
+      "id": "d98d4dea-fec2-4c36-ae57-a3a519feeb9f",
+      "kind": "created",
+      "entity": "doc:go-interview-accounts",
+      "title": "Go 后端社招：三篇个人面经",
+      "time": "2026-10-17T16:48:21.268Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "go-interview-accounts"
+    },
+    {
+      "id": "3de4d4b9-6e53-4ba1-9d51-406578ec7a35",
+      "kind": "created",
+      "entity": "doc:interview-question-banks",
+      "title": "Go 与 AI 工程面试题库导读",
+      "time": "2026-10-17T16:48:21.268Z",
+      "collections": [
+        "readings"
+      ],
+      "source": "observed",
+      "docId": "interview-question-banks"
+    },
+    {
+      "id": "292e4e2f-3f93-4445-8f39-dea5f2d0d8eb",
+      "kind": "created",
+      "entity": "doc:interview-resources",
+      "title": "Go 与 Agent 面试资料",
+      "time": "2026-10-17T17:02:01.748Z",
+      "collections": [
+        "interviews"
+      ],
+      "source": "observed",
+      "docId": "interview-resources"
+    },
+    {
+      "id": "82d46d06-f3d9-4180-990d-800cf4f33621",
+      "kind": "created",
+      "entity": "doc:agent-interview-index",
+      "title": "AI 与 Agent 应用面试题目录",
+      "time": "2026-10-17T17:02:18.464Z",
+      "collections": [
+        "interviews"
+      ],
+      "source": "observed",
+      "docId": "agent-interview-index"
+    },
+    {
+      "id": "d87fd8dc-0f53-4fb6-b33e-d85524ebfef0",
+      "kind": "created",
+      "entity": "doc:backend-interview-index",
+      "title": "后端工程面试题目录",
+      "time": "2026-10-17T17:02:18.464Z",
+      "collections": [
+        "interviews"
+      ],
+      "source": "observed",
+      "docId": "backend-interview-index"
+    },
+    {
+      "id": "74961672-8815-4330-9097-6ef1b3fcc24c",
+      "kind": "created",
+      "entity": "doc:go-interview-index",
+      "title": "Go 语言与运行时面试题目录",
+      "time": "2026-10-17T17:02:18.464Z",
+      "collections": [
+        "interviews"
+      ],
+      "source": "observed",
+      "docId": "go-interview-index"
+    },
+    {
+      "id": "baa866af-c40c-4e96-ae36-75b972e2390e",
+      "kind": "created",
+      "entity": "doc:interview-index",
+      "title": "Go 后端与 AI／Agent 社招面试题目录",
+      "time": "2026-10-17T17:02:18.464Z",
+      "collections": [
+        "interviews"
+      ],
+      "source": "observed",
+      "docId": "interview-index"
+    },
+    {
+      "id": "cce4a35f-858a-49ca-a866-1fa792edf784",
+      "kind": "updated",
+      "entity": "doc:interview-resources",
+      "title": "Go 与 Agent 面试资料",
+      "time": "2026-10-17T17:02:18.464Z",
+      "collections": [
+        "interviews"
+      ],
+      "source": "observed",
+      "docId": "interview-resources"
+    },
+    {
+      "id": "71187ee6-8916-4b95-a4ba-67c2933bd4c5",
+      "kind": "state-changed",
+      "entity": "doc:interview-resources",
+      "title": "Go 与 Agent 面试资料",
+      "time": "2026-10-17T17:02:36.584Z",
+      "collections": [
+        "interviews"
+      ],
+      "source": "observed",
+      "docId": "interview-resources",
+      "from": "pending",
+      "to": "reading"
+    },
+    {
+      "id": "50b626c8-b735-45fc-ad62-73e59b029b43",
+      "kind": "updated",
+      "entity": "doc:agent-interview-index",
+      "title": "AI 与 Agent 应用面试题目录",
+      "time": "2026-10-17T17:03:42.468Z",
+      "collections": [
+        "interviews"
+      ],
+      "source": "observed",
+      "docId": "agent-interview-index"
+    },
+    {
+      "id": "04e19c69-3f22-48f6-9600-2b174848410a",
+      "kind": "updated",
+      "entity": "doc:go-interview-index",
+      "title": "Go 语言与运行时面试题目录",
+      "time": "2026-10-17T17:03:42.468Z",
+      "collections": [
+        "interviews"
+      ],
+      "source": "observed",
+      "docId": "go-interview-index"
+    },
+    {
+      "id": "8be91f3d-1a6d-46a3-9064-8c8839276093",
+      "kind": "updated",
+      "entity": "doc:agent-interview-index",
+      "title": "AI 与 Agent 应用面试题目录",
+      "time": "2026-10-17T17:04:10.469Z",
+      "collections": [
+        "interviews"
+      ],
+      "source": "observed",
+      "docId": "agent-interview-index"
+    },
+    {
+      "id": "bfba9ee6-3f5a-4c4d-b367-d5d299969ba1",
+      "kind": "updated",
+      "entity": "doc:go-interview-index",
+      "title": "Go 语言与运行时面试题目录",
+      "time": "2026-10-17T17:04:10.469Z",
+      "collections": [
+        "interviews"
+      ],
+      "source": "observed",
+      "docId": "go-interview-index"
+    },
+    {
+      "id": "5ced9f1c-756b-41eb-9b17-6849b450a4db",
+      "kind": "updated",
+      "entity": "doc:interview-index",
+      "title": "Go 后端与 AI／Agent 社招面试题目录",
+      "time": "2026-10-17T17:04:10.469Z",
+      "collections": [
+        "interviews"
+      ],
+      "source": "observed",
+      "docId": "interview-index"
     }
   ]
 }
