@@ -4,7 +4,7 @@ title: "Agent"
 category: "Agent"
 tags: ["Agent", "工程选型"]
 created_at: "2026-10-09"
-updated_at: "2026-10-17T10:41:54+08:00"
+updated_at: "2026-10-17T17:15:10+08:00"
 reading_suggestions:
   - agent-vs-workflow
   - agent-loop
@@ -38,7 +38,7 @@ Agent 通过「模型决策 → 程序执行工具 → 结果回传 → 模型�
 
 步骤固定、分支明确时，[[agent-vs-workflow|工作流（Workflow）]]通常更易控制；需要根据中间结果动态选择行动时，再考虑 Agent。两者可以组合。多轮决策会增加耗时、费用与错误累积的机会，因此还要比较它相对简单流程带来的实际收益。
 
-[[enterprise-agent|企业 Agent 选型]]可先验证「通用 Agent + MCP」，再按实际缺口补业务服务、工作流或运行系统。
+[[enterprise-agent-build|企业何时需要自建 Agent]]取决于通用 Agent 加 MCP 是否满足业务要求，以及专用实现是否带来足够收益；补业务服务、建设企业应用与定制运行系统，需要承担的范围不同。
 
 ## 模型怎样获得信息并采取行动？
 

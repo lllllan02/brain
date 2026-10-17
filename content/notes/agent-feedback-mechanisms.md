@@ -1,11 +1,11 @@
 ---
-learning_status: pending
+learning_status: reading
 title: "Agent 的反馈与调整机制"
 parent: agent
 category: "Agent"
 tags: ["Agent", "自我纠正", "重试", "任务规划"]
 created_at: "2026-10-12T11:27:16+08:00"
-updated_at: "2026-10-16T20:42:35+08:00"
+updated_at: "2026-10-17T18:54:21+08:00"
 reading_suggestions:
   - agent-retry
   - agent-reflection
@@ -13,6 +13,7 @@ reading_suggestions:
   - agent-replanning
   - agent-checkpoint-recovery
   - agent-human-in-the-loop
+learning_status_changed_at: "2026-10-17T18:56:50.838+08:00"
 ---
 
 **重试、反思、自我纠正和重新规划可以共同完成一次调整。它们描述不同职责，不是互斥的模块，也不是每次必经的固定步骤。**
@@ -34,11 +35,13 @@ reading_suggestions:
 
 ![[assets/agent-feedback-mechanisms.png|重试、反思、自我纠正和重新规划共享反馈并协作，修改后返回计划或结果节点继续验证]]
 
-**「按问题选择处理方式，不固定逐级升级。」** 暂时故障按[[retry-decision|重试决策]]处理；明确的参数错误可直接修正；需要分析时，按[[agent-reflection#反思怎样形成完整循环？|有效反思的方法]]提供标准与证据。中断后从哪里继续，则由[[agent-checkpoint-recovery|检查点恢复]]处理。
+**「按问题选择处理方式，不固定逐级升级。」** 暂时故障按[[retry-decision|重试决策]]处理；明确的参数错误可直接修正；需要分析时，按[[agent-reflection#怎样组织一次反思？|反思的组织方式]]提供标准与证据。中断后从哪里继续，则由[[agent-checkpoint-recovery|检查点恢复]]处理。
 
 框架名称可能覆盖多个职责：[[pydantic-retries-summary|Pydantic AI 的 Retry]]也包含模型修正，[[langgraph-replanning-summary|LangGraph 的 replan 示例]]同时检查进度与更新计划。应看实际行为；[[self-refine-summary|Self-Refine]]修改当前输出，[[reflexion-summary|Reflexion]]将反馈写成后续尝试可用的经验，后者是具体方法名。
 
-所有路径都应保留有效成果、核查外部副作用与[[idempotency|幂等性]]，统一限制次数、耗时和费用。修改后验证；持续无进展或预算耗尽时停止，必要时[[agent-human-in-the-loop|转人工]]，不能靠反复尝试绕过权限。
+反思提出建议后，由自我纠正落实修改，再按原要求验证；未通过时携带问题与证据继续修订，必要时重新反思。**「验证通过，才能接受修改。」**
+
+所有路径都应保留有效成果、核查外部副作用与[[idempotency|幂等性]]，统一限制次数、耗时和费用。持续无进展或预算耗尽时停止，必要时[[agent-human-in-the-loop|转人工]]，不能靠反复尝试绕过权限。
 
 ## 同一个错误，为什么会同时触发多种恢复？
 
