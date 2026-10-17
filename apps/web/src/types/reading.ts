@@ -63,8 +63,6 @@ export interface ReaderCluster {
 }
 export interface ReadingQueue {
   items: { id: string }[];
-  has(id: string): boolean;
-  toggle(id: string): void;
 }
 export interface EnterTimeline {
   progress: number;

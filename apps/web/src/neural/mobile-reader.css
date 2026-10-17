@@ -50,10 +50,9 @@
   .galaxy-page.galaxy-reading.mobile-list-open .cluster-list-item strong { font-size: 14px; }
   .galaxy-page.galaxy-reading.mobile-list-open .cluster-list { pointer-events: auto; }
   .galaxy-page .cluster-list-actions button { min-width: 44px; min-height: 44px; }
-  .galaxy-page .list-suggested-option { height: 44px; font-size: 13px; }
+  .galaxy-page :is(.list-modes, .list-mode-drum, .list-modes .list-mode-option) { height: 44px; }
+  .galaxy-page .list-modes .list-mode-option { font-size: 13px; }
   .galaxy-page .cluster-list-item { min-height: 52px; }
-  .galaxy-page .queue-list-action { width: 44px; height: 44px; top: 4px; right: 0; }
-  .galaxy-page .has-queue-action .cluster-list-item { padding-right: 48px; }
 }
 
 /* Navigation stays on the first row; settings have their own room on phones. */
@@ -69,7 +68,6 @@
   .galaxy-page.galaxy-reading .reader-close { grid-area: 1 / 4; }
   .galaxy-page.galaxy-reading .reader-font-select { grid-area: 2 / 1; width: 116px; max-width: 100%; font-size: 16px; padding: 4px 6px; }
   .galaxy-page.galaxy-reading :is(.document-state-toggle, .document-state-label) { grid-area: 2 / 2 / 3 / 4; justify-self: end; display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; }
-  .galaxy-page.galaxy-reading .reader-queue-toggle { grid-area: 2 / 4; }
   .galaxy-page.galaxy-reading .reader-toolbar-title { font-size: 14px; }
   .galaxy-page.galaxy-reading .reader-context > .read-category-link { font-size: 13px; min-height: 44px; }
   .galaxy-page.galaxy-reading .an-title-row { flex-wrap: wrap; gap: 8px; }

@@ -86,7 +86,9 @@ export function summaryCounts(events: ActivityEvent[], start: string, end: strin
   return {
     created: count((e) => e.kind === 'created'),
     updated: count((e) => e.kind === 'updated'),
-    learned: count((e) => e.kind === 'state-changed' && e.to === 'understood'),
+    learned: count(
+      (e) => e.kind === 'state-changed' && (e.to === 'organized' || e.to === 'understood'),
+    ),
     relearn: count((e) => e.kind === 'state-changed' && e.to === 'pending'),
     images: count((e) => e.kind === 'image-created'),
     formats: count((e) => e.kind === 'image-format'),

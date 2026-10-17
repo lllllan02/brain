@@ -36,10 +36,10 @@ test('本地文档请求保留接口、状态写回参数与服务端错误', as
   assert.deepEqual(await api.fetchLibrary(controller.signal), library);
   assert.equal(requests[0][1].signal, controller.signal);
   assert.equal(requests[0][0], '/api/library');
-  assert.deepEqual(await api.updateDocumentState('note', 'understood', 'v1'), library);
+  assert.deepEqual(await api.updateDocumentState('note', 'organized', 'v1'), library);
   assert.deepEqual(requests[1], ['/api/documents/state', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id: 'note', state: 'understood', version: 'v1' }),
+    body: JSON.stringify({ id: 'note', state: 'organized', version: 'v1' }),
   }]);
   await assert.rejects(api.updateDocumentState('note', 'pending', 'v1'), /文件已修改/);
 });
@@ -65,10 +65,10 @@ test('远程地址不启用状态写回，读取失败保留错误提示', async
 test('读取与状态写回均拒绝不符合文档契约的成功响应', async t => {
   const api = await client(t, {fetch:async()=>({ok:true,json:async()=>({version:'v1',documents:[{id:'broken'}]})})});
   await assert.rejects(api.fetchLibrary(),/文档数据格式无效/);
-  await assert.rejects(api.updateDocumentState('broken','understood','v1'),/文档数据格式无效/);
+  await assert.rejects(api.updateDocumentState('broken','organized','v1'),/文档数据格式无效/);
 });
 
-test('未变化的轮询不读取 JSON，复用已验证对象；写回后重新验证', async t => {
+test('未变化的轮询复用对象；写回后沿用新版本校验，不再下载整库', async t => {
   let calls = 0, parsed = 0;
   const api = await client(t, { fetch: async (_url, options) => {
     calls++;
@@ -77,8 +77,11 @@ test('未变化的轮询不读取 JSON，复用已验证对象；写回后重新
       assert.equal(options.cache, 'no-store');
       return { status: 304, json: () => { throw Error('不得解析 304'); } };
     }
-    if (calls === 4) assert.equal(options.headers, undefined);
-    return { ok: true, headers: new Headers({ ETag: '"v1"' }), json: async () => {
+    if (calls === 4) {
+      assert.equal(options.headers['If-None-Match'], '"v2"');
+      return { status: 304, json: () => { throw Error('不得重新下载整库'); } };
+    }
+    return { ok: true, headers: new Headers({ ETag: calls < 3 ? '"v1"' : '"v2"' }), json: async () => {
       parsed++;
       return { documents: [], version: calls < 3 ? 'v1' : 'v2' };
     } };
@@ -86,7 +89,28 @@ test('未变化的轮询不读取 JSON，复用已验证对象；写回后重新
   const first = await api.fetchLibrary();
   assert.equal(await api.fetchLibrary(), first);
   assert.equal(parsed, 1);
-  await api.updateDocumentState('note', 'understood', 'v1');
+  await api.updateDocumentState('note', 'organized', 'v1');
   assert.equal((await api.fetchLibrary()).version, 'v2');
-  assert.equal(parsed, 3);
+  assert.equal(parsed, 2);
+});
+
+test('增量状态响应保留无关对象，校验版本与未知目标后才合并',async t=>{
+  const {parseDocument,renderDocument}=await import('../src/library.ts');
+  const raw=parseDocument('正文','notes/a.md'),other=parseDocument('其他正文','notes/other.md');
+  const initial={version:'v1',documents:[renderDocument(raw,[raw,other]),renderDocument(other,[raw,other])]};
+  const changed={...initial.documents[0],state:'reading'};
+  let calls=0,body;
+  const api=await client(t,{fetch:async(_url,options)=>{
+    calls++;
+    if(calls===1)return {ok:true,json:async()=>initial};
+    body=JSON.parse(options.body);
+    return {ok:true,json:async()=>({kind:'state-update',baseVersion:calls===2?'v1':calls===3?'wrong':'v2',version:'v2',documents:[calls===4?{...changed,id:'unknown'}:changed]})};
+  }});
+  const before=await api.fetchLibrary();
+  const next=await api.updateDocumentState('a','reading','v1');
+  assert.equal(body.incremental,true);
+  assert.equal(next.documents[1],before.documents[1]);
+  assert.equal(next.documents[0].state,'reading');
+  await assert.rejects(api.updateDocumentState('a','organized','v2'),/版本不匹配/);
+  await assert.rejects(api.updateDocumentState('a','organized','v2'),/未知文档/);
 });

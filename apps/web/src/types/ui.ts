@@ -31,7 +31,6 @@ export interface DocumentReaderProps {
   onReadingScroll(key: string, top: number): void;
   navigation: ReactNode;
   stateAction: DocumentStateAction | null;
-  queue: ReadingQueue;
 }
 export type RollerOption = [
   mode: string,
@@ -44,6 +43,8 @@ export interface ListNavigationProps {
   graph: ReaderGraph;
   node: ReaderNode | undefined;
   cluster: Cluster | null;
+  queue: ReadingQueue;
+  queueRef: RefObject<HTMLButtonElement | null>;
   onChoose(mode: string): void;
   documentCount?: number | null;
   totalCount?: number;
@@ -72,7 +73,6 @@ export interface ClusterListProps {
   navigation?: React.ReactElement<ListNavigationProps>;
   pinned?: boolean;
   onPin?: () => void;
-  queue: ReadingQueue;
   collectionFilter?: string;
   active?: boolean;
 }

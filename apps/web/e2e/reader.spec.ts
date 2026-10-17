@@ -83,11 +83,56 @@ test('阅读建议与手机全屏列表保留正文位置', async ({ page }, tes
   await reader.getByRole('button', { name: '建议阅读 1' }).click();
   await expect(page.locator('.cluster-list-item')).toHaveCount(1);
   await expect(page.locator('.cluster-list-item')).toContainText('回归终点');
-  const navigation = page.getByRole('navigation', { name: '文档列表模式', exact: true });
-  await expect(navigation.getByRole('button')).toHaveCount(1);
-  await expect(navigation.getByRole('button')).toHaveText('建议阅读 1');
+  const navigation = page.getByRole('navigation', { name: /^文档列表模式/ });
+  await expect(navigation.getByRole('button')).toHaveCount(2);
+  await expect(navigation.getByRole('button', { name: '建议阅读 1' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
   await expect(page.getByRole('navigation', { name: /^列表类型与状态筛选/ })).toHaveCount(0);
   await page.screenshot({ path: testInfo.outputPath('suggestions.png') });
+  await navigation.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.locator('.cluster-list-item')).toContainText('回归终点');
+  await expect(navigation.getByRole('button', { name: '阅读中 1' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await expect(page.getByRole('button', { name: /加入待阅读|移出待阅读/ })).toHaveCount(0);
+  await page.keyboard.press('ArrowLeft');
+  // The original roller supports pointer dragging on both desktop and mobile layouts.
+  const modeBounds = (await navigation.boundingBox())!;
+  await page.mouse.move(
+    modeBounds.x + modeBounds.width * 0.7,
+    modeBounds.y + modeBounds.height / 2,
+  );
+  await page.mouse.down();
+  await page.mouse.move(
+    modeBounds.x + modeBounds.width * 0.3,
+    modeBounds.y + modeBounds.height / 2,
+    {
+      steps: 8,
+    },
+  );
+  await page.mouse.up();
+  await expect(navigation.getByRole('button', { name: '阅读中 1' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await expect(page.locator('.cluster-list-item')).toHaveCount(1);
+  await expect(page.locator('.cluster-list-item')).toContainText('回归终点');
+  await expect(page.locator('.cluster-list-item')).toBeInViewport();
+  await expect
+    .poll(() =>
+      page
+        .locator('.cluster-list-item')
+        .evaluate((element) => Number(getComputedStyle(element).opacity)),
+    )
+    .toBe(1);
+  await page.screenshot({ path: testInfo.outputPath('reading-queue.png') });
+  await navigation.focus();
+  await page.keyboard.press('ArrowLeft');
+  await expect(page.locator('.cluster-list-item')).toContainText('回归终点');
   if (page.viewportSize()!.width <= 900) {
     await page.getByRole('button', { name: '返回正文', exact: true }).click();
     const bounds = await page.locator('.reader-shell').boundingBox();

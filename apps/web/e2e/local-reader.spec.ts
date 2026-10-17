@@ -144,8 +144,9 @@ test('文档、元数据与图谱自动局部更新，保留阅读段落、图�
   for (const filtered of page.viewportSize()!.width <= 900 ? [false] : [false, true]) {
     if (filtered) await page.getByTitle('按目录展开星云', { exact: true }).click();
     for (const [action, reverse, collection] of [
-      ['标为已理解', '标为待学习', 'understood'],
-      ['标为待学习', '标为已理解', 'pending'],
+      ['标为阅读中', '标为已整理', 'reading'],
+      ['标为已整理', '标为待学习', 'organized'],
+      ['标为待学习', '标为阅读中', 'pending'],
     ]) {
       await toolbar.getByRole('button', { name: action }).click();
       await expect(toolbar.getByRole('button', { name: reverse })).toBeVisible();
@@ -206,14 +207,14 @@ test('状态切换贯通文件、内链高亮、预览和节点标签', async ({
   const reader = page.locator('.document-reader[data-document-id]');
   await expect(page.locator('.reader-shell')).not.toHaveAttribute('inert');
   const link = reader.locator('.markdown a[href="#/doc/state-guide"]');
-  await expect(link).toHaveAttribute('data-state', 'unread');
+  await expect(link).toHaveAttribute('data-state', 'pending');
   await expect(reader.locator('.markdown a[href="#/doc/state-pending"]')).toHaveAttribute(
     'data-state',
     'pending',
   );
   await expect(reader.locator('.markdown a[href="#/doc/state-done"]')).toHaveAttribute(
     'data-state',
-    'understood',
+    'organized',
   );
   const unreadHighlight = await link.evaluate((el) =>
     getComputedStyle(el).getPropertyValue('--link-opacity'),
@@ -221,23 +222,24 @@ test('状态切换贯通文件、内链高亮、预览和节点标签', async ({
   await link.click();
   await expect(reader).toHaveAttribute('data-document-id', 'state-guide');
   await expect(page.locator('.reader-shell')).not.toHaveAttribute('inert');
-  await reader.getByRole('button', { name: '标为已读', exact: true }).click();
-  await expect(reader.getByRole('button', { name: '标为未读', exact: true })).toBeVisible();
-  await expect(page.locator('.document-state-toast')).toHaveText('已标记为已读');
-  expect(
-    await page
-      .locator('.document-state-toast')
-      .evaluate((el) => el.parentElement === document.body),
-  ).toBe(true);
+  await reader.getByRole('button', { name: '标为阅读中', exact: true }).click();
+  await expect(reader.getByRole('button', { name: '标为已整理', exact: true })).toBeVisible();
+  await reader.getByRole('button', { name: '标为已整理', exact: true }).click();
+  await expect(reader.getByRole('button', { name: '标为待学习', exact: true })).toBeVisible();
+  await expect(page.locator('body > .document-state-toast')).toHaveText('已标记为已整理');
   await expect(
-    reader.locator('.reader-heading .collection-title-icon[data-state="read"]'),
+    reader.locator('.reader-heading .collection-title-icon[data-state="organized"]'),
   ).toBeVisible();
-  await expect(page.locator('.galaxy-label.is-current')).toContainText('已读');
+  await expect(page.locator('.galaxy-label.is-current')).toContainText('已整理');
   const raw = await readFile(path.join(root, 'readings/state-guide.md'), 'utf8');
-  expect(raw).toContain('read: true');
-  expect(raw.replace('read: true\n', '')).toBe(guide);
+  expect(raw).toContain('learning_status: organized');
+  expect(
+    raw
+      .replace('learning_status: organized\n', '')
+      .replace(/^learning_status_changed_at:[^\r\n]*\r?\n/gm, ''),
+  ).toBe(guide);
   await page.goBack();
-  await expect(link).toHaveAttribute('data-state', 'read');
+  await expect(link).toHaveAttribute('data-state', 'organized');
   expect(
     await link.evaluate((el) => getComputedStyle(el).getPropertyValue('--link-opacity')),
   ).not.toBe(unreadHighlight);
@@ -245,11 +247,132 @@ test('状态切换贯通文件、内链高亮、预览和节点标签', async ({
   await link.focus();
   const preview = page.getByRole('dialog', { name: '预览：阅读导读' });
   await expect(preview).toBeVisible();
-  await expect(preview.locator('.collection-title-icon')).toHaveAttribute('data-state', 'read');
-  await expect(preview.locator('.link-preview-label')).toContainText('已读');
+  await expect(preview.locator('.collection-title-icon')).toHaveAttribute(
+    'data-state',
+    'organized',
+  );
+  await expect(preview.locator('.link-preview-label')).toContainText('已整理');
   await page.screenshot({ path: testInfo.outputPath('states-and-preview.png') });
   await page.keyboard.press('Escape');
   await page.reload();
-  await expect(link).toHaveAttribute('data-state', 'read');
+  await expect(link).toHaveAttribute('data-state', 'organized');
   expect(await readFile(path.join(root, 'notes/state-board.md'), 'utf8')).not.toContain('read:');
+  const guideFile = path.join(root, 'readings/state-guide.md');
+  await writeFile(guideFile, raw.replace('导读正文', '修改后的导读正文'));
+  await expect(link).toHaveAttribute('data-state', 'reading', { timeout: 20000 });
+  await expect(link.locator('.state-check')).toHaveCount(0);
+  expect(await readFile(guideFile, 'utf8')).toContain('learning_status: reading');
+  await writeFile(guideFile, (await readFile(guideFile, 'utf8')) + '\n再次修改。');
+  await expect
+    .poll(
+      async () =>
+        (await (await page.request.get(url + '/api/library')).json()).documents.find(
+          (doc: { id: string }) => doc.id === 'state-guide',
+        ).state,
+    )
+    .toBe('reading');
+  expect(await readFile(guideFile, 'utf8')).toContain('learning_status: reading');
+});
+
+test('旧待阅读记录迁入文件状态后清除，刷新仍保留阅读中', async ({ page }) => {
+  const file = path.join(root, 'notes/legacy-queue.md');
+  await writeFile(file, '---\ntitle: 迁移验收\nlearning_status: pending\n---\n正文');
+  await page.addInitScript(() => {
+    if (!sessionStorage.getItem('legacy-queue-seeded')) {
+      localStorage.setItem('horizon:reading-queue:v1:/', JSON.stringify(['legacy-queue']));
+      sessionStorage.setItem('legacy-queue-seeded', 'true');
+    }
+  });
+  await page.goto(url + '/#/doc/legacy-queue');
+  const reader = page.locator('.document-reader[data-document-id="legacy-queue"]');
+  await expect(reader.getByRole('button', { name: '标为已整理', exact: true })).toBeVisible();
+  expect(await readFile(file, 'utf8')).toContain('learning_status: reading');
+  expect(await page.evaluate(() => localStorage.getItem('horizon:reading-queue:v1:/'))).toBeNull();
+  await page.reload();
+  await expect(reader.getByRole('button', { name: '标为已整理', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: /加入待阅读|移出待阅读/ })).toHaveCount(0);
+});
+
+test('状态立即响应慢请求，保存失败恢复原状态且不改正文', async ({ page }) => {
+  const file = path.join(root, 'notes/fast-state.md');
+  await writeFile(file, '---\ntitle: 快速状态验收\nlearning_status: pending\n---\n保持这段正文');
+  await page.goto(url + '/#/doc/fast-state');
+  const reader = page.locator('.document-reader[data-document-id="fast-state"]');
+  await expect(reader.getByRole('button', { name: '标为阅读中', exact: true })).toBeEnabled();
+  let release!: () => void;
+  const blocked = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route('**/api/documents/state', async (route) => {
+    await blocked;
+    await route.continue();
+  });
+  const latency = await page.evaluate(async () => {
+    const button = document.querySelector<HTMLButtonElement>('.document-state-toggle')!;
+    const start = performance.now();
+    const updated = new Promise<number>((resolve) => {
+      const observer = new MutationObserver(() => {
+        if (button.dataset.state === 'reading') {
+          observer.disconnect();
+          resolve(performance.now() - start);
+        }
+      });
+      observer.observe(button, { attributes: true });
+    });
+    button.click();
+    return updated;
+  });
+  expect(latency).toBeLessThan(250);
+  await expect(reader.getByRole('button', { name: '标为已整理', exact: true })).toBeDisabled();
+  await expect(page.locator('.document-state-toast')).toHaveCount(0);
+  expect(await readFile(file, 'utf8')).toContain('learning_status: pending');
+  release();
+  await expect(reader.getByRole('button', { name: '标为已整理', exact: true })).toBeEnabled();
+  expect(await readFile(file, 'utf8')).toContain('learning_status: reading');
+  await page.unroute('**/api/documents/state');
+  await page.route('**/api/documents/state', (route) =>
+    route.fulfill({
+      status: 409,
+      contentType: 'application/json',
+      body: JSON.stringify({ error: '文档已被其他编辑修改' }),
+    }),
+  );
+  await reader.getByRole('button', { name: '标为已整理', exact: true }).click();
+  await expect(page.locator('.document-state-toast')).toHaveText('文档已被其他编辑修改');
+  await expect(reader.getByRole('button', { name: '标为已整理', exact: true })).toBeEnabled();
+  expect(await readFile(file, 'utf8')).toContain('learning_status: reading');
+  await expect(reader.locator('.markdown')).toContainText('保持这段正文');
+});
+
+test('阅读中按状态修改时间排列，重新进入置前，正文修改和刷新保持顺序', async ({ page }) => {
+  const first = path.join(root, 'notes/order-a.md');
+  const second = path.join(root, 'notes/order-b.md');
+  await writeFile(first, '---\ntitle: 顺序甲\nlearning_status: pending\n---\n甲正文');
+  const old =
+    '---\ntitle: 顺序乙\nlearning_status: reading\nlearning_status_changed_at: "2020-01-01T00:00:00.000+08:00"\n---\n乙正文';
+  await writeFile(second, old);
+  await page.goto(url + '/#/doc/order-a');
+  const reader = page.locator('.document-reader[data-document-id="order-a"]');
+  await reader.getByRole('button', { name: '标为阅读中', exact: true }).click();
+  await expect(reader.getByRole('button', { name: '标为已整理', exact: true })).toBeEnabled();
+  if (page.viewportSize()!.width <= 900)
+    await page.getByRole('button', { name: '打开阅读列表', exact: true }).click();
+  const navigation = page.getByRole('navigation', { name: /^文档列表模式/ });
+  await navigation.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.locator('.cluster-list-item').first()).toContainText('顺序甲');
+  expect(await readFile(first, 'utf8')).toContain('learning_status_changed_at:');
+  await writeFile(second, old.replace('乙正文', '修改后的乙正文'));
+  await page.reload();
+  await expect(page.locator('.cluster-list-item').first()).toContainText('顺序甲');
+  for (const state of ['organized', 'pending', 'reading']) {
+    const library = await (await page.request.get(url + '/api/library')).json();
+    const response = await page.request.post(url + '/api/documents/state', {
+      headers: { Origin: url },
+      data: { id: 'order-b', state, version: library.version },
+    });
+    expect(response.ok()).toBe(true);
+  }
+  await page.reload();
+  await expect(page.locator('.cluster-list-item').first()).toContainText('顺序乙');
 });

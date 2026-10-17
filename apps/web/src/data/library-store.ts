@@ -1,3 +1,4 @@
+import { stateChangeTimestamp } from '../document-dates.ts';
 import type { DocumentState } from '../document-state.ts';
 import type { Library, StateUpdate } from '../types/library.ts';
 
@@ -114,10 +115,28 @@ export function createLibraryStore(transport: Transport) {
     },
     async setState(id: string, state: DocumentState) {
       if (!active || !snapshot.library || snapshot.updateState.pending) return;
-      const version = snapshot.library.version,
+      const previousLibrary = snapshot.library;
+      const version = previousLibrary.version,
         epoch = generation;
       invalidate();
-      publish({ ...snapshot, revision, updateState: { status: 'pending', pending: true, id } });
+      const optimistic = {
+        ...previousLibrary,
+        documents: previousLibrary.documents.map((doc) =>
+          doc.id === id
+            ? {
+                ...doc,
+                state,
+                stateChangedAt: doc.state === state ? doc.stateChangedAt : stateChangeTimestamp(),
+              }
+            : doc,
+        ),
+      };
+      publish({
+        ...snapshot,
+        library: optimistic,
+        revision,
+        updateState: { status: 'pending', pending: true, id },
+      });
       try {
         const library = await transport.setState(id, state, version);
         if (!active || epoch !== generation) return;
@@ -133,6 +152,7 @@ export function createLibraryStore(transport: Transport) {
         publish({
           ...snapshot,
           revision: ++revision,
+          library: previousLibrary,
           updateState: { status: 'error', pending: false, id, error: message(error) },
         });
       }

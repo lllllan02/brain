@@ -83,8 +83,8 @@ const result = 1;
 await writeFile(
   path.join(root, 'notes/second.md'),
   `---
+learning_status: reading
 title: 回归终点
-learning_status: understood
 category: 验收
 ---
 # 回归终点

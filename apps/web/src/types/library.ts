@@ -16,6 +16,7 @@ export interface ParsedDocument {
   path: string;
   collection: string;
   state: import('../document-state.ts').DocumentState | null;
+  stateChangedAt?: string | null;
   title: string;
   aliases: string[];
   tags: string[];

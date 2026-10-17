@@ -106,10 +106,6 @@
 .cluster-list-toolbar{display:flex;align-items:center;gap:4px;flex:none;padding:0 0 6px;min-width:0}
 .galaxy-page .cluster-list-navigation{padding:0;flex:1;min-width:0}
 .list-navigation-controls{display:flex;justify-content:center}
-.list-suggested-option{height:32px;padding:0 12px;border:0;border-radius:5px;background:none;color:#dce6f3;font:inherit;font-size:11px;cursor:pointer}
-.list-suggested-option small{font-size:9px;opacity:.65}
-.list-suggested-option:disabled{opacity:.5;cursor:default}
-.list-suggested-option:focus-visible{outline:1px solid #aecdf0;outline-offset:-2px}
 .list-modes{--roller-ink:174,205,240;position:relative;width:100%;min-width:0;height:32px;margin:0;overflow:hidden;touch-action:none;user-select:none;cursor:grab;border-radius:5px;pointer-events:auto}
 .list-mode-window{position:absolute;inset:2px;border-radius:4px;pointer-events:none;transition:background .2s ease}
 .list-mode-drum{position:relative;height:32px;mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}

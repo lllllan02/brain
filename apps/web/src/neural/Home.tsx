@@ -1,3 +1,4 @@
+import { readingDocuments } from '../reading-order.ts';
 import { stateLabel } from '../document-state.ts';
 import { useReadingFlight } from './useReadingFlight.ts';
 import { useReaderLayout } from './useReaderLayout.ts';
@@ -9,7 +10,6 @@ import { useGalaxyScene, type GalaxyBindings } from './useGalaxyScene.ts';
 import type { Focus, ReaderNode } from '../types/graph.ts';
 import type { Cluster } from '../types/reading.ts';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { useReadingQueue } from './useReadingQueue.ts';
 import { Workbench } from './Workbench.tsx';
 import { useViewState } from './useViewState.ts';
 import { validCluster, validPinnedList, validFocus } from './view-state.ts';
@@ -74,7 +74,12 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
     'suggested',
     (value): value is 'incoming' | 'outgoing' | 'suggested' => value === 'suggested',
   );
-  const queue = useReadingQueue();
+  const queue = useMemo(
+    () => ({
+      items: readingDocuments(graph.nodes, graph.activity).map(({ id }) => ({ id })),
+    }),
+    [graph],
+  );
   // Always enter through the galaxy; a previous dashboard visit is not a landing preference.
   const [homeMode, setHomeMode] = useState('galaxy');
   const workbenchVisible = homeMode === 'workbench' && !focus.sel && !focus.mod;
@@ -647,10 +652,11 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
       <ClusterList
         active={!workbenchVisible && (Boolean(error) || (ready && branchesReady))}
         collectionFilter={collectionFilter}
-        queue={queue}
         navigation={
           <ListNavigation
+            queue={queue}
             graph={graph}
+            queueRef={queueToggle}
             node={pinnedList?.document ? graph.index.get(pinnedList.document) : node}
             cluster={displayedCluster}
             onChoose={(mode) => {
@@ -734,7 +740,6 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
                   });
                 setMobileListOpen((open) => !open);
               }}
-              queue={queue}
               stateAction={stateAction}
               navigation={
                 <ReadingNavigation graph={graph} reading={reading} onTravel={reading.travel} />

@@ -83,16 +83,16 @@ button.read-tag{cursor:pointer;font-family:inherit;text-align:left;transition:co
 
 /* State is file-backed and shared by title icons, previews and internal links. */
 .state-check { stroke-width: 2.4; paint-order: stroke; stroke: currentColor; }
-.collection-title-icon[data-state="pending"], .collection-title-icon[data-state="unread"] { stroke-dasharray: 3 1.5; }
-.markdown a[data-state="pending"], .markdown a[data-state="unread"] { text-decoration-line: underline; text-decoration-style: dotted; text-underline-offset: 4px; }
-.markdown a[data-state="understood"], .markdown a[data-state="read"] { text-decoration: none; }
+.collection-title-icon[data-state="pending"], .collection-title-icon[data-state="reading"] { stroke-dasharray: 3 1.5; }
+.markdown a[data-state="pending"], .markdown a[data-state="reading"] { text-decoration-line: underline; text-decoration-style: dotted; text-underline-offset: 4px; }
+.markdown a[data-state="organized"] { text-decoration: none; }
 .document-state-toggle, .document-state-label { font-size: 11px; color: #b5c8cf; white-space: nowrap; }
 .document-state-toggle { display: inline-flex; align-items: center; gap: 5px; background: transparent; border: 0; padding: 6px 8px; cursor: pointer; border-radius: 5px; }
 .document-state-toggle:hover, .document-state-toggle:focus-visible { background: #adc6df18; color: #eef4f7; }
 .document-state-toggle:focus-visible { outline: 1px solid currentColor; outline-offset: 2px; }
 .document-state-toggle:disabled { opacity: .55; cursor: wait; }
-.document-state-toggle[data-state="understood"] { color: #e4d0ab; }
-.document-state-toggle[data-state="read"] { color: #aadcd8; }
+.document-state-toggle[data-state="organized"] { color: #e4d0ab; }
+.document-state-toggle[data-state="reading"] { color: #aadcd8; }
 .cluster-list-item .document-state-label { margin-left: 8px; opacity: .85; }
 .galaxy-state-label { margin-left: 7px; font-size: 10px; opacity: .8; }
- .markdown a[data-state="pending"] .internal-link-icon, .markdown a[data-state="unread"] .internal-link-icon { stroke-dasharray: 3 1.5; }
+ .markdown a[data-state="pending"] .internal-link-icon, .markdown a[data-state="reading"] .internal-link-icon { stroke-dasharray: 3 1.5; }

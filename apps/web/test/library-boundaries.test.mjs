@@ -38,7 +38,7 @@ test('轮询单飞、状态写回取消旧读取；迟到旧响应不能覆盖�
   store.start(); await store.refresh(); assert.equal(reads.length,1);
   reads[0].resolve(library); await tick();
   void store.refresh(); assert.equal(reads.length,2);
-  const moving=store.setState('example','understood'); assert.equal(signal.aborted,true);
+  const moving=store.setState('example','organized'); assert.equal(signal.aborted,true);
   await store.refresh(); assert.equal(reads.length,2);
   const moved={...library,version:'v2'}; write.resolve(moved); await moving;
   reads[1].resolve(library); await tick();
@@ -62,9 +62,9 @@ test('失败后恢复清除错误；卸载取消读取并隔离旧生命周期�
 test('未加载不允许状态写回，失败写入保留正文', async () => {
   const write=deferred();let writes=0;
   const store=createLibraryStore({fetch:async()=>library,setState:()=>{writes++;return write.promise;}});
-  await store.setState('example','understood');assert.equal(writes,0);
-  store.start();await tick();const moving=store.setState('example','understood');
-  await store.setState('example','understood');assert.equal(writes,1);
+  await store.setState('example','organized');assert.equal(writes,0);
+  store.start();await tick();const moving=store.setState('example','organized');
+  await store.setState('example','organized');assert.equal(writes,1);
   write.reject(Error('version conflict'));await moving;
   assert.equal(store.getSnapshot().library,library);
   assert.equal(store.getSnapshot().updateState.status,'error');
@@ -75,7 +75,7 @@ test('未加载不允许状态写回，失败写入保留正文', async () => {
 test('卸载前的写入迟到结果不能覆盖重新连接后的文档库', async () => {
   const write=deferred();let version='v1';
   const store=createLibraryStore({fetch:async()=>({...library,version}),setState:()=>write.promise});
-  store.start();await tick();const moving=store.setState('example','understood');
+  store.start();await tick();const moving=store.setState('example','organized');
   store.stop();version='v3';store.start();await tick();
   write.resolve({...library,version:'v2'});await moving;
   assert.equal(store.getSnapshot().library.version,'v3');
@@ -107,4 +107,22 @@ test('后台读取失败保留已加载正文，恢复后自动同步', async ()
   assert.equal(store.getSnapshot().library,library);assert.equal(store.getSnapshot().error,'offline');
   next={...library,version:'v2'};failure=false;await store.refresh();
   assert.equal(store.getSnapshot().library.version,'v2');assert.equal(store.getSnapshot().error,'');store.stop();
+});
+
+test('点击立即显示新状态，服务端未完成时保持保存中；失败恢复原状态与正文', async()=>{
+  const write=deferred();
+  const other={...library.documents[0],id:'unrelated'};
+  const initial={...library,documents:[library.documents[0],other]};
+  const store=createLibraryStore({fetch:async()=>initial,setState:()=>write.promise});
+  store.start();await tick();
+  const pending=store.setState('example','reading');
+  const optimistic=store.getSnapshot();
+  assert.equal(optimistic.library.documents[0].state,'reading');
+  assert.equal(optimistic.library.documents[0].body,initial.documents[0].body);
+  assert.equal(optimistic.library.documents[1],other);
+  assert.equal(optimistic.updateState.status,'pending');
+  write.reject(Error('文件冲突'));await pending;
+  assert.equal(store.getSnapshot().library,initial);
+  assert.equal(store.getSnapshot().updateState.status,'error');
+  store.stop();
 });

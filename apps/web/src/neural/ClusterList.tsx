@@ -2,7 +2,6 @@ import type { ReaderGraph, ReaderNode } from '../types/graph.ts';
 import type { Cluster, Point } from '../types/reading.ts';
 import type { ClusterListProps } from '../types/ui.ts';
 import { readViewState, writeViewState } from './view-state.ts';
-import { ReadingQueueButton } from './ReadingQueueButton.tsx';
 import { Icon } from './icons.tsx';
 import {
   documentFilterLabel,
@@ -98,7 +97,6 @@ export function ClusterList({
   navigation,
   pinned,
   onPin,
-  queue,
   collectionFilter = 'all',
   active = true,
 }: ClusterListProps) {
@@ -142,7 +140,7 @@ export function ClusterList({
           ? '目录'
           : '分类';
   const title = shown?.queue
-    ? '待阅读'
+    ? '阅读中'
     : shown?.latest
       ? '最新文档'
       : shown?.recent
@@ -493,7 +491,7 @@ export function ClusterList({
                     {documents.length ? (
                       <ul key={selectionKey}>
                         {documents.map((node, index) => (
-                          <li key={node.id} className={queue ? 'has-queue-action' : undefined}>
+                          <li key={node.id}>
                             <button
                               type="button"
                               className="cluster-list-item"
@@ -520,13 +518,6 @@ export function ClusterList({
                                 )}
                               </span>
                             </button>
-                            {queue && (
-                              <ReadingQueueButton
-                                queue={queue}
-                                node={node}
-                                className="queue-list-action"
-                              />
-                            )}
                           </li>
                         ))}
                       </ul>
@@ -535,7 +526,7 @@ export function ClusterList({
                         {collectionFilter !== 'all'
                           ? `当前列表没有 ${documentFilterLabel(collectionFilter)} 文档，${pinned ? '解除固定后可切换为“全部”' : '可切换为“全部”'}`
                           : shown.queue
-                            ? '还没有待阅读文档，可用文章或列表旁的书签按钮添加'
+                            ? '还没有阅读中的文档，将文档状态设为“阅读中”后会显示在这里'
                             : shown.latest
                               ? '暂无有有效日期的文档'
                               : shown.recent

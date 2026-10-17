@@ -1,4 +1,13 @@
-import { array, dictionary, object, number, nullable, string, literal } from './data/validation.ts';
+import {
+  array,
+  dictionary,
+  object,
+  number,
+  nullable,
+  optional,
+  string,
+  literal,
+} from './data/validation.ts';
 import { isActivityEvent } from './data/library-schema.ts';
 import type {
   Library,
@@ -17,7 +26,7 @@ interface ActivityState {
   startedAt: string | null;
   documents: Record<
     string,
-    { title: string; collection: string; state: string | null; digest: string }
+    { title: string; collection: string; state: string | null; digest: string; bodyDigest?: string }
   >;
   images: Record<string, ImageSnapshot>;
   events: ActivityEvent[];
@@ -38,6 +47,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { documentTime } from './document-dates.ts';
 import { safeAsset } from './library.ts';
 import { CONTENT_COLLECTIONS } from './collections.ts';
+import { updateDocumentState } from './update-document-state.ts';
 
 const hash = (value: string | Buffer) => createHash('sha256').update(value).digest('hex');
 const imageExt = /\.(png|jpe?g|webp|gif|svg|excalidraw)$/i;
@@ -132,8 +142,9 @@ const validState = object<ActivityState>({
     object({
       title: string,
       collection: string,
-      state: nullable(literal('pending', 'understood', 'unread', 'read')),
+      state: nullable(literal('pending', 'reading', 'organized', 'understood', 'unread', 'read')),
       digest: string,
+      bodyDigest: optional(string),
     }),
   ),
   images: dictionary(
@@ -158,6 +169,41 @@ async function readState(file: string): Promise<ActivityState | null> {
     throw e;
   }
 }
+const normalizeState = (state: string) =>
+  state === 'understood' || state === 'read' ? 'organized' : state === 'unread' ? 'pending' : state;
+
+/** Only the local service writes progress back; exporters and retrieval remain read-only. */
+export async function reconcileDocumentStates(
+  root: string,
+  library: Library,
+  readLibrary?: () => Promise<Library>,
+): Promise<Library> {
+  const previous = await readState(path.join(root, '.activity.json'));
+  if (!previous) return library;
+  let current = library;
+  for (const doc of library.documents) {
+    const old = Object.hasOwn(previous.documents, doc.id) ? previous.documents[doc.id] : null;
+    if (!old || normalizeState(old.state ?? '') !== 'organized' || doc.state !== 'organized')
+      continue;
+    // Older activity snapshots include the title in their digest. Compare only when its title
+    // is unchanged; new snapshots always distinguish body changes from metadata edits.
+    const changed = old.bodyDigest
+      ? old.bodyDigest !== hash(doc.body)
+      : old.title === doc.title && old.digest !== hash(doc.title + '\n' + doc.body);
+    if (changed)
+      current = await updateDocumentState(
+        root,
+        {
+          id: doc.id,
+          state: 'reading',
+          version: current.version,
+        },
+        readLibrary,
+      );
+  }
+  return current;
+}
+
 export async function activityForLibrary(
   root: string,
   library: Library,
@@ -200,6 +246,7 @@ export async function activityForLibrary(
           collection: doc.collection,
           state: doc.state,
           digest: hash(doc.title + '\n' + doc.body),
+          bodyDigest: hash(doc.body),
         },
       ]),
     );
@@ -243,9 +290,13 @@ export async function activityForLibrary(
             old.collection === doc.collection &&
             old.state != null &&
             doc.state != null &&
-            old.state !== doc.state
+            normalizeState(old.state) !== doc.state
           )
-            emit('state-changed', `doc:${id}`, doc, { docId: id, from: old.state, to: doc.state });
+            emit('state-changed', `doc:${id}`, doc, {
+              docId: id,
+              from: normalizeState(old.state),
+              to: doc.state,
+            });
           if (old.digest !== doc.digest) emit('updated', `doc:${id}`, doc, { docId: id });
         }
       }

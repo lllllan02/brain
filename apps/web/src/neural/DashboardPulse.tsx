@@ -282,13 +282,13 @@ export function DashboardPulse({
         <section className="stats-panel pulse-reading" aria-labelledby="pulse-reading-title">
           <div className="stats-title">
             <h2 id="pulse-reading-title">接着读</h2>
-            <span>当前浏览器</span>
+            <span>{tab === 'recent' ? '当前浏览器' : '文档状态'}</span>
           </div>
           <div className="pulse-reading-tabs" aria-label="阅读列表">
             {(
               [
                 ['recent', '最近阅读', recent.length],
-                ['queue', '待阅读', queued.length],
+                ['queue', '阅读中', queued.length],
               ] as [string, string, number][]
             ).map(([id, label, count]) => (
               <button key={id} aria-pressed={tab === id} onClick={() => setTab(id)}>
@@ -325,17 +325,17 @@ export function DashboardPulse({
           ) : (
             <div className="pulse-empty">
               <span aria-hidden="true">{tab === 'recent' ? '↗' : '▤'}</span>
-              <p>{tab === 'recent' ? '还没有阅读记录' : '待阅读列表是空的'}</p>
+              <p>{tab === 'recent' ? '还没有阅读记录' : '阅读中列表是空的'}</p>
               <small>
                 {tab === 'recent'
                   ? '打开一篇文档后，可在这里继续阅读。'
-                  : '阅读时点击书签，将文档加入待阅读。'}
+                  : '将文档状态设为“阅读中”，即可在这里继续阅读。'}
               </small>
             </div>
           )}
           <p className="pulse-caption">
-            {list.length > 4 ? `显示${tab === 'recent' ? '最近阅读的' : '最早加入的'} 4 篇。` : ''}
-            阅读记录保存在本机，不代表已掌握。
+            {list.length > 4 ? `显示${tab === 'recent' ? '最近阅读的' : '阅读中的'} 4 篇。` : ''}
+            {tab === 'recent' ? '阅读记录保存在本机，不代表已掌握。' : '列表随文档状态同步。'}
           </p>
         </section>
       </div>

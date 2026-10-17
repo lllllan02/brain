@@ -1,3 +1,4 @@
+import { documentTime } from './document-dates.ts';
 import { codeLanguage } from './code-assets.ts';
 import type { marked } from 'marked';
 type MarkedOptions = marked.MarkedOptions;
@@ -60,12 +61,11 @@ export function parseDocument(raw: string, file: string): ParsedDocument {
   if (meta.parent != null && (typeof meta.parent !== 'string' || !meta.parent.trim()))
     throw new Error(`文档 ${file} 的 parent 必须是非空文本`);
   if (
-    collection === 'notes' &&
     meta.learning_status !== undefined &&
     (typeof meta.learning_status !== 'string' ||
-      !['pending', 'understood'].includes(meta.learning_status))
+      !['pending', 'reading', 'organized', 'understood'].includes(meta.learning_status))
   )
-    throw new Error(`文档 ${file} 的 learning_status 必须是 pending 或 understood`);
+    throw new Error(`文档 ${file} 的 learning_status 必须是 pending、reading 或 organized`);
   if (collection === 'readings' && meta.read !== undefined && typeof meta.read !== 'boolean')
     throw new Error(`文档 ${file} 的 read 必须是布尔值`);
   if (
@@ -78,15 +78,18 @@ export function parseDocument(raw: string, file: string): ParsedDocument {
     readingSuggestionTargets:
       (meta.reading_suggestions as string[] | null)?.map((item) => item.trim()) || [],
     state:
-      collection === 'notes'
-        ? meta.learning_status === 'understood'
-          ? 'understood'
-          : 'pending'
-        : collection === 'readings'
-          ? meta.read === true
-            ? 'read'
-            : 'unread'
-          : null,
+      meta.learning_status === 'organized' || meta.learning_status === 'understood'
+        ? 'organized'
+        : meta.learning_status === 'reading'
+          ? 'reading'
+          : meta.learning_status === 'pending'
+            ? 'pending'
+            : collection === 'readings' && meta.read === true
+              ? 'organized'
+              : 'pending',
+    stateChangedAt: Number.isFinite(documentTime(meta.learning_status_changed_at))
+      ? (meta.learning_status_changed_at as string)
+      : null,
     parentTarget: (meta.parent as string | null)?.trim() || null,
     id,
     collection,
@@ -481,7 +484,32 @@ export function createLibraryLoader(root: string) {
       files.every((file) => next.get(file) === cache.get(file))
     )
       return library;
-    const result = assembleLibrary(docs);
+    const changed = files.filter((file) => next.get(file) !== cache.get(file));
+    const statesOnly =
+      library &&
+      next.size === cache.size &&
+      changed.every((file) => {
+        const old = cache.get(file)?.document;
+        const current = next.get(file)!.document;
+        return (
+          old &&
+          JSON.stringify({ ...old, state: null, stateChangedAt: null }) ===
+            JSON.stringify({ ...current, state: null, stateChangedAt: null })
+        );
+      });
+    // A progress edit cannot change links or membership. Render only the changed documents
+    // and their inbound links, retaining every other document and its rendered Markdown.
+    const changedIds = new Set(changed.map((file) => next.get(file)!.document.id));
+    const parsed = new Map(docs.map((doc) => [doc.id, doc]));
+    const result = statesOnly
+      ? libraryFromDocuments(
+          library!.documents.map((doc) =>
+            changedIds.has(doc.id) || doc.references.some((ref) => changedIds.has(ref.id))
+              ? { ...renderDocument(parsed.get(doc.id)!, docs), backlinks: doc.backlinks }
+              : doc,
+          ),
+        )
+      : assembleLibrary(docs);
     // Publish only after all parsing and relation checks succeed; errors never poison the cache.
     cache = next;
     library = result;
@@ -503,6 +531,10 @@ function assembleLibrary(docs: ParsedDocument[]): Library {
     ids.add(d.id);
   }
   const documents = attachBacklinks(docs.map((d) => renderDocument(d, docs)));
+  return libraryFromDocuments(documents);
+}
+
+function libraryFromDocuments(documents: LibraryDocument[]): Library {
   return {
     version: createHash('sha256').update(JSON.stringify(documents)).digest('hex').slice(0, 16),
     documents,

@@ -10,3 +10,8 @@ export function documentTime(value: unknown) {
   if (!Number.isFinite(dayTime) || new Date(dayTime).toISOString().slice(0, 10) !== day) return NaN;
   return Date.parse(value);
 }
+
+// Progress ordering retains milliseconds so rapid changes within one second stay ordered.
+export function stateChangeTimestamp(now = Date.now()) {
+  return new Date(now + 8 * 60 * 60 * 1000).toISOString().replace('Z', '+08:00');
+}

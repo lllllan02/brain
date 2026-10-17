@@ -76,7 +76,7 @@ test('北京时间跨日、周一边界、闰年和重复活动口径',()=>{
   assert.ok(cells.includes('2024-02-29'));
   assert.equal(cells.length%7,0);
   const base={entity:'doc:a',time:now,collections:['readings','notes'],source:'observed',title:'A'};
-  const events=[{...base,id:'1',kind:'updated'},{...base,id:'2',kind:'updated'},{...base,id:'3',kind:'state-changed',from:'pending',to:'understood'}];
+  const events=[{...base,id:'1',kind:'updated'},{...base,id:'2',kind:'updated'},{...base,id:'3',kind:'state-changed',from:'pending',to:'organized'}];
   assert.equal(dailyItems(events).get('2026-10-12'),1);
   assert.equal(dayDetails(events,'2026-10-12').length,2);
   assert.equal(summaryCounts(events,'2026-10-01','2026-10-12').learned,1);

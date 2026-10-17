@@ -1,6 +1,5 @@
 import { stateLabel } from '../document-state.ts';
 import type { ReaderGraph, ReaderNode } from '../types/graph.ts';
-import type { ReadingQueue } from '../types/reading.ts';
 import { CollectionIcon } from './CollectionIcon.tsx';
 import { Icon } from './icons.tsx';
 import React, { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
@@ -10,7 +9,6 @@ import { usePresence } from '../motion/usePresence.ts';
 import { motionVariables } from '../motion/tokens.ts';
 import { ReaderSources } from './ReaderSources.tsx';
 import { MarkdownArticle } from './MarkdownArticle.tsx';
-import { ReadingQueueButton } from './ReadingQueueButton.tsx';
 
 // Only use the already-filtered library, including in the public Pages build.
 function resolvePreview(
@@ -42,13 +40,11 @@ export const LinkPreview = memo(function LinkPreview({
   graph,
   onPreview,
   reduced,
-  queue,
 }: {
   readerRef: React.RefObject<HTMLElement | null>;
   graph: ReaderGraph;
   onPreview: (id: string | null) => void;
   reduced: boolean;
-  queue: ReadingQueue;
 }) {
   const [requested, setPreview] = useState<ReturnType<typeof resolvePreview>>(null);
   const {
@@ -57,8 +53,6 @@ export const LinkPreview = memo(function LinkPreview({
     closing,
   } = usePresence(requested, requested?.href || null, reduced);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const actionRef = useRef<HTMLDivElement>(null);
-  const [actionPosition, setActionPosition] = useState<React.CSSProperties | null>(null);
   const [position, setPosition] = useState<React.CSSProperties | null>(null);
   const html = useMemo(() => {
     if (!preview) return '';
@@ -84,7 +78,6 @@ export const LinkPreview = memo(function LinkPreview({
       target instanceof Node && parent?.contains(target);
     const inPreview = (target: EventTarget | null) =>
       contains(cardRef.current, target) ||
-      contains(actionRef.current, target) ||
       (target instanceof Element && Boolean(target.closest('.code-asset-preview')));
     const find = (target: EventTarget | null) =>
       target instanceof Element
@@ -165,14 +158,13 @@ export const LinkPreview = memo(function LinkPreview({
         document.activeElement === active.element
       ) {
         event.preventDefault();
-        (actionRef.current?.querySelector('button') || card.querySelector('a'))!.focus({
+        card.querySelector('a')!.focus({
           preventScroll: true,
         });
       } else if (
         event.key === 'Tab' &&
         event.shiftKey &&
-        document.activeElement ===
-          (actionRef.current?.querySelector('button') || card?.querySelector('a'))
+        document.activeElement === card?.querySelector('a')
       ) {
         event.preventDefault();
         active.element.focus({ preventScroll: true });
@@ -192,7 +184,6 @@ export const LinkPreview = memo(function LinkPreview({
     };
     const click = (event: MouseEvent) => {
       if ((event.target as Element).closest('.code-asset-preview, .code-asset-link')) return;
-      if (contains(actionRef.current, event.target)) return;
       if ((event.target as Element).closest<HTMLElement>('.link-preview-close') && active) {
         suppressed = active.element;
         suppressed.focus({ preventScroll: true });
@@ -234,18 +225,6 @@ export const LinkPreview = memo(function LinkPreview({
     const rect = preview.rect!;
     const margin = 12,
       gap = 8;
-    const action = actionRef.current?.getBoundingClientRect();
-    setActionPosition(
-      action
-        ? {
-            left: Math.max(margin, Math.min(rect.left, window.innerWidth - action.width - margin)),
-            top:
-              rect.top >= action.height + gap + margin
-                ? rect.top - action.height - gap
-                : rect.bottom + gap,
-          }
-        : null,
-    );
     const reader = readerRef.current!.getBoundingClientRect();
     const sideGap = 16;
     const leftSpace = reader.left - sideGap - margin;
@@ -264,10 +243,8 @@ export const LinkPreview = memo(function LinkPreview({
     }
     // A narrow or full-width reader has no usable side space.
     const width = Math.min(420, window.innerWidth - margin * 2);
-    // Reserve room for the action when both overlays share the reader column.
-    const actionAbove = action && rect.top >= action.height + gap + margin;
-    const topGap = gap + (actionAbove ? action.height + gap : 0);
-    const bottomGap = gap + (action && !actionAbove ? action.height + gap : 0);
+    const topGap = gap,
+      bottomGap = gap;
     const below = window.innerHeight - rect.bottom - bottomGap - margin;
     const above = rect.top - topGap - margin;
     const down = below >= Math.min(400, window.innerHeight * 0.65) || below >= above;
@@ -298,21 +275,6 @@ export const LinkPreview = memo(function LinkPreview({
   if (!preview) return null;
   return createPortal(
     <>
-      {queue && preview.node.module && preview.element.matches('.markdown a') && (
-        <div
-          ref={actionRef}
-          className="link-queue-popover"
-          inert={closing}
-          style={actionPosition || { visibility: 'hidden' }}
-        >
-          <ReadingQueueButton
-            queue={queue}
-            node={preview.node}
-            className="link-queue-button"
-            showLabel
-          />
-        </div>
-      )}
       <aside
         ref={cardRef}
         className="neural link-preview"

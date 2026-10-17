@@ -10,13 +10,21 @@ import { readFile, stat } from 'node:fs/promises';
 import { createServer as createViteServer } from 'vite';
 import { createReaderFrontend } from './src/reader-frontend.ts';
 import { createLibraryLoader, safeAsset } from './src/library.ts';
-import { activityForLibrary } from './src/activity.ts';
+import { activityForLibrary, reconcileDocumentStates } from './src/activity.ts';
 import {
   updateDocumentState,
   StateError,
   isLocalWriteRequest,
 } from './src/update-document-state.ts';
 const dir = path.dirname(fileURLToPath(import.meta.url));
+const libraryETag = (library: Pick<Library, 'version' | 'activity'>) =>
+  '"' +
+  createHash('sha256')
+    .update(library.version)
+    .update(JSON.stringify(library.activity ?? null))
+    .digest('hex') +
+  '"';
+
 export async function startServer({
   root = path.resolve(dir, '../../content'),
   port = Number(process.env.PORT || 4173),
@@ -32,10 +40,29 @@ export async function startServer({
     return result;
   };
   const readLibrary = createLibraryLoader(root);
-  const withActivity = async (library: Library) => ({
-    ...library,
-    activity: await activityForLibrary(root, library, { observe: true }),
-  });
+  let observedVersion: string | undefined;
+  const withActivity = async (library: Library) => {
+    // A broken activity log must not block reading or overwrite its baseline.
+    let current = library;
+    try {
+      current = await reconcileDocumentStates(root, library, readLibrary);
+    } catch (error) {
+      if (error instanceof StateError) throw error;
+      return {
+        ...library,
+        activity: {
+          ...(await activityForLibrary(root, library)),
+          error: '文档状态暂未同步，保留原快照，稍后自动重试。',
+        },
+      };
+    }
+    const result = {
+      ...current,
+      activity: await activityForLibrary(root, current, { observe: true }),
+    };
+    if (!result.activity.error) observedVersion = current.version;
+    return result;
+  };
   const mime: Record<string, string> = {
     '.png': 'image/png',
     '.jpg': 'image/jpeg',
@@ -56,13 +83,7 @@ export async function startServer({
           return res.end();
         }
         const library = await serialize(async () => withActivity(await readLibrary()));
-        const etag =
-          '"' +
-          createHash('sha256')
-            .update(library.version)
-            .update(JSON.stringify(library.activity ?? null))
-            .digest('hex') +
-          '"';
+        const etag = libraryETag(library);
         const readHeaders = { ...headers, 'Cache-Control': 'private, no-cache', ETag: etag };
         if (req.headers['if-none-match'] === etag) {
           res.writeHead(304, readHeaders);
@@ -91,12 +112,33 @@ export async function startServer({
         } catch {
           throw new StateError('请求格式无效。', 400);
         }
-        const library = await serialize(async () => {
-          await withActivity(await readLibrary());
-          return withActivity(await updateDocumentState(root, input));
+        const result = await serialize(async () => {
+          const before = await readLibrary();
+          if (before.version !== observedVersion) await withActivity(before);
+          const library = await withActivity(await updateDocumentState(root, input, readLibrary));
+          if (
+            typeof input === 'object' &&
+            input !== null &&
+            'incremental' in input &&
+            input.incremental === true
+          ) {
+            const previous = new Map(before.documents.map((doc) => [doc.id, doc]));
+            return {
+              kind: 'state-update',
+              baseVersion: before.version,
+              version: library.version,
+              documents: library.documents.filter((doc) => previous.get(doc.id) !== doc),
+              activity: library.activity,
+            };
+          }
+          return library;
         });
-        res.writeHead(200, { ...headers, 'Content-Type': 'application/json; charset=utf-8' });
-        return res.end(JSON.stringify(library));
+        res.writeHead(200, {
+          ...headers,
+          'Content-Type': 'application/json; charset=utf-8',
+          ETag: libraryETag(result),
+        });
+        return res.end(JSON.stringify(result));
       }
       if (url.pathname === '/api/asset') {
         const asset = await safeAsset(

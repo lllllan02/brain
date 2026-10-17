@@ -4,7 +4,6 @@ import { nextDocumentState, stateLabel, stateComplete } from '../document-state.
 import { useViewState } from './useViewState.ts';
 import { CollectionIcon } from './CollectionIcon.tsx';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { ReadingQueueButton } from './ReadingQueueButton.tsx';
 import { Icon } from './icons.tsx';
 import { LinkPreview } from './LinkPreview.tsx';
 import { ReaderRelations } from './ReaderRelations.tsx';
@@ -34,7 +33,6 @@ export function DocumentReader({
   onReadingScroll,
   navigation,
   stateAction,
-  queue,
 }: DocumentReaderProps) {
   const ref = useRef<HTMLElement>(null);
   const [full, setFull] = useViewState('readerFull', false);
@@ -200,13 +198,6 @@ export function DocumentReader({
             <Icon name={mobileListOpen ? 'close' : 'list'} size={18} />
           </button>
           {stateControl}
-          {queue && (
-            <ReadingQueueButton
-              queue={queue}
-              node={node}
-              className="icon-btn reader-queue-toggle"
-            />
-          )}
           <button
             className="icon-btn"
             aria-label="切换专注阅读"
@@ -381,13 +372,7 @@ export function DocumentReader({
       </div>
       <SelectionCopy key={node.id} readerRef={ref} node={node} />
       <ExternalLinkPreview readerRef={ref} html={node.html} />
-      <LinkPreview
-        queue={queue}
-        reduced={reduced}
-        readerRef={ref}
-        graph={graph}
-        onPreview={onPreview}
-      />
+      <LinkPreview reduced={reduced} readerRef={ref} graph={graph} onPreview={onPreview} />
     </section>
   );
 }

@@ -15,7 +15,7 @@ test('趋势按北京时间、每天同一文档去重；摘要按整个区间�
   assert.deepEqual(result.topics,[{name:'Agent',count:1}]);
 });
 test('双向流转独立计数，图片与缺失文档不进入活跃主题，历史不完整不声明完整',()=>{
- const result=dashboardPulse({startedAt:'2026-10-12',events:[event('state-changed','2026-10-12',{from:'pending',to:'understood'}),event('state-changed','2026-10-12',{from:'understood',to:'pending'}),event('image-created','2026-10-12',{entity:'image:x',docId:null}),event('created','2026-10-12',{docId:'missing',entity:'doc:missing'})]},[doc],'2026-10-12',30);
+ const result=dashboardPulse({startedAt:'2026-10-12',events:[event('state-changed','2026-10-12',{from:'pending',to:'organized'}),event('state-changed','2026-10-12',{from:'organized',to:'pending'}),event('image-created','2026-10-12',{entity:'image:x',docId:null}),event('created','2026-10-12',{docId:'missing',entity:'doc:missing'})]},[doc],'2026-10-12',30);
  assert.equal(result.counts.learned,1);assert.equal(result.counts.relearn,1);assert.equal(result.complete,false);
  assert.deepEqual(result.topics,[{name:'Agent',count:1}]);
 });

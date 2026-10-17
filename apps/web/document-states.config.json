@@ -15,19 +15,8 @@
       "rays": 0.7
     }
   },
-  "understood": {
-    "label": "已理解",
-    "color": "#f3e2c5",
-    "link": {
-      "color": "#e4d0ab",
-      "opacity": 0.18
-    },
-    "marker": {
-      "hollow": false
-    }
-  },
-  "unread": {
-    "label": "未读",
+  "reading": {
+    "label": "阅读中",
     "color": "#aadcd8",
     "link": {
       "color": "#aadcd8",
@@ -37,17 +26,17 @@
       "hollow": true
     },
     "node": {
-      "size": 0.9,
-      "halo": 0.75,
-      "rays": 0.7
+      "size": 0.95,
+      "halo": 0.9,
+      "rays": 0.85
     }
   },
-  "read": {
-    "label": "已读",
-    "color": "#aadcd8",
+  "organized": {
+    "label": "已整理",
+    "color": "#f3e2c5",
     "link": {
-      "color": "#aadcd8",
-      "opacity": 0.12
+      "color": "#e4d0ab",
+      "opacity": 0.18
     },
     "marker": {
       "hollow": false

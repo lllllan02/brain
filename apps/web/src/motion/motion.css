@@ -10,7 +10,6 @@
 .galaxy-page .cluster-fan-lines path{animation:clusterThreadIn var(--motion-enter) var(--motion-ease) var(--fan-delay) both}
 /* Ports stay fixed while the branch draws; titles arrive just behind its tip. */
 .galaxy-page .cluster-list-item{animation:clusterCardReveal var(--motion-enter) var(--motion-ease) calc(var(--fan-delay) + var(--motion-feedback)) both}
-.galaxy-page .has-queue-action .queue-list-action{animation:clusterCardReveal var(--motion-enter) var(--motion-ease) var(--motion-enter) both}
 @keyframes clusterCardReveal{from{opacity:0}to{opacity:1}}
 .galaxy-page .cluster-thread-sparks{transition:none}
 .galaxy-page button,.galaxy-page a{transition:color var(--motion-feedback) ease,background-color var(--motion-feedback) ease,border-color var(--motion-feedback) ease,box-shadow var(--motion-feedback) ease}

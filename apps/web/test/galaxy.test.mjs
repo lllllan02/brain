@@ -112,7 +112,7 @@ test('目录样式原位更新 GPU 属性，保留几何体、坐标与入场状
     geometry.setAttribute('aRayAngle',new BufferAttribute(new Float32Array(1),1));
     renderer.nodeGeometry=geometry;renderer.data={nodes:[{collection:'notes',state:'pending'}],links:[]};
     const reveal={progress:.5};renderer.reveal=reveal;
-    for(const state of ['pending','understood']) {
+    for(const state of ['pending','organized']) {
       renderer.data.nodes[0].state=state;renderer.updateNodeAppearance();
       const style=documentAppearance(renderer.data.nodes[0]),color=new Color(style.color);
       assert.ok(Math.abs(geometry.getAttribute('aCollectionColor').getX(0)-color.r)<1e-6);

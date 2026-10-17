@@ -5,19 +5,26 @@ import {
   CONTENT_COLLECTIONS,
 } from './collections.ts';
 import config from '../document-states.config.json' with { type: 'json' };
-export type DocumentState = 'pending' | 'understood' | 'unread' | 'read';
+export type DocumentState = 'pending' | 'reading' | 'organized';
 export interface StatefulDocument {
   collection?: string;
   state?: DocumentState | null;
 }
-export const stateLabel = (state: DocumentState | null | undefined) =>
-  state ? config[state].label : '';
-export const stateComplete = (state: DocumentState | null | undefined) =>
-  state === 'understood' || state === 'read';
+export const stateLabel = (
+  state: DocumentState | 'understood' | 'unread' | 'read' | null | undefined,
+) => {
+  const current =
+    state === 'understood' || state === 'read'
+      ? 'organized'
+      : state === 'unread'
+        ? 'pending'
+        : state;
+  return current ? config[current].label : '';
+};
+export const stateComplete = (state: DocumentState | null | undefined) => state === 'organized';
 export function nextDocumentState(doc: StatefulDocument): DocumentState | null {
-  if (doc.collection === 'notes') return doc.state === 'understood' ? 'pending' : 'understood';
-  if (doc.collection === 'readings') return doc.state === 'read' ? 'unread' : 'read';
-  return null;
+  if (!doc.collection || !CONTENT_COLLECTIONS.includes(doc.collection)) return null;
+  return doc.state === 'pending' ? 'reading' : doc.state === 'reading' ? 'organized' : 'pending';
 }
 export const checkPath = 'M15 18l3 3 5-6';
 export function documentAppearance(doc: StatefulDocument) {
