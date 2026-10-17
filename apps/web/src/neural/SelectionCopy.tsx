@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import type { LibraryDocument } from '../types/library.ts';
+import { Icon } from './icons.tsx';
+import { Toast } from './Toast.tsx';
 import './selection-copy.css';
 
 type Excerpt = { text: string; reference: string };
@@ -77,38 +79,50 @@ function selectedExcerpt(root: HTMLElement, node: LibraryDocument): Excerpt | nu
   };
 }
 
-export function SelectionCopy({
+function CopyActions({
   readerRef,
   node,
+  scope,
 }: {
-  readerRef: React.RefObject<HTMLElement | null>;
+  readerRef?: React.RefObject<HTMLElement | null>;
   node: LibraryDocument;
+  scope: 'selection' | 'document';
 }) {
   const [excerpt, setExcerpt] = useState<Excerpt | null>(null);
   const [status, setStatus] = useState('');
   const [busy, setBusy] = useState(false);
+  const [copyAttempt, setCopyAttempt] = useState(0);
   const toolbar = useRef<HTMLDivElement>(null);
+  const statusDuration = status.startsWith('复制失败') ? 4500 : 2400;
+  useEffect(() => {
+    if (scope !== 'document' || !status) return;
+    const timer = setTimeout(() => setStatus(''), statusDuration);
+    return () => clearTimeout(timer);
+  }, [scope, status, statusDuration, copyAttempt]);
   useEffect(() => {
     setExcerpt(null);
     setStatus('');
+    if (scope === 'document') return;
     let previousReference = '';
     const update = () => {
       if (toolbar.current?.contains(document.activeElement)) return;
-      const next = readerRef.current ? selectedExcerpt(readerRef.current, node) : null;
+      const next = readerRef?.current ? selectedExcerpt(readerRef.current, node) : null;
       setExcerpt(next);
       if ((next?.reference || '') !== previousReference) setStatus('');
       previousReference = next?.reference || '';
     };
     const dismiss = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape' || !toolbar.current) return;
+      if (event.key !== 'Escape' || toolbar.current?.dataset.mode !== 'selection') return;
       event.preventDefault();
       event.stopImmediatePropagation();
       window.getSelection()?.removeAllRanges();
       setExcerpt(null);
+      setStatus('');
     };
     const outside = (event: PointerEvent) => {
       if (toolbar.current?.contains(event.target as Node)) return;
       setExcerpt(null);
+      setStatus('');
     };
     document.addEventListener('selectionchange', update);
     document.addEventListener('pointerdown', outside);
@@ -118,12 +132,23 @@ export function SelectionCopy({
       document.removeEventListener('pointerdown', outside);
       window.removeEventListener('keydown', dismiss, true);
     };
-  }, [readerRef, node.id, node.html, node.title, node.path]);
+  }, [readerRef, node.id, node.html, node.title, node.path, scope]);
   const copy = async (reference: boolean) => {
-    if (!excerpt) return;
+    setCopyAttempt((previous) => previous + 1);
+    setStatus('');
     setBusy(true);
     try {
-      const text = reference ? excerpt.reference : excerpt.text;
+      const text = excerpt
+        ? reference
+          ? excerpt.reference
+          : excerpt.text
+        : [
+            '以下是 Horizon 项目中的文档引用：',
+            '',
+            `文件：content/${node.path}`,
+            `文档：${node.title}`,
+            '范围：整篇文档',
+          ].join('\n');
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(text);
       } else {
@@ -154,29 +179,54 @@ export function SelectionCopy({
       setBusy(false);
     }
   };
-  if (!excerpt) return null;
+  if (scope === 'selection' && !excerpt) return null;
   return (
     <div
-      className="selection-copy"
+      className={scope === 'selection' ? 'selection-copy' : 'document-reference-copy'}
+      data-mode={scope}
       ref={toolbar}
       role="group"
-      aria-label="复制选中文字"
-      onPointerDown={(event) => event.preventDefault()}
+      aria-label={excerpt ? '复制选中文字' : '复制文档引用'}
+      onPointerDown={(event) => {
+        if (excerpt) event.preventDefault();
+      }}
     >
-      <button type="button" disabled={busy} onClick={() => copy(false)}>
-        复制纯文本
-      </button>
+      {excerpt && (
+        <button type="button" disabled={busy} onClick={() => copy(false)}>
+          复制纯文本
+        </button>
+      )}
       <button
         type="button"
         disabled={busy}
+        aria-label="复制引用"
         onClick={() => copy(true)}
-        title="复制文档、路径、章节和选中原文"
+        title={excerpt ? '复制文档、路径、章节和选中原文' : '复制文档标题、文件路径和整篇文档范围'}
       >
-        复制引用
+        {scope === 'document' ? (
+          <Icon name={status === '引用已复制' ? 'check' : 'copy'} size={14} />
+        ) : (
+          '复制引用'
+        )}
       </button>
-      <span role="status" aria-atomic="true">
-        {status}
-      </span>
+      {scope === 'document' ? (
+        status && <Toast key={copyAttempt} message={status} duration={statusDuration} />
+      ) : (
+        <span role="status" aria-atomic="true">
+          {status}
+        </span>
+      )}
     </div>
   );
+}
+
+export function SelectionCopy(props: {
+  readerRef: React.RefObject<HTMLElement | null>;
+  node: LibraryDocument;
+}) {
+  return <CopyActions {...props} scope="selection" />;
+}
+
+export function DocumentReferenceCopy({ node }: { node: LibraryDocument }) {
+  return <CopyActions node={node} scope="document" />;
 }

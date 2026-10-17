@@ -1,5 +1,5 @@
 /* The preview is portaled to body, so it shares the reader's theme explicitly. */
-.galaxy-page, .neural.link-preview, .library-update-notice {
+.galaxy-page, .neural.link-preview, .library-update-notice, .document-state-toast {
   --surface: #0c1119;
   --surface-raised: #111821;
   --control: #090e16d9;

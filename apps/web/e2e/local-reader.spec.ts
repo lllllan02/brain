@@ -223,6 +223,12 @@ test('状态切换贯通文件、内链高亮、预览和节点标签', async ({
   await expect(page.locator('.reader-shell')).not.toHaveAttribute('inert');
   await reader.getByRole('button', { name: '标为已读', exact: true }).click();
   await expect(reader.getByRole('button', { name: '标为未读', exact: true })).toBeVisible();
+  await expect(page.locator('.document-state-toast')).toHaveText('已标记为已读');
+  expect(
+    await page
+      .locator('.document-state-toast')
+      .evaluate((el) => el.parentElement === document.body),
+  ).toBe(true);
   await expect(
     reader.locator('.reader-heading .collection-title-icon[data-state="read"]'),
   ).toBeVisible();

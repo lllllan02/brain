@@ -77,6 +77,7 @@ button.read-tag{cursor:pointer;font-family:inherit;text-align:left;transition:co
 
 
 .document-state-toast{position:fixed;z-index:100;top:24px;left:50%;max-width:min(420px,calc(100vw - 40px));padding:9px 16px;border:1px solid #ffffff18;border-radius:18px;background:#22252bf2;box-shadow:0 6px 24px #0005;color:var(--text);font-size:12px;line-height:1.6;text-align:center;overflow-wrap:anywhere;pointer-events:none;animation:collectionToast var(--toast-duration,2400ms) both}
+.neural.document-state-toast{min-height:0}
 @keyframes collectionToast{0%{opacity:0;transform:translate(-50%,8px)}10%,85%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-6px)}}
 @media(prefers-reduced-motion:reduce){.document-state-toast{animation:none;transform:translateX(-50%)}}
 

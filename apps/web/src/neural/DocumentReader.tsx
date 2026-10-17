@@ -17,7 +17,7 @@ import { useToolbarTitle } from './useToolbarTitle.ts';
 import { useReaderResize } from './useReaderResize.ts';
 import { useReaderFontScale, readerFontScales } from './useReaderFontScale.ts';
 import './reader-font.css';
-import { SelectionCopy } from './SelectionCopy.tsx';
+import { DocumentReferenceCopy, SelectionCopy } from './SelectionCopy.tsx';
 export function DocumentReader({
   graph,
   node,
@@ -251,10 +251,13 @@ export function DocumentReader({
       >
         <header className="reader-heading">
           <div className="an-title-row">
-            <h2 ref={titleRef}>
-              {titleIcon}
-              {node.title}
-            </h2>
+            <div className="reader-title-with-copy">
+              <h2 ref={titleRef}>
+                {titleIcon}
+                {node.title}
+              </h2>
+              <DocumentReferenceCopy key={node.id} node={node} />
+            </div>
             {navigation}
           </div>
           <ReaderSources documentId={node.id} key={node.id} sources={node.sources} />

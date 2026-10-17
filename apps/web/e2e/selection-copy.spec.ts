@@ -15,6 +15,123 @@ test.beforeEach(async ({ page }) => {
   await expect(page.locator('.reader-shell')).not.toHaveAttribute('inert');
 });
 
+test('标题区域可直接复制整篇引用，选中文字和切换文章后仍可用', async ({ page }, testInfo) => {
+  await page.clock.install();
+  if (testInfo.project.name === 'narrow') await page.setViewportSize({ width: 320, height: 640 });
+  const group = page.getByRole('group', { name: '复制文档引用' });
+  const button = group.getByRole('button', { name: '复制引用' });
+  const toast = page.locator('.document-state-toast');
+  await expect(button).toBeVisible();
+  await expect(page.getByRole('button', { name: '复制纯文本' })).toHaveCount(0);
+  const initial = await button.boundingBox();
+  const title = await page.locator('.an-title-row h2').boundingBox();
+  expect(initial!.x - title!.x - title!.width).toBeGreaterThanOrEqual(0);
+  expect(initial!.x - title!.x - title!.width).toBeLessThanOrEqual(8);
+  expect(Math.abs(initial!.y + initial!.height - title!.y - title!.height)).toBeLessThanOrEqual(4);
+  const heights = await group.evaluate((el) => {
+    const row = el.closest<HTMLElement>('.an-title-row')!;
+    const withButton = row.offsetHeight;
+    el.style.display = 'none';
+    const withoutButton = row.offsetHeight;
+    el.style.removeProperty('display');
+    return { withButton, withoutButton };
+  });
+  expect(heights.withButton).toBe(heights.withoutButton);
+  await expect(page.locator('.document-reader > .document-reference-copy')).toHaveCount(0);
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1000));
+  await button.focus();
+  await page.keyboard.press('Enter');
+  expect(await page.evaluate(() => (window as unknown as { copied: string }).copied)).toBe(
+    '以下是 Horizon 项目中的文档引用：\n\n文件：content/notes/first.md\n文档：回归起点\n范围：整篇文档',
+  );
+  await expect(toast).toHaveText('引用已复制');
+  await expect(group.locator('[role="status"]')).toHaveCount(0);
+  const notice = await toast.evaluate((el) => {
+    const bounds = el.getBoundingClientRect();
+    return {
+      portaled: el.parentElement === document.body,
+      position: getComputedStyle(el).position,
+      center: bounds.x + bounds.width / 2,
+      top: bounds.y,
+    };
+  });
+  expect(notice.portaled).toBe(true);
+  expect(notice.position).toBe('fixed');
+  expect(notice.center).toBeCloseTo(page.viewportSize()!.width / 2, 0);
+  expect(notice.top).toBeLessThanOrEqual(40);
+  expect(
+    await page.locator('.an-title-row').evaluate((el) => (el as HTMLElement).offsetHeight),
+  ).toBe(heights.withButton);
+  await page.clock.fastForward(2400);
+  await expect(toast).toHaveCount(0);
+  await page.clock.resume();
+  await page
+    .locator('.document-reader article.markdown > p')
+    .first()
+    .evaluate((el) => {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      window.getSelection()!.removeAllRanges();
+      window.getSelection()!.addRange(range);
+    });
+  await expect(group).toBeVisible();
+  await button.click();
+  expect(await page.evaluate(() => (window as unknown as { copied: string }).copied)).toContain(
+    '范围：整篇文档',
+  );
+  expect(await page.evaluate(() => (window as unknown as { copied: string }).copied)).not.toContain(
+    '网页选中文本',
+  );
+  await page.screenshot({ path: testInfo.outputPath('document-reference-copy.png') });
+  await page
+    .locator('.document-reader article')
+    .getByRole('link', { name: /^回归终点/ })
+    .click();
+  await expect(page.locator('.document-reader[data-document-id="second"]')).toBeVisible();
+  await expect(toast).toHaveCount(0);
+  await button.click();
+  expect(await page.evaluate(() => (window as unknown as { copied: string }).copied)).toContain(
+    '文件：content/notes/second.md\n文档：回归终点\n范围：整篇文档',
+  );
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.document-reader')).toHaveCount(0);
+});
+
+test('整篇引用支持 HTTP 复制和失败重试', async ({ page }, testInfo) => {
+  if (testInfo.project.name === 'narrow') await page.setViewportSize({ width: 320, height: 640 });
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: undefined });
+    document.execCommand = () => false;
+  });
+  const group = page.getByRole('group', { name: '复制文档引用' });
+  const button = group.getByRole('button', { name: '复制引用' });
+  const toast = page.locator('.document-state-toast');
+  await button.click();
+  await expect(toast).toContainText('复制失败');
+  await expect(button).toBeEnabled();
+  const bounds = await group.boundingBox();
+  expect(bounds!.x).toBeGreaterThanOrEqual(0);
+  expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(page.viewportSize()!.width);
+  const feedback = await toast.boundingBox();
+  expect(feedback!.x).toBeGreaterThanOrEqual(0);
+  expect(feedback!.x + feedback!.width).toBeLessThanOrEqual(page.viewportSize()!.width);
+  await page.screenshot({ path: testInfo.outputPath('document-reference-copy-error.png') });
+  await page.evaluate(() => {
+    document.execCommand = () => {
+      (window as unknown as { copied: string }).copied = (
+        document.activeElement as HTMLTextAreaElement
+      ).value;
+      return true;
+    };
+  });
+  await button.click();
+  await expect(toast).toHaveText('引用已复制');
+  expect(await page.evaluate(() => (window as unknown as { copied: string }).copied)).toContain(
+    '范围：整篇文档',
+  );
+  await expect(button).toBeFocused();
+});
+
 test('选区复制保留原文和文件章节定位，支持键盘与清除', async ({ page }, testInfo) => {
   const paragraph = page.locator('.document-reader article.markdown > p').first();
   await paragraph.evaluate((el) => {
@@ -49,6 +166,7 @@ test('选区复制保留原文和文件章节定位，支持键盘与清除', as
   await page.screenshot({ path: testInfo.outputPath('selection-copy.png') });
   await page.keyboard.press('Escape');
   await expect(group).toHaveCount(0);
+  await expect(page.getByRole('group', { name: '复制文档引用' })).toBeVisible();
   await expect(page.locator('.document-reader')).toBeVisible();
 });
 

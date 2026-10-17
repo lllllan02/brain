@@ -7,6 +7,7 @@ import { createRoot } from 'react-dom/client';
 import { buildGraph, moduleOf } from './graph.ts';
 import { Home } from './Home.tsx';
 import { CONFIG } from '../config.ts';
+import { Toast } from './Toast.tsx';
 import { useReadingHistory } from './useReadingHistory.ts';
 import { parseReadingRoute } from './reading-history.ts';
 import './neural.css';
@@ -71,15 +72,11 @@ function App() {
         </div>
       )}
       {updateState.id && !updateState.pending && (
-        <div
+        <Toast
           key={revision.current}
-          className="document-state-toast"
-          role="status"
-          aria-live="polite"
-          style={{ '--toast-duration': updateState.error ? '4500ms' : '2400ms' }}
-        >
-          {updateState.error || `已标记为${stateLabel(updateState.state)}`}
-        </div>
+          message={updateState.error || `已标记为${stateLabel(updateState.state)}`}
+          duration={updateState.error ? 4500 : 2400}
+        />
       )}
     </div>
   );
