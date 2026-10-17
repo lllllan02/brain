@@ -1,4 +1,5 @@
 import { validReadingSession } from './view-state.ts';
+import { dashboardRoute } from './dashboard-route.ts';
 import type { ReaderGraph } from '../types/graph.ts';
 import type { ReadingEntry, TrailSegment } from '../types/reading.ts';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -148,7 +149,7 @@ export function useReadingHistory(graph: ReaderGraph | null) {
       )
         return;
       const href = anchor.getAttribute('href');
-      if (!href?.startsWith('#/doc/')) return;
+      if (!href || (!href.startsWith('#/doc/') && dashboardRoute(href) === null)) return;
       event.preventDefault();
       navigate(href);
     };

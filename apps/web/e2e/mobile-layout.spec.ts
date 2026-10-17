@@ -55,7 +55,13 @@ test('手机小屏与横屏的工具栏、列表和看板不溢出', async ({ pa
       animations: 'disabled',
       path: testInfo.outputPath(`dashboard-${viewport.width}.png`),
     });
-    await page.locator('.activity-panel').scrollIntoViewIfNeeded();
+    await dashboard
+      .getByRole('navigation', { name: '看板视图' })
+      .getByRole('link', { name: '变更记录', exact: true })
+      .tap();
+    await expect(dashboard.locator('.db-calendar-panel')).toBeVisible();
+    expect(await dashboard.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
+    await dashboard.locator('.db-calendar-panel').scrollIntoViewIfNeeded();
     await page.screenshot({
       animations: 'disabled',
       path: testInfo.outputPath(`activity-${viewport.width}.png`),

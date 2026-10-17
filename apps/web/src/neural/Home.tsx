@@ -11,6 +11,7 @@ import type { Focus, ReaderNode } from '../types/graph.ts';
 import type { Cluster } from '../types/reading.ts';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Workbench } from './Workbench.tsx';
+import { dashboardRoute, dashboardHref } from './dashboard-route.ts';
 import { useViewState } from './useViewState.ts';
 import { validCluster, validPinnedList, validFocus } from './view-state.ts';
 import { collectionLabel, CONTENT_COLLECTIONS } from '../collections.ts';
@@ -80,9 +81,8 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
     }),
     [graph],
   );
-  // Always enter through the galaxy; a previous dashboard visit is not a landing preference.
-  const [homeMode, setHomeMode] = useState('galaxy');
-  const workbenchVisible = homeMode === 'workbench' && !focus.sel && !focus.mod;
+  const dashboardView = dashboardRoute(reading.location.url);
+  const workbenchVisible = dashboardView !== null;
   const { ready, branchesReady, overlay, error } = useGalaxyScene({
     graph,
     workbenchVisible,
@@ -376,11 +376,12 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
     if (mode === 'workbench') {
       if (workbenchVisible) return;
       setGalaxyReturnFocus(focus);
-      setHomeMode(mode);
-      // navigate() captures the reader scroll before leaving the document.
-      reset();
+      setQuery('');
+      setSearchOpen(false);
+      searchInput.current?.blur();
+      // The shared navigation captures reader scroll before leaving the document.
+      reading.navigate(dashboardHref('overview'));
     } else {
-      setHomeMode(mode);
       if (!workbenchVisible) return;
       const saved = galaxyReturnFocus;
       const sel = graph.index.get(saved?.sel!)?.module ? saved!.sel : null;
@@ -423,7 +424,14 @@ export function Home({ graph, focus, setFocus, reading, reduced, stateAction }: 
         onFinish={finishFlight}
         reduced={reduced}
       />
-      <Workbench graph={graph} hidden={!workbenchVisible} reading={reading} queue={queue} />
+      <Workbench
+        graph={graph}
+        hidden={!workbenchVisible}
+        reading={reading}
+        queue={queue}
+        view={dashboardView ?? 'overview'}
+        openLibrary={() => setFocus({ sel: null, mod: null })}
+      />
       <div className={`galaxy-viewport ${!ready || error ? 'is-loading' : ''}`} ref={host}>
         <div className="galaxy-frame" aria-hidden="true" />
         <GalaxyOverlay
