@@ -3,6 +3,7 @@ import type { LibraryDocument } from '../types/library.ts';
 import { Icon } from './icons.tsx';
 import { Toast } from './Toast.tsx';
 import './selection-copy.css';
+import { selectionMarkdown } from './selection-markdown.ts';
 
 type Excerpt = { text: string; reference: string };
 
@@ -73,8 +74,10 @@ function selectedExcerpt(root: HTMLElement, node: LibraryDocument): Excerpt | nu
       `文档：${node.title}`,
       `章节：${start.title}${start.anchor === end.anchor && start.title === end.title ? '' : ` 至 ${end.title}`}`,
       '',
-      '网页选中文本：',
-      ...text.split('\n').map((line) => `> ${line}`),
+      '选中内容（Markdown）：',
+      ...selectionMarkdown(article, range)
+        .split('\n')
+        .map((line) => `> ${line}`),
     ].join('\n'),
   };
 }
@@ -201,7 +204,11 @@ function CopyActions({
         disabled={busy}
         aria-label="复制引用"
         onClick={() => copy(true)}
-        title={excerpt ? '复制文档、路径、章节和选中原文' : '复制文档标题、文件路径和整篇文档范围'}
+        title={
+          excerpt
+            ? '复制文档、路径、章节和选中内容的 Markdown'
+            : '复制文档标题、文件路径和整篇文档范围'
+        }
       >
         {scope === 'document' ? (
           <Icon name={status === '引用已复制' ? 'check' : 'copy'} size={14} />

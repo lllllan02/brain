@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
+  await page.route('https://example.com/**', (route) => route.abort());
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'clipboard', {
       configurable: true,
@@ -98,6 +99,8 @@ test('标题区域可直接复制整篇引用，选中文字和切换文章后�
 });
 
 test('整篇引用支持 HTTP 复制和失败重试', async ({ page }, testInfo) => {
+  await page.clock.install();
+  await page.clock.pauseAt(await page.evaluate(() => Date.now() + 1000));
   if (testInfo.project.name === 'narrow') await page.setViewportSize({ width: 320, height: 640 });
   await page.evaluate(() => {
     Object.defineProperty(navigator, 'clipboard', { configurable: true, value: undefined });
@@ -154,9 +157,9 @@ test('选区复制保留原文和文件章节定位，支持键盘与清除', as
   expect(copied).toContain('文档：回归起点');
   expect(copied).toContain('notes/first.md');
   expect(copied).toContain('章节：回归起点');
-  expect(copied).toContain(`> ${original}`);
+  expect(copied).toContain('> 这是独立测试正文。继续阅读 [[second|回归终点]]。');
   expect(copied).toContain('以下是 Horizon 项目中的文档引用：');
-  expect(copied).toContain('网页选中文本：');
+  expect(copied).toContain('选中内容（Markdown）：');
   expect(copied).not.toContain('阅读链接：');
   expect(copied).not.toContain('目录：');
   await expect(group.getByRole('status')).toHaveText('引用已复制');
@@ -230,4 +233,105 @@ test('章节标题边界与 HTTP 复制兼容', async ({ page }, testInfo) => {
   expect(copied).toContain('文件：content/notes/first.md');
   await expect(group.getByRole('status')).toHaveText('引用已复制');
   await page.screenshot({ path: testInfo.outputPath('selection-copy-boundary.png') });
+});
+
+test('引用保留真实 Markdown 列表、双链、代码和表格，去除网页装饰', async ({ page }) => {
+  await page.locator('.document-reader article.markdown').evaluate((article) => {
+    const range = document.createRange();
+    range.setStartAfter(article.querySelector('#复制格式')!);
+    range.setEndAfter(article.lastChild!);
+    window.getSelection()!.removeAllRanges();
+    window.getSelection()!.addRange(range);
+  });
+  const group = page.getByRole('group', { name: '复制选中文字' });
+  const original = await page.evaluate(() => window.getSelection()!.toString());
+  await group.getByRole('button', { name: '复制纯文本' }).click();
+  expect(await page.evaluate(() => (window as unknown as { copied: string }).copied)).toBe(
+    original,
+  );
+  await group.getByRole('button', { name: '复制引用' }).click();
+  const copied = await page.evaluate(() => (window as unknown as { copied: string }).copied);
+  expect(copied).toContain('> 按 **实际能力** 分类，只开放 [[second|任务所需能力]]：');
+  expect(copied).toContain('> - 纯计算、格式转换。\n> - 读取、检索资源。');
+  expect(copied).toContain('>   - 嵌套能力与 `参数`。');
+  expect(copied).toContain(
+    '> 3. 重复内容。\n> 4. 重复内容与 [章节](<second#回归终点>) 和 [外部资料](<https://example.com/a?q=1&x=2>)。',
+  );
+  expect(copied).toContain('> > 引用 **强调**。');
+  expect(copied).toContain('> ````ts\n> const marker = "```";\n> \n> const result = 1;\n> ````');
+  expect(copied).toContain('> | 能力 | 目标 |\n> | --- | --- |\n> | 读取 | [[second\\|文档]] |');
+  expect(copied).toContain('> - [x] 已检查\n> - [ ] 待检查');
+  expect(copied).not.toMatch(/↗|#\/doc\/|查看源码|复制代码/);
+});
+
+test('局部选中保留链接目标和原序号，不带上相邻列表项', async ({ page }) => {
+  await page
+    .locator('.document-reader article.markdown > ol > li')
+    .last()
+    .evaluate((item) => {
+      const link = item.querySelector('a')!;
+      const range = document.createRange();
+      range.selectNodeContents(link);
+      window.getSelection()!.removeAllRanges();
+      window.getSelection()!.addRange(range);
+    });
+  const button = page
+    .getByRole('group', { name: '复制选中文字' })
+    .getByRole('button', { name: '复制引用' });
+  await button.click();
+  let copied = await page.evaluate(() => (window as unknown as { copied: string }).copied);
+  expect(copied).toContain('> 4. [章节](<second#回归终点>)');
+  expect(copied).not.toContain('重复内容');
+  await page
+    .locator('.document-reader article.markdown > p')
+    .filter({ hasText: '按 实际能力 分类' })
+    .evaluate((paragraph) => {
+      const link = paragraph.querySelector('a')!;
+      const range = document.createRange();
+      const text = [...link.childNodes].find((child) => child.nodeType === Node.TEXT_NODE)!;
+      range.setStart(text, 2);
+      range.setEnd(text, 4);
+      window.getSelection()!.removeAllRanges();
+      window.getSelection()!.addRange(range);
+    });
+  await button.click();
+  copied = await page.evaluate(() => (window as unknown as { copied: string }).copied);
+  expect(copied).toContain('> [[second|所需]]');
+  expect(copied).not.toContain('任务所需能力');
+});
+
+test('仅选中嵌套列表和代码片段时保留语法与选区边界', async ({ page }) => {
+  const button = page
+    .getByRole('group', { name: '复制选中文字' })
+    .getByRole('button', { name: '复制引用' });
+  await page.locator('.document-reader article.markdown > ul ul > li').evaluate((item) => {
+    const range = document.createRange();
+    range.selectNodeContents(item);
+    window.getSelection()!.removeAllRanges();
+    window.getSelection()!.addRange(range);
+  });
+  await button.click();
+  let copied = await page.evaluate(() => (window as unknown as { copied: string }).copied);
+  expect(copied).toContain('> - 嵌套能力与 `参数`。');
+  expect(copied).not.toContain('- -');
+  expect(copied).not.toContain('读取、检索资源');
+  await page
+    .locator('.document-reader .code-block:not(.diagram-block) pre code')
+    .evaluate((code) => {
+      const walker = document.createTreeWalker(code, NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) {
+        const offset = walker.currentNode.textContent?.indexOf('result') ?? -1;
+        if (offset < 0) continue;
+        const range = document.createRange();
+        range.setStart(walker.currentNode, offset);
+        range.setEnd(walker.currentNode, offset + 'result'.length);
+        window.getSelection()!.removeAllRanges();
+        window.getSelection()!.addRange(range);
+        break;
+      }
+    });
+  await button.click();
+  copied = await page.evaluate(() => (window as unknown as { copied: string }).copied);
+  expect(copied).toContain('> ```ts\n> result\n> ```');
+  expect(copied).not.toContain('marker');
 });

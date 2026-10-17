@@ -296,16 +296,27 @@ export function renderDocument(
           if (m) return { type: 'wiki', raw: m[0], value: m[2], embed: Boolean(m[1]) };
         },
         renderer(token: WikiToken) {
+          const preserve = (html: string) =>
+            html.replace(
+              /<(a|span|img)\b/,
+              (_, tag: string) => `<${tag} data-copy-source="${escape(token.raw)}"`,
+            );
           const [target, label] = token.value.replaceAll('\\|', '|').split('|');
           const code = codeLink(target, label || target);
-          if (code) return code;
+          if (code) return preserve(code);
           if (/\.(png|jpe?g|gif|webp|svg|pdf|mp3|mp4)$/i.test(target)) {
             const url = `/api/asset?path=${encodeURIComponent(target)}&from=${encodeURIComponent(doc.path)}`;
-            return token.embed && /\.(png|jpe?g|gif|webp)$/i.test(target)
-              ? `<img loading="lazy" src="${url}" alt="${escape(label || target)}">`
-              : `<a href="${url}" target="_blank" rel="noopener">${escape(label || target)} ↗</a>`;
+            return preserve(
+              token.embed && /\.(png|jpe?g|gif|webp)$/i.test(target)
+                ? `<img loading="lazy" src="${url}" alt="${escape(label || target)}">`
+                : `<a href="${url}" target="_blank" rel="noopener">${escape(label || target)} ↗</a>`,
+            );
           }
-          return wiki(target, label, token.embed);
+          // Embed summaries are generated content; only their entry link represents the source.
+          const html = wiki(target, label, token.embed);
+          return token.embed && html.includes('<a ')
+            ? html.replace('<a ', () => `<a data-copy-source="${escape(token.raw)}" `)
+            : preserve(html);
         },
       },
     ],
@@ -355,6 +366,29 @@ export function renderDocument(
     },
   };
   Object.assign(options.renderer!, config.renderer);
+  // Keep original destinations before routing or static-export rewrites change the href.
+  const renderLink = options.renderer!.link.bind(options.renderer!);
+  options.renderer!.link = (href, title, text) => {
+    const html = renderLink(href, title, text);
+    if (!href) return html;
+    if (
+      (/^[a-z][a-z0-9+.-]*:/i.test(href) && !/^(https?:|mailto:)/i.test(href)) ||
+      href.startsWith('//')
+    )
+      return html;
+    return html.replace(
+      /^<(a|span)\b/,
+      (_, tag: string) =>
+        `<${tag} data-copy-href="${escape(href)}"${title ? ` data-copy-title="${escape(title)}"` : ''}`,
+    );
+  };
+  const renderImage = options.renderer!.image.bind(options.renderer!);
+  options.renderer!.image = (href, title, text) =>
+    renderImage(href, title, text).replace(
+      /^<(img|span)\b/,
+      (_, tag: string) =>
+        `<${tag} data-copy-source="${escape(`![${text}](${href}${title ? ` "${title}"` : ''})`)}"`,
+    );
   options.renderer!.options = options;
   for (const extension of config.extensions) {
     options.extensions.inline.push(extension.tokenizer);
